@@ -21,10 +21,16 @@
       "no-undef": "off",
       "import/extensions": "off",
       "prefer-template": "off",
-      "max-depth": ["error", 2],
-      "max-lines-per-function": ["error", 15],
+      "max-depth": ["error", 3],
+      "max-lines-per-function": ["error", 50],
       "eol-last": ["error", "always"],
       "no-unused-vars": 1,
-      "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
+      "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+      "prettier/prettier": ["error", { "endOfLine": "auto" }],
+      "no-underscore-dangle": "off",
+      "prefer-regex-literals": "off",
+      "no-use-before-define" : "off",
+      "no-useless-concat" : "off",
+
     }
   }
