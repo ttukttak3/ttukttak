@@ -1,13 +1,16 @@
 import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import Login from './pages/Login/LoginPage';
 import './App.css';
-import styled from 'styled-components';
 
-const Wrapper = styled.section`
-  display: flex;
-`;
-
-function App() {
-  return <Wrapper>책방</Wrapper>;
-}
+const App = () => {
+  return (
+    <React.StrictMode>
+      <Routes>
+        <Route index element={<Login />} />
+      </Routes>
+    </React.StrictMode>
+  );
+};
 
 export default App;
