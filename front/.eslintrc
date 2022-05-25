@@ -22,10 +22,6 @@
     "no-unused-vars": 1,
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "prettier/prettier": ["error", { "endOfLine": "auto" }],
-    "no-underscore-dangle": "off",
-    "prefer-regex-literals": "off",
-    "no-use-before-define": "off",
-    "no-useless-concat": "off",
     "react/function-component-definition": [
       2,
       {
