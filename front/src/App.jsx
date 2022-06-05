@@ -1,21 +1,18 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import LoginPage from './pages/OauthLogin/Login/LoginPage';
-import Main from './layout/Main';
-import ProfilePage from './pages/OauthLogin/Profile/ProfilePage';
-import Auth from './pages/OauthLogin/Oauth/Auth';
-import './App.css';
+import { ThemeProvider } from 'styled-components';
+import { theme } from './styles/theme';
+import GlobalStyle from './styles/GlobalStyle';
+import Layout from './components/layout/Layout';
 
 const App = () => (
-  <React.StrictMode>
-    <Routes>
-      {/* <Route index element={<Login />} /> */}
-      <Route path="/" element={<Main />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/oauth2/redirect" element={<Auth />} />
-      <Route path="/profile" element={<ProfilePage />} />
-    </Routes>
-  </React.StrictMode>
+  <ThemeProvider theme={theme}>
+    <React.StrictMode>
+      {/* reset css */}
+      <GlobalStyle />
+      {/* layout component */}
+      <Layout />
+    </React.StrictMode>
+  </ThemeProvider>
 );
 
 export default App;

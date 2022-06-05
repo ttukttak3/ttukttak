@@ -14,7 +14,7 @@ const LoginPage = () => {
     return () => {
       // second
     };
-  }, []);
+  }, [dispatch]);
 
   return (
     <>

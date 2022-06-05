@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { getCurrentUser } from '../../../util/APIUtils';
+import { getCurrentUser } from '../../../util/OauthApi';
 
 const HeaderBox = styled.div`
   height: 100px;
