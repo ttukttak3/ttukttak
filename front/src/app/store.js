@@ -4,6 +4,6 @@ import loginReducer from '../pages/Login/loginSlice';
 export default configureStore({
   reducer: {
     login: loginReducer,
-    url: urlReducer,
+    // url: urlReducer,
   },
 });
