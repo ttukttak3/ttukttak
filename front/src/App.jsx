@@ -1,16 +1,18 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import Login from './pages/Login/LoginPage';
-import './App.css';
+import { ThemeProvider } from 'styled-components';
+import { theme } from './styles/theme';
+import GlobalStyle from './styles/GlobalStyle';
+import Layout from './components/layout/Layout';
 
-const App = () => {
-  return (
+const App = () => (
+  <ThemeProvider theme={theme}>
     <React.StrictMode>
-      <Routes>
-        <Route index element={<Login />} />
-      </Routes>
+      {/* reset css */}
+      <GlobalStyle />
+      {/* layout component */}
+      <Layout />
     </React.StrictMode>
-  );
-};
+  </ThemeProvider>
+);
 
 export default App;
