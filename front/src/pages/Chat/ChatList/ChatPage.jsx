@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Outlet } from 'react-router-dom';
-import ChatListItem from './ChatListItem';
-import Wrapper from './ChatPage.style';
+import { useDispatch } from 'react-redux';
+import { setTitle, setBack } from '../../../app/headerSlice';
+import ChatListItem from '../ChatList/ChatListItem';
+import Wrapper from '../ChatList/ChatPage.style';
 
 const ChatPage = () => {
   const [chatList, setChatList] = useState([
@@ -11,17 +12,17 @@ const ChatPage = () => {
   ]);
 
   const ChatListShow = chatList.map((item, idx) => <ChatListItem id={idx} imgUrl={item.imgUrl} userName={item.userName} time={item.time} lastChat={item.lastChat} unread={item.unread} />);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    return () => {};
+    dispatch(setTitle('채팅'));
+    dispatch(setBack(false));
+    return () => {
+      // second
+    };
   }, []);
 
-  return (
-    <Wrapper>
-      ChattingPage
-      {ChatListShow}
-    </Wrapper>
-  );
+  return <Wrapper>{ChatListShow}</Wrapper>;
 };
 
 export default ChatPage;

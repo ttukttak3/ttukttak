@@ -1,9 +1,11 @@
 import styled from 'styled-components';
 
 const Wrapper = styled.li`
+  display: flex;
   list-style: none;
   border-bottom: ${({ theme }) => theme.colors.$black1};
   border: 1px;
+  font-size: 2rem;
 `;
 const Img = styled.img`
   text-align: left;
