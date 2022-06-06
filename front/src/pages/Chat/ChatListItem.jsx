@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import style from './ChatListItem.style';
-import noneUserIcon from '../../assets/userNone.png';
+import noneUserIcon from '../../assets/img/userInterFace/userNone.png';
 
 const ChatListItem = ({ id, imgUrl, userName, time, lastChat, unread }) => {
   const { Wrapper, Img, UserName, Time, LastChat, Unread } = style;
