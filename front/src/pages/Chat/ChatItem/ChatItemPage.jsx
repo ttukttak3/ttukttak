@@ -25,7 +25,7 @@ const ChatItemPage = () => {
     dispatch(setBack(true));
     dispatch(setAlert(true));
 
-    //roomId
+    //roomId 가져오기
 
     connect();
 
@@ -86,9 +86,13 @@ const ChatItemPage = () => {
       <div>{roomId}</div>
       <ChatMessage side={'left'} message={'안녕'}></ChatMessage>
       <ChatMessage side={'right'} message={'안녕하세요'}></ChatMessage>
+      {chatMessages.map((item, idx) => (
+        <>
+          {idx}: {item}
+        </>
+      ))}
       {/* 메세지 받은거 추가추가추가,,,
       {chatMessages.map()} */}
-      {/* <input type={'text'} placeholder={'message'} value={message} onChange={e => setMessage(e.target.value)} onKeyPress={e => e.which === 13 && publish(message)} /> */}
       <ChatFooter message={message} publish={publish} setMessage={setMessage}></ChatFooter>
     </Wrapper>
   );

@@ -10,7 +10,7 @@ const ChatFooter = ({ message, setMessage, publish }) => {
     <Wrapper>
       <AddBtn src={add}></AddBtn>
       <Input type={'text'} placeholder={'메시지를 입력해 주세요.'} value={message} onChange={e => setMessage(e.target.value)} onKeyPress={e => e.which === 13 && publish(message)}></Input>
-      <SendBtn src={send}></SendBtn>
+      <SendBtn src={send} onClick={publish(message)}></SendBtn>
     </Wrapper>
   );
 };
