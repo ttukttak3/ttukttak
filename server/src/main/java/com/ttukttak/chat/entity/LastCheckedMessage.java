@@ -36,12 +36,16 @@ public class LastCheckedMessage implements Serializable {
 
 	@OneToOne
 	@JoinColumn(name = "message_id")
-	private ChatMessage message;
+	private ChatMessage chatMessage;
+
+	public void changeRoom(ChatRoom room) {
+		this.room = room;
+	}
 
 	@Builder
-	public LastCheckedMessage(User user, ChatRoom room, ChatMessage message) {
+	public LastCheckedMessage(User user, ChatRoom room, ChatMessage chatMessage) {
 		this.user = user;
 		this.room = room;
-		this.message = message;
+		this.chatMessage = chatMessage;
 	}
 }
