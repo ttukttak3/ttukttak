@@ -19,7 +19,7 @@ import com.ttukttak.oauth.entity.User;
 import com.ttukttak.oauth.repository.UserRepository;
 
 @SpringBootTest
-public class ChatTest {
+public class CascadeTest {
 
 	@Autowired
 	UserRepository userRepository;
@@ -53,8 +53,8 @@ public class ChatTest {
 		LastCheckedMessage lastCheckedMessage1 = LastCheckedMessage.builder().user(host).build();
 		LastCheckedMessage lastCheckedMessage2 = LastCheckedMessage.builder().user(guest).build();
 
-		chatRoom.addLastchecedMessage(lastCheckedMessage1);
-		chatRoom.addLastchecedMessage(lastCheckedMessage2);
+		chatRoom.addLastCheckedMessage(lastCheckedMessage1);
+		chatRoom.addLastCheckedMessage(lastCheckedMessage2);
 
 		chatRoomRepository.save(chatRoom);
 
@@ -90,7 +90,7 @@ public class ChatTest {
 		// 채팅룸 삭제
 		chatRoomRepository.deleteById(chatRoom.getId());
 
-		LastCheckedMessage findMessage = lastCheckedMessageRepository.findById(messageId).orElseThrow();
+		LastCheckedMessage findMessage = lastCheckedMessageRepository.findById(messageId).orElse(null);
 
 		// LastCheckedMessage도 delete 됐는지 확인
 		Assertions.assertThat(findMessage).isNull();
