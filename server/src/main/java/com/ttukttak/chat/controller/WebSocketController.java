@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Controller
-public class ChatController {
+public class WebSocketController {
 
 	private final RedisPublisher redisPublisher;
 	private final ChatRoomService chatRoomService;
