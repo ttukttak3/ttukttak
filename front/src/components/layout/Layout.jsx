@@ -24,7 +24,7 @@ const Layout = () => {
           <Route path="/oauth2/redirect" element={<Auth />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="chat" element={<Chat />} />
-          <Route path="chat/:chatId" element={<ChatItem />} />
+          <Route path="chat/:roomId" element={<ChatItem />} />
           <Route path="chat/alert" element={<ChatAlertPage />} />
         </Routes>
       </Section>
