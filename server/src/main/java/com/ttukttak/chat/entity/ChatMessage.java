@@ -1,6 +1,7 @@
 package com.ttukttak.chat.entity;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -47,12 +48,16 @@ public class ChatMessage implements Serializable {
 	@ColumnDefault("'TEXT'")
 	private MessageType messageType;
 
+	private LocalDateTime sendedAt;
+
 	@Builder
-	public ChatMessage(ChatRoom chatRoom, User user, String message,
-		MessageType messageType) {
+	public ChatMessage(Long id, ChatRoom chatRoom, User user, String message, MessageType messageType,
+		LocalDateTime sendedAt) {
+		this.id = id;
 		this.chatRoom = chatRoom;
 		this.user = user;
 		this.message = message;
 		this.messageType = messageType;
+		this.sendedAt = sendedAt;
 	}
 }

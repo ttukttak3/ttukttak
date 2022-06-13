@@ -18,12 +18,13 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class ChatMessageDto {
+	private Long id;
 	private Long userId;
 	private Long roomId;
 	private String message;
 	private MessageType messageType;
 
-	private LocalDateTime createdDate;
+	private LocalDateTime sendedAt;
 
 	public ChatMessage toEntity() {
 		ChatRoom chatRoom = ChatRoom.builder().id(roomId).build();
@@ -34,6 +35,7 @@ public class ChatMessageDto {
 			.user(user)
 			.message(message)
 			.messageType(messageType)
+			.sendedAt(LocalDateTime.now())
 			.build();
 	}
 }

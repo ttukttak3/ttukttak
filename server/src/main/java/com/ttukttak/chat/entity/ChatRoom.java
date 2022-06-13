@@ -1,19 +1,21 @@
 package com.ttukttak.chat.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
+import com.ttukttak.book.entity.Book;
 import com.ttukttak.common.BaseTimeEntity;
-import com.ttukttak.oauth.entity.User;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -29,30 +31,24 @@ public class ChatRoom extends BaseTimeEntity implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	//TODO: 책 구현되면 my_book_id 사용
-	// Book book
-	// @OneToOne
-	// @JoinColumn(name = "my_book_id")
-	// private MyBook message;
+	@ManyToOne
+	@JoinColumn(name = "book_id")
+	private Book book;
 
-	@OneToOne
-	@JoinColumn(name = "host_id")
-	private User host;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "chatRoom")
+	private List<ChatMessage> messages = new ArrayList<>();
 
-	@OneToOne
-	@JoinColumn(name = "guest_id")
-	private User guest;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<LastCheckedMessage> lastCheckedMessages = new ArrayList<>();
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "chatRoom", orphanRemoval = true)
-	private List<ChatMessage> messages;
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "room", orphanRemoval = true)
-	private List<LastCheckedMessage> lastCheckedMessage;
+	public void addLastCheckedMessage(LastCheckedMessage lastCheckedMessage) {
+		lastCheckedMessages.add(lastCheckedMessage);
+		lastCheckedMessage.changeRoom(this);
+	}
 
 	@Builder
-	public ChatRoom(Long id, User host, User guest) {
+	public ChatRoom(Long id, Book book) {
 		this.id = id;
-		this.host = host;
-		this.guest = guest;
+		this.book = book;
 	}
 }

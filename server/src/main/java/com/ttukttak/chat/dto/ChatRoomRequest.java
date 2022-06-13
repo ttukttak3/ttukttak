@@ -9,8 +9,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateChatRequest {
-	private Long hostId;
-	private Long guestId;
+public class ChatRoomRequest {
+	private Long bookId;
+	private Long userId;
 
 }
