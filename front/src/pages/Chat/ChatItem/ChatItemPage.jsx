@@ -71,10 +71,10 @@ const ChatItemPage = () => {
     client.current.publish({
       destination: '/pub/chat/message',
       body: JSON.stringify({
-        type: 'TALK',
         roomId: roomId,
-        sender: '지현이',
+        userId: '지현이',
         message: message,
+        messageType: 'TEXT',
       }),
     });
     setMessage('');
