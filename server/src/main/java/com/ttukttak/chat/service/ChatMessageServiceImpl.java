@@ -25,7 +25,7 @@ public class ChatMessageServiceImpl implements ChatMessageService {
 	@Override
 	public List<ChatMessageDto> getChatMessages(Long roomId) {
 
-		return chatMessageRepository.findAllByRoomId(roomId)
+		return chatMessageRepository.findAllByChatRoomId(roomId)
 			.stream()
 			.map(chatMessage -> modelMapper.map(chatMessage, ChatMessageDto.class))
 			.collect(Collectors.toList());

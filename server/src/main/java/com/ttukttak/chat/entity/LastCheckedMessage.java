@@ -15,9 +15,11 @@ import com.ttukttak.oauth.entity.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @NoArgsConstructor
 @Getter
+@ToString
 @Entity
 public class LastCheckedMessage implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -46,6 +48,10 @@ public class LastCheckedMessage implements Serializable {
 	public LastCheckedMessage(User user, ChatRoom room, ChatMessage chatMessage) {
 		this.user = user;
 		this.room = room;
+		this.chatMessage = chatMessage;
+	}
+
+	public void setChatMessage(ChatMessage chatMessage) {
 		this.chatMessage = chatMessage;
 	}
 }

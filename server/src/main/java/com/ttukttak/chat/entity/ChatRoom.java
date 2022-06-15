@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import net.minidev.json.annotate.JsonIgnore;
+
 import com.ttukttak.book.entity.Book;
 import com.ttukttak.common.BaseTimeEntity;
 
@@ -35,9 +37,11 @@ public class ChatRoom extends BaseTimeEntity implements Serializable {
 	@JoinColumn(name = "book_id")
 	private Book book;
 
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "chatRoom")
 	private List<ChatMessage> messages = new ArrayList<>();
 
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<LastCheckedMessage> lastCheckedMessages = new ArrayList<>();
 

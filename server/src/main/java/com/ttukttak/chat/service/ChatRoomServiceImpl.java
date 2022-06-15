@@ -1,11 +1,13 @@
 package com.ttukttak.chat.service;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
+import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.data.redis.core.HashOperations;
@@ -19,10 +21,15 @@ import com.ttukttak.book.repository.BookRepository;
 import com.ttukttak.chat.dto.ChatRoomCard;
 import com.ttukttak.chat.dto.ChatRoomInfo;
 import com.ttukttak.chat.dto.ChatRoomRequest;
+import com.ttukttak.chat.dto.ChatUser;
+import com.ttukttak.chat.dto.LastMessage;
+import com.ttukttak.chat.entity.ChatMessage;
 import com.ttukttak.chat.entity.ChatRoom;
 import com.ttukttak.chat.entity.LastCheckedMessage;
+import com.ttukttak.chat.repository.ChatMessageRepository;
 import com.ttukttak.chat.repository.ChatRoomRepository;
 import com.ttukttak.chat.repository.ChatRoomRepositoryCustom;
+import com.ttukttak.chat.repository.LastCheckedMessageRepository;
 import com.ttukttak.oauth.entity.User;
 import com.ttukttak.oauth.repository.UserRepository;
 
@@ -35,6 +42,8 @@ import lombok.extern.slf4j.Slf4j;
 public class ChatRoomServiceImpl implements ChatRoomService {
 	private final ModelMapper modelMapper;
 	private final ChatRoomRepository chatRoomRepository;
+	private final ChatMessageRepository chatMessageRepository;
+	private final LastCheckedMessageRepository lastCheckedMessageRepository;
 
 	private final ChatRoomRepositoryCustom chatRoomRepositoryCustom;
 	private final BookRepository bookRepository;
@@ -60,11 +69,34 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
 	@Override
 	public List<ChatRoomCard> getRoomList(Long userId) {
+		return chatRoomRepositoryCustom.findAllChatRoomByUserId(userId).stream().map(participantInfo -> {
+			ChatRoom room = participantInfo.getRoom();
+			ChatMessage lastChatMessage = chatMessageRepository.findFirstByChatRoomIdOrderBySendedAtDesc(room.getId());
 
-		return chatRoomRepositoryCustom.findAllChatRoomByUserId(userId)
-			.stream()
-			.map(chatRoom -> modelMapper.map(chatRoom, ChatRoomCard.class))
-			.collect(Collectors.toList());
+			LastCheckedMessage lastCheckedMessage = lastCheckedMessageRepository.findByRoomIdAndUserId(room.getId(),
+				userId);
+
+			LastMessage lastMessage = null;
+
+			if (lastChatMessage != null) {
+				lastMessage = modelMapper.map(lastChatMessage, LastMessage.class);
+			}
+
+			LocalDateTime lastCheckedTime = participantInfo.getRoom().getCreatedDate();
+
+			if (lastCheckedMessage.getChatMessage() != null) {
+				lastCheckedTime = lastCheckedMessage.getChatMessage().getSendedAt();
+			}
+
+			int unReadCount = chatMessageRepository.countByChatRoomIdAndSendedAtAfterAndUserIdNot(
+				participantInfo.getRoom().getId(), lastCheckedTime, userId);
+
+			return ChatRoomCard.builder().roomId(participantInfo.getRoom().getId())
+				.other(modelMapper.map(participantInfo.getUser(), ChatUser.class))
+				.lastMessage(lastMessage)
+				.count(unReadCount)
+				.build();
+		}).collect(Collectors.toList());
 	}
 
 	public ChatRoomInfo findRoomById(Long id) {
@@ -74,8 +106,11 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 	/**
 	 * 채팅방 생성 : 서버간 채팅방 공유를 위해 redis hash에 저장한다.
 	 */
+	@Transactional
 	public ChatRoomInfo createChatRoom(ChatRoomRequest request) {
-		//TODO: 예외처리 해야함
+		//TODO: 예외처리
+		// 1. 자신과 채팅방 만드는 경우 Exception
+		// 2. 없는 책, 유저 아이디면 Exception
 		Book book = bookRepository.findById(request.getBookId()).orElse(null);
 
 		User host = book.getOwner();

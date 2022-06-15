@@ -1,6 +1,6 @@
 package com.ttukttak.chat.dto;
 
-import java.util.List;
+import java.io.Serializable;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,8 +13,8 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class ChatRoomInfo {
-
+public class ChatRoomInfo implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	private Long roomId;
-	private List<ChatUser> users;
 }

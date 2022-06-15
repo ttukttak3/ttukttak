@@ -8,8 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ttukttak.chat.dto.ChatRoomCard;
@@ -40,7 +40,7 @@ public class ChatRoomController {
 	// 채팅방 생성
 	@PostMapping("/room")
 	@ResponseBody
-	public ResponseEntity<ChatRoomInfo> createRoom(@RequestParam ChatRoomRequest request) {
+	public ResponseEntity<ChatRoomInfo> createRoom(@RequestBody ChatRoomRequest request) {
 		ChatRoomInfo chatRoomInfo = chatRoomService.createChatRoom(request);
 
 		return ResponseEntity

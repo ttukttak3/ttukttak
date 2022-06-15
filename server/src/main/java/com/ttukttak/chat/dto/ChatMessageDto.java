@@ -1,5 +1,6 @@
 package com.ttukttak.chat.dto;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import com.ttukttak.chat.entity.ChatMessage;
@@ -17,7 +18,9 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class ChatMessageDto {
+public class ChatMessageDto implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	private Long id;
 	private Long userId;
 	private Long roomId;
@@ -35,7 +38,6 @@ public class ChatMessageDto {
 			.user(user)
 			.message(message)
 			.messageType(messageType)
-			.sendedAt(LocalDateTime.now())
 			.build();
 	}
 }

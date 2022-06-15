@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
@@ -15,6 +16,8 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.ColumnDefault;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.ttukttak.chat.dto.MessageType;
 import com.ttukttak.oauth.entity.User;
@@ -22,10 +25,13 @@ import com.ttukttak.oauth.entity.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @NoArgsConstructor
 @Getter
 @Entity
+@ToString
+@EntityListeners(AuditingEntityListener.class)
 public class ChatMessage implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -48,16 +54,15 @@ public class ChatMessage implements Serializable {
 	@ColumnDefault("'TEXT'")
 	private MessageType messageType;
 
+	@CreatedDate
 	private LocalDateTime sendedAt;
 
 	@Builder
-	public ChatMessage(Long id, ChatRoom chatRoom, User user, String message, MessageType messageType,
-		LocalDateTime sendedAt) {
+	public ChatMessage(Long id, ChatRoom chatRoom, User user, String message, MessageType messageType) {
 		this.id = id;
 		this.chatRoom = chatRoom;
 		this.user = user;
 		this.message = message;
 		this.messageType = messageType;
-		this.sendedAt = sendedAt;
 	}
 }
