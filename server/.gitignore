@@ -50,3 +50,6 @@ out/
 *.jar
 *.war
 *.ear
+
+# Querydsl
+/src/main/generated/
