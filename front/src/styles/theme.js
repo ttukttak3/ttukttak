@@ -21,7 +21,9 @@ const colors = {
     $whiteLine2: '#F5F5F5',
     $whiteLine3: '#EEEEEE',
     $danger: '#C33025',
-    $success: '#32C997'
+    $success: '#32C997',
+    $Naver: '#03c75a',
+    $KaKao: '#fee500',
 };
 
 export const theme = {
