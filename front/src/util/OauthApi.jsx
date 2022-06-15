@@ -43,3 +43,10 @@ export function login(loginRequest) {
     body: JSON.stringify(loginRequest),
   });
 }
+//닉네임 중복 체크
+export function checkNickName(nickname) {
+  return request({
+    url: API_BASE_URL + `/user/chknickname?nickname=${nickname}`,
+    method: 'GET',
+  });
+}

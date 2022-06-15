@@ -1,15 +1,19 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { setLocation, setTitle } from '../../app/headerSlice';
+import { setBack, setBackHome, setTitle, setLocation, setSearch, setTrash, setFavorite, setAlert } from '../../app/headerSlice';
 
 const HomePage = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    //chatting 방 정보 api
-    dispatch(setTitle(''));
+    dispatch(setBack(false));
+    dispatch(setBackHome(false));
+    dispatch(setTitle('우리집'));
     dispatch(setLocation(true));
-
+    dispatch(setSearch(true));
+    dispatch(setTrash(false));
+    dispatch(setFavorite(true));
+    dispatch(setAlert(true));
     return () => {
       // second;
     };

@@ -3,7 +3,6 @@ import { Routes, Route } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
 import style from './Layout.style';
-//import Main from './Main';
 import LoginPage from '../../pages/OauthLogin/Login/LoginPage';
 import Auth from '../../pages/OauthLogin/Oauth/Auth';
 import ProfilePage from '../../pages/OauthLogin/Profile/ProfilePage';
@@ -18,7 +17,6 @@ const Layout = () => {
       <Header />
       <Section>
         <Routes>
-          {/* <Route path="/main" element={<Main />} /> */}
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/oauth2/redirect" element={<Auth />} />

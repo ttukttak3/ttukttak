@@ -8,6 +8,7 @@ import ChatFooter from './ChatFooter';
 import * as StompJs from '@stomp/stompjs';
 import * as SockJs from 'sockjs-client';
 import ChatMessage from './ChatMessage';
+import axios from 'axios';
 import style from './ChatItemPage.style';
 
 const ChatItemPage = () => {
@@ -16,7 +17,7 @@ const ChatItemPage = () => {
   const dispatch = useDispatch();
   const [chatMessages, setChatMessages] = useState([]);
   const [message, setMessage] = useState('');
-  const baseUrl = 'http://localhost:8083/';
+  const baseUrl = 'http://localhost:8080/';
   const client = useRef({});
 
   useEffect(() => {
@@ -25,11 +26,20 @@ const ChatItemPage = () => {
     dispatch(setBack(true));
     dispatch(setAlert(true));
 
-    //roomId 가져오기
+    //roomId 가져오기 --> params로
 
     connect();
 
     //여태까지 message chatMessages에 저장하기
+    //messages/{roomId} GET
+
+    axios.get(baseUrl + `messages/18`).then(res => {
+      console.log(res.data);
+      res.data.map(data => {
+        console.log(data);
+        chatMessages에(_chatList => [..._chatList, data]);
+      });
+    });
 
     return () => {
       //final. client deactivate
@@ -57,7 +67,7 @@ const ChatItemPage = () => {
 
   //3. client.subscribe 함수 : 메세지 보내기
   const subscribe = () => {
-    client.current.subscribe(`/sub/chat/room/${roomId}`, ({ body }) => {
+    client.current.subscribe(`/chat/message/${roomId}`, ({ body }) => {
       setChatMessages(_chatMessages => [..._chatMessages, JSON.parse(body)]);
     });
     setMessage('');
