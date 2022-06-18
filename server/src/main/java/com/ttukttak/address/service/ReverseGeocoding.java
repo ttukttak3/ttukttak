@@ -32,8 +32,6 @@ public class ReverseGeocoding {
 		StringBuffer sb = new StringBuffer();
 		TownDto townDto = new TownDto();
 
-		System.out.println("clientId:" + clientId + " , clientKey : " + clientKey);
-
 		try {
 			URL url = new URL(api);
 			HttpsURLConnection http = (HttpsURLConnection)url.openConnection();

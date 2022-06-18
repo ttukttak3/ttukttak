@@ -2,7 +2,6 @@ package com.ttukttak.address.dto;
 
 import com.ttukttak.address.entity.Town;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,17 +9,16 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class TownDto {
 	private Long id;
 	private String city;
 	private String district;
 	private String name;
 	private String etc;
-	private String adress;
+	private String address;
 
 	public void setAdress(String city, String district, String name, String etc) {
-		this.adress = (city + " " + district + " " + name + " " + etc).trim();
+		this.address = (city + " " + district + " " + name + " " + etc).trim();
 	}
 
 	public TownDto(Town town) {
@@ -29,7 +27,7 @@ public class TownDto {
 		this.district = town.getDistrict();
 		this.name = town.getName();
 		this.etc = town.getEtc();
-		this.adress = (town.getCity() + " " + town.getDistrict() + " " + town.getName() + " " + town.getEtc()).trim();
+		this.address = (town.getCity() + " " + town.getDistrict() + " " + town.getName() + " " + town.getEtc()).trim();
 	}
 
 	public Town toEntity() {

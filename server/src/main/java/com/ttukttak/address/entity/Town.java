@@ -10,10 +10,9 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-@Entity(name = "town")
+@Entity
 public class Town {
 	@Id
-	@Column
 	private Long id;
 
 	@Column(length = 10)
@@ -28,10 +27,8 @@ public class Town {
 	@Column(length = 10)
 	private String etc;
 
-	@Column(precision = 18, scale = 10)
 	private Double latitude;
 
-	@Column(precision = 18, scale = 10)
 	private Double longitude;
 
 	@Builder
