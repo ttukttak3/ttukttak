@@ -33,7 +33,7 @@ const ChatItemPage = () => {
     //여태까지 message chatMessages에 저장하기
     //messages/{roomId} GET
 
-    axios.get(baseUrl + `messages/18`).then(res => {
+    axios.get(baseUrl + `messages/${roomId}`).then(res => {
       console.log(res.data);
       res.data.map(data => {
         console.log(data);

@@ -10,6 +10,8 @@ import Chat from '../../pages/Chat/ChatList/ChatPage';
 import ChatItem from '../../pages/Chat/ChatItem/ChatItemPage';
 import ChatAlertPage from '../../pages/Chat/ChatList/ChatAlert/ChatAlertPage';
 import HomePage from '../../pages/Home/HomePage';
+import UploadBookPage from '../../pages/UploadBook/UploadBookPage';
+
 const Layout = () => {
   const { LayoutBox, Section } = style;
   return (
@@ -24,6 +26,7 @@ const Layout = () => {
           <Route path="chat" element={<Chat />} />
           <Route path="chat/:roomId" element={<ChatItem />} />
           <Route path="chat/alert" element={<ChatAlertPage />} />
+          <Route path="upload" element={<UploadBookPage />} />
         </Routes>
       </Section>
       <Footer />
