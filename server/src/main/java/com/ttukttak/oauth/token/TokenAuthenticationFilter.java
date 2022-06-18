@@ -10,7 +10,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.ttukttak.oauth.service.UserService;
+import com.ttukttak.oauth.service.CustomUserDetailService;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -24,7 +24,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     private TokenProvider tokenProvider;
 
     @Autowired
-    private UserService UserService;
+    private CustomUserDetailService UserService;
 
     private static final Logger logger = LoggerFactory.getLogger(TokenAuthenticationFilter.class);
 
