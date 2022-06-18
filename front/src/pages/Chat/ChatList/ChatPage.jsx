@@ -11,7 +11,7 @@ const ChatPage = () => {
   const [chatList, setChatList] = useState([]);
 
   const ChatListShow = chatList.map((item, idx) => (
-    <ChatListItem id={item.roomId} imgUrl={item.other.imageUrl} userName={item.other.name} time={item.lastMessage.sendedAt} lastChat={item.lastMessage.message} unread={item.unread} />
+    <ChatListItem id={item.roomId} imgUrl={item.other.imageUrl} userName={item.other.name} time={item?.lastMessage?.sendedAt} lastChat={item?.lastMessage?.message} unread={item.unread} />
   ));
   const dispatch = useDispatch();
 
