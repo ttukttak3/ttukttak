@@ -18,8 +18,9 @@ public class ChatMessageServiceImpl implements ChatMessageService {
 	private final ChatMessageRepository chatMessageRepository;
 
 	@Override
-	public void saveChatMessage(ChatMessageDto chatMessageDto) {
+	public ChatMessageDto saveChatMessage(ChatMessageDto chatMessageDto) {
 		chatMessageRepository.save(chatMessageDto.toEntity());
+		return chatMessageDto;
 	}
 
 	@Override
