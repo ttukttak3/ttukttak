@@ -11,8 +11,6 @@ import com.ttukttak.chat.dto.ChatRoomRequest;
 public interface ChatRoomService {
 	List<ChatRoomCard> getRoomList(Long userId);
 
-	ChatRoomInfo findRoomById(Long id);
-
 	/**
 	 * 채팅방 생성 : 서버간 채팅방 공유를 위해 redis hash에 저장한다.
 	 */
