@@ -56,10 +56,10 @@ public class ChatMessageController {
 	}
 
 	@ApiImplicitParam(
-		name = "chatMessageDto"
-		, value = "채팅메시지"
+		name = "LastCheckedMessageRequest"
+		, value = "마지막으로 확인한 메시지"
 		, required = true
-		, dataType = "ChatMessageDto"
+		, dataType = "LastCheckedMessageRequest"
 		, paramType = "body")
 	@ApiOperation(value = "마지막으로 확인한 메시지 갱신")
 	@PutMapping("/lastChecked")
