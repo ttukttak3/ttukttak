@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setBack, setBackHome, setTitle } from '../../../app/headerSlice';
 import style from './LoginPage.style';
-import { ACCESS_TOKEN, NAVER_AUTH_URL, KAKAO_AUTH_URL } from '../../../util/OauthApi';
+import { NAVER_AUTH_URL, KAKAO_AUTH_URL } from '../../../util/OauthApi';
 import loginLogo from '../../../assets/img/logo/Croods_The_Feedback.png';
 import naverLogo from '../../../assets/img/logo/naver_logo.png';
 import kakaoLogo from '../../../assets/img/logo/kakao_logo.png';
@@ -12,15 +12,13 @@ const LoginPage = () => {
   //Header
   const dispatch = useDispatch();
   useEffect(() => {
-    localStorage.removeItem(ACCESS_TOKEN);
     dispatch(setBack(true));
     dispatch(setBackHome(false));
     dispatch(setTitle('로그인'));
     return () => {
       // second;
     };
-  }, []);
-
+  }, [dispatch]);
   const { SocialBox, TitleBox, NaverBtn, KaKaoBtn } = style;
 
   return (
