@@ -1,11 +1,13 @@
 package com.ttukttak.chat.service;
 
-import java.util.List;
-
 import com.ttukttak.chat.dto.ChatMessageDto;
+import com.ttukttak.chat.dto.ChatRoomInfo;
+import com.ttukttak.chat.dto.LastCheckedMessageRequest;
 
 public interface ChatMessageService {
 	ChatMessageDto saveChatMessage(ChatMessageDto chatMessageDto);
 
-	List<ChatMessageDto> getChatMessages(Long roomId);
+	ChatRoomInfo getChatMessages(Long roomId);
+
+	void updateLastCheckedMessage(LastCheckedMessageRequest request);
 }
