@@ -1,4 +1,4 @@
-import React, { useDeferredValue } from 'react';
+import React from 'react';
 import style from './ChatFooter.style';
 import send from '../../../assets/img/userInterFace/send.png';
 import add from '../../../assets/img/arrows/Add.png';

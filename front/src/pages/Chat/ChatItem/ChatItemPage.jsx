@@ -9,37 +9,53 @@ import chatSocketApi from '../../../util/ChatSocketApi';
 import messageApi from '../../../util/MessageApi';
 import ChatMessage from './ChatMessage';
 import style from './ChatItemPage.style';
+import { useSelector } from 'react-redux';
 
 const ChatItemPage = () => {
   const { roomId } = useParams();
   const { Wrapper } = style;
   const dispatch = useDispatch();
+  const { userId } = useSelector(state => state.user);
 
   const { connect, publish } = chatSocketApi;
-  const { getMessageList } = messageApi;
+  const { getChatRoomInfo, readMessages } = messageApi;
   const [chatMessages, setChatMessages] = useState([]);
   const [message, setMessage] = useState('');
+  const [members, setMembers] = useState([]);
+  const [otherUser, setOtherUser] = useState({});
   const client = useRef({});
 
   useEffect(() => {
     //chatting 방 정보 api
     //roomID로 조회시, 현재 채팅방 정보 나오는 api 필요
 
-    dispatch(setTitle('대화자이름!'));
-    dispatch(setBack(true));
-    dispatch(setAlert(true));
-
     connect(client);
 
     //여태까지 message chatMessages에 저장하기
     //messages/{roomId} GET
-    getMessageList(roomId, setChatMessages);
+    getChatRoomInfo(roomId, setChatMessages, setMembers);
+    //otherUser에서 현재 유저랑 상대방이랑 구분해야함
+    //messageId-> 마지막 메세지 아이디 찾아야함
+    readMessages(2, userId, roomId);
+    // readMessages(messageId, userId, roomId);
+
+    dispatch(setBack(true));
+    dispatch(setAlert(true));
 
     return () => {
       //final. client deactivate
       client.current.deactivate();
     };
   }, []);
+
+  // useEffect(() => {
+  //   //상대방 골라내기
+  //   const other = members.filter(item, index => item.id !== userId)[0];
+  //   console.log(other);
+  //   dispatch(setTitle(other.name));
+
+  //   setOtherUser(other);
+  // }, [members]);
 
   return (
     <Wrapper>

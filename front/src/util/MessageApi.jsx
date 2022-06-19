@@ -1,14 +1,28 @@
 import axios from 'axios';
-
 const baseUrl = 'http://localhost:8080/';
 
-const getMessageList = async (roomId, setChatMessages) => {
+//userId == 현재 login되어있는 user의 id
+
+const getChatRoomInfo = async (roomId, setChatMessages, setMembers) => {
   //여태까지 message chatMessages에 저장하기
   //messages/{roomId} GET
   console.log('getMessageList');
+  //return 값 : {roomId, members, messages}
+  //members : [ {
+  //   id : 1
+  //   imageUrl: 'http://www.w3bai.com/css/img_fjords.jpg',
+  //   name: '홍길동',
+  // }, {
+  //   id : 1
+  //   imageUrl: 'http://www.w3bai.com/css/img_fjords.jpg',
+  //   name: '홍길동',
+  // }]
+
   try {
     const result = await axios.get(baseUrl + `messages/${roomId}`);
-    result.data.map(data => {
+    const data = result.data;
+    setMembers(data.members);
+    data.messages.map(data => {
       console.log(data);
       setChatMessages(_chatList => [..._chatList, data]);
     });
@@ -38,6 +52,21 @@ const makeChatRoom = async (bookId, userId) => {
   }
 };
 
-const messageApi = { getMessageList, getChatList, makeChatRoom };
+//메세지 읽음 함수
+const readMessages = async (messageId, userId, roomId) => {
+  //   /message/lastChecked PUT
+  // {messageId, userId, roomId}
+  try {
+    const result = await axios.put(baseUrl + `/message/lastChecked`, {
+      messageId: messageId,
+      userId: userId,
+      roomId: roomId,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const messageApi = { getChatRoomInfo, getChatList, makeChatRoom, readMessages };
 
 export default messageApi;
