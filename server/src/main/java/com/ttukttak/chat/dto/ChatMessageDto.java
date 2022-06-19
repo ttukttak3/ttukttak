@@ -3,10 +3,6 @@ package com.ttukttak.chat.dto;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import com.ttukttak.chat.entity.ChatMessage;
-import com.ttukttak.chat.entity.ChatRoom;
-import com.ttukttak.oauth.entity.User;
-
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -40,15 +36,4 @@ public class ChatMessageDto implements Serializable {
 	@ApiModelProperty
 	private LocalDateTime sendedAt;
 
-	public ChatMessage toEntity() {
-		ChatRoom chatRoom = ChatRoom.builder().id(roomId).build();
-		User user = User.builder().id(userId).build();
-
-		return ChatMessage.builder()
-			.chatRoom(chatRoom)
-			.user(user)
-			.message(message)
-			.messageType(messageType)
-			.build();
-	}
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ttukttak.chat.dto.ChatMessageDto;
+import com.ttukttak.chat.entity.ChatMessage;
 import com.ttukttak.chat.repository.ChatMessageRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -34,7 +35,7 @@ public class RedisSubscriber implements MessageListener {
 			String publishMessage = (String)redisTemplate.getStringSerializer().deserialize(message.getBody());
 			ChatMessageDto roomMessage = objectMapper.readValue(publishMessage, ChatMessageDto.class);
 
-			chatMessageRepository.save(roomMessage.toEntity());
+			chatMessageRepository.save(ChatMessage.of(roomMessage));
 
 			log.info("redis 수신 : {}", roomMessage);
 			// Websocket 구독자에게 채팅 메시지 Send

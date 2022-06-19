@@ -19,6 +19,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.ttukttak.chat.dto.ChatMessageDto;
 import com.ttukttak.chat.dto.MessageType;
 import com.ttukttak.oauth.entity.User;
 
@@ -64,5 +65,17 @@ public class ChatMessage implements Serializable {
 		this.user = user;
 		this.message = message;
 		this.messageType = messageType;
+	}
+
+	public static ChatMessage of(ChatMessageDto chatMessageDto) {
+		ChatRoom chatRoom = ChatRoom.builder().id(chatMessageDto.getRoomId()).build();
+		User user = User.builder().id(chatMessageDto.getUserId()).build();
+
+		return ChatMessage.builder()
+			.chatRoom(chatRoom)
+			.user(user)
+			.message(chatMessageDto.getMessage())
+			.messageType(chatMessageDto.getMessageType())
+			.build();
 	}
 }
