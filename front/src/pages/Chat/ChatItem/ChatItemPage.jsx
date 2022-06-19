@@ -26,18 +26,15 @@ const ChatItemPage = () => {
     dispatch(setBack(true));
     dispatch(setAlert(true));
 
-    //roomId 가져오기 --> params로
-
     connect();
 
     //여태까지 message chatMessages에 저장하기
     //messages/{roomId} GET
-
     axios.get(baseUrl + `messages/${roomId}`).then(res => {
       console.log(res.data);
       res.data.map(data => {
         console.log(data);
-        chatMessages에(_chatList => [..._chatList, data]);
+        chatMessages(_chatList => [..._chatList, data]);
       });
     });
 
@@ -82,7 +79,7 @@ const ChatItemPage = () => {
       destination: '/pub/chat/message',
       body: JSON.stringify({
         roomId: roomId,
-        userId: '지현이',
+        userId: 1,
         message: message,
         messageType: 'TEXT',
       }),
@@ -94,12 +91,10 @@ const ChatItemPage = () => {
     <Wrapper>
       <ChatBookInfo></ChatBookInfo>
       <div>{roomId}</div>
-      <ChatMessage side={'left'} message={'안녕'}></ChatMessage>
-      <ChatMessage side={'right'} message={'안녕하세요'}></ChatMessage>
+      {/* <ChatMessage side={'left'} message={'안녕'}></ChatMessage>
+      <ChatMessage side={'right'} message={'안녕하세요'}></ChatMessage> */}
       {chatMessages.map((item, idx) => (
-        <>
-          {idx}: {item}
-        </>
+        <>{userId === 1 ? <ChatMessage side={'right'} message={item.message}></ChatMessage> : <ChatMessage side={'left'} message={item.message}></ChatMessage>}</>
       ))}
       {/* 메세지 받은거 추가추가추가,,,
       {chatMessages.map()} */}

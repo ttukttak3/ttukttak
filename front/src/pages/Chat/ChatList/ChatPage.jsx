@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setTitle, setBack } from '../../../app/headerSlice';
@@ -8,7 +9,20 @@ import axios from 'axios';
 const ChatPage = () => {
   let baseUrl = 'http://localhost:8080/';
 
-  const [chatList, setChatList] = useState([]);
+  const [chatList, setChatList] = useState([
+    {
+      roomId: 1,
+      other: {
+        imageUrl: 'http://www.w3bai.com/css/img_fjords.jpg',
+        name: '홍길동',
+      },
+      lastMessage: {
+        sendedAt: 124325,
+        message: '이거 대여 가능한가요?',
+      },
+      unread: true,
+    },
+  ]);
 
   const ChatListShow = chatList.map((item, idx) => (
     <ChatListItem id={item.roomId} imgUrl={item.other.imageUrl} userName={item.other.name} time={item?.lastMessage?.sendedAt} lastChat={item?.lastMessage?.message} unread={item.unread} />

@@ -9,6 +9,8 @@ const Wrapper = styled.li`
 `;
 const Img = styled.img`
   text-align: left;
+  width: 4rem;
+  height: 4rem;
   margin: 0.6rem;
 `;
 const UserName = styled.div`
