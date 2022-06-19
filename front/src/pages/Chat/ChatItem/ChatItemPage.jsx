@@ -96,8 +96,6 @@ const ChatItemPage = () => {
       {chatMessages.map((item, idx) => (
         <>{userId === 1 ? <ChatMessage side={'right'} message={item.message}></ChatMessage> : <ChatMessage side={'left'} message={item.message}></ChatMessage>}</>
       ))}
-      {/* 메세지 받은거 추가추가추가,,,
-      {chatMessages.map()} */}
       <ChatFooter message={message} publish={publish} setMessage={setMessage}></ChatFooter>
     </Wrapper>
   );

@@ -16,6 +16,8 @@ const Img = styled.img`
 const UserName = styled.div`
   margin-top: 1rem;
   color: ${({ theme }) => theme.colors.$white1};
+  font-size: 1.6rem;
+  font-weight: 400;
   text-align: left;
 `;
 const Time = styled.div`
