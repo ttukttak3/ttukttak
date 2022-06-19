@@ -6,8 +6,8 @@ import { setTitle, setBack, setAlert } from '../../../app/headerSlice';
 import ChatBookInfo from './ChatBookInfo';
 import ChatFooter from './ChatFooter';
 import chatSocketApi from '../../../util/ChatSocketApi';
+import messageApi from '../../../util/MessageApi';
 import ChatMessage from './ChatMessage';
-import axios from 'axios';
 import style from './ChatItemPage.style';
 
 const ChatItemPage = () => {
@@ -16,13 +16,15 @@ const ChatItemPage = () => {
   const dispatch = useDispatch();
 
   const { connect, publish } = chatSocketApi;
+  const { getMessageList } = messageApi;
   const [chatMessages, setChatMessages] = useState([]);
   const [message, setMessage] = useState('');
-  const baseUrl = 'http://localhost:8080/';
   const client = useRef({});
 
   useEffect(() => {
     //chatting 방 정보 api
+    //roomID로 조회시, 현재 채팅방 정보 나오는 api 필요
+
     dispatch(setTitle('대화자이름!'));
     dispatch(setBack(true));
     dispatch(setAlert(true));
@@ -31,13 +33,7 @@ const ChatItemPage = () => {
 
     //여태까지 message chatMessages에 저장하기
     //messages/{roomId} GET
-    axios.get(baseUrl + `messages/${roomId}`).then(res => {
-      console.log(res.data);
-      res.data.map(data => {
-        console.log(data);
-        chatMessages(_chatList => [..._chatList, data]);
-      });
-    });
+    getMessageList(roomId, setChatMessages);
 
     return () => {
       //final. client deactivate
@@ -48,13 +44,12 @@ const ChatItemPage = () => {
   return (
     <Wrapper>
       <ChatBookInfo></ChatBookInfo>
-      <div>{roomId}</div>
       {/* <ChatMessage side={'left'} message={'안녕'}></ChatMessage>
       <ChatMessage side={'right'} message={'안녕하세요'}></ChatMessage> */}
       {chatMessages.map((item, idx) => (
         <>{userId === 1 ? <ChatMessage side={'right'} message={item.message}></ChatMessage> : <ChatMessage side={'left'} message={item.message}></ChatMessage>}</>
       ))}
-      <ChatFooter message={message} client={client} publish={publish} setMessage={setMessage}></ChatFooter>
+      <ChatFooter message={message} client={client} publish={publish} setMessage={setMessage} roomId={roomId}></ChatFooter>
     </Wrapper>
   );
 };

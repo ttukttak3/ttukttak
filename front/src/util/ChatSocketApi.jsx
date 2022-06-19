@@ -31,7 +31,7 @@ const subscribe = (client, setChatMessages, setMessage) => {
 };
 
 //4. client.publish 함수 : 메세지 받기
-const publish = (client, setMessage, message) => {
+const publish = (roomId, userId, client, setMessage, message) => {
   if (!client.current.connected) {
     return;
   }
@@ -39,7 +39,7 @@ const publish = (client, setMessage, message) => {
     destination: '/pub/chat/message',
     body: JSON.stringify({
       roomId: roomId,
-      userId: 1,
+      userId: userId,
       message: message,
       messageType: 'TEXT',
     }),
