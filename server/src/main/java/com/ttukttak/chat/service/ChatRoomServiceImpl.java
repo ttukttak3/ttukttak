@@ -56,7 +56,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 	// Redis
 	private static final String CHAT_ROOMS = "CHAT_ROOM";
 	private final RedisTemplate<String, Object> redisTemplate;
-	private HashOperations<String, Long, ChatRoomInfo> opsHashChatRoom;
+	private HashOperations<String, Long, ChatRoom> opsHashChatRoom;
 
 	// 채팅방의 대화 메시지를 발행하기 위한 redis topic 정보. 서버별로 채팅방에 매치되는 topic정보를 Map에 넣어 roomId로 찾을수 있도록 한다.
 	private Map<Long, ChannelTopic> topics;
@@ -99,10 +99,6 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 		}).collect(Collectors.toList());
 	}
 
-	public ChatRoomInfo findRoomById(Long id) {
-		return opsHashChatRoom.get(CHAT_ROOMS, id);
-	}
-
 	/**
 	 * 채팅방 생성 : 서버간 채팅방 공유를 위해 redis hash에 저장한다.
 	 */
@@ -130,11 +126,9 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
 		log.info(chatRoom.getId() + " : 생성");
 
-		ChatRoomInfo chatRoomInfo = modelMapper.map(chatRoom, ChatRoomInfo.class);
+		opsHashChatRoom.put(CHAT_ROOMS, chatRoom.getId(), chatRoom);
 
-		opsHashChatRoom.put(CHAT_ROOMS, chatRoom.getId(), chatRoomInfo);
-
-		return chatRoomInfo;
+		return ChatRoomInfo.builder().roomId(chatRoom.getId()).build();
 	}
 
 	/**
