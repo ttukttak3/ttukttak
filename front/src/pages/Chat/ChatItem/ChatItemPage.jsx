@@ -34,8 +34,8 @@ const ChatItemPage = () => {
     //여태까지 message chatMessages에 저장하기
     //messages/{roomId} GET
     getChatRoomInfo(roomId, setChatMessages, setMembers);
-    //otherUser에서 현재 유저랑 상대방이랑 구분해야함
-    //messageId-> 마지막 메세지 아이디 찾아야함
+
+    //messageId-> 마지막 메세지의 id --> 메세지 올때마다 호출해야함,,
     readMessages(2, userId, roomId);
     // readMessages(messageId, userId, roomId);
 

@@ -25,6 +25,7 @@ const connect = client => {
 const subscribe = (client, setChatMessages, setMessage) => {
   console.log('subscribe function');
   client.current.subscribe(`/chat/message/${roomId}`, ({ body }) => {
+    //여기서 메세지 읽음 처리--> readMessages 감
     setChatMessages(_chatMessages => [..._chatMessages, JSON.parse(body)]);
   });
   setMessage('');
