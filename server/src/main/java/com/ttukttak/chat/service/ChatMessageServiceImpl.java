@@ -33,7 +33,7 @@ public class ChatMessageServiceImpl implements ChatMessageService {
 	@Override
 	public ChatRoomInfo getChatMessages(Long roomId) {
 
-		List<ChatMessageDto> messages = chatMessageRepository.findAllByChatRoomIdOOrderBySendedAtAsc(roomId)
+		List<ChatMessageDto> messages = chatMessageRepository.findAllByChatRoomIdOrderBySendedAtAsc(roomId)
 			.stream()
 			.map(chatMessage -> modelMapper.map(chatMessage, ChatMessageDto.class))
 			.collect(Collectors.toList());
