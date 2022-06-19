@@ -69,8 +69,8 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
 	@Override
 	public List<ChatRoomCard> getRoomList(Long userId) {
-		return chatRoomRepositoryCustom.findAllChatRoomByUserId(userId).stream().map(participantInfo -> {
-			ChatRoom room = participantInfo.getRoom();
+		return chatRoomRepositoryCustom.findAllChatRoomByUserId(userId).stream().map(findRoom -> {
+			ChatRoom room = findRoom.getRoom();
 			ChatMessage lastChatMessage = chatMessageRepository.findFirstByChatRoomIdOrderBySendedAtDesc(room.getId());
 
 			LastCheckedMessage lastCheckedMessage = lastCheckedMessageRepository.findByRoomIdAndUserId(room.getId(),
@@ -82,19 +82,19 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 				lastMessage = modelMapper.map(lastChatMessage, LastMessage.class);
 			}
 
-			LocalDateTime lastCheckedTime = participantInfo.getRoom().getCreatedDate();
+			LocalDateTime lastCheckedTime = findRoom.getRoom().getCreatedDate();
 
 			if (lastCheckedMessage.getChatMessage() != null) {
 				lastCheckedTime = lastCheckedMessage.getChatMessage().getSendedAt();
 			}
 
 			int unReadCount = chatMessageRepository.countByChatRoomIdAndSendedAtAfterAndUserIdNot(
-				participantInfo.getRoom().getId(), lastCheckedTime, userId);
+				findRoom.getRoom().getId(), lastCheckedTime, userId);
 
-			return ChatRoomCard.builder().roomId(participantInfo.getRoom().getId())
-				.other(modelMapper.map(participantInfo.getUser(), ChatUser.class))
+			return ChatRoomCard.builder().roomId(findRoom.getRoom().getId())
+				.other(modelMapper.map(findRoom.getUser(), ChatUser.class))
 				.lastMessage(lastMessage)
-				.count(unReadCount)
+				.unread(unReadCount)
 				.build();
 		}).collect(Collectors.toList());
 	}
