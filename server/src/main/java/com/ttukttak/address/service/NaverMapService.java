@@ -80,8 +80,6 @@ public class NaverMapService {
 			JSONObject jsonEtc = (JSONObject)jsonRegion.get("area4");
 			townDto.setEtc(jsonEtc.get("name").toString());
 
-			townDto.setAdress(townDto.getCity(), townDto.getDistrict(), townDto.getName(), townDto.getEtc());
-
 			br.close();
 			in.close();
 			http.disconnect();

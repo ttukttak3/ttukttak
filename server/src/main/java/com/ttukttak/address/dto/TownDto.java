@@ -15,10 +15,9 @@ public class TownDto {
 	private String district;
 	private String name;
 	private String etc;
-	private String address;
 
-	public void setAdress(String city, String district, String name, String etc) {
-		this.address = (city + " " + district + " " + name + " " + etc).trim();
+	public String getAdress() {
+		return (city + " " + district + " " + name + " " + etc).trim();
 	}
 
 	public TownDto(Town town) {
@@ -27,7 +26,6 @@ public class TownDto {
 		this.district = town.getDistrict();
 		this.name = town.getName();
 		this.etc = town.getEtc();
-		this.address = (town.getCity() + " " + town.getDistrict() + " " + town.getName() + " " + town.getEtc()).trim();
 	}
 
 	public Town toEntity() {

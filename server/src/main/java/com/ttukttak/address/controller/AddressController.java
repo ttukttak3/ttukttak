@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/api/address")
 public class AddressController {
 	private final AddressService addressService;
 	private final NaverMapService reverseGeocoding;
@@ -27,7 +27,7 @@ public class AddressController {
 	/*
 	 * 위도와 경도를 받아 ReverseGeocoding을 통해 해당 주소를 반환한다.
 	 */
-	@GetMapping("/address/location")
+	@GetMapping("/location")
 	public ResponseEntity<TownDto> getLocation(CoordinateRequest coordinateRequest) {
 
 		TownDto townDto = reverseGeocoding.getReverseGeocoding(coordinateRequest);
@@ -40,7 +40,7 @@ public class AddressController {
 	/*
 	 * 타운id를 받아와 해당 범위에 있는 주소를 반환한다.
 	 */
-	@GetMapping("/address/neartown")
+	@GetMapping("/neartown")
 	public ResponseEntity<List<TownDto>> getNearTown(@RequestParam
 	Long townId) {
 		/*
@@ -58,7 +58,7 @@ public class AddressController {
 	/*
 	 * 동,면을 like로 검색한 결과를 반환.
 	 */
-	@GetMapping("/address/search")
+	@GetMapping("/search")
 	public ResponseEntity<List<TownDto>> getSearch(@RequestParam
 	String townName) {
 
@@ -72,7 +72,7 @@ public class AddressController {
 	/*
 	 * townId를 받아 데이터 반환
 	 */
-	@GetMapping("/address/{townId}")
+	@GetMapping("/{townId}")
 	public ResponseEntity<TownDto> getSearch(@PathVariable("townId")
 	Long townId) {
 
