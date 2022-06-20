@@ -25,13 +25,4 @@ public class UserDto {
 		this.role = user.getRole();
 	}
 
-	public User toEntity() {
-		return User.builder()
-			.id(id)
-			.nickname(nickname)
-			.imageUrl(imageUrl)
-			.role(role)
-			.build();
-	}
-
 }

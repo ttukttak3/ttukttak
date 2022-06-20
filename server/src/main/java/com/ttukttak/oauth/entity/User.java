@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import com.ttukttak.common.BaseTimeEntity;
+import com.ttukttak.oauth.dto.UserDto;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -71,6 +72,16 @@ public class User extends BaseTimeEntity {
 		this.imageUrl = imageUrl;
 		this.role = role;
 		return this;
+	}
+
+	public static User of(UserDto userDto) {
+
+		return User.builder()
+			.id(userDto.getId())
+			.nickname(userDto.getNickname())
+			.imageUrl(userDto.getImageUrl())
+			.role(userDto.getRole())
+			.build();
 	}
 
 }
