@@ -16,6 +16,9 @@ import com.ttukttak.oauth.entity.CurrentUser;
 import com.ttukttak.oauth.entity.UserPrincipal;
 import com.ttukttak.oauth.service.UserService;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -25,9 +28,7 @@ public class UserController {
 
 	private final UserService userService;
 
-	/*
-	 * 로그인한 유저정보 가져오기
-	 */
+	@ApiOperation(value = "로그인한 유저정보 조회")
 	@GetMapping("/me")
 	public ResponseEntity<UserDto> getCurrentUser(@CurrentUser
 	UserPrincipal userPrincipal) {
@@ -39,9 +40,8 @@ public class UserController {
 			.body(userDto);
 	}
 
-	/*
-	 * 닉네임 중복 체크
-	 */
+	@ApiImplicitParam(name = "nickname", value = "닉네임", required = true, dataType = "String", paramType = "Param")
+	@ApiOperation(value = "닉네임 중복 체크")
 	@GetMapping("/chknickname")
 	public ResponseEntity<Boolean> chkName(@RequestParam
 	String nickname) {
@@ -50,9 +50,11 @@ public class UserController {
 			.body(userService.existsByName(nickname));
 	}
 
-	/*
-	 * 회원가입
-	 */
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "SignUpRequest", value = "회원가입 Request", required = true, dataType = "object", paramType = "body"),
+		@ApiImplicitParam(name = "imageFile", value = "이지미 파일", required = false, dataType = "MultipartFile", paramType = "body")
+	})
+	@ApiOperation(value = "회원가입")
 	@PostMapping("/signup")
 	public ResponseEntity<Boolean> setSignUp(@CurrentUser
 	UserPrincipal userPrincipal, SignUpRequest signUpRequest, @RequestBody
