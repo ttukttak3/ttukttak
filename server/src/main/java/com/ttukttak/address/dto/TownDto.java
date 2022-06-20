@@ -28,15 +28,4 @@ public class TownDto {
 		this.etc = town.getEtc();
 	}
 
-	public Town toEntity() {
-		return Town.builder()
-			.id(id)
-			.city(city)
-			.district(district)
-			.name(name)
-			.etc(etc)
-			.build();
-
-	}
-
 }

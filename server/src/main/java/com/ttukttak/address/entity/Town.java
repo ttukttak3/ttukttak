@@ -4,6 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import com.ttukttak.address.dto.TownDto;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,6 +42,16 @@ public class Town {
 		this.etc = etc;
 		this.latitude = latitude;
 		this.longitude = longitude;
+	}
+
+	public static Town of(TownDto townDto) {
+		return Town.builder()
+			.id(townDto.getId())
+			.city(townDto.getCity())
+			.district(townDto.getDistrict())
+			.name(townDto.getName())
+			.etc(townDto.getEtc())
+			.build();
 	}
 
 }
