@@ -1,12 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setTitle } from '../../app/headerSlice';
 import style from './UploadBookPage.style';
-import camera from '../../assets/img/userInterFace/Camera_enhance.png';
+import PutBookInfoByUser from './PutBookInfoByUser';
+import SearchBookPage from './SearchBookPage';
 
 const UploadBookPage = () => {
-  const { Wrapper, RadioBtn, OptionLabel, UploadImg, ImageContainer, InputText, OptionText } = style;
+  const { Wrapper, RadioBtn, OptionLabel } = style;
   const dispatch = useDispatch();
+  const [radioOpt, setRadioOpt] = useState('searchToSave');
 
   useEffect(() => {
     dispatch(setTitle('도서 대여 글쓰기'));
@@ -16,20 +18,18 @@ const UploadBookPage = () => {
     };
   }, []);
 
+  const handleRadio = e => {
+    console.log(e.target.value);
+    setRadioOpt(e.target.value);
+  };
+
   return (
     <Wrapper>
-      <RadioBtn type={'radio'} name={'submitMethod'} checked={true} />
+      <RadioBtn value={'searchToSave'} type={'radio'} name={'submitMethod'} checked={radioOpt === 'searchToSave'} onChange={handleRadio} />
       <OptionLabel>도서를 검색하여 등록</OptionLabel>
-      <RadioBtn type={'radio'} name={'submitMethod'} />
+      <RadioBtn value={'saveByPut'} type={'radio'} name={'submitMethod'} checked={radioOpt === 'saveByPut'} onChange={handleRadio} />
       <OptionLabel>직접 도서 정보 입력</OptionLabel>
-      <ImageContainer>
-        <UploadImg src={camera}></UploadImg>
-      </ImageContainer>
-      {/* <input accept=”image/*” id=”icon-button-file” type=”file” capture=”environment”/> */}
-      <InputText placeholder="도서 제목"></InputText>
-      <InputText placeholder="저자명"></InputText>
-      <OptionText>카테고리</OptionText>
-      <OptionText>책 상태 등급</OptionText>
+      {radioOpt === 'searchToSave' ? <SearchBookPage></SearchBookPage> : <PutBookInfoByUser></PutBookInfoByUser>}
     </Wrapper>
   );
 };
