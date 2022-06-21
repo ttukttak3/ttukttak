@@ -5,31 +5,42 @@ import { useParams } from 'react-router-dom';
 import { setTitle, setBack, setAlert } from '../../../app/headerSlice';
 import ChatBookInfo from './ChatBookInfo';
 import ChatFooter from './ChatFooter';
-import * as StompJs from '@stomp/stompjs';
-import * as SockJs from 'sockjs-client';
+import chatSocketApi from '../../../util/ChatSocketApi';
+import messageApi from '../../../util/MessageApi';
 import ChatMessage from './ChatMessage';
 import style from './ChatItemPage.style';
+import { useSelector } from 'react-redux';
 
 const ChatItemPage = () => {
   const { roomId } = useParams();
   const { Wrapper } = style;
   const dispatch = useDispatch();
+  const { userId } = useSelector(state => state.user);
+
+  const { connect, publish } = chatSocketApi;
+  const { getChatRoomInfo, readMessages } = messageApi;
   const [chatMessages, setChatMessages] = useState([]);
   const [message, setMessage] = useState('');
-  const baseUrl = 'http://localhost:8083/';
+  const [members, setMembers] = useState([]);
+  const [otherUser, setOtherUser] = useState({});
   const client = useRef({});
 
   useEffect(() => {
     //chatting 방 정보 api
-    dispatch(setTitle('대화자이름!'));
-    dispatch(setBack(true));
-    dispatch(setAlert(true));
+    //roomID로 조회시, 현재 채팅방 정보 나오는 api 필요
 
-    //roomId
-
-    connect();
+    connect(client);
 
     //여태까지 message chatMessages에 저장하기
+    //messages/{roomId} GET
+    getChatRoomInfo(roomId, setChatMessages, setMembers);
+
+    //messageId-> 마지막 메세지의 id --> 메세지 올때마다 호출해야함,,
+    readMessages(2, userId, roomId);
+    // readMessages(messageId, userId, roomId);
+
+    dispatch(setBack(true));
+    dispatch(setAlert(true));
 
     return () => {
       //final. client deactivate
@@ -37,59 +48,24 @@ const ChatItemPage = () => {
     };
   }, []);
 
-  //1. stomp.client 객체 만들기
-  const connect = () => {
-    client.current = new StompJs.Client({
-      webSocketFactory: () => new SockJs(baseUrl + 'ws-stomp'),
-      reconnectDelay: 5000,
-      heartbeatIncoming: 4000,
-      heartbeatOutgoing: 4000,
-      onConnect: () => {
-        subscribe();
-      },
-      onStompError: err => {
-        console.error(err);
-      },
-    });
-    //2. client.activate;
-    client.current.activate();
-  };
+  // useEffect(() => {
+  //   //상대방 골라내기
+  //   const other = members.filter(item, index => item.id !== userId)[0];
+  //   console.log(other);
+  //   dispatch(setTitle(other.name));
 
-  //3. client.subscribe 함수 : 메세지 보내기
-  const subscribe = () => {
-    client.current.subscribe(`/sub/chat/room/${roomId}`, ({ body }) => {
-      setChatMessages(_chatMessages => [..._chatMessages, JSON.parse(body)]);
-    });
-    setMessage('');
-  };
-
-  //4. client.publish 함수 : 메세지 받기
-  const publish = message => {
-    if (!client.current.connected) {
-      return;
-    }
-    client.current.publish({
-      destination: '/pub/chat/message',
-      body: JSON.stringify({
-        type: 'TALK',
-        roomId: roomId,
-        sender: '지현이',
-        message: message,
-      }),
-    });
-    setMessage('');
-  };
+  //   setOtherUser(other);
+  // }, [members]);
 
   return (
     <Wrapper>
       <ChatBookInfo></ChatBookInfo>
-      <div>{roomId}</div>
-      <ChatMessage side={'left'} message={'안녕'}></ChatMessage>
-      <ChatMessage side={'right'} message={'안녕하세요'}></ChatMessage>
-      {/* 메세지 받은거 추가추가추가,,,
-      {chatMessages.map()} */}
-      {/* <input type={'text'} placeholder={'message'} value={message} onChange={e => setMessage(e.target.value)} onKeyPress={e => e.which === 13 && publish(message)} /> */}
-      <ChatFooter message={message} publish={publish} setMessage={setMessage}></ChatFooter>
+      {/* <ChatMessage side={'left'} message={'안녕'}></ChatMessage>
+      <ChatMessage side={'right'} message={'안녕하세요'}></ChatMessage> */}
+      {chatMessages.map((item, idx) => (
+        <>{userId === 1 ? <ChatMessage side={'right'} message={item.message}></ChatMessage> : <ChatMessage side={'left'} message={item.message}></ChatMessage>}</>
+      ))}
+      <ChatFooter message={message} client={client} publish={publish} setMessage={setMessage} roomId={roomId}></ChatFooter>
     </Wrapper>
   );
 };

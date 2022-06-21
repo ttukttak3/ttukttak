@@ -9,11 +9,15 @@ const Wrapper = styled.li`
 `;
 const Img = styled.img`
   text-align: left;
+  width: 4rem;
+  height: 4rem;
   margin: 0.6rem;
 `;
 const UserName = styled.div`
   margin-top: 1rem;
   color: ${({ theme }) => theme.colors.$white1};
+  font-size: 1.6rem;
+  font-weight: 400;
   text-align: left;
 `;
 const Time = styled.div`
