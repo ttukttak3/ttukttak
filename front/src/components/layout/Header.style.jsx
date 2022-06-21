@@ -7,12 +7,14 @@ const HeaderBox = styled.div`
   flex-direction: row;
   position: relative;
   height: 6.4rem;
-  margin-bottom: auto;
   padding: 0 2.5rem;
-  //border-bottom 임의로 달아놓은 것 (아래 태그들은 6.4로 작업)
-  border-bottom: 1px solid ${({ theme }) => theme.colors.$black3Line};
   text-align: left;
   width: 100%;
+
+  &.fixHeader {
+    position: fixed;
+    transition: height 0.3s ease;
+  }
 `;
 
 //왼쪽에 위치
