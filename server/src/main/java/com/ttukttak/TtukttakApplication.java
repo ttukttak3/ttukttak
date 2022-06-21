@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import com.ttukttak.common.config.AppProperties;
 
+@EnableJpaAuditing
 @SpringBootApplication
 @EnableJpaAuditing
 @EnableConfigurationProperties(AppProperties.class)

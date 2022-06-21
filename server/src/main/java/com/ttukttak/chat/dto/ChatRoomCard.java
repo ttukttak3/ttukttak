@@ -1,6 +1,9 @@
 package com.ttukttak.chat.dto;
 
-import lombok.AllArgsConstructor;
+import java.io.Serializable;
+
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,12 +12,20 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @ToString
-public class ChatRoomCard {
+@EqualsAndHashCode
+public class ChatRoomCard implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private Long roomId;
-	private Long bookId;
 	private ChatUser other;
 	private LastMessage lastMessage;
+	private int unread = 0;
 
+	@Builder
+	public ChatRoomCard(Long roomId, ChatUser other, LastMessage lastMessage, int unread) {
+		this.roomId = roomId;
+		this.other = other;
+		this.lastMessage = lastMessage;
+		this.unread = unread;
+	}
 }
