@@ -10,6 +10,8 @@ import javax.persistence.Id;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
+import com.ttukttak.common.BaseTimeEntity;
+import com.ttukttak.oauth.dto.UserDto;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -18,14 +20,14 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @Entity
-public class User {
+public class User extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column
-	private String name;
+	private String nickname;
 
 	@Column(nullable = false)
 	private String email;
@@ -52,10 +54,10 @@ public class User {
 	private String age;
 
 	@Builder
-	public User(Long id, String name, String email, String imageUrl, Role role, AuthProvider provider,
+	public User(Long id, String nickname, String email, String imageUrl, Role role, AuthProvider provider,
 		String providerId, String gender, String age) {
 		this.id = id;
-		this.name = name;
+		this.nickname = nickname;
 		this.email = email;
 		this.imageUrl = imageUrl;
 		this.role = role;
@@ -65,5 +67,21 @@ public class User {
 		this.age = age;
 	}
 
-}
+	public User update(String nickname, String imageUrl, Role role) {
+		this.nickname = nickname;
+		this.imageUrl = imageUrl;
+		this.role = role;
+		return this;
+	}
 
+	public static User of(UserDto userDto) {
+
+		return User.builder()
+			.id(userDto.getId())
+			.nickname(userDto.getNickname())
+			.imageUrl(userDto.getImageUrl())
+			.role(userDto.getRole())
+			.build();
+	}
+
+}
