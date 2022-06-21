@@ -20,7 +20,7 @@
     "max-depth": ["error", 3],
     "max-lines-per-function": ["error", 50],
     "eol-last": ["error", "always"],
-    "no-unused-vars": 1,
+    "no-unused-vars": "off",
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "prettier/prettier": ["error", { "endOfLine": "auto" }],
     "react/function-component-definition": [
