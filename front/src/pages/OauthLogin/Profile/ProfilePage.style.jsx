@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Perm_media from '../../../assets/img/userInterFace/Perm_media.png';
 
 const ProfileBox = styled.div`
   display: flex;
@@ -8,6 +9,7 @@ const ProfileBox = styled.div`
 `;
 
 const ImgBox = styled.div`
+  position: relative;
   width: 10rem;
   height: 10rem;
   border-radius: 50%;
@@ -16,10 +18,17 @@ const ImgBox = styled.div`
   img {
     width: 10rem;
     height: 10rem;
-    border-radius: 50%;
+    border-radius: 100%;
   }
 `;
-
+const ImgChangeBtn = styled.button`
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  background: url(${Perm_media});
+  width: 2.4rem;
+  height: 2.4rem;
+`;
 const InfoBox = styled.div`
   text-align: left;
   width: 30rem;
@@ -40,7 +49,18 @@ const InfoBox = styled.div`
     font-size: 1.4rem;
     font-weight: 600;
     color: ${({ theme }) => theme.colors.$white1};
-    margin-bottom: 3.9rem;
+  }
+  .errorInput {
+    border: 1px solid red;
+  }
+  span {
+    display: block;
+    height: 1.4rem;
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: ${({ theme }) => theme.colors.$danger};
+    margin: 0.8rem 0 1.7rem 0;
+    letter-spacing: -0.15rem;
   }
 
   h6 {
@@ -61,5 +81,5 @@ const SubmitBtn = styled.button`
   font-weight: 600;
   color: ${({ theme }) => theme.colors.$white1};
 `;
-const style = { ProfileBox, ImgBox, InfoBox, SubmitBtn };
+const style = { ProfileBox, ImgBox, ImgChangeBtn, InfoBox, SubmitBtn };
 export default style;
