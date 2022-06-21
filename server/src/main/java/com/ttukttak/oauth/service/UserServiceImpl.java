@@ -66,9 +66,9 @@ public class UserServiceImpl implements UserService {
 			 */
 			Town town = new Town();
 			if (signUpRequest.getTownId() != null) {
-				town = addressService.getById(signUpRequest.getTownId()).toEntity();
+				town = Town.of(addressService.getById(signUpRequest.getTownId()));
 			} else {
-				town = addressService.getById(Long.parseLong("1111011900")).toEntity();
+				town = Town.of(addressService.getById(Long.parseLong("1111011900")));
 			}
 
 			homeTownService.save(user, town);

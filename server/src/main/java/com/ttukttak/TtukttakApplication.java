@@ -9,7 +9,6 @@ import com.ttukttak.common.config.AppProperties;
 
 @EnableJpaAuditing
 @SpringBootApplication
-@EnableJpaAuditing
 @EnableConfigurationProperties(AppProperties.class)
 public class TtukttakApplication {
 
