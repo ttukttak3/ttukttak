@@ -40,6 +40,7 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
     implementation platform('com.amazonaws:aws-java-sdk-bom:1.11.228')
     implementation 'com.amazonaws:aws-java-sdk-s3'
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
     implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
     implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
     compileOnly 'org.projectlombok:lombok'
