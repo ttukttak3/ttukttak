@@ -12,9 +12,9 @@ public enum ExceptionFactory {
 	METHOD_ARGUMNET_NOT_VALID(MethodArgumentNotValidException.class, StatusCode.INVALID_PARAMETER),
 	MISSING_REQUEST_PARAMETER(MissingServletRequestParameterException.class, StatusCode.MISSING_PARAMETER),
 	HTTP_METHOD_NOT_SUPPORTED(HttpRequestMethodNotSupportedException.class, StatusCode.INVALID_METHOD),
-	// NOT_EXIST_ELEMENT(NotExistException.class, StatusCode.NO_SUCH_ELEMENT),
 	NOT_AUTHORIZED(AuthException.class, StatusCode.UNAUTHORIZED_USER),
-	// RESOURCE_EXCEPTION(ResourceException.class, StatusCode.SERVER_RESOURCE),
+	NOT_FOUND_OAUTH2(ResourceNotFoundException.class, StatusCode.NOT_EXIST_OAUTH_ACCOUNT),
+	// NOT_EXIST_ELEMENT(NotExistException.class, StatusCode.NO_SUCH_ELEMENT),
 	SERVER_EXCEPTION(Exception.class, StatusCode.SERVER_ERROR);
 
 	private final Class<? extends Exception> clazz;
