@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect } from 'react';
 import { ACCESS_TOKEN } from '../../../util/OauthApi';
 import { useNavigate } from 'react-router-dom';
