@@ -4,15 +4,27 @@ import { createSlice } from '@reduxjs/toolkit';
 export const userSlice = createSlice({
     name: 'user',
     initialState: {
-        userId: 0
+        nickName: '',
+        email: '',
+        imageFile: '',
+        imagePreview: '',
     },
     reducers: {
-        setUserId: (state, action) => {
-            state.type = action.payload;
+        setNickName: (state, action) => {
+            state.nickName = action.payload;
+        },
+        setEmail: (state, action) => {
+            state.email = action.payload;
+        },
+        setImageFile: (state, action) => {
+            state.imageFile = action.payload;
+        },
+        setImagePreview: (state, action) => {
+            state.imagePreview = action.payload;
         },
     },
 });
 
-export const { setUserId } = userSlice.actions;
+export const { setNickName, setEmail, setImageFile, setImagePreview } = userSlice.actions;
 
 export default userSlice.reducer;

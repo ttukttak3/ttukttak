@@ -1,11 +1,12 @@
 /* eslint-disable max-lines-per-function */
 import React, { useState, useEffect, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 //import { useNavigate } from 'react-router-dom';
 import { setBack, setBackHome, setTitle } from '../../../app/headerSlice';
+import { setNickName, setEmail, setImageFile, setImagePreview } from '../../../app/userSlice';
 import { getCurrentUser, authApi, authFormApi } from '../../../util/OauthApi';
 import style from './ProfilePage.style';
-import SelectPopupB from '../../../components/Modal/SelectPopupB';
+import Popup from '../../../components/Modal/SelectPopupBottom';
 
 const ProfilePage = () => {
   //Header
@@ -19,13 +20,6 @@ const ProfilePage = () => {
     };
   }, [dispatch]);
 
-  //state 선언
-  const [userInfo, setUserInfo] = useState({
-    imageFile: '',
-    imagePreview: '',
-    nickName: '',
-    email: '',
-  });
   const [error, setError] = useState('');
   //const navigate = useNavigate();
   //oauth info setting
@@ -33,37 +27,33 @@ const ProfilePage = () => {
     //로그인체크 getLoginCheck();
     getCurrentUser()
       .then(response => {
-        // 권한임 이거 풀어야 유저면 홈으로 이동!
         // if (response.role === 'USER') {
         //   navigate(`/`);
         // }
-        setUserInfo({
-          imageFile: response.imageUrl,
-          imagePreview: response.imageUrl,
-          nickName: response.nickname,
-          email: response.email,
-        });
+        dispatch(setNickName(response.nickname));
+        dispatch(setEmail(response.email));
+        dispatch(setImageFile(response.imageUrl));
+        dispatch(setImagePreview(response.imageUrl));
       })
       .catch(error => {
         setUserInfo('');
       });
-  }, []);
+  }, [dispatch]);
 
-  const inputRef = useRef(null);
+  // store 의 상태가 바뀔 때마다 상태를 받아온다.
+  const user = useSelector(state => state.user);
+
   //img change, preview
+  const inputRef = useRef(null);
   const saveImage = e => {
     e.preventDefault();
-
     const fileReader = new FileReader();
-
     if (e.target.files[0]) {
       fileReader.readAsDataURL(e.target.files[0]);
     }
     fileReader.onload = () => {
-      console.log(fileReader.result);
-      setUserInfo(prevState => {
-        return { ...prevState, imageFile: e.target.files[0], imagePreview: fileReader.result };
-      });
+      dispatch(setImageFile(e.target.files[0]));
+      dispatch(setImagePreview(fileReader.result));
     };
   };
 
@@ -75,20 +65,18 @@ const ProfilePage = () => {
 
   //nickname change
   const onChangeNN = e => {
-    setUserInfo(prevState => {
-      return { ...prevState, nickName: e.target.value };
-    });
+    dispatch(setNickName(e.target.value));
     setError('');
   };
 
   //check
   const onCheckHandler = () => {
-    if (userInfo.nickName === '') {
+    if (user.nickName === '') {
       setError('닉네임 입력이 필요합니다.');
       return;
     }
     authApi
-      .get(`/user/chknickname?nickname=${userInfo.nickName}`)
+      .get(`/user/chknickname?nickname=${user.nickName}`)
       .then(response => {
         if (response.data === true) {
           setError('중복된 닉네임입니다. 다른 닉네임을 입력해주세요.');
@@ -129,8 +117,8 @@ const ProfilePage = () => {
 
   const signUp = id => {
     const formData = new FormData();
-    formData.append('imageFile', userInfo.imageFile);
-    formData.append('nickname', userInfo.nickName);
+    formData.append('imageFile', user.imageFile);
+    formData.append('nickname', user.nickName);
     formData.append('townId', id);
     authFormApi
       .post(`/user/signup`, formData)
@@ -161,19 +149,19 @@ const ProfilePage = () => {
     <ProfileBox>
       <ImgBox>
         <input type="file" accept="image/*" ref={inputRef} onChange={saveImage} style={{ display: 'none' }} />
-        <img src={userInfo.imagePreview} alt="profileImg" />
+        <img src={user.imagePreview} alt="profileImg" />
         <ImgChangeBtn onClick={onChangeImg}></ImgChangeBtn>
       </ImgBox>
       <InfoBox>
         <h4>닉네임</h4>
-        <input type="text" value={userInfo.nickName || ''} placeholder="닉네임을 입력하세요." onChange={onChangeNN} className={error && 'errorInput'} />
+        <input type="text" value={user.nickName || ''} placeholder="닉네임을 입력하세요." onChange={onChangeNN} className={error && 'errorInput'} />
         <span>{error !== '' ? error : ''}</span>
         <h4>이메일</h4>
-        <h6>{userInfo.email}</h6>
+        <h6>{user.email}</h6>
       </InfoBox>
       <SubmitBtn onClick={onCheckHandler}>회원가입 완료</SubmitBtn>
       <button onClick={openModal}>Open modal</button>
-      <div>{isShowing && <SelectPopupB message="This is Modal" />}</div>
+      <div>{isShowing && <Popup message="This is Modal" />}</div>
     </ProfileBox>
   );
 };

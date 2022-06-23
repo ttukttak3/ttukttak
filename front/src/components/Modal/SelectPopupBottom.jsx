@@ -1,8 +1,8 @@
 import { createPortal } from 'react-dom';
 import React from 'react';
-import style from './SelectPopupB.style';
+import style from './SelectPopupBottom.style';
 
-const SelectPopupB = ({ message }) => {
+const SelectPopupBottom = ({ message }) => {
   const { Wrap, PopupBox } = style;
   return createPortal(
     <Wrap>
@@ -14,4 +14,4 @@ const SelectPopupB = ({ message }) => {
   );
 };
 
-export default SelectPopupB;
+export default SelectPopupBottom;

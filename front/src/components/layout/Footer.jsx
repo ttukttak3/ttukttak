@@ -1,7 +1,7 @@
 /* eslint-disable max-lines-per-function */
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setType, setData } from '../../app/urlSlice';
+import { setData } from '../../app/urlSlice';
 import { useNavigate } from 'react-router-dom';
 import style from './Footer.style';
 import home from '../../assets/img/userInterFace/Home.png';
