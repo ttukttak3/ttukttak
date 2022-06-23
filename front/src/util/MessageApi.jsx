@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import axios from 'axios';
 const baseUrl = 'http://localhost:8080/';
 
@@ -26,6 +27,8 @@ const getChatRoomInfo = async (roomId, setChatMessages, setMembers) => {
       console.log(data);
       setChatMessages(_chatList => [..._chatList, data]);
     });
+
+    return;
   } catch (error) {
     console.log(error);
   }
@@ -38,6 +41,8 @@ const getChatList = async (userId, setChatList) => {
       console.log(data);
       setChatList(_chatList => [..._chatList, data]);
     });
+
+    return result;
   } catch (error) {
     console.log(error);
   }
