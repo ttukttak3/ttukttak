@@ -3,13 +3,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 //import { useNavigate } from 'react-router-dom';
 import { setBack, setBackHome, setTitle } from '../../../app/headerSlice';
-import { setNickName, setEmail, setImageFile, setImagePreview } from '../../../app/userSlice';
+import { setRole, setNickName, setEmail, setImageFile, setHomeTown } from '../../../app/userSlice';
 import { getCurrentUser, authApi, authFormApi } from '../../../util/OauthApi';
 import style from './ProfilePage.style';
 import Popup from '../../../components/Modal/SelectPopupBottom';
-
+import noImg from '../../../assets/img/logo/no_img.png';
 const ProfilePage = () => {
-  //Header
+  //Header setting
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(setBack(false));
@@ -20,24 +20,23 @@ const ProfilePage = () => {
     };
   }, [dispatch]);
 
-  const [error, setError] = useState('');
+  const [imgPreview, setImgPreview] = useState('');
   //const navigate = useNavigate();
-  //oauth info setting
+  //user info setting
   useEffect(() => {
-    //로그인체크 getLoginCheck();
     getCurrentUser()
       .then(response => {
-        // if (response.role === 'USER') {
+        // if (response.role !== 'USER') {
         //   navigate(`/`);
         // }
+        dispatch(setRole(response.role));
         dispatch(setNickName(response.nickname));
         dispatch(setEmail(response.email));
         dispatch(setImageFile(response.imageUrl));
-        dispatch(setImagePreview(response.imageUrl));
+        dispatch(setHomeTown(response.homeTown));
+        setImgPreview(response.imageUrl);
       })
-      .catch(error => {
-        setUserInfo('');
-      });
+      .catch(error => {});
   }, [dispatch]);
 
   // store 의 상태가 바뀔 때마다 상태를 받아온다.
@@ -45,6 +44,7 @@ const ProfilePage = () => {
 
   //img change, preview
   const inputRef = useRef(null);
+  const [imgFile, setImgFile] = useState('');
   const saveImage = e => {
     e.preventDefault();
     const fileReader = new FileReader();
@@ -52,8 +52,9 @@ const ProfilePage = () => {
       fileReader.readAsDataURL(e.target.files[0]);
     }
     fileReader.onload = () => {
-      dispatch(setImageFile(e.target.files[0]));
-      dispatch(setImagePreview(fileReader.result));
+      setImgFile(e.target.files[0]);
+      setImgPreview(fileReader.result);
+      setIsShowing(false);
     };
   };
 
@@ -64,9 +65,19 @@ const ProfilePage = () => {
   };
 
   //nickname change
+  const [error, setError] = useState('');
   const onChangeNN = e => {
     dispatch(setNickName(e.target.value));
     setError('');
+  };
+
+  //img delete
+  const onDeleteImg = e => {
+    e.preventDefault();
+    dispatch(setImageFile(''));
+    setImgFile('');
+    setImgPreview('');
+    setIsShowing(false);
   };
 
   //check
@@ -117,40 +128,40 @@ const ProfilePage = () => {
 
   const signUp = id => {
     const formData = new FormData();
-    formData.append('imageFile', user.imageFile);
+    formData.append('imageFile', imgFile);
     formData.append('nickname', user.nickName);
     formData.append('townId', id);
     authFormApi
       .post(`/user/signup`, formData)
       .then(response => {
-        console.log(response);
+        dispatch(setRole(response.data.role));
+        dispatch(setNickName(response.data.nickname));
+        dispatch(setEmail(response.data.email));
+        dispatch(setImageFile(response.data.imageUrl));
+        dispatch(setHomeTown(response.data.homeTown));
       })
       .catch(error => {
         console.log(error);
       });
   };
-  //바텀 팝업 (작업해야 함 5초 후 자동 끄기)
+
+  //bottom popup
   const [isShowing, setIsShowing] = useState(false);
   const openModal = () => {
     setIsShowing(true);
   };
-  useEffect(() => {
-    if (isShowing) {
-      const notiTimer = setTimeout(() => {
-        setIsShowing(false);
-      }, 5000);
-      return () => clearTimeout(notiTimer);
-    }
-  }, [isShowing]);
 
-  //스타일
+  const onErrorImg = e => {
+    e.target.src = noImg;
+  };
+
   const { ProfileBox, ImgBox, ImgChangeBtn, InfoBox, SubmitBtn } = style;
   return (
     <ProfileBox>
       <ImgBox>
         <input type="file" accept="image/*" ref={inputRef} onChange={saveImage} style={{ display: 'none' }} />
-        <img src={user.imagePreview} alt="profileImg" />
-        <ImgChangeBtn onClick={onChangeImg}></ImgChangeBtn>
+        <img src={imgPreview} onError={onErrorImg} alt="이미지" />
+        <ImgChangeBtn onClick={openModal}></ImgChangeBtn>
       </ImgBox>
       <InfoBox>
         <h4>닉네임</h4>
@@ -160,8 +171,21 @@ const ProfilePage = () => {
         <h6>{user.email}</h6>
       </InfoBox>
       <SubmitBtn onClick={onCheckHandler}>회원가입 완료</SubmitBtn>
-      <button onClick={openModal}>Open modal</button>
-      <div>{isShowing && <Popup message="This is Modal" />}</div>
+      {isShowing && (
+        <div>
+          <Popup
+            title={'프로필 이미지 편집'}
+            message1={'갤러리에서 선택'}
+            onClick={onChangeImg}
+            message2={'카메라로 사진 촬영'}
+            onClick1={() => {
+              alert('사진촬영');
+            }}
+            message3={'프로필 이미지 삭제'}
+            onClick2={onDeleteImg}
+          />
+        </div>
+      )}
     </ProfileBox>
   );
 };

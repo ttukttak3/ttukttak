@@ -12,9 +12,9 @@ const ImgBox = styled.div`
   position: relative;
   width: 10rem;
   height: 10rem;
-  border-radius: 50%;
+  border-radius: 100%;
   margin: 0 auto 5.2rem auto;
-  background: ${({ theme }) => theme.colors.$white4};
+  //background: ${({ theme }) => theme.colors.$white4};
   img {
     width: 10rem;
     height: 10rem;
