@@ -51,8 +51,11 @@ public class ChatRoom extends BaseTimeEntity implements Serializable {
 	}
 
 	@Builder
-	public ChatRoom(Long id, Book book) {
+	public ChatRoom(Long id, Book book, List<ChatMessage> messages,
+		List<LastCheckedMessage> lastCheckedMessages) {
 		this.id = id;
 		this.book = book;
+		this.messages = messages;
+		this.lastCheckedMessages = lastCheckedMessages;
 	}
 }
