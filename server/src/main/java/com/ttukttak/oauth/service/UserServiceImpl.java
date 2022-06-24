@@ -43,7 +43,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public Boolean setSignUp(User user, SignUpRequest signUpRequest, MultipartFile imageFile) {
+	public UserDto setSignUp(User user, SignUpRequest signUpRequest, MultipartFile imageFile) {
+		UserDto userDto = new UserDto();
 		try {
 			/*
 			 * 파일 업로드 (파일이 없는 경우 업로드 X)
@@ -72,10 +73,13 @@ public class UserServiceImpl implements UserService {
 			}
 
 			homeTownService.save(user, town);
+
+			userDto = new UserDto(userRepository.findById(user.getId()).orElse(null));
+
 		} catch (IOException e) {
-			return false;
+			return userDto;
 		}
-		return true;
+		return userDto;
 	}
 
 }

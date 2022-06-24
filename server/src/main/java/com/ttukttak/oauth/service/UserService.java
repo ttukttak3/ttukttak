@@ -12,6 +12,6 @@ public interface UserService {
 
 	Boolean existsByName(String nickname, Long id);
 
-	Boolean setSignUp(User user, SignUpRequest signUpRequest, MultipartFile imageFile);
+	UserDto setSignUp(User user, SignUpRequest signUpRequest, MultipartFile imageFile);
 
 }

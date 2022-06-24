@@ -57,15 +57,15 @@ public class UserController {
 	})
 	@ApiOperation(value = "회원가입")
 	@PostMapping("/signup")
-	public ResponseEntity<Boolean> setSignUp(@CurrentUser
+	public ResponseEntity<UserDto> setSignUp(@CurrentUser
 	UserPrincipal userPrincipal, SignUpRequest signUpRequest, @RequestBody
 	MultipartFile imageFile) {
 
-		Boolean queryChk = userService.setSignUp(userPrincipal.getUser(), signUpRequest, imageFile);
+		UserDto userDto = userService.setSignUp(userPrincipal.getUser(), signUpRequest, imageFile);
 
 		return ResponseEntity
 			.status(HttpStatus.OK)
-			.body(queryChk);
+			.body(userDto);
 
 	}
 }
