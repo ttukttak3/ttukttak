@@ -43,11 +43,12 @@ public class UserController {
 	@ApiImplicitParam(name = "nickname", value = "닉네임", required = true, dataType = "String", paramType = "Param")
 	@ApiOperation(value = "닉네임 중복 체크")
 	@GetMapping("/chknickname")
-	public ResponseEntity<Boolean> chkName(@RequestParam
+	public ResponseEntity<Boolean> chkName(@CurrentUser
+	UserPrincipal userPrincipal, @RequestParam
 	String nickname) {
 		return ResponseEntity
 			.status(HttpStatus.OK)
-			.body(userService.existsByName(nickname));
+			.body(userService.existsByName(nickname, userPrincipal.getId()));
 	}
 
 	@ApiImplicitParams({
