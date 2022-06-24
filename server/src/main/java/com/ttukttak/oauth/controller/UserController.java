@@ -33,7 +33,7 @@ public class UserController {
 	public ResponseEntity<UserDto> getCurrentUser(@CurrentUser
 	UserPrincipal userPrincipal) {
 
-		UserDto userDto = new UserDto(userPrincipal.getUser());
+		UserDto userDto = userService.getById(userPrincipal.getId());
 
 		return ResponseEntity
 			.status(HttpStatus.OK)
