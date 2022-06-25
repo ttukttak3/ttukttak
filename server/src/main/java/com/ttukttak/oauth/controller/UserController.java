@@ -16,14 +16,16 @@ import com.ttukttak.oauth.entity.CurrentUser;
 import com.ttukttak.oauth.entity.UserPrincipal;
 import com.ttukttak.oauth.service.UserService;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
+@Api(value = "/api/user", description = "유저 API")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 public class UserController {
 
 	private final UserService userService;
