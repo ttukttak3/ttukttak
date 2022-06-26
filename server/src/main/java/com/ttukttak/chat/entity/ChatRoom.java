@@ -14,8 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import net.minidev.json.annotate.JsonIgnore;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ttukttak.book.entity.Book;
 import com.ttukttak.common.BaseTimeEntity;
 
@@ -38,7 +37,7 @@ public class ChatRoom extends BaseTimeEntity implements Serializable {
 	private Book book;
 
 	@JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "chatRoom")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "chatRoom", cascade = CascadeType.ALL)
 	private List<ChatMessage> messages = new ArrayList<>();
 
 	@JsonIgnore
@@ -50,12 +49,14 @@ public class ChatRoom extends BaseTimeEntity implements Serializable {
 		lastCheckedMessage.changeRoom(this);
 	}
 
+	public void addMessage(ChatMessage message) {
+		messages.add(message);
+		message.changeChatRoom(this);
+	}
+
 	@Builder
-	public ChatRoom(Long id, Book book, List<ChatMessage> messages,
-		List<LastCheckedMessage> lastCheckedMessages) {
+	public ChatRoom(Long id, Book book) {
 		this.id = id;
 		this.book = book;
-		this.messages = messages;
-		this.lastCheckedMessages = lastCheckedMessages;
 	}
 }
