@@ -1,10 +1,14 @@
 package com.ttukttak.book.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,6 +16,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
+import org.hibernate.annotations.ColumnDefault;
+
+import net.minidev.json.annotate.JsonIgnore;
 
 import com.ttukttak.book.dto.BookDto;
 import com.ttukttak.chat.entity.ChatRoom;
@@ -40,10 +49,6 @@ public class Book extends BaseTimeEntity implements Serializable {
 	private int deposit;
 
 	@ManyToOne
-	@JoinColumn(name = "status_id")
-	private BookStatus status;
-
-	@ManyToOne
 	@JoinColumn(name = "owner_id")
 	private User owner;
 
@@ -55,23 +60,46 @@ public class Book extends BaseTimeEntity implements Serializable {
 	@JoinColumn(name = "book_category_id")
 	private BookCategory bookCategory;
 
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "book")
-	private List<ChatRoom> chatRooms;
+	private List<ChatRoom> chatRooms = new ArrayList<>();
 
 	//대여 Entity 추가 예정(대여 Entity의 진행상태로 대여가능 유무 판별 가능)
 
-	@Builder
-	public Book(Long id, String subject, String content, int deposit, BookStatus status, User owner, BookInfo bookInfo,
-		BookCategory bookCategory) {
+	@Enumerated(EnumType.STRING)
+	@ColumnDefault("'N'")
+	private DeleteStatus isDelete;
 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "book", cascade = CascadeType.ALL)
+	private List<BookImage> images = new ArrayList<>();
+
+	@OneToOne
+	@JoinColumn(name = "thumbnail_id")
+	private BookImage thumbnail;
+
+	private String author;
+
+	@Enumerated(EnumType.STRING)
+	@ColumnDefault("'WAIT'")
+	private BookStatus status;
+
+	public void addImage(BookImage image) {
+		images.add(image);
+		image.setBook(this);
+	}
+
+	@Builder
+	public Book(Long id, String subject, String content, int deposit, User owner,
+		BookInfo bookInfo, BookCategory bookCategory, BookImage thumbnail, String author) {
 		this.id = id;
 		this.subject = subject;
 		this.content = content;
 		this.deposit = deposit;
-		this.status = status;
 		this.owner = owner;
 		this.bookInfo = bookInfo;
 		this.bookCategory = bookCategory;
+		this.thumbnail = thumbnail;
+		this.author = author;
 	}
 
 	public static Book of(BookDto BookDto) {
@@ -79,11 +107,21 @@ public class Book extends BaseTimeEntity implements Serializable {
 			.id(BookDto.getId())
 			.subject(BookDto.getSubject())
 			.content(BookDto.getContent())
-			.status(BookDto.getStatus())
 			.owner(User.of(BookDto.getOwner()))
 			.bookInfo(BookDto.getBookInfo())
 			.bookCategory(BookDto.getBookCategory())
+			// .thumbnail(BookDto.getThumbnail())
 			.build();
+	}
+
+	public enum DeleteStatus {
+		Y, N;
+
+	}
+
+	public enum BookStatus {
+		// 대여가능, 예약중 ,대여중
+		WAIT;
 	}
 
 }
