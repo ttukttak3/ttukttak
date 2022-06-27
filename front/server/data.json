@@ -1,19 +1,132 @@
 {
-    "posts": [
+  "user": {
+    "me": {
+      "email": "string",
+      "homeTown": [
+        {
+          "id": 0,
+          "ranged": 0,
+          "town": {
+            "adress": "string",
+            "city": "string",
+            "district": "string",
+            "etc": "string",
+            "id": 0,
+            "name": "string"
+          },
+          "useStatus": "Y",
+          "userId": 0
+        }
+      ],
+      "id": 0,
+      "imageUrl": "string",
+      "nickname": "string",
+      "role": "GUEST"
+    },
+    "chknickname": {
+      "value": true
+    },
+    "signup": {
+      "email": "string",
+      "homeTown": [
+        {
+          "id": 0,
+          "ranged": 0,
+          "town": {
+            "adress": "string",
+            "city": "string",
+            "district": "string",
+            "etc": "string",
+            "id": 0,
+            "name": "string"
+          },
+          "useStatus": "Y",
+          "userId": 0
+        }
+      ],
+      "id": 0,
+      "imageUrl": "string",
+      "nickname": "string",
+      "role": "GUEST"
+    }
+  },
+  "address": {
+    "location": {
+      "address": "string",
+      "city": "string",
+      "district": "string",
+      "etc": "string",
+      "id": 0,
+      "name": "string"
+    },
+    "neartown": [
       {
-        "id": 1,
-        "title": "리덕스 미들웨어를 배워봅시다",
-        "body": "리덕스 미들웨어를 직접 만들어보면 이해하기 쉽죠."
-      },
-      {
-        "id": 2,
-        "title": "redux-thunk를 사용해봅시다",
-        "body": "redux-thunk를 사용해서 비동기 작업을 처리해봅시다!"
-      },
-      {
-        "id": 3,
-        "title": "redux-saga도 사용해봅시다",
-        "body": "나중엔 redux-saga를 사용해서 비동기 작업을 처리하는 방법도 배워볼 거예요."
+        "city": "string",
+        "district": "string",
+        "etc": "string",
+        "id": 0,
+        "name": "string"
       }
-    ]
-  }
+    ],
+    "search": [
+      {
+        "city": "string",
+        "district": "string",
+        "etc": "string",
+        "id": 0,
+        "name": "string"
+      }
+    ],
+    "townId": {
+      "city": "string",
+      "district": "string",
+      "etc": "string",
+      "id": 0,
+      "name": "string"
+    }
+  },
+  "messages": {
+    "1": {
+      "members": [
+        {
+          "id": 0,
+          "imageUrl": "string",
+          "name": "string"
+        }
+      ],
+      "messages": [
+        {
+          "id": 0,
+          "message": "메시지 내용",
+          "messageType": "TEXT or FILE",
+          "roomId": "채팅방 ID",
+          "sendedAt": "2022-06-24T02:13:35.342Z",
+          "userId": "보낸사람 ID"
+        }
+      ],
+      "roomId": 0
+    },
+    "last-checked": {
+      "code": "미정",
+      "result": true
+    }
+  },
+  "rooms": [
+    {
+      "members": [
+        {
+          "id": 0,
+          "imageUrl": "string",
+          "name": "string"
+        },
+        {
+          "id": 0,
+          "imageUrl": "string",
+          "name": "string"
+        }
+      ],
+      "messages": [],
+      "roomId": 0
+    }
+  ]
+}
