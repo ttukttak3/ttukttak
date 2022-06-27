@@ -43,8 +43,9 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public UserDto setSignUp(User user, SignUpRequest signUpRequest, MultipartFile imageFile) {
+	public UserDto setSignUp(Long userId, SignUpRequest signUpRequest, MultipartFile imageFile) {
 		UserDto userDto = new UserDto();
+		User user = userRepository.findById(userId).orElse(null);
 		try {
 			/*
 			 * 파일 업로드 (파일이 없는 경우 업로드 X)
