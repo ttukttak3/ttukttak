@@ -47,7 +47,7 @@ const PutBookInfoByUser = () => {
       <ImageContainer>
         <UploadImg src={camera}></UploadImg>
       </ImageContainer>
-      {/* <input accept=”image/*” id=”icon-button-file” type=”file” capture=”environment”/> */}
+      <input type="file" accept="image/*" capture="camera" />
       <InputText placeholder="도서 제목"></InputText>
       <InputText placeholder="저자명"></InputText>
       <OptionText onClick={() => showCategoryModal()}>카테고리</OptionText>
