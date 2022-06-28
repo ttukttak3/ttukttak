@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { setBack, setBackHome, setTitle } from '../../../app/headerSlice';
 import { getCurrentUser, authApi, authFormApi } from '../../../util/OauthApi';
 import style from './ProfilePage.style';
-import SelectPopupB from '../../../components/Modal/SelectPopupB';
+import SelectPopupB from '../../../components/Modal/SelectPopupBottom';
 
 const ProfilePage = () => {
   //Header
