@@ -39,12 +39,12 @@ const ChatPage = () => {
     return () => {
       // second
     };
-  }, []);
+  }, [dispatch, getChatList]);
 
   return (
     <Wrapper>
       {ChatListShow}
-      <button onClick={makeChatRoom(1, 2)}>채팅 하기</button>
+      <button onClick={() => makeChatRoom(1, 2)}>채팅 하기</button>
     </Wrapper>
   );
 };

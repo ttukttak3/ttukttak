@@ -5,9 +5,14 @@ const FooterBox = styled.div`
   flex-direction: row;
   justify-content: space-around;
   height: 5.6rem;
-  margin-top: auto;
-  text-align: center;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  background: ${({ theme }) => theme.colors.$black3};
   border-top: 1px solid ${({ theme }) => theme.colors.$black3Line};
+  text-align: center;
 `;
 const IconBox = styled.a`
   height: 4rem;

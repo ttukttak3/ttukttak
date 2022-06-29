@@ -1,0 +1,132 @@
+{
+  "user": {
+    "me": {
+      "email": "string",
+      "homeTown": [
+        {
+          "id": 0,
+          "ranged": 0,
+          "town": {
+            "adress": "string",
+            "city": "string",
+            "district": "string",
+            "etc": "string",
+            "id": 0,
+            "name": "string"
+          },
+          "useStatus": "Y",
+          "userId": 0
+        }
+      ],
+      "id": 0,
+      "imageUrl": "string",
+      "nickname": "string",
+      "role": "GUEST"
+    },
+    "chknickname": {
+      "value": true
+    },
+    "signup": {
+      "email": "string",
+      "homeTown": [
+        {
+          "id": 0,
+          "ranged": 0,
+          "town": {
+            "adress": "string",
+            "city": "string",
+            "district": "string",
+            "etc": "string",
+            "id": 0,
+            "name": "string"
+          },
+          "useStatus": "Y",
+          "userId": 0
+        }
+      ],
+      "id": 0,
+      "imageUrl": "string",
+      "nickname": "string",
+      "role": "GUEST"
+    }
+  },
+  "address": {
+    "location": {
+      "address": "string",
+      "city": "string",
+      "district": "string",
+      "etc": "string",
+      "id": 0,
+      "name": "string"
+    },
+    "neartown": [
+      {
+        "city": "string",
+        "district": "string",
+        "etc": "string",
+        "id": 0,
+        "name": "string"
+      }
+    ],
+    "search": [
+      {
+        "city": "string",
+        "district": "string",
+        "etc": "string",
+        "id": 0,
+        "name": "string"
+      }
+    ],
+    "townId": {
+      "city": "string",
+      "district": "string",
+      "etc": "string",
+      "id": 0,
+      "name": "string"
+    }
+  },
+  "messages": {
+    "1": {
+      "members": [
+        {
+          "id": 0,
+          "imageUrl": "string",
+          "name": "string"
+        }
+      ],
+      "messages": [
+        {
+          "id": 0,
+          "message": "메시지 내용",
+          "messageType": "TEXT or FILE",
+          "roomId": "채팅방 ID",
+          "sendedAt": "2022-06-24T02:13:35.342Z",
+          "userId": "보낸사람 ID"
+        }
+      ],
+      "roomId": 0
+    },
+    "last-checked": {
+      "code": "미정",
+      "result": true
+    }
+  },
+  "rooms": [
+    {
+      "members": [
+        {
+          "id": 0,
+          "imageUrl": "string",
+          "name": "string"
+        },
+        {
+          "id": 0,
+          "imageUrl": "string",
+          "name": "string"
+        }
+      ],
+      "messages": [],
+      "roomId": 0
+    }
+  ]
+}

@@ -16,7 +16,7 @@ const UploadBookPage = () => {
     return () => {
       //
     };
-  }, []);
+  }, [dispatch]);
 
   const handleRadio = e => {
     console.log(e.target.value);
