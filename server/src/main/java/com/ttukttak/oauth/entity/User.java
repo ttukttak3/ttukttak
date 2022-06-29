@@ -1,15 +1,21 @@
 package com.ttukttak.oauth.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
+import com.ttukttak.address.entity.HomeTown;
 import com.ttukttak.common.BaseTimeEntity;
 import com.ttukttak.oauth.dto.UserDto;
 
@@ -52,6 +58,9 @@ public class User extends BaseTimeEntity {
 
 	@Column
 	private String age;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+	private List<HomeTown> homeTown = new ArrayList<>();
 
 	@Builder
 	public User(Long id, String nickname, String email, String imageUrl, Role role, AuthProvider provider,

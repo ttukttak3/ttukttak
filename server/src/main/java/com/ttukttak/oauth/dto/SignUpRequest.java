@@ -1,5 +1,6 @@
 package com.ttukttak.oauth.dto;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,7 +9,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class SignUpRequest {
+
+	@ApiModelProperty(example = "닉네임")
 	private String nickname;
+
+	@ApiModelProperty(example = "지역 ID")
 	private Long townId;
 	/*
 	 * request 받을때 해당값이 없을 경우 bind 에러 발생으로 제외

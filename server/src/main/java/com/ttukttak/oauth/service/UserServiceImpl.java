@@ -31,19 +31,21 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserDto getById(Long id) {
-		User user = userRepository.getById(id);
+		User user = userRepository.findById(id).orElse(null);
 
 		return new UserDto(user);
 	}
 
 	@Override
-	public Boolean existsByName(String nickname) {
-		return userRepository.existsByNickname(nickname);
+	public Boolean existsByName(String nickname, Long id) {
+		return userRepository.existsByNicknameAndIdNot(nickname, id);
 	}
 
 	@Override
 	@Transactional
-	public Boolean setSignUp(User user, SignUpRequest signUpRequest, MultipartFile imageFile) {
+	public UserDto setSignUp(Long userId, SignUpRequest signUpRequest, MultipartFile imageFile) {
+		UserDto userDto = new UserDto();
+		User user = userRepository.findById(userId).orElse(null);
 		try {
 			/*
 			 * 파일 업로드 (파일이 없는 경우 업로드 X)
@@ -72,10 +74,13 @@ public class UserServiceImpl implements UserService {
 			}
 
 			homeTownService.save(user, town);
+
+			userDto = new UserDto(userRepository.findById(user.getId()).orElse(null));
+
 		} catch (IOException e) {
-			return false;
+			return userDto;
 		}
-		return true;
+		return userDto;
 	}
 
 }
