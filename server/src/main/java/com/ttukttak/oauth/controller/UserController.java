@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ttukttak.oauth.dto.SignUpRequest;
 import com.ttukttak.oauth.dto.UserDto;
+import com.ttukttak.oauth.entity.CurrentUser;
+import com.ttukttak.oauth.entity.UserPrincipal;
 import com.ttukttak.oauth.service.UserService;
 import com.ttukttak.oauth.token.TokenProvider;
 
@@ -33,12 +34,15 @@ public class UserController {
 
 	@ApiOperation(value = "로그인한 유저정보 조회")
 	@GetMapping("/me")
-	public ResponseEntity<UserDto> getCurrentUser(@RequestHeader(name = "Authorization")
-	String token) {
+	public ResponseEntity<UserDto> getCurrentUser(@CurrentUser
+	UserPrincipal userPrincipal) {
+		/*
+		 * 현재는 매개변수를 통해 Oauth 로그인한 사용자 정보를 가져오고 있음
+		 * 매개변수 없이 가져오는 법
+		 * -> UserPrincipal userPrincipal = (UserPrincipal)SecurityContextHolder.getContext().getAuthentication().getPrincipal()
+		 */
 
-		Long userId = tokenProvider.getUserIdFromToken(tokenProvider.getJwtFromHeader(token));
-
-		UserDto userDto = userService.getById(userId);
+		UserDto userDto = userService.getById(userPrincipal.getId());
 
 		return ResponseEntity
 			.status(HttpStatus.OK)
@@ -48,14 +52,13 @@ public class UserController {
 	@ApiImplicitParam(name = "nickname", value = "닉네임", required = true, dataType = "String", paramType = "Param")
 	@ApiOperation(value = "닉네임 중복 체크")
 	@GetMapping("/chknickname")
-	public ResponseEntity<Boolean> chkName(@RequestHeader(name = "Authorization")
-	String token, @RequestParam
+	public ResponseEntity<Boolean> chkName(@CurrentUser
+	UserPrincipal userPrincipal, @RequestParam
 	String nickname) {
-		Long userId = tokenProvider.getUserIdFromToken(tokenProvider.getJwtFromHeader(token));
 
 		return ResponseEntity
 			.status(HttpStatus.OK)
-			.body(userService.existsByName(nickname, userId));
+			.body(userService.existsByName(nickname, userPrincipal.getId()));
 	}
 
 	@ApiImplicitParams({
@@ -64,12 +67,11 @@ public class UserController {
 	})
 	@ApiOperation(value = "회원가입")
 	@PostMapping("/signup")
-	public ResponseEntity<UserDto> setSignUp(@RequestHeader(name = "Authorization")
-	String token, SignUpRequest signUpRequest, @RequestBody
+	public ResponseEntity<UserDto> setSignUp(@CurrentUser
+	UserPrincipal userPrincipal, SignUpRequest signUpRequest, @RequestBody
 	MultipartFile imageFile) {
-		Long userId = tokenProvider.getUserIdFromToken(tokenProvider.getJwtFromHeader(token));
 
-		UserDto userDto = userService.setSignUp(userId, signUpRequest, imageFile);
+		UserDto userDto = userService.setSignUp(userPrincipal.getId(), signUpRequest, imageFile);
 
 		return ResponseEntity
 			.status(HttpStatus.OK)
