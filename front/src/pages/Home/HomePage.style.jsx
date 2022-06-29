@@ -42,8 +42,8 @@ const TitleBox = styled.div`
   }
 `;
 const BookBox = styled.div`
-  min-height: 500px;
-  overflow-y: hidden;
+  height: 1000px;
+  //overflow-y: hidden;
 `;
 
 const PlusBtn = styled.button`

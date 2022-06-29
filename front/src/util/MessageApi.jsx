@@ -1,25 +1,16 @@
 /* eslint-disable array-callback-return */
 import axios from 'axios';
 const baseUrl = 'http://localhost:8080/';
+// const baseUrl = 'http://localhost:8080/api';
 
 //userId == 현재 login되어있는 user의 id
 
+//GET
 const getChatRoomInfo = async (roomId, setChatMessages, setMembers) => {
-  //여태까지 message chatMessages에 저장하기
-  //messages/{roomId} GET
   console.log('getMessageList');
-  //return 값 : {roomId, members, messages}
-  //members : [ {
-  //   id : 1
-  //   imageUrl: 'http://www.w3bai.com/css/img_fjords.jpg',
-  //   name: '홍길동',
-  // }, {
-  //   id : 1
-  //   imageUrl: 'http://www.w3bai.com/css/img_fjords.jpg',
-  //   name: '홍길동',
-  // }]
 
   try {
+    // const result = await axios.get(baseUrl + `chat/messages/${roomId}`);
     const result = await axios.get(baseUrl + `messages/${roomId}`);
     const data = result.data;
     setMembers(data.members);
@@ -34,35 +25,36 @@ const getChatRoomInfo = async (roomId, setChatMessages, setMembers) => {
   }
 };
 
+//GET
 const getChatList = async (userId, setChatList) => {
   try {
-    const result = await axios.get(baseUrl + `chat/rooms/${userId}`);
+    // const result = await axios.get(baseUrl + `chat/rooms/${userId}`);
+    const result = await axios.get(baseUrl + `rooms/${userId}`);
     result.data.map(data => {
-      console.log(data);
       setChatList(_chatList => [..._chatList, data]);
     });
-
     return result;
   } catch (error) {
     console.log(error);
   }
 };
 
+//POST
 const makeChatRoom = async (bookId, userId) => {
   try {
-    const result = await axios.post(baseUrl + `chat/room/`, { bookId: 1, userId: 2 });
+    // const result = await axios.post(baseUrl + `chat/rooms`, { bookId: bookId, userId: userId });
+    const result = await axios.post(baseUrl + `rooms`, { bookId: bookId, userId: userId });
     console.log(result.data);
   } catch (error) {
     console.log(error);
   }
 };
 
-//메세지 읽음 함수
+//PUT
 const readMessages = async (messageId, userId, roomId) => {
-  //   /message/lastChecked PUT
-  // {messageId, userId, roomId}
   try {
-    const result = await axios.put(baseUrl + `/message/lastChecked`, {
+    // const result = await axios.put(baseUrl + `chat/messages/last-checked`, {
+    const result = await axios.put(baseUrl + `messages/last-checked`, {
       messageId: messageId,
       userId: userId,
       roomId: roomId,

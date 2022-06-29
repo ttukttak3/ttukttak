@@ -8,7 +8,7 @@ import expand_more from '../../assets/img/arrows/expand_more.png';
 import Search from '../../assets/img/userInterFace/Search.png';
 import Favorite_border from '../../assets/img/userInterFace/Favorite_border.png';
 import Notifications from '../../assets/img/userInterFace/Notifications.png';
-import Notifications_On from '../../assets/img/userInterFace/Notifications_On.png';
+//import Notifications_On from '../../assets/img/userInterFace/Notifications_On.png';
 import Trash_Can from '../../assets/img/userInterFace/Trash_Can.png';
 import { useEffect } from 'react';
 
