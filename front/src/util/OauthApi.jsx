@@ -1,7 +1,7 @@
 import axios from 'axios';
-export const API_BASE_URL = 'http://27.96.134.65:8090';
+export const API_BASE_URL = 'http://101.101.219.43:8080';
 export const ACCESS_TOKEN = 'accessToken';
-export const OAUTH2_REDIRECT_URI = 'http://localhost:3000/oauth2/redirect';
+export const OAUTH2_REDIRECT_URI = 'http://101.101.219.43/oauth2/redirect';
 export const NAVER_AUTH_URL = API_BASE_URL + '/oauth2/authorize/naver?redirect_uri=' + OAUTH2_REDIRECT_URI;
 export const KAKAO_AUTH_URL = API_BASE_URL + '/oauth2/authorize/kakao?redirect_uri=' + OAUTH2_REDIRECT_URI;
 //더 공부해서 모듈화 해보겠음.

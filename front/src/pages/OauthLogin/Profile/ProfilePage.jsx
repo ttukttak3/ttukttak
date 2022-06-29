@@ -1,7 +1,7 @@
 /* eslint-disable max-lines-per-function */
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-//import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { setBack, setBackHome, setTitle } from '../../../app/headerSlice';
 import { setRole, setNickName, setEmail, setImageFile, setHomeTown } from '../../../app/userSlice';
 import { getCurrentUser, authApi, authFormApi } from '../../../util/OauthApi';
@@ -21,7 +21,7 @@ const ProfilePage = () => {
   }, [dispatch]);
 
   const [imgPreview, setImgPreview] = useState('');
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
   //user info setting
   useEffect(() => {
     getCurrentUser()
@@ -139,6 +139,8 @@ const ProfilePage = () => {
         dispatch(setEmail(response.data.email));
         dispatch(setImageFile(response.data.imageUrl));
         dispatch(setHomeTown(response.data.homeTown));
+
+        navigate(`/`);
       })
       .catch(error => {
         console.log(error);
