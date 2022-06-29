@@ -1,7 +1,7 @@
 /* eslint-disable max-lines-per-function */
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-//import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { setBack, setBackHome, setTitle } from '../../../app/headerSlice';
 import { setRole, setNickName, setEmail, setImageFile, setHomeTown } from '../../../app/userSlice';
 import { getCurrentUser, authApi, authFormApi } from '../../../util/OauthApi';
@@ -22,7 +22,7 @@ const ProfilePage = () => {
   }, [dispatch]);
 
   const [imgPreview, setImgPreview] = useState('');
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
   //user info setting
   useEffect(() => {
     getCurrentUser()
@@ -88,7 +88,7 @@ const ProfilePage = () => {
       return;
     }
     authApi
-      .get(`/user/chknickname?nickname=${user.nickName}`)
+      .get(`api/user/chknickname?nickname=${user.nickName}`)
       .then(response => {
         if (response.data === true) {
           setError('중복된 닉네임입니다. 다른 닉네임을 입력해주세요.');
@@ -133,13 +133,15 @@ const ProfilePage = () => {
     formData.append('nickname', user.nickName);
     formData.append('townId', id);
     authFormApi
-      .post(`/user/signup`, formData)
+      .post(`api/user/signup`, formData)
       .then(response => {
         dispatch(setRole(response.data.role));
         dispatch(setNickName(response.data.nickname));
         dispatch(setEmail(response.data.email));
         dispatch(setImageFile(response.data.imageUrl));
         dispatch(setHomeTown(response.data.homeTown));
+
+        navigate(`/`);
       })
       .catch(error => {
         console.log(error);
