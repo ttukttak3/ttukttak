@@ -17,13 +17,13 @@ import com.ttukttak.chat.entity.LastCheckedMessage;
 import com.ttukttak.chat.repository.ChatMessageRepository;
 import com.ttukttak.chat.repository.ChatRoomRepository;
 import com.ttukttak.chat.repository.LastCheckedMessageRepository;
-import com.ttukttak.common.config.TestConfig;
+import com.ttukttak.common.config.QuerydslConfig;
 import com.ttukttak.oauth.entity.User;
 import com.ttukttak.oauth.repository.UserRepository;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Import(TestConfig.class)
+@Import(QuerydslConfig.class)
 public class CascadeTest {
 
 	@Autowired

@@ -11,11 +11,11 @@ import com.ttukttak.chat.dto.ChatMessageDto;
 import com.ttukttak.chat.dto.MessageType;
 import com.ttukttak.chat.entity.ChatMessage;
 import com.ttukttak.chat.repository.ChatMessageRepository;
-import com.ttukttak.common.config.TestConfig;
+import com.ttukttak.common.config.QuerydslConfig;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Import(TestConfig.class)
+@Import(QuerydslConfig.class)
 public class ChatMessageTest {
 	@Autowired
 	ChatMessageRepository chatMessageRepository;

@@ -23,15 +23,14 @@ import com.ttukttak.chat.entity.LastCheckedMessage;
 import com.ttukttak.chat.repository.ChatMessageRepository;
 import com.ttukttak.chat.repository.ChatRoomRepository;
 import com.ttukttak.chat.repository.LastCheckedMessageRepository;
-import com.ttukttak.common.config.TestConfig;
+import com.ttukttak.common.config.QuerydslConfig;
 import com.ttukttak.common.config.UtilConfig;
 import com.ttukttak.oauth.entity.User;
 import com.ttukttak.oauth.repository.UserRepository;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Import({TestConfig.class, UtilConfig.class})
-// @Import(UtilConfig.class)
+@Import({QuerydslConfig.class, UtilConfig.class})
 public class MappingTest {
 	@Autowired
 	UserRepository userRepository;
@@ -93,7 +92,6 @@ public class MappingTest {
 	void chatRoomInfo() {
 		User user = User.builder().email("user@naver.com").age("20").nickname("테스터").gender("M").build();
 		User user2 = User.builder().email("user2@naver.com").age("20").nickname("테스터2").gender("M").build();
-
 
 		userRepository.save(user);
 		userRepository.save(user2);
