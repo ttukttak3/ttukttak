@@ -10,6 +10,7 @@ import Chat from '../../pages/Chat/ChatList/ChatPage';
 import ChatItem from '../../pages/Chat/ChatItem/ChatItemPage';
 import ChatAlertPage from '../../pages/Chat/ChatList/ChatAlert/ChatAlertPage';
 import HomePage from '../../pages/Home/HomePage';
+import BookOnLoanPage from '../../pages/Home/BookOnLoanPage';
 import UploadBookPage from '../../pages/UploadBook/UploadBookPage';
 
 const Layout = () => {
@@ -20,6 +21,7 @@ const Layout = () => {
       <Section>
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/onLoan" element={<BookOnLoanPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/oauth2/redirect" element={<Auth />} />
           <Route path="/profile" element={<ProfilePage />} />

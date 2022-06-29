@@ -87,7 +87,7 @@ const ProfilePage = () => {
       return;
     }
     authApi
-      .get(`/user/chknickname?nickname=${user.nickName}`)
+      .get(`api/user/chknickname?nickname=${user.nickName}`)
       .then(response => {
         if (response.data === true) {
           setError('중복된 닉네임입니다. 다른 닉네임을 입력해주세요.');
@@ -132,7 +132,7 @@ const ProfilePage = () => {
     formData.append('nickname', user.nickName);
     formData.append('townId', id);
     authFormApi
-      .post(`/user/signup`, formData)
+      .post(`api/user/signup`, formData)
       .then(response => {
         dispatch(setRole(response.data.role));
         dispatch(setNickName(response.data.nickname));

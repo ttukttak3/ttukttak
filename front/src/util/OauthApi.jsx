@@ -32,14 +32,14 @@ export function getCurrentUser() {
     return Promise.reject('No access token set.');
   }
   return request({
-    url: API_BASE_URL + '/user/me',
+    url: API_BASE_URL + 'api/user/me',
     method: 'GET',
   });
 }
 
 export function getLoginCheck() {
   return request({
-    url: API_BASE_URL + '/user/me',
+    url: API_BASE_URL + 'api/user/me',
     method: 'GET',
   })
     .then(response => {
