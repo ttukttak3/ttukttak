@@ -13,7 +13,6 @@ import javax.persistence.ManyToOne;
 import org.hibernate.annotations.ColumnDefault;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.ttukttak.address.dto.UseStatusType;
 import com.ttukttak.common.BaseTimeEntity;
 import com.ttukttak.oauth.entity.User;
 
@@ -50,5 +49,9 @@ public class HomeTown extends BaseTimeEntity {
 		this.user = user;
 		this.town = town;
 		this.useStatus = useStatusType;
+	}
+
+	public enum UseStatusType {
+		Y, N
 	}
 }

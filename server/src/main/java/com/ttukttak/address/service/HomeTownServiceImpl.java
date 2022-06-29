@@ -3,8 +3,8 @@ package com.ttukttak.address.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ttukttak.address.dto.UseStatusType;
 import com.ttukttak.address.entity.HomeTown;
+import com.ttukttak.address.entity.HomeTown.UseStatusType;
 import com.ttukttak.address.entity.Town;
 import com.ttukttak.address.repository.HomeTownRepository;
 import com.ttukttak.oauth.entity.User;

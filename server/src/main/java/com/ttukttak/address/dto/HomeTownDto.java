@@ -1,6 +1,7 @@
 package com.ttukttak.address.dto;
 
 import com.ttukttak.address.entity.HomeTown;
+import com.ttukttak.address.entity.HomeTown.UseStatusType;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
