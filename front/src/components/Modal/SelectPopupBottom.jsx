@@ -3,7 +3,6 @@ import React from 'react';
 import style from './SelectPopupBottom.style';
 
 const SelectPopupBottom = ({ title, contents }) => {
-
   const { Wrap, PopupBox, PopupTitle, PopupContent } = style;
   return createPortal(
     <Wrap>
