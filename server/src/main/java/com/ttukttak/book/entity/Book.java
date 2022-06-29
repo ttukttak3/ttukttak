@@ -20,8 +20,7 @@ import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.ColumnDefault;
 
-import net.minidev.json.annotate.JsonIgnore;
-
+import com.ttukttak.address.entity.Town;
 import com.ttukttak.book.dto.BookDto;
 import com.ttukttak.chat.entity.ChatRoom;
 import com.ttukttak.common.BaseTimeEntity;
@@ -30,6 +29,7 @@ import com.ttukttak.oauth.entity.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import net.minidev.json.annotate.JsonIgnore;
 
 @Entity
 @Getter
@@ -59,6 +59,10 @@ public class Book extends BaseTimeEntity implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "book_category_id")
 	private BookCategory bookCategory;
+
+	@ManyToOne
+	@JoinColumn(name = "town_id")
+	private Town town;
 
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "book")
