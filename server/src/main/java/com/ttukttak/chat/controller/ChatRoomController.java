@@ -22,10 +22,10 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
-@Api(value = "/chat", description = "채팅방 API")
+@Api(value = "/api/chat", description = "채팅방 API")
 @RequiredArgsConstructor
 @Controller
-@RequestMapping("/chat")
+@RequestMapping("/api/chat")
 public class ChatRoomController {
 
 	private final ChatRoomService chatRoomService;
@@ -54,7 +54,7 @@ public class ChatRoomController {
 		, dataType = "object"
 		, paramType = "body")
 	@ApiOperation(value = "채팅방 생성")
-	@PostMapping("/room")
+	@PostMapping("/rooms")
 	@ResponseBody
 	public ResponseEntity<ChatRoomInfo> createRoom(@RequestBody ChatRoomRequest chatRoomRequest) {
 		ChatRoomInfo chatRoomInfo = chatRoomService.createChatRoom(chatRoomRequest);

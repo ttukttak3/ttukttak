@@ -3,14 +3,19 @@ package com.ttukttak.chat;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 
 import com.ttukttak.chat.dto.ChatMessageDto;
 import com.ttukttak.chat.dto.MessageType;
 import com.ttukttak.chat.entity.ChatMessage;
 import com.ttukttak.chat.repository.ChatMessageRepository;
+import com.ttukttak.common.config.TestConfig;
 
-@SpringBootTest
+@DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Import(TestConfig.class)
 public class ChatMessageTest {
 	@Autowired
 	ChatMessageRepository chatMessageRepository;

@@ -28,7 +28,6 @@ import com.ttukttak.chat.entity.ChatRoom;
 import com.ttukttak.chat.entity.LastCheckedMessage;
 import com.ttukttak.chat.repository.ChatMessageRepository;
 import com.ttukttak.chat.repository.ChatRoomRepository;
-import com.ttukttak.chat.repository.ChatRoomRepositoryCustom;
 import com.ttukttak.chat.repository.LastCheckedMessageRepository;
 import com.ttukttak.oauth.entity.User;
 import com.ttukttak.oauth.repository.UserRepository;
@@ -44,8 +43,6 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 	private final ChatRoomRepository chatRoomRepository;
 	private final ChatMessageRepository chatMessageRepository;
 	private final LastCheckedMessageRepository lastCheckedMessageRepository;
-
-	private final ChatRoomRepositoryCustom chatRoomRepositoryCustom;
 	private final BookRepository bookRepository;
 	private final UserRepository userRepository;
 
@@ -69,7 +66,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
 	@Override
 	public List<ChatRoomCard> getRoomList(Long userId) {
-		return chatRoomRepositoryCustom.findAllChatRoomByUserId(userId).stream().map(findRoom -> {
+		return chatRoomRepository.findAllChatRoomByUserId(userId).stream().map(findRoom -> {
 			ChatRoom room = findRoom.getRoom();
 			ChatMessage lastChatMessage = chatMessageRepository.findFirstByChatRoomIdOrderBySendedAtDesc(room.getId());
 
@@ -128,7 +125,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
 		opsHashChatRoom.put(CHAT_ROOMS, chatRoom.getId(), chatRoom);
 
-		return ChatRoomInfo.builder().roomId(chatRoom.getId()).build();
+		return modelMapper.map(chatRoom, ChatRoomInfo.class);
 	}
 
 	/**
