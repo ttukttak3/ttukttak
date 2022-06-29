@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.ttukttak.book.dto.BookInfoDto;
-import com.ttukttak.book.dto.InterParkRequest;
+import com.ttukttak.book.vo.InterParkRequest;
 import com.ttukttak.common.dto.PageResponse;
 
 @Service

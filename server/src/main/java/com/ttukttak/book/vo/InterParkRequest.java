@@ -1,4 +1,4 @@
-package com.ttukttak.book.dto;
+package com.ttukttak.book.vo;
 
 import javax.validation.constraints.NotBlank;
 

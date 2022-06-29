@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ttukttak.book.dto.BookCategoryDto;
 import com.ttukttak.book.dto.BookInfoDto;
-import com.ttukttak.book.dto.InterParkRequest;
 import com.ttukttak.book.service.BookService;
 import com.ttukttak.book.service.InterParkAPIService;
+import com.ttukttak.book.vo.InterParkRequest;
 import com.ttukttak.common.dto.PageResponse;
 
 import io.swagger.annotations.Api;
@@ -20,7 +20,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
-@Api(value = "/api/book", description = "책 API")
+@Api(value = "/api/book", description = "도서 API")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/book")
