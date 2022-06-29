@@ -54,7 +54,7 @@ public class MappingTest {
 	@Test
 	@DisplayName("ChatMessageDto 맵핑")
 	void chatMessageDto() {
-		User user = User.builder().email("user@naver.com").age("20").name("테스터").gender("M").build();
+		User user = User.builder().email("user@naver.com").age("20").nickname("테스터").gender("M").build();
 
 		userRepository.save(user);
 
@@ -91,8 +91,9 @@ public class MappingTest {
 	@Test
 	@DisplayName("ChatRoomInfo 맵핑")
 	void chatRoomInfo() {
-		User user = User.builder().email("user@naver.com").age("20").name("테스터").gender("M").build();
-		User user2 = User.builder().email("user2@naver.com").age("20").name("테스터2").gender("M").build();
+		User user = User.builder().email("user@naver.com").age("20").nickname("테스터").gender("M").build();
+		User user2 = User.builder().email("user2@naver.com").age("20").nickname("테스터2").gender("M").build();
+
 
 		userRepository.save(user);
 		userRepository.save(user2);
