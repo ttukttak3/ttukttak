@@ -1,13 +1,17 @@
 package com.ttukttak.book.controller;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ttukttak.book.dto.BookCategoryDto;
 import com.ttukttak.book.dto.BookInfoDto;
 import com.ttukttak.book.dto.InterParkRequest;
+import com.ttukttak.book.service.BookService;
 import com.ttukttak.book.service.InterParkAPIService;
 import com.ttukttak.common.dto.PageResponse;
 
@@ -22,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/book")
 public class BookController {
 	private final InterParkAPIService interParkAPIService;
+	private final BookService bookService;
 
 	@ApiImplicitParam(name = "InterParkRequest", value = "인터파크 조회 값", required = true, dataType = "object", paramType = "body")
 	@ApiOperation(value = "인터파크 도서 조회")
@@ -33,6 +38,16 @@ public class BookController {
 		return ResponseEntity
 			.status(HttpStatus.OK)
 			.body(searchResult);
+	}
+
+	@ApiOperation(value = "카테고리 조회")
+	@GetMapping("/category")
+	public ResponseEntity<List<BookCategoryDto>> getCategory() {
+		List<BookCategoryDto> bookCategoryList = bookService.findAllBookCategory();
+
+		return ResponseEntity
+			.status(HttpStatus.OK)
+			.body(bookCategoryList);
 	}
 
 }
