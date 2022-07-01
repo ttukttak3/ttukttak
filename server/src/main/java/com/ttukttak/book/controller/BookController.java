@@ -5,19 +5,25 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ttukttak.book.dto.BookCategoryDto;
 import com.ttukttak.book.dto.BookInfoDto;
 import com.ttukttak.book.dto.BookRequest;
 import com.ttukttak.book.dto.BookResponse;
+import com.ttukttak.book.dto.BookUploadRequest;
 import com.ttukttak.book.entity.Book.BookStatus;
 import com.ttukttak.book.service.BookService;
 import com.ttukttak.book.service.InterParkAPIService;
 import com.ttukttak.book.vo.InterParkRequest;
 import com.ttukttak.common.dto.PageResponse;
+import com.ttukttak.oauth.entity.CurrentUser;
+import com.ttukttak.oauth.entity.UserPrincipal;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -87,6 +93,22 @@ public class BookController {
 		return ResponseEntity
 			.status(HttpStatus.OK)
 			.body(bookList);
+	}
+
+	@ApiOperation(value = "도서 등록")
+	@PostMapping("")
+	public ResponseEntity<Long> setBook(
+		BookUploadRequest bookUploadRequest,
+		@CurrentUser
+		UserPrincipal userPrincipal,
+		@RequestBody
+		List<MultipartFile> imageFiles) {
+
+		Long bookId = bookService.bookSave(userPrincipal.getId(), bookUploadRequest, imageFiles);
+
+		return ResponseEntity
+			.status(HttpStatus.OK)
+			.body(bookId);
 	}
 
 }

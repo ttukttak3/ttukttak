@@ -3,6 +3,7 @@ package com.ttukttak.book.dto;
 import com.ttukttak.address.dto.TownDto;
 import com.ttukttak.book.entity.Book;
 import com.ttukttak.book.entity.BookCategory;
+import com.ttukttak.book.entity.BookImage;
 import com.ttukttak.book.entity.BookInfo;
 import com.ttukttak.oauth.dto.UserDto;
 
@@ -23,7 +24,7 @@ public class BookDto {
 	private BookCategory bookCategory;
 	private TownDto town;
 
-	private String thumbnail;
+	private BookImage thumbnail;
 
 	public BookDto(Book book) {
 		this.id = book.getId();
@@ -34,7 +35,7 @@ public class BookDto {
 		this.bookInfo = book.getBookInfo();
 		this.bookCategory = book.getBookCategory();
 		this.town = new TownDto(book.getTown());
-		this.thumbnail = book.getThumbnail().getImageUrl();
+		this.thumbnail = book.getThumbnail();
 	}
 
 }

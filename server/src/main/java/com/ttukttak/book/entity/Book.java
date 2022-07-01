@@ -54,7 +54,7 @@ public class Book extends BaseTimeEntity implements Serializable {
 	private User owner;
 
 	@ManyToOne
-	@JoinColumn(name = "book_info_id")
+	@JoinColumn(name = "book_info_id", nullable = true)
 	private BookInfo bookInfo;
 
 	@ManyToOne
@@ -71,12 +71,12 @@ public class Book extends BaseTimeEntity implements Serializable {
 
 	@Enumerated(EnumType.STRING)
 	@ColumnDefault("'N'")
-	private DeleteStatus isDelete;
+	private DeleteStatus isDelete = DeleteStatus.N;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "book", cascade = CascadeType.ALL)
 	private List<BookImage> images = new ArrayList<>();
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "book", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "book")
 	private List<BookReview> bookReview = new ArrayList<>();
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "book")
@@ -90,16 +90,21 @@ public class Book extends BaseTimeEntity implements Serializable {
 
 	@Enumerated(EnumType.STRING)
 	@ColumnDefault("'WAIT'")
-	private BookStatus status;
+	private BookStatus status = BookStatus.WAIT;
 
 	public void addImage(BookImage image) {
 		images.add(image);
 		image.setBook(this);
 	}
 
+	public Book updateThumbnail(BookImage thumbnail) {
+		this.thumbnail = thumbnail;
+		return this;
+	}
+
 	@Builder
 	public Book(Long id, String subject, String content, int deposit, User owner,
-		BookInfo bookInfo, BookCategory bookCategory, BookImage thumbnail, String author) {
+		BookInfo bookInfo, BookCategory bookCategory, BookImage thumbnail, String author, Town town) {
 		this.id = id;
 		this.subject = subject;
 		this.content = content;
@@ -109,6 +114,7 @@ public class Book extends BaseTimeEntity implements Serializable {
 		this.bookCategory = bookCategory;
 		this.thumbnail = thumbnail;
 		this.author = author;
+		this.town = town;
 	}
 
 	public static Book of(BookDto BookDto) {
@@ -119,7 +125,7 @@ public class Book extends BaseTimeEntity implements Serializable {
 			.owner(User.of(BookDto.getOwner()))
 			.bookInfo(BookDto.getBookInfo())
 			.bookCategory(BookDto.getBookCategory())
-			// .thumbnail(BookDto.getThumbnail())
+			.thumbnail(BookDto.getThumbnail())
 			.build();
 	}
 
