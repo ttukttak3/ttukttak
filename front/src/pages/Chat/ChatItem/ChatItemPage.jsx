@@ -29,7 +29,7 @@ const ChatItemPage = () => {
     //chatting 방 정보 api
     //roomID로 조회시, 현재 채팅방 정보 나오는 api 필요
 
-    connect(client);
+    connect(client, setChatMessages, setMessage);
 
     //여태까지 message chatMessages에 저장하기
     //messages/{roomId} GET

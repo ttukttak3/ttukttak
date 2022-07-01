@@ -5,14 +5,14 @@ import * as SockJs from 'sockjs-client';
 
 const baseUrl = 'http://101.101.219.43:8080/';
 //1. stomp.client 객체 만들기
-const connect = client => {
+const connect = (client, setChatMessages, setMessage) => {
   client.current = new StompJs.Client({
     webSocketFactory: () => new SockJs(baseUrl + 'ws-stomp'),
     reconnectDelay: 5000,
     heartbeatIncoming: 4000,
     heartbeatOutgoing: 4000,
     onConnect: () => {
-      subscribe();
+      subscribe(client, setChatMessages, setMessage);
     },
     onStompError: err => {
       console.error(err);
