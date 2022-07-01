@@ -25,6 +25,7 @@ import com.ttukttak.book.dto.BookDto;
 import com.ttukttak.chat.entity.ChatRoom;
 import com.ttukttak.common.BaseTimeEntity;
 import com.ttukttak.oauth.entity.User;
+import com.ttukttak.rent.entity.Rent;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -68,14 +69,18 @@ public class Book extends BaseTimeEntity implements Serializable {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "book")
 	private List<ChatRoom> chatRooms = new ArrayList<>();
 
-	//대여 Entity 추가 예정(대여 Entity의 진행상태로 대여가능 유무 판별 가능)
-
 	@Enumerated(EnumType.STRING)
 	@ColumnDefault("'N'")
 	private DeleteStatus isDelete;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "book", cascade = CascadeType.ALL)
 	private List<BookImage> images = new ArrayList<>();
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "book", cascade = CascadeType.ALL)
+	private List<BookReview> bookReview = new ArrayList<>();
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "book")
+	private List<Rent> rent = new ArrayList<>();
 
 	@OneToOne
 	@JoinColumn(name = "thumbnail_id")

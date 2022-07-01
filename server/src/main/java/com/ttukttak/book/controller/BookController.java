@@ -6,10 +6,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ttukttak.book.dto.BookCategoryDto;
 import com.ttukttak.book.dto.BookInfoDto;
+import com.ttukttak.book.dto.BookRequest;
+import com.ttukttak.book.dto.BookResponse;
+import com.ttukttak.book.entity.Book.BookStatus;
+import com.ttukttak.book.entity.Book.BookStatus;
 import com.ttukttak.book.service.BookService;
 import com.ttukttak.book.service.InterParkAPIService;
 import com.ttukttak.book.vo.InterParkRequest;
@@ -48,6 +53,23 @@ public class BookController {
 		return ResponseEntity
 			.status(HttpStatus.OK)
 			.body(bookCategoryList);
+	}
+
+	@ApiOperation(value = "주변 도서 리스트 조회")
+	@GetMapping("/list")
+	public ResponseEntity<PageResponse<BookResponse>> getNearList(
+		@RequestParam(defaultValue = "1")
+		int pageNo, @RequestParam(defaultValue = "id")
+		String order, @RequestParam
+		BookStatus status, @RequestParam
+		Long townId) {
+
+		BookRequest bookRequest = new BookRequest(pageNo, order, status, townId, null);
+		PageResponse<BookResponse> bookList = bookService.findBookList(bookRequest);
+
+		return ResponseEntity
+			.status(HttpStatus.OK)
+			.body(bookList);
 	}
 
 }
