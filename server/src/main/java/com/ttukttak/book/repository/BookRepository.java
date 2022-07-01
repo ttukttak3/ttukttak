@@ -15,4 +15,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 	Page<Book> findByStatusAndIsDeleteAndTownIdIn(BookStatus status, DeleteStatus n, List<Long> townIdList,
 		PageRequest pageRequest);
 
+	Page<Book> findByStatusAndIsDeleteAndSubjectContainsAndTownIdIn(BookStatus status, DeleteStatus n, String query,
+		List<Long> townIdList, PageRequest pageRequest);
+
 }

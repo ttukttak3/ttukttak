@@ -14,7 +14,6 @@ import com.ttukttak.book.dto.BookInfoDto;
 import com.ttukttak.book.dto.BookRequest;
 import com.ttukttak.book.dto.BookResponse;
 import com.ttukttak.book.entity.Book.BookStatus;
-import com.ttukttak.book.entity.Book.BookStatus;
 import com.ttukttak.book.service.BookService;
 import com.ttukttak.book.service.InterParkAPIService;
 import com.ttukttak.book.vo.InterParkRequest;
@@ -57,7 +56,7 @@ public class BookController {
 
 	@ApiOperation(value = "주변 도서 리스트 조회")
 	@GetMapping("/list")
-	public ResponseEntity<PageResponse<BookResponse>> getNearList(
+	public ResponseEntity<PageResponse<BookResponse>> getNearBookList(
 		@RequestParam(defaultValue = "1")
 		int pageNo, @RequestParam(defaultValue = "id")
 		String order, @RequestParam
@@ -65,6 +64,24 @@ public class BookController {
 		Long townId) {
 
 		BookRequest bookRequest = new BookRequest(pageNo, order, status, townId, null);
+		PageResponse<BookResponse> bookList = bookService.findBookList(bookRequest);
+
+		return ResponseEntity
+			.status(HttpStatus.OK)
+			.body(bookList);
+	}
+
+	@ApiOperation(value = "도서 겅색")
+	@GetMapping("/list/search")
+	public ResponseEntity<PageResponse<BookResponse>> getBookListSearch(
+		@RequestParam(defaultValue = "1")
+		int pageNo, @RequestParam(defaultValue = "id")
+		String order, @RequestParam
+		BookStatus status, @RequestParam(defaultValue = "1111011900")
+		Long townId, @RequestParam
+		String query) {
+
+		BookRequest bookRequest = new BookRequest(pageNo, order, status, townId, query);
 		PageResponse<BookResponse> bookList = bookService.findBookList(bookRequest);
 
 		return ResponseEntity

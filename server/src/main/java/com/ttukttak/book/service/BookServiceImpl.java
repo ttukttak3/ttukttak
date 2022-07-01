@@ -53,12 +53,26 @@ public class BookServiceImpl implements BookService {
 			.map(c -> new Long(c.getId()))
 			.collect(Collectors.toList());
 
-		//페이징 결과 조회
-		Page<Book> pageList = bookRepository.findByStatusAndIsDeleteAndTownIdIn(
-			bookRequest.getStatus(),
-			DeleteStatus.N,
-			townIdList,
-			pageRequest);
+		/*
+		 * 페이징 결과조회
+		 * query 파라미터 유무에 따라 검색인지 리스트 조회인지 판단(?)
+		 */
+		Page<Book> pageList;
+
+		if (bookRequest.getQuery() == null) {
+			pageList = bookRepository.findByStatusAndIsDeleteAndTownIdIn(
+				bookRequest.getStatus(),
+				DeleteStatus.N,
+				townIdList,
+				pageRequest);
+		} else {
+			pageList = bookRepository.findByStatusAndIsDeleteAndSubjectContainsAndTownIdIn(
+				bookRequest.getStatus(),
+				DeleteStatus.N,
+				bookRequest.getQuery(),
+				townIdList,
+				pageRequest);
+		}
 
 		//Entity -> Dto 변환
 		List<BookResponse> bookResponses = pageList.getContent()
