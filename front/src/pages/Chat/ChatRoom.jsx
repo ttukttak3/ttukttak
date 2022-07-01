@@ -6,7 +6,8 @@ import * as SockJs from 'sockjs-client';
 
 // eslint-disable-next-line max-lines-per-function
 const ChatRoom = () => {
-  let baseUrl = 'chatting-app-dev:8080/';
+  // let baseUrl = 'chatting-app-dev:8080/';
+  const baseUrl = 'http://101.101.219.43:8080/';
   const [post, setPost] = React.useState(null);
   let { roomId } = useParams();
   let navigate = useNavigate();

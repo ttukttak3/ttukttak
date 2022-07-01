@@ -1,8 +1,9 @@
 import * as StompJs from '@stomp/stompjs';
 import * as SockJs from 'sockjs-client';
 
-const baseUrl = 'http://localhost:8080/';
+// const baseUrl = 'http://localhost:8080/';
 
+const baseUrl = 'http://101.101.219.43:8080/';
 //1. stomp.client 객체 만들기
 const connect = client => {
   client.current = new StompJs.Client({

@@ -1,5 +1,7 @@
+/* eslint-disable array-callback-return */
 import axios from 'axios';
-const baseUrl = 'http://localhost:8080/';
+// const baseUrl = 'http://localhost:8080/';
+const baseUrl = 'http://101.101.219.43:8080/';
 
 //userId == 현재 login되어있는 user의 id
 
@@ -19,7 +21,7 @@ const getChatRoomInfo = async (roomId, setChatMessages, setMembers) => {
   // }]
 
   try {
-    const result = await axios.get(baseUrl + `messages/${roomId}`);
+    const result = await axios.get(baseUrl + `api/chat/messages/${roomId}`);
     const data = result.data;
     setMembers(data.members);
     data.messages.map(data => {
@@ -33,7 +35,7 @@ const getChatRoomInfo = async (roomId, setChatMessages, setMembers) => {
 
 const getChatList = async (userId, setChatList) => {
   try {
-    const result = await axios.get(baseUrl + `chat/rooms/${userId}`);
+    const result = await axios.get(baseUrl + `api/chat/rooms/${userId}`);
     result.data.map(data => {
       console.log(data);
       setChatList(_chatList => [..._chatList, data]);
@@ -45,7 +47,7 @@ const getChatList = async (userId, setChatList) => {
 
 const makeChatRoom = async (bookId, userId) => {
   try {
-    const result = await axios.post(baseUrl + `chat/room/`, { bookId: 1, userId: 2 });
+    const result = await axios.post(baseUrl + `api/chat/rooms/`, { bookId: 1, userId: 2 });
     console.log(result.data);
   } catch (error) {
     console.log(error);
@@ -57,7 +59,7 @@ const readMessages = async (messageId, userId, roomId) => {
   //   /message/lastChecked PUT
   // {messageId, userId, roomId}
   try {
-    const result = await axios.put(baseUrl + `/message/lastChecked`, {
+    const result = await axios.put(baseUrl + `api/chat/messages/last-checked`, {
       messageId: messageId,
       userId: userId,
       roomId: roomId,
