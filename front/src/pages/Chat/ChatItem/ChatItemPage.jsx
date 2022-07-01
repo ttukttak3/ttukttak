@@ -65,7 +65,7 @@ const ChatItemPage = () => {
       {chatMessages.map((item, idx) => (
         <>{userId === 1 ? <ChatMessage side={'right'} message={item.message}></ChatMessage> : <ChatMessage side={'left'} message={item.message}></ChatMessage>}</>
       ))}
-      <ChatFooter message={message} client={client} publish={publish} setMessage={setMessage} roomId={roomId}></ChatFooter>
+      <ChatFooter message={message} client={client} publish={() => publish(roomId, userId, client, setMessage, message)} setMessage={setMessage} roomId={roomId}></ChatFooter>
     </Wrapper>
   );
 };
