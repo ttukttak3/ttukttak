@@ -67,6 +67,10 @@ public class ChatMessage implements Serializable {
 		this.messageType = messageType;
 	}
 
+	public void changeChatRoom(ChatRoom chatRoom) {
+		this.chatRoom = chatRoom;
+	}
+
 	public static ChatMessage of(ChatMessageDto chatMessageDto) {
 		ChatRoom chatRoom = ChatRoom.builder().id(chatMessageDto.getRoomId()).build();
 		User user = User.builder().id(chatMessageDto.getUserId()).build();

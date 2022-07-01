@@ -44,9 +44,10 @@ const ChatItemPage = () => {
 
     return () => {
       //final. client deactivate
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       client.current.deactivate();
     };
-  }, []);
+  }, [connect, dispatch, getChatRoomInfo, readMessages, roomId, userId]);
 
   // useEffect(() => {
   //   //상대방 골라내기

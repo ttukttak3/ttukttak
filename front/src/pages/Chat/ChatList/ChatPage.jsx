@@ -39,7 +39,7 @@ const ChatPage = () => {
     return () => {
       // second
     };
-  }, []);
+  }, [dispatch, getChatList]);
 
   return (
     <Wrapper>

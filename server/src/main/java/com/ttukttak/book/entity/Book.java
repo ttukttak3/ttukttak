@@ -1,9 +1,14 @@
 package com.ttukttak.book.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,33 +16,116 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
+import org.hibernate.annotations.ColumnDefault;
+
+import com.ttukttak.address.entity.Town;
+import com.ttukttak.book.dto.BookDto;
 import com.ttukttak.chat.entity.ChatRoom;
+import com.ttukttak.common.BaseTimeEntity;
 import com.ttukttak.oauth.entity.User;
 
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import net.minidev.json.annotate.JsonIgnore;
 
+@Entity
 @Getter
 @NoArgsConstructor
-@Entity
-public class Book implements Serializable {
+public class Book extends BaseTimeEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	private String subject;
+
+	@Column(columnDefinition = "TEXT")
+	private String content;
+
+	private int deposit;
 
 	@ManyToOne
 	@JoinColumn(name = "owner_id")
 	private User owner;
 
+	@ManyToOne
+	@JoinColumn(name = "book_info_id")
+	private BookInfo bookInfo;
+
+	@ManyToOne
+	@JoinColumn(name = "book_category_id")
+	private BookCategory bookCategory;
+
+	@ManyToOne
+	@JoinColumn(name = "town_id")
+	private Town town;
+
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "book")
-	private List<ChatRoom> chatRooms;
+	private List<ChatRoom> chatRooms = new ArrayList<>();
+
+	//대여 Entity 추가 예정(대여 Entity의 진행상태로 대여가능 유무 판별 가능)
+
+	@Enumerated(EnumType.STRING)
+	@ColumnDefault("'N'")
+	private DeleteStatus isDelete;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "book", cascade = CascadeType.ALL)
+	private List<BookImage> images = new ArrayList<>();
+
+	@OneToOne
+	@JoinColumn(name = "thumbnail_id")
+	private BookImage thumbnail;
+
+	private String author;
+
+	@Enumerated(EnumType.STRING)
+	@ColumnDefault("'WAIT'")
+	private BookStatus status;
+
+	public void addImage(BookImage image) {
+		images.add(image);
+		image.setBook(this);
+	}
 
 	@Builder
-	public Book(Long id, User owner) {
+	public Book(Long id, String subject, String content, int deposit, User owner,
+		BookInfo bookInfo, BookCategory bookCategory, BookImage thumbnail, String author) {
 		this.id = id;
+		this.subject = subject;
+		this.content = content;
+		this.deposit = deposit;
 		this.owner = owner;
+		this.bookInfo = bookInfo;
+		this.bookCategory = bookCategory;
+		this.thumbnail = thumbnail;
+		this.author = author;
 	}
+
+	public static Book of(BookDto BookDto) {
+		return Book.builder()
+			.id(BookDto.getId())
+			.subject(BookDto.getSubject())
+			.content(BookDto.getContent())
+			.owner(User.of(BookDto.getOwner()))
+			.bookInfo(BookDto.getBookInfo())
+			.bookCategory(BookDto.getBookCategory())
+			// .thumbnail(BookDto.getThumbnail())
+			.build();
+	}
+
+	public enum DeleteStatus {
+		Y, N;
+
+	}
+
+	public enum BookStatus {
+		// 대여가능, 예약중 ,대여중
+		WAIT;
+	}
+
 }

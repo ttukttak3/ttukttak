@@ -8,7 +8,7 @@ import SearchBookPage from './SearchBookPage';
 const UploadBookPage = () => {
   const { Wrapper, RadioBtn, OptionLabel } = style;
   const dispatch = useDispatch();
-  const [radioOpt, setRadioOpt] = useState('searchToSave');
+  const [radioOpt, setRadioOpt] = useState('saveByPut');
 
   useEffect(() => {
     dispatch(setTitle('도서 대여 글쓰기'));
@@ -16,7 +16,7 @@ const UploadBookPage = () => {
     return () => {
       //
     };
-  }, []);
+  }, [dispatch]);
 
   const handleRadio = e => {
     console.log(e.target.value);

@@ -15,10 +15,12 @@ import com.ttukttak.address.dto.TownDto;
 import com.ttukttak.address.service.AddressService;
 import com.ttukttak.address.service.NaverMapService;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
+@Api(value = "/api/address", description = "지역 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/address")
