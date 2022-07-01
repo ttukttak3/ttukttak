@@ -6,13 +6,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ttukttak.book.dto.BookCategoryDto;
 import com.ttukttak.book.dto.BookInfoDto;
 import com.ttukttak.book.service.BookService;
 import com.ttukttak.book.service.InterParkAPIService;
-import com.ttukttak.book.vo.InterParkRequest;
 import com.ttukttak.common.dto.PageResponse;
 
 import io.swagger.annotations.Api;
@@ -31,9 +31,9 @@ public class BookController {
 	@ApiImplicitParam(name = "InterParkRequest", value = "인터파크 조회 값", required = true, dataType = "object", paramType = "body")
 	@ApiOperation(value = "인터파크 도서 조회")
 	@GetMapping("/interpark/search")
-	public ResponseEntity<PageResponse<BookInfoDto>> search(InterParkRequest interParkRequest) {
+	public ResponseEntity<PageResponse<BookInfoDto>> search(@RequestParam String query, @RequestParam int pageNum) {
 
-		PageResponse<BookInfoDto> searchResult = interParkAPIService.search(interParkRequest);
+		PageResponse<BookInfoDto> searchResult = interParkAPIService.search(query, pageNum);
 
 		return ResponseEntity
 			.status(HttpStatus.OK)
