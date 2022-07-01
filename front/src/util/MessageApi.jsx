@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 // const baseUrl = 'http://localhost:8080/';
-const baseUrl = 'http://101.101.219.43:8080/';
+const baseUrl = 'http://localhost:8080/';
 
 // const baseUrl = 'http://localhost:8080/';
 // const baseUrl = 'http://localhost:8080/api';
@@ -47,7 +47,7 @@ const getChatList = async (userId, setChatList) => {
 //POST
 const makeChatRoom = async (bookId, userId) => {
   try {
-    const result = await axios.post(baseUrl + `api/chat/rooms/`, { bookId: 1, userId: 2 });
+    const result = await axios.post(baseUrl + `api/chat/rooms`, { bookId: 1, userId: 2 });
     console.log(result.data);
   } catch (error) {
     console.log(error);
