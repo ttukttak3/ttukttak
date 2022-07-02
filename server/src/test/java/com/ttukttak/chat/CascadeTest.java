@@ -6,7 +6,9 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 
 import com.ttukttak.book.entity.Book;
 import com.ttukttak.book.repository.BookRepository;
@@ -15,10 +17,13 @@ import com.ttukttak.chat.entity.LastCheckedMessage;
 import com.ttukttak.chat.repository.ChatMessageRepository;
 import com.ttukttak.chat.repository.ChatRoomRepository;
 import com.ttukttak.chat.repository.LastCheckedMessageRepository;
+import com.ttukttak.common.config.QuerydslConfig;
 import com.ttukttak.oauth.entity.User;
 import com.ttukttak.oauth.repository.UserRepository;
 
-@SpringBootTest
+@DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Import(QuerydslConfig.class)
 public class CascadeTest {
 
 	@Autowired
@@ -80,15 +85,16 @@ public class CascadeTest {
 		bookRepository.save(book);
 
 		ChatRoom chatRoom = ChatRoom.builder().book(book).build();
-		chatRoomRepository.save(chatRoom);
 
-		LastCheckedMessage lastCheckedMessage = LastCheckedMessage.builder().room(chatRoom).user(user).build();
-		lastCheckedMessageRepository.save(lastCheckedMessage);
+		LastCheckedMessage lastCheckedMessage = LastCheckedMessage.builder().user(user).build();
+		chatRoom.addLastCheckedMessage(lastCheckedMessage);
+
+		chatRoomRepository.save(chatRoom);
 
 		Long messageId = lastCheckedMessage.getId();
 
 		// 채팅룸 삭제
-		chatRoomRepository.deleteById(chatRoom.getId());
+		chatRoomRepository.delete(chatRoom);
 
 		LastCheckedMessage findMessage = lastCheckedMessageRepository.findById(messageId).orElse(null);
 

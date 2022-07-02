@@ -8,6 +8,7 @@ import { getCurrentUser, authApi, authFormApi } from '../../../util/OauthApi';
 import style from './ProfilePage.style';
 import Popup from '../../../components/Modal/SelectPopupBottom';
 import noImg from '../../../assets/img/logo/no_img.png';
+
 const ProfilePage = () => {
   //Header setting
   const dispatch = useDispatch();

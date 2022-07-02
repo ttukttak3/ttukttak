@@ -20,10 +20,10 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
-@Api(value = "/messages", description = "채팅메시지 API")
+@Api(value = "/api/chat/messages", description = "채팅메시지 API")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/messages")
+@RequestMapping("/api/chat/messages")
 public class ChatMessageController {
 	private final ChatMessageService chatMessageService;
 
@@ -62,7 +62,7 @@ public class ChatMessageController {
 		, dataType = "LastCheckedMessageRequest"
 		, paramType = "body")
 	@ApiOperation(value = "마지막으로 확인한 메시지 갱신")
-	@PutMapping("/lastChecked")
+	@PutMapping("/last-checked")
 	public ResponseEntity<Boolean> updateLastChecked(@RequestBody LastCheckedMessageRequest request) {
 		chatMessageService.updateLastCheckedMessage(request);
 

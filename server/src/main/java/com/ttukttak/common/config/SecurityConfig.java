@@ -13,6 +13,7 @@ import com.ttukttak.oauth.handler.OAuth2AuthenticationFailureHandler;
 import com.ttukttak.oauth.handler.OAuth2AuthenticationSuccessHandler;
 import com.ttukttak.oauth.repository.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.ttukttak.oauth.service.CustomOAuth2UserService;
+import com.ttukttak.oauth.token.JwtAuthenticationEntryPoint;
 import com.ttukttak.oauth.token.TokenAuthenticationFilter;
 
 import lombok.RequiredArgsConstructor;
@@ -47,6 +48,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		"/**"
 	};
 
+	private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+
 	private final CustomOAuth2UserService customOAuth2UserService;
 
 	private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
@@ -74,9 +77,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 			.cors()
-			.and()
-			.sessionManagement()
-			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+			.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			.and()
 			// CSRF 비활성화
 			.csrf().disable()
@@ -84,20 +85,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.formLogin().disable()
 			// 기본 로그인 창 비활성화
 			.httpBasic().disable()
-			.authorizeRequests()
-			.antMatchers(PERMIT_URL_ARRAY).permitAll()
+			//허용 url 설정
+			.authorizeRequests().antMatchers(PERMIT_URL_ARRAY).permitAll()
 			.anyRequest().authenticated()
-			.and()
-			.oauth2Login()
-			.authorizationEndpoint()
+			//JWT Exception 설정
+			.and().exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
+			//oauth Login
+			.and().oauth2Login().authorizationEndpoint()
 			.baseUri("/oauth2/authorize")
 			.authorizationRequestRepository(cookieAuthorizationRequestRepository())
-			.and()
-			.redirectionEndpoint()
-			.baseUri("/*/oauth2/code/*")
-			.and()
-			.userInfoEndpoint()
-			.userService(customOAuth2UserService)
+			//redirect
+			.and().redirectionEndpoint().baseUri("/*/oauth2/code/*")
+			//customservice
+			.and().userInfoEndpoint().userService(customOAuth2UserService)
+			//handler
 			.and()
 			.successHandler(oAuth2AuthenticationSuccessHandler)
 			.failureHandler(oAuth2AuthenticationFailureHandler);

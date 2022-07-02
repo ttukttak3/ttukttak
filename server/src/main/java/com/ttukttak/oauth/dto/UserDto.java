@@ -1,5 +1,9 @@
 package com.ttukttak.oauth.dto;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import com.ttukttak.address.dto.HomeTownDto;
 import com.ttukttak.oauth.entity.Role;
 import com.ttukttak.oauth.entity.User;
 
@@ -16,6 +20,7 @@ public class UserDto {
 	private String email;
 	private String imageUrl;
 	private Role role;
+	private List<HomeTownDto> homeTown;
 
 	public UserDto(User user) {
 		this.id = user.getId();
@@ -23,6 +28,10 @@ public class UserDto {
 		this.email = user.getEmail();
 		this.imageUrl = user.getImageUrl();
 		this.role = user.getRole();
+		this.homeTown = user.getHomeTown()
+			.stream()
+			.map(c -> new HomeTownDto(c))
+			.collect(Collectors.toList());
 	}
 
 }
