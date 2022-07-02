@@ -92,8 +92,8 @@ public class Book extends BaseTimeEntity implements Serializable {
 	private String author;
 
 	@Enumerated(EnumType.STRING)
-	@ColumnDefault("'WAIT'")
-	private BookStatus status = BookStatus.WAIT;
+	@ColumnDefault("'ABLE'")
+	private BookStatus status = BookStatus.ABLE;
 
 	public void addImage(BookImage image) {
 		images.add(image);
@@ -146,7 +146,7 @@ public class Book extends BaseTimeEntity implements Serializable {
 
 	public enum BookStatus {
 		// 대여가능, 예약중 ,대여중
-		WAIT;
+		ABLE, ON, ING;
 	}
 
 	public enum BookGrade {
