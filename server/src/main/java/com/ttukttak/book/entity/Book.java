@@ -49,6 +49,8 @@ public class Book extends BaseTimeEntity implements Serializable {
 
 	private int deposit;
 
+	private BookGrade grade;
+
 	@ManyToOne
 	@JoinColumn(name = "owner_id")
 	private User owner;
@@ -137,6 +139,10 @@ public class Book extends BaseTimeEntity implements Serializable {
 	public enum BookStatus {
 		// 대여가능, 예약중 ,대여중
 		WAIT;
+	}
+
+	public enum BookGrade {
+		A, B, C;
 	}
 
 }
