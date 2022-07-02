@@ -3,6 +3,7 @@ import Expand_more_gray from '../../assets/img/arrows/expand_more_gray.png';
 import Posting from '../../assets/img/btn/posting.png';
 import Star from '../../assets/img/userInterFace/star.png';
 import local_library from '../../assets/img/userInterFace/local_library.png';
+import gradation from '../../assets/img/userInterFace/gradation.png';
 
 //scroll시 titlebox가 header가 되기에 width 따로 작업.
 const HomeWrap = styled.div`
@@ -63,11 +64,25 @@ const BookBox = styled.dl`
   :first-child {
     margin-top: 0;
   }
-
+  //book img
   dt {
     width: 8rem;
     background: #efefef;
     margin-right: 1.6rem;
+    position: relative;
+    //book state
+    button {
+      display: block;
+      width: 8rem;
+      height: 2.2rem;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background: url(${gradation}) no-repeat;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #fff;
+    }
   }
 `;
 

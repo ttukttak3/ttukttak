@@ -41,7 +41,9 @@ const HomePage = props => {
       {/* <BookWrap>대여중/예약중 책이 없습니다.</BookWrap> */}
       <BookWrap>
         <BookBox>
-          <dt>북</dt>
+          <dt>
+            <button>A</button>
+          </dt>
           <dd>
             <BookTitle>
               <h4>불편한 편의점에 오신 걸 어쩌고 라라라</h4>
