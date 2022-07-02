@@ -105,13 +105,14 @@ public class Book extends BaseTimeEntity implements Serializable {
 	}
 
 	@Builder
-	public Book(Long id, String subject, String content, int deposit, User owner,
+	public Book(Long id, String subject, String content, int deposit, User owner, BookGrade grade,
 		BookInfo bookInfo, BookCategory bookCategory, BookImage thumbnail, String author, Town town) {
 		this.id = id;
 		this.subject = subject;
 		this.content = content;
 		this.deposit = deposit;
 		this.owner = owner;
+		this.grade = grade;
 		this.bookInfo = bookInfo;
 		this.bookCategory = bookCategory;
 		this.thumbnail = thumbnail;
@@ -124,6 +125,7 @@ public class Book extends BaseTimeEntity implements Serializable {
 			.id(BookDto.getId())
 			.subject(BookDto.getSubject())
 			.content(BookDto.getContent())
+			.grade(BookDto.getGrade())
 			.owner(User.of(BookDto.getOwner()))
 			.bookInfo(BookDto.getBookInfo())
 			.bookCategory(BookDto.getBookCategory())
