@@ -27,7 +27,7 @@ public class BookReview extends BaseTimeEntity {
 	@Column(columnDefinition = "TEXT")
 	private String content;
 
-	private int grade;
+	private double rating;
 
 	@ManyToOne
 	@JoinColumn(name = "book_id")
@@ -38,10 +38,10 @@ public class BookReview extends BaseTimeEntity {
 	private User reviewer;
 
 	@Builder
-	public BookReview(Long id, String content, int grade, Book book, User reviewer) {
+	public BookReview(Long id, String content, double rating, Book book, User reviewer) {
 		this.id = id;
 		this.content = content;
-		this.grade = grade;
+		this.rating = rating;
 		this.book = book;
 		this.reviewer = reviewer;
 	}
@@ -53,7 +53,7 @@ public class BookReview extends BaseTimeEntity {
 		return BookReview.builder()
 			.id(bookReviewDto.getId())
 			.content(bookReviewDto.getContent())
-			.grade(bookReviewDto.getGrade())
+			.rating(bookReviewDto.getRating())
 			.book(book)
 			.reviewer(reviewer)
 			.build();

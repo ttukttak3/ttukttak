@@ -2,6 +2,7 @@ package com.ttukttak.book.dto;
 
 import com.ttukttak.address.dto.TownDto;
 import com.ttukttak.book.entity.Book;
+import com.ttukttak.book.entity.Book.BookGrade;
 import com.ttukttak.book.entity.Book.BookStatus;
 
 import lombok.Getter;
@@ -19,7 +20,8 @@ public class BookResponse {
 	private int deposit;
 	private BookStatus status;
 	private String address;
-	private double grade;
+	private BookGrade grade;
+	private double rating;
 	private String thumbnail;
 	private int rentCnt;
 
@@ -32,7 +34,8 @@ public class BookResponse {
 		this.deposit = book.getDeposit();
 		this.address = new TownDto(book.getTown()).getAddress();
 		this.thumbnail = book.getThumbnail().getImageUrl();
-		this.grade = book.getBookReview().stream().mapToDouble(review -> review.getGrade()).average().orElse(0);
+		this.grade = book.getGrade();
+		this.rating = book.getBookReview().stream().mapToDouble(review -> review.getRating()).average().orElse(0);
 		this.rentCnt = book.getRent().size();
 	}
 }
