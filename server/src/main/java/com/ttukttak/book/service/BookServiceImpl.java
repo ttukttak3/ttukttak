@@ -201,4 +201,18 @@ public class BookServiceImpl implements BookService {
 			.orElse(null);
 	}
 
+	/*
+	 * 도서 삭제 (update isDelete = Y)
+	 */
+	@Override
+	@Transactional
+	public Boolean isDelete(Long bookId) {
+		Book book = bookRepository.findById(bookId).orElse(null);
+		book.isDelete(DeleteStatus.Y);
+
+		bookRepository.save(book);
+
+		return true;
+	}
+
 }
