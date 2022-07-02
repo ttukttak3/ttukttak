@@ -18,6 +18,7 @@ import com.ttukttak.address.entity.Town;
 import com.ttukttak.address.repository.HomeTownRepository;
 import com.ttukttak.address.service.AddressService;
 import com.ttukttak.book.dto.BookCategoryDto;
+import com.ttukttak.book.dto.BookDto;
 import com.ttukttak.book.dto.BookInfoDto;
 import com.ttukttak.book.dto.BookRequest;
 import com.ttukttak.book.dto.BookResponse;
@@ -60,6 +61,9 @@ public class BookServiceImpl implements BookService {
 
 	private static int PAGESIZE = 20;
 
+	/*
+	 * 카테고리 조회
+	 */
 	@Override
 	public List<BookCategoryDto> findAllBookCategory() {
 		return bookCategoryRepositroy.findAll()
@@ -68,6 +72,9 @@ public class BookServiceImpl implements BookService {
 			.collect(Collectors.toList());
 	}
 
+	/*
+	 * 인근 도서 조회
+	 */
 	@Override
 	public PageResponse<BookResponse> findBookList(BookRequest bookRequest) {
 		//페이징 선언
@@ -115,6 +122,9 @@ public class BookServiceImpl implements BookService {
 			.build();
 	}
 
+	/*
+	 * 도서 등록
+	 */
 	@Override
 	@Transactional
 	public Long bookSave(Long ownerId, BookUploadRequest bookUploadRequest, List<MultipartFile> imageFiles) {
@@ -139,6 +149,7 @@ public class BookServiceImpl implements BookService {
 			.content(bookUploadRequest.getContent())
 			.deposit(bookUploadRequest.getDeposit())
 			.subject(bookUploadRequest.getSubject())
+			.grade(bookUploadRequest.getGrade())
 			.bookInfo(bookInfo)
 			.bookCategory(BookCategory.builder().id(bookUploadRequest.getBookCategoryId()).build())
 			.owner(User.builder().id(userDto.getId()).build())
@@ -178,6 +189,16 @@ public class BookServiceImpl implements BookService {
 		bookRepository.save(resultBook);
 
 		return resultBook.getId();
+	}
+
+	/*
+	 * 도서 상세 정보
+	 */
+	@Override
+	public BookDto findById(Long bookId) {
+		return bookRepository.findById(bookId)
+			.map(book -> modelMapper.map(book, BookDto.class))
+			.orElse(null);
 	}
 
 }

@@ -1,5 +1,7 @@
 package com.ttukttak.book.dto;
 
+import com.ttukttak.book.entity.Book.BookGrade;
+
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,4 +42,6 @@ public class BookUploadRequest {
 	private Long bookCategoryId;
 	@ApiModelProperty(example = "대표 이미지명, API 조회시 API 이미지명으로!")
 	private String thumbnail;
+	@ApiModelProperty(example = "도서 등급")
+	private BookGrade grade;
 }
