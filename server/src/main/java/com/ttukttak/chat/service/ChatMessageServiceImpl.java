@@ -24,6 +24,8 @@ public class ChatMessageServiceImpl implements ChatMessageService {
 	private final ChatMessageRepository chatMessageRepository;
 	private final LastCheckedMessageRepository lastCheckedMessageRepository;
 
+	private final ChatRoomService chatRoomService;
+
 	@Override
 	public ChatMessageDto saveChatMessage(ChatMessageDto chatMessageDto) {
 		chatMessageRepository.save(ChatMessage.of(chatMessageDto));
@@ -44,6 +46,8 @@ public class ChatMessageServiceImpl implements ChatMessageService {
 			.collect(
 				Collectors.toList());
 
+		chatRoomService.enterChatRoom(roomId);
+		
 		return ChatRoomInfo.builder().roomId(roomId).members(members).messages(messages).build();
 	}
 
