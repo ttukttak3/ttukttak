@@ -197,7 +197,7 @@ public class BookServiceImpl implements BookService {
 	@Override
 	public BookDto findById(Long bookId) {
 		return bookRepository.findById(bookId)
-			.map(book -> modelMapper.map(book, BookDto.class))
+			.map(book -> new BookDto(book))
 			.orElse(null);
 	}
 

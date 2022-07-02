@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ttukttak.book.dto.BookReviewDto;
 import com.ttukttak.common.BaseTimeEntity;
 import com.ttukttak.oauth.entity.User;
@@ -29,6 +30,7 @@ public class BookReview extends BaseTimeEntity {
 
 	private double rating;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "book_id")
 	private Book book;

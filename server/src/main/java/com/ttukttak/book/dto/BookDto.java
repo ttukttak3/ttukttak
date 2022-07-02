@@ -10,7 +10,6 @@ import com.ttukttak.book.entity.BookImage;
 import com.ttukttak.book.entity.BookInfo;
 import com.ttukttak.book.entity.BookReview;
 import com.ttukttak.oauth.dto.UserDto;
-import com.ttukttak.rent.entity.Rent;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,7 +28,6 @@ public class BookDto {
 	private BookInfo bookInfo;
 	private BookCategory bookCategory;
 	private TownDto town;
-	private List<Rent> rent;
 	private double rating;
 	private int rentCnt;
 	private List<BookReview> review;
@@ -50,7 +48,6 @@ public class BookDto {
 		this.rating = book.getBookReview().stream().mapToDouble(review -> review.getRating()).average().orElse(0);
 		this.review = book.getBookReview();
 		this.rentCnt = book.getRent().size();
-		this.rent = book.getRent();
 	}
 
 }
