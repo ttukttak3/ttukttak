@@ -50,8 +50,7 @@ const TitleBox = styled.div`
 
 const BookWrap = styled.div`
   width: 34rem;
-  height: 1000px;
-  margin: 2.8rem auto 0 auto;
+  margin: 2.8rem auto;
   text-align: left;
 `;
 
@@ -178,7 +177,7 @@ const PlusBtn = styled.button`
   height: 4.4rem;
   position: fixed;
   right: 2.5rem;
-  bottom: 11rem;
+  bottom: 7.6rem;
   z-index: 1;
 `;
 
