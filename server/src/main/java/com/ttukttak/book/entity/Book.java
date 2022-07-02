@@ -49,6 +49,7 @@ public class Book extends BaseTimeEntity implements Serializable {
 
 	private int deposit;
 
+	@Enumerated(EnumType.STRING)
 	private BookGrade grade;
 
 	@ManyToOne
