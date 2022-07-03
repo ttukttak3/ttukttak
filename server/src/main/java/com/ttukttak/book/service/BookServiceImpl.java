@@ -137,8 +137,12 @@ public class BookServiceImpl implements BookService {
 		//API일 경우 Book_Info 저장 isbn으로 판단
 		BookInfo bookInfo = null;
 		if (bookUploadRequest.getIsbn() != null && !bookUploadRequest.getIsbn().isEmpty()) {
-			BookInfo bookInfoRequest = BookInfo.of(modelMapper.map(bookUploadRequest, BookInfoDto.class));
-			bookInfo = bookInfoRepository.saveAndFlush(bookInfoRequest);
+			//API 도서가 이미 등록되어있는지 체크
+			bookInfo = bookInfoRepository.findByIsbn(bookUploadRequest.getIsbn());
+			if (bookInfo == null) {
+				BookInfo bookInfoRequest = BookInfo.of(modelMapper.map(bookUploadRequest, BookInfoDto.class));
+				bookInfo = bookInfoRepository.saveAndFlush(bookInfoRequest);
+			}
 		}
 
 		//Entity builder

@@ -27,12 +27,13 @@ public class BookDto {
 	private UserDto owner;
 	private BookInfo bookInfo;
 	private BookCategory bookCategory;
-	private TownDto town;
+	private TownDto bookTown;
 	private double rating;
 	private int rentCnt;
 	private List<BookReview> review;
 
 	private BookImage thumbnail;
+	private List<BookImage> imageUrls;
 
 	public BookDto(Book book) {
 		this.id = book.getId();
@@ -43,8 +44,9 @@ public class BookDto {
 		this.owner = new UserDto(book.getOwner());
 		this.bookInfo = book.getBookInfo();
 		this.bookCategory = book.getBookCategory();
-		this.town = new TownDto(book.getTown());
+		this.bookTown = new TownDto(book.getTown());
 		this.thumbnail = book.getThumbnail();
+		this.imageUrls = book.getImages();
 		this.rating = book.getBookReview().stream().mapToDouble(review -> review.getRating()).average().orElse(0);
 		this.review = book.getBookReview();
 		this.rentCnt = book.getRent().size();
