@@ -9,6 +9,8 @@ import com.ttukttak.book.dto.BookDto;
 import com.ttukttak.book.dto.BookRequest;
 import com.ttukttak.book.dto.BookResponse;
 import com.ttukttak.book.dto.BookUploadRequest;
+import com.ttukttak.book.entity.Book.BookGrade;
+import com.ttukttak.book.entity.Book.BookStatus;
 import com.ttukttak.common.dto.PageResponse;
 
 public interface BookService {
@@ -22,5 +24,9 @@ public interface BookService {
 	BookDto findById(Long bookId);
 
 	Boolean isDelete(Long bookId);
+
+	Boolean updateStatus(Long bookId, BookStatus status);
+
+	Boolean updateGrade(Long bookId, BookGrade grade);
 
 }

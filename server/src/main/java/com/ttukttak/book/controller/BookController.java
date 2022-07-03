@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +21,7 @@ import com.ttukttak.book.dto.BookInfoDto;
 import com.ttukttak.book.dto.BookRequest;
 import com.ttukttak.book.dto.BookResponse;
 import com.ttukttak.book.dto.BookUploadRequest;
+import com.ttukttak.book.entity.Book.BookGrade;
 import com.ttukttak.book.entity.Book.BookStatus;
 import com.ttukttak.book.service.BookService;
 import com.ttukttak.book.service.InterParkAPIService;
@@ -154,6 +156,45 @@ public class BookController {
 		Long bookId) {
 
 		Boolean result = bookService.isDelete(bookId);
+
+		return ResponseEntity
+			.status(HttpStatus.OK)
+			.body(result);
+
+	}
+
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "bookId", value = "도서 ID", required = true, dataType = "long", paramType = "path"),
+		@ApiImplicitParam(name = "status", value = "도서 상태값", required = true, dataType = "BookStatus", paramType = "body")
+	})
+	@ApiOperation(value = "도서 상태값 수정")
+	@PutMapping("/{bookId}/status")
+	public ResponseEntity<Boolean> updateBookStatus(
+		@PathVariable("bookId")
+		Long bookId,
+		@RequestBody
+		BookStatus status) {
+
+		Boolean result = bookService.updateStatus(bookId, status);
+
+		return ResponseEntity
+			.status(HttpStatus.OK)
+			.body(result);
+
+	}
+
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "bookId", value = "도서 ID", required = true, dataType = "long", paramType = "path"),
+		@ApiImplicitParam(name = "grade", value = "도서 등급", required = true, dataType = "BookGrade", paramType = "body")
+	})
+	@ApiOperation(value = "도서 등급 수정")
+	@PutMapping("/{bookId}/grade")
+	public ResponseEntity<Boolean> updateBookGrade(
+		@PathVariable("bookId")
+		Long bookId, @RequestBody
+		BookGrade grade) {
+
+		Boolean result = bookService.updateGrade(bookId, grade);
 
 		return ResponseEntity
 			.status(HttpStatus.OK)

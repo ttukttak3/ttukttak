@@ -24,6 +24,8 @@ import com.ttukttak.book.dto.BookRequest;
 import com.ttukttak.book.dto.BookResponse;
 import com.ttukttak.book.dto.BookUploadRequest;
 import com.ttukttak.book.entity.Book;
+import com.ttukttak.book.entity.Book.BookGrade;
+import com.ttukttak.book.entity.Book.BookStatus;
 import com.ttukttak.book.entity.Book.DeleteStatus;
 import com.ttukttak.book.entity.BookCategory;
 import com.ttukttak.book.entity.BookImage;
@@ -213,6 +215,34 @@ public class BookServiceImpl implements BookService {
 	public Boolean isDelete(Long bookId) {
 		Book book = bookRepository.findById(bookId).orElse(null);
 		book.isDelete(DeleteStatus.Y);
+
+		bookRepository.save(book);
+
+		return true;
+	}
+
+	/*
+	 * 도서 상태값 수정
+	 */
+	@Override
+	@Transactional
+	public Boolean updateStatus(Long bookId, BookStatus status) {
+		Book book = bookRepository.findById(bookId).orElse(null);
+		book.updateStatus(status);
+
+		bookRepository.save(book);
+
+		return true;
+	}
+
+	/*
+	 * 도서 등급 수정
+	 */
+	@Override
+	@Transactional
+	public Boolean updateGrade(Long bookId, BookGrade grade) {
+		Book book = bookRepository.findById(bookId).orElse(null);
+		book.updateGrade(grade);
 
 		bookRepository.save(book);
 

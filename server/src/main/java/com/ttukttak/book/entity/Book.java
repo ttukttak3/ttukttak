@@ -110,6 +110,16 @@ public class Book extends BaseTimeEntity implements Serializable {
 		return this;
 	}
 
+	public Book updateStatus(BookStatus bookStatus) {
+		this.status = bookStatus;
+		return this;
+	}
+
+	public Book updateGrade(BookGrade bookGrade) {
+		this.grade = bookGrade;
+		return this;
+	}
+
 	@Builder
 	public Book(Long id, String subject, String content, int deposit, User owner, BookGrade grade,
 		BookInfo bookInfo, BookCategory bookCategory, BookImage thumbnail, String author, Town town) {
