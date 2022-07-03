@@ -6,20 +6,7 @@ import ChatListItem from '../ChatList/ChatListItem';
 import Wrapper from '../ChatList/ChatPage.style';
 import messageApi from '../../../util/MessageApi';
 const ChatPage = () => {
-  const [chatList, setChatList] = useState([
-    {
-      roomId: 1,
-      other: {
-        imageUrl: 'http://www.w3bai.com/css/img_fjords.jpg',
-        name: '홍길동',
-      },
-      lastMessage: {
-        sendedAt: 124325,
-        message: '이거 대여 가능한가요?',
-      },
-      unread: true,
-    },
-  ]);
+  const [chatList, setChatList] = useState([]);
 
   const { getChatList, makeChatRoom } = messageApi;
 
@@ -32,8 +19,6 @@ const ChatPage = () => {
     dispatch(setTitle('채팅'));
     dispatch(setBack(false));
 
-    // userId가 참여하고 있는 채팅 리스트 가져오기
-    // chat/rooms/{userId} GET
     getChatList(1, setChatList);
 
     return () => {
