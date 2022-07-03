@@ -11,7 +11,6 @@ const HeaderBox = styled.div`
   left: 0;
   z-index: 1;
   transition: height 0.3s ease;
-  width: 100vw;
   height: 6.4rem;
   padding: 0 2.5rem;
   text-align: left;

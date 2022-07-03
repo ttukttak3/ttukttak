@@ -28,12 +28,18 @@ const PopupTitle = styled.h2`
   font-size: 1.8rem;
   font-weight: 600;
 `;
-
+const PopupContentWrap = styled.div`
+  height: 21.6rem;
+  overflow-y: scroll;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+`;
 const PopupContent = styled.div`
   height: 5.2rem;
   line-height: 5.2rem;
   font-size: 1.6rem;
   font-weight: 400;
 `;
-const popupStyle = { Wrap, PopupBox, PopupTitle, PopupContent };
+const popupStyle = { Wrap, PopupBox, PopupTitle, PopupContentWrap, PopupContent };
 export default popupStyle;

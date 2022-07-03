@@ -28,6 +28,7 @@ const ProfilePage = () => {
   useEffect(() => {
     getCurrentUser().then(result => {
       if (result.role !== 'USER') {
+        //확인 차 !== 달아둠
         navigate(`/`);
       } else {
         dispatch(setRole(result.role));

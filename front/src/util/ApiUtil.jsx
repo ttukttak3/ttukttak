@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = 'http://101.101.219.43:8080';
+const baseUrl = 'http://101.101.219.43:8080/';
 const accessToken = 'accessToken';
 const token = localStorage.getItem(accessToken);
 export const ACCESS_TOKEN = 'accessToken';
