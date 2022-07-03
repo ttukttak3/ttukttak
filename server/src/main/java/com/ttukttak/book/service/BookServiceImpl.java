@@ -92,18 +92,28 @@ public class BookServiceImpl implements BookService {
 		/*
 		 * 페이징 결과조회
 		 * query 파라미터 유무에 따라 검색인지 리스트 조회인지 판단(?)
+		 * 대여중/예약중 리스트를 같이 보려면 쿼리를 구분해줘야할듯!
 		 */
 		Page<Book> pageList;
 
+		//도서 상태 IN절
+		List<BookStatus> bookStatus = new ArrayList<>();
+		if (bookRequest.getStatus().equals(BookStatus.ABLE)) {
+			bookStatus.add(BookStatus.ABLE);
+		} else {
+			bookStatus.add(BookStatus.ING);
+			bookStatus.add(BookStatus.ON);
+		}
+
 		if (bookRequest.getQuery() == null) {
-			pageList = bookRepository.findByStatusAndIsDeleteAndTownIdIn(
-				bookRequest.getStatus(),
+			pageList = bookRepository.findByStatusInAndIsDeleteAndTownIdIn(
+				bookStatus,
 				DeleteStatus.N,
 				townIdList,
 				pageRequest);
 		} else {
-			pageList = bookRepository.findByStatusAndIsDeleteAndSubjectContainsAndTownIdIn(
-				bookRequest.getStatus(),
+			pageList = bookRepository.findByStatusInAndIsDeleteAndSubjectContainsAndTownIdIn(
+				bookStatus,
 				DeleteStatus.N,
 				bookRequest.getQuery(),
 				townIdList,

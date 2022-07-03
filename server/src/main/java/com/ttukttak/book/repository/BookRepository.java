@@ -12,10 +12,10 @@ import com.ttukttak.book.entity.Book.DeleteStatus;
 
 public interface BookRepository extends JpaRepository<Book, Long> {
 
-	Page<Book> findByStatusAndIsDeleteAndTownIdIn(BookStatus status, DeleteStatus n, List<Long> townIdList,
+	Page<Book> findByStatusInAndIsDeleteAndTownIdIn(List<BookStatus> bookStatus, DeleteStatus n, List<Long> townIdList,
 		PageRequest pageRequest);
 
-	Page<Book> findByStatusAndIsDeleteAndSubjectContainsAndTownIdIn(BookStatus status, DeleteStatus n, String query,
-		List<Long> townIdList, PageRequest pageRequest);
+	Page<Book> findByStatusInAndIsDeleteAndSubjectContainsAndTownIdIn(List<BookStatus> bookStatus, DeleteStatus n,
+		String query, List<Long> townIdList, PageRequest pageRequest);
 
 }
