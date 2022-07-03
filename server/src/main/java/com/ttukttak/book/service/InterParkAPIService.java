@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +18,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.ttukttak.book.dto.BookInfoDto;
-import com.ttukttak.book.vo.InterParkRequest;
 import com.ttukttak.common.dto.PageResponse;
 
 @Service
@@ -27,7 +25,9 @@ public class InterParkAPIService {
 	@Value("${interpark.book.key}")
 	private String key;
 
-	public PageResponse<BookInfoDto> search(InterParkRequest res) {
+	private static final int PAGE_SIZE = 10;
+
+	public PageResponse<BookInfoDto> search(String query, int pageNum) {
 
 		PageResponse<BookInfoDto> pageResponse = new PageResponse<>();
 		StringBuffer sb = new StringBuffer();
@@ -35,11 +35,10 @@ public class InterParkAPIService {
 
 		try {
 			URL url = new URL("https://book.interpark.com/api/"
-				+ "search.api?query="
-				+ URLEncoder.encode(res.getQuery(), "UTF-8")
+				+ "search.api?query=" + query
 				+ "&key=" + key
-				+ "&maxResults=" + res.getSize()
-				+ "&start=" + res.getStart()
+				+ "&maxResults=" + PAGE_SIZE
+				+ "&start=" + pageNum
 				+ "&output=json");
 			HttpsURLConnection http = (HttpsURLConnection)url.openConnection();
 			http.setRequestProperty("Content-Type", "application/json");
@@ -97,7 +96,9 @@ public class InterParkAPIService {
 			in.close();
 			http.disconnect();
 
-		} catch (IOException e) {} catch (ParseException e) {}
+		} catch (IOException e) {
+		} catch (ParseException e) {
+		}
 
 		return pageResponse;
 	}

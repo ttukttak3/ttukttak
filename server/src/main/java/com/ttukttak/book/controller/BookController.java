@@ -25,7 +25,6 @@ import com.ttukttak.book.entity.Book.BookGrade;
 import com.ttukttak.book.entity.Book.BookStatus;
 import com.ttukttak.book.service.BookService;
 import com.ttukttak.book.service.InterParkAPIService;
-import com.ttukttak.book.vo.InterParkRequest;
 import com.ttukttak.common.dto.PageResponse;
 import com.ttukttak.oauth.entity.CurrentUser;
 import com.ttukttak.oauth.entity.UserPrincipal;
@@ -47,9 +46,9 @@ public class BookController {
 	@ApiImplicitParam(name = "InterParkRequest", value = "인터파크 조회 값", required = true, dataType = "object", paramType = "body")
 	@ApiOperation(value = "인터파크 도서 조회")
 	@GetMapping("/interpark/search")
-	public ResponseEntity<PageResponse<BookInfoDto>> search(InterParkRequest interParkRequest) {
+	public ResponseEntity<PageResponse<BookInfoDto>> search(@RequestParam String query, @RequestParam int pageNum) {
 
-		PageResponse<BookInfoDto> searchResult = interParkAPIService.search(interParkRequest);
+		PageResponse<BookInfoDto> searchResult = interParkAPIService.search(query, pageNum);
 
 		return ResponseEntity
 			.status(HttpStatus.OK)
