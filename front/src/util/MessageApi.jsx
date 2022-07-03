@@ -1,11 +1,6 @@
 /* eslint-disable array-callback-return */
 import axios from 'axios';
-
-// const baseUrl = 'http://localhost:8080/';
-const baseUrl = 'http://localhost:8080/';
-
-// const baseUrl = 'http://localhost:8080/';
-// const baseUrl = 'http://localhost:8080/api';
+const baseUrl = process.env.REACT_APP_API_URL;
 
 //userId == 현재 login되어있는 user의 id
 
@@ -47,7 +42,7 @@ const getChatList = async (userId, setChatList) => {
 //POST
 const makeChatRoom = async (bookId, userId) => {
   try {
-    const result = await axios.post(baseUrl + `api/chat/rooms`, { bookId: 1, userId: 2 });
+    const result = await axios.post(baseUrl + `api/chat/rooms`, { bookId: bookId, userId: userId });
     console.log(result.data);
   } catch (error) {
     console.log(error);
