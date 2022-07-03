@@ -9,9 +9,12 @@ const getChatRoomInfo = async (roomId, setChatMessages, setMembers) => {
   try {
     const result = await axios.get(baseUrl + `api/chat/messages/${roomId}`);
     const data = result.data;
-    setMembers(data.members);
+
+    data.members.map(data => {
+      setMembers(_memberList => [..._memberList, data]);
+    });
+
     data.messages.map(data => {
-      console.log(data);
       setChatMessages(_chatList => [..._chatList, data]);
     });
 

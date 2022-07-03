@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable max-lines-per-function */
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -28,12 +29,8 @@ const ChatItemPage = () => {
   const client = useRef({});
 
   useEffect(() => {
-    //chatting 방 정보 api
-    //roomID로 조회시, 현재 채팅방 정보 나오는 api 필요
     connect(client, roomId, setChatMessages, setMessage);
-    console.log('userId', userId);
-    //여태까지 message chatMessages에 저장하기
-    //messages/{roomId} GET
+
     getChatRoomInfo(roomId, setChatMessages, setMembers);
 
     //messageId-> 마지막 메세지의 id --> 메세지 올때마다 호출해야함,,
@@ -44,29 +41,24 @@ const ChatItemPage = () => {
     dispatch(setAlert(true));
 
     return () => {
-      //final. client deactivate
-      // eslint-disable-next-line react-hooks/exhaustive-deps
       client.current.deactivate();
     };
-    // }, [connect, dispatch, getChatRoomInfo, readMessages, roomId, userId]);
   }, []);
 
-  // useEffect(() => {
-  //   //상대방 골라내기
-  //   const other = members.filter(item, index => item.id !== userId)[0];
-  //   console.log(other);
-  //   dispatch(setTitle(other.name));
-
-  //   setOtherUser(other);
-  // }, [members]);
+  useEffect(() => {
+    // 상대방 골라내기
+    if (members.length > 0) {
+      const other = members.filter(item => userId !== item.userId)[0];
+      dispatch(setTitle(other.nickname));
+      setOtherUser(other);
+    }
+  }, [members]);
 
   return (
     <Wrapper>
       <ChatBookInfo></ChatBookInfo>
-      {/* <ChatMessage side={'left'} message={'안녕'}></ChatMessage>
-      <ChatMessage side={'right'} message={'안녕하세요'}></ChatMessage> */}
       {chatMessages.map((item, idx) => (
-        <>{userId === 1 ? <ChatMessage side={'right'} message={item.message}></ChatMessage> : <ChatMessage side={'left'} message={item.message}></ChatMessage>}</>
+        <>{userId === item.userId ? <ChatMessage side={'right'} message={item.message}></ChatMessage> : <ChatMessage side={'left'} message={item.message}></ChatMessage>}</>
       ))}
       <ChatFooter roomId={roomId} message={message} client={client} setMessage={setMessage} publish={() => publish(roomId, userId, client, setMessage, message)}></ChatFooter>
     </Wrapper>
