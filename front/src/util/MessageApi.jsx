@@ -3,16 +3,11 @@ import axios from 'axios';
 const baseUrl = process.env.REACT_APP_API_URL;
 
 //userId == 현재 login되어있는 user의 id
-
-//GET
 const getChatRoomInfo = async (roomId, setChatMessages, setMembers) => {
   console.log('getMessageList');
 
   try {
     const result = await axios.get(baseUrl + `api/chat/messages/${roomId}`);
-
-    // const result = await axios.get(baseUrl + `chat/messages/${roomId}`);
-    // const result = await axios.get(baseUrl + `messages/${roomId}`);
     const data = result.data;
     setMembers(data.members);
     data.messages.map(data => {
@@ -26,8 +21,8 @@ const getChatRoomInfo = async (roomId, setChatMessages, setMembers) => {
   }
 };
 
-//GET
 const getChatList = async (userId, setChatList) => {
+  console.log('getChatList');
   try {
     const result = await axios.get(baseUrl + `api/chat/rooms/${userId}`);
     result.data.map(data => {
@@ -39,7 +34,6 @@ const getChatList = async (userId, setChatList) => {
   }
 };
 
-//POST
 const makeChatRoom = async (bookId, userId) => {
   try {
     const result = await axios.post(baseUrl + `api/chat/rooms`, { bookId: bookId, userId: userId });
@@ -49,7 +43,6 @@ const makeChatRoom = async (bookId, userId) => {
   }
 };
 
-//PUT
 const readMessages = async (messageId, userId, roomId) => {
   try {
     const result = await axios.put(baseUrl + `api/chat/messages/last-checked`, {
