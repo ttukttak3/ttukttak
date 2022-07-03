@@ -46,7 +46,9 @@ public class BookController {
 	@ApiImplicitParam(name = "InterParkRequest", value = "인터파크 조회 값", required = true, dataType = "object", paramType = "body")
 	@ApiOperation(value = "인터파크 도서 조회")
 	@GetMapping("/interpark/search")
-	public ResponseEntity<PageResponse<BookInfoDto>> search(@RequestParam String query, @RequestParam int pageNum) {
+	public ResponseEntity<PageResponse<BookInfoDto>> search(@RequestParam
+	String query, @RequestParam
+	int pageNum) {
 
 		PageResponse<BookInfoDto> searchResult = interParkAPIService.search(query, pageNum);
 
@@ -66,7 +68,7 @@ public class BookController {
 	}
 
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "pageNo", value = "페이지번호", required = true, dataType = "int", paramType = "param"),
+		@ApiImplicitParam(name = "pageNum", value = "페이지번호", required = true, dataType = "int", paramType = "param"),
 		@ApiImplicitParam(name = "order", value = "정렬", required = false, dataType = "string", paramType = "param"),
 		@ApiImplicitParam(name = "status", value = "도서 상태", required = true, dataType = "string", paramType = "param"),
 		@ApiImplicitParam(name = "townId", value = "지역 ID", required = true, dataType = "long", paramType = "param")
@@ -75,12 +77,12 @@ public class BookController {
 	@GetMapping("/list")
 	public ResponseEntity<PageResponse<BookResponse>> getNearBookList(
 		@RequestParam(defaultValue = "1")
-		int pageNo, @RequestParam(defaultValue = "id")
+		int pageNum, @RequestParam(defaultValue = "id")
 		String order, @RequestParam
 		BookStatus status, @RequestParam(defaultValue = "1111011900")
 		Long townId) {
 
-		BookRequest bookRequest = new BookRequest(pageNo, order, status, townId, null);
+		BookRequest bookRequest = new BookRequest(pageNum, order, status, townId, null);
 		PageResponse<BookResponse> bookList = bookService.findBookList(bookRequest);
 
 		return ResponseEntity
@@ -89,7 +91,7 @@ public class BookController {
 	}
 
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "pageNo", value = "페이지번호", required = true, dataType = "int", paramType = "param"),
+		@ApiImplicitParam(name = "pageNum", value = "페이지번호", required = true, dataType = "int", paramType = "param"),
 		@ApiImplicitParam(name = "order", value = "정렬", required = false, dataType = "string", paramType = "param"),
 		@ApiImplicitParam(name = "status", value = "도서 상태", required = true, dataType = "string", paramType = "param"),
 		@ApiImplicitParam(name = "townId", value = "지역 ID", required = true, dataType = "long", paramType = "param"),
@@ -99,13 +101,13 @@ public class BookController {
 	@GetMapping("/list/search")
 	public ResponseEntity<PageResponse<BookResponse>> getBookListSearch(
 		@RequestParam(defaultValue = "1")
-		int pageNo, @RequestParam(defaultValue = "id")
+		int pageNum, @RequestParam(defaultValue = "id")
 		String order, @RequestParam
 		BookStatus status, @RequestParam(defaultValue = "1111011900")
 		Long townId, @RequestParam
 		String query) {
 
-		BookRequest bookRequest = new BookRequest(pageNo, order, status, townId, query);
+		BookRequest bookRequest = new BookRequest(pageNum, order, status, townId, query);
 		PageResponse<BookResponse> bookList = bookService.findBookList(bookRequest);
 
 		return ResponseEntity

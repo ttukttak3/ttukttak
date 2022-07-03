@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BookRequest {
-	private int pageNo;
+	private int pageNum;
 	private String order;
 	private BookStatus status;
 	private Long townId;

@@ -80,7 +80,7 @@ public class BookServiceImpl implements BookService {
 	@Override
 	public PageResponse<BookResponse> findBookList(BookRequest bookRequest) {
 		//페이징 선언
-		PageRequest pageRequest = PageRequest.of(bookRequest.getPageNo() - 1, PAGESIZE,
+		PageRequest pageRequest = PageRequest.of(bookRequest.getPageNum() - 1, PAGESIZE,
 			Sort.by(bookRequest.getOrder()).descending());
 
 		//인근 지역 ID 가져오기
@@ -118,7 +118,7 @@ public class BookServiceImpl implements BookService {
 
 		return PageResponse.<BookResponse>builder()
 			.contents(bookResponses)
-			.pageNumber(bookRequest.getPageNo())
+			.pageNumber(bookRequest.getPageNum())
 			.pageSize(pageList.getSize())
 			.totalPages(pageList.getTotalPages())
 			.build();
