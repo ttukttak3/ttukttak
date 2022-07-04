@@ -14,11 +14,11 @@ import lombok.RequiredArgsConstructor;
 
 @Repository
 @RequiredArgsConstructor
-public class ChatRoomRepositoryImpl implements ChatRoomRepositoryCustom {
+public class LastCheckedMessageRepositoryImpl implements LastCheckedMessageRepositoryCustom {
 
 	private final JPAQueryFactory query;
 
-	public List<LastCheckedMessage> findAllChatRoomByUserId(Long userId) {
+	public List<LastCheckedMessage> findAllLastCheckedMessagesByUserId(Long userId) {
 		QChatRoom chatRoom = new QChatRoom("cr");
 		QLastCheckedMessage lcm = new QLastCheckedMessage("lcm");
 		QLastCheckedMessage lcm2 = new QLastCheckedMessage("lcm2");
