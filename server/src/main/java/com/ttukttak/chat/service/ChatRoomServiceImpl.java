@@ -125,6 +125,8 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
 		opsHashChatRoom.put(CHAT_ROOMS, chatRoom.getId(), chatRoom);
 
+		enterChatRoom(chatRoom.getId());
+
 		return modelMapper.map(chatRoom, ChatRoomInfo.class);
 	}
 
