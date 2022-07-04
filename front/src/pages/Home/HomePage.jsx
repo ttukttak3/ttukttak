@@ -67,7 +67,7 @@ const HomePage = () => {
           </dd>
         </BookBox>
       </BookWrap>
-      <PlusBtn />
+      <PlusBtn onClick={() => navigate('/upload')} />
     </HomeWrap>
   );
 };
