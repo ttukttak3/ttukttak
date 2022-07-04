@@ -3,6 +3,7 @@ import Expand_more_gray from '../../assets/img/arrows/expand_more_gray.png';
 import Posting from '../../assets/img/btn/posting.png';
 import Star from '../../assets/img/userInterFace/star.png';
 import local_library from '../../assets/img/userInterFace/local_library.png';
+import gradation from '../../assets/img/userInterFace/gradation.png';
 
 //scroll시 titlebox가 header가 되기에 width 따로 작업.
 const HomeWrap = styled.div`
@@ -19,17 +20,21 @@ const TitleBox = styled.div`
   height: 4.8rem;
   line-height: 4.8rem;
   border-bottom: 1px solid ${({ theme }) => theme.colors.$black3Line};
-
-  h2 {
+  //대여가능, 대여중/예약중 title
+  .active {
     font-size: 1.7rem;
     font-weight: 700;
     color: ${({ theme }) => theme.colors.$whiteLine1};
     margin-right: auto;
   }
+  .hide {
+    display: none;
+  }
 
-  select {
+  button {
+    text-align: left;
     margin-top: 1.2rem;
-    padding: 0px 8px;
+    padding-left: 1.45rem;
     width: 8.1rem;
     height: 2.3rem;
     line-height: 2.3rem;
@@ -43,16 +48,29 @@ const TitleBox = styled.div`
     appearance: none;
   }
 
-  select:last-child {
-    margin-left: 8px;
+  button:last-child {
+    margin-left: 0.8rem;
+    padding: 0 2rem 0 0.95rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 `;
 
 const BookWrap = styled.div`
   width: 34rem;
-  height: 1000px;
-  margin: 2.8rem auto 0 auto;
+  min-height: 59.5rem;
+  margin: 2.8rem auto;
   text-align: left;
+`;
+
+const NoItem = styled.p`
+  height: 59.5rem;
+  line-height: 59.5rem;
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: ${({ theme }) => theme.colors.$white3};
 `;
 
 const BookBox = styled.dl`
@@ -64,11 +82,29 @@ const BookBox = styled.dl`
   :first-child {
     margin-top: 0;
   }
-
+  //book img
   dt {
     width: 8rem;
     background: #efefef;
     margin-right: 1.6rem;
+    position: relative;
+    img {
+      width: 8rem;
+      height: 11.6rem;
+    }
+    //book state
+    button {
+      display: block;
+      width: 8rem;
+      height: 2.2rem;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background: url(${gradation}) no-repeat;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #fff;
+    }
   }
 `;
 
@@ -98,6 +134,7 @@ const BookLocation = styled.div`
     width: 3.8rem;
     text-align: center;
     margin-right: 0.4rem;
+    letter-spacing: -0.06rem;
   }
   span.orange {
     background: ${({ theme }) => theme.colors.$primaryDeepOrageP};
@@ -178,10 +215,10 @@ const PlusBtn = styled.button`
   height: 4.4rem;
   position: fixed;
   right: 2.5rem;
-  bottom: 11rem;
+  bottom: 7.6rem;
   z-index: 1;
 `;
 
-const HomeStyle = { HomeWrap, TitleBox, BookWrap, BookBox, BookTitle, BookLocation, BookPrice, BookState, PlusBtn };
+const HomeStyle = { HomeWrap, TitleBox, BookWrap, BookBox, BookTitle, BookLocation, BookPrice, BookState, PlusBtn, NoItem };
 
 export default HomeStyle;

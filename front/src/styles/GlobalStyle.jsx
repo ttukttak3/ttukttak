@@ -1,6 +1,12 @@
 import { createGlobalStyle } from 'styled-components';
 //reset.css 내용 추가
 const GlobalStyle = createGlobalStyle`
+    * {
+        -webkit-text-size-adjust:none; 
+        -moz-text-size-adjust:none; 
+        -ms-text-size-adjust:none; 
+    }
+
     html, body, div, span, applet, object, iframe,
     h1, h2, h3, h4, h5, h6, p, blockquote, pre,
     a, abbr, acronym, address, big, cite, code,
@@ -14,7 +20,7 @@ const GlobalStyle = createGlobalStyle`
     figure, figcaption, footer, header, hgroup, 
     menu, nav, output, ruby, section, summary,
     time, mark, audio, video,
-    input, button {
+    input, button, textarea, select {
         margin: 0;
         padding: 0;
         border: 0;
@@ -24,9 +30,12 @@ const GlobalStyle = createGlobalStyle`
             font-size: 10px = 62.5%
             10px : 1rem / 12px : 1.2rem / 14px : 1.4rem / 20px : 2rem
         */
-        font-family: inherit;
+        font-family: 'Pretendard';
         vertical-align: baseline;
         box-sizing: border-box;
+        word-break:keep-all; 
+        word-wrap:break-word; 
+        white-space:normal;
     }
     /* HTML5 display-role reset for older browsers */
     article, aside, details, figcaption, figure, 
@@ -38,7 +47,10 @@ const GlobalStyle = createGlobalStyle`
         font-family: 'Pretendard';
     }
     ol, ul {
-        list-style: none;
+        list-style-type:none;
+    }
+    li {
+        list-style:none;
     }
     blockquote, q {
         quotes: none;
@@ -59,7 +71,25 @@ const GlobalStyle = createGlobalStyle`
     }
     button{
         cursor: pointer;
+        border:none; 
+        background:none;
+        vertical-align:middle;
     }
+    img {
+        vertical-align:middle;
+    }
+    input:focus::-webkit-input-placeholder,
+    input:focus::-moz-input-placeholder,
+    textarea:focus::-webkit-input-placeholder,
+    textarea:focus::-webkit-moz-placeholder { 
+        color:#bbb !important;
+    }
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
 `;
 
 export default GlobalStyle;
