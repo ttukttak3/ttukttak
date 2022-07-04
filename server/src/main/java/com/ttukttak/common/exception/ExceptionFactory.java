@@ -9,12 +9,14 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 
 public enum ExceptionFactory {
-	METHOD_ARGUMNET_NOT_VALID(MethodArgumentNotValidException.class, StatusCode.INVALID_PARAMETER),
+	METHOD_ARGUMNET_INVALID(MethodArgumentNotValidException.class, StatusCode.INVALID_PARAMETER),
 	MISSING_REQUEST_PARAMETER(MissingServletRequestParameterException.class, StatusCode.MISSING_PARAMETER),
 	HTTP_METHOD_NOT_SUPPORTED(HttpRequestMethodNotSupportedException.class, StatusCode.INVALID_METHOD),
 	NOT_AUTHORIZED(AuthException.class, StatusCode.UNAUTHORIZED_USER),
 	NOT_FOUND_OAUTH2(ResourceNotFoundException.class, StatusCode.NOT_EXIST_OAUTH_ACCOUNT),
-	// NOT_EXIST_ELEMENT(NotExistException.class, StatusCode.NO_SUCH_ELEMENT),
+	DUPLICATED(DuplicatedException.class, StatusCode.NOT_EXIST_OAUTH_ACCOUNT),
+	NOT_EXIST_ELEMENT(NotExistException.class, StatusCode.NOT_EXIST_ENTITY),
+	INVALID_PARAMETER(NotExistException.class, StatusCode.INVALID_PARAMETER),
 	SERVER_EXCEPTION(Exception.class, StatusCode.SERVER_ERROR);
 
 	private final Class<? extends Exception> clazz;
