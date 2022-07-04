@@ -10,6 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,6 +32,14 @@ public class BookImage implements Serializable {
 
 	@JoinColumn(name = "book_id")
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JsonIgnore
 	private Book book;
+
+	@Builder
+	public BookImage(Long id, String imageUrl, Book book) {
+		this.id = id;
+		this.imageUrl = imageUrl;
+		this.book = book;
+	}
 
 }
