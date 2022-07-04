@@ -21,12 +21,14 @@ import com.ttukttak.common.BaseTimeEntity;
 import com.ttukttak.oauth.dto.UserDto;
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
 @Entity
+@EqualsAndHashCode
 public class User extends BaseTimeEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
