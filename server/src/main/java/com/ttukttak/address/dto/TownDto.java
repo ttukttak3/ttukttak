@@ -16,8 +16,9 @@ public class TownDto {
 	private String name;
 	private String etc;
 
-	public String getAdress() {
-		return (city + " " + district + " " + name + " " + etc).trim();
+	//반환값 지역구 + 동
+	public String getAddress() {
+		return (district + " " + name).trim();
 	}
 
 	public TownDto(Town town) {

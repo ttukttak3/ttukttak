@@ -165,7 +165,7 @@ const HomePage = () => {
         <button onClick={() => openModal('category')}>{category}</button>
       </TitleBox>
       {tabContArr[activeIndex].tabCont}
-      <PlusBtn />
+      <PlusBtn onClick={() => navigate('/upload')} />
       {rangeShowing && <Popup title={'정렬 설정'} contents={rangeContents} />}
       {categoryShowing && <Popup title={'카테고리'} contents={categoryContents} />}
     </HomeWrap>

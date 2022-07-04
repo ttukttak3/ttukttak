@@ -1,5 +1,7 @@
 package com.ttukttak.book.dto;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.ttukttak.book.entity.BookInfo;
@@ -30,6 +32,18 @@ public class BookInfoDto {
 		this.publisher = bookInfo.getPublisher();
 		this.author = bookInfo.getAuthor();
 		this.isbn = bookInfo.getIsbn();
+	}
+
+	public BookInfoDto(BookUploadRequest uploadRequest) throws ParseException {
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		this.name = uploadRequest.getName();
+		this.description = uploadRequest.getDescription();
+		this.publishedDate = formatter.parse(uploadRequest.getPublishedDate().toString());
+		this.price = uploadRequest.getPrice();
+		this.image = uploadRequest.getImage();
+		this.publisher = uploadRequest.getPublisher();
+		this.author = uploadRequest.getAuthor();
+		this.isbn = uploadRequest.getIsbn();
 	}
 
 }

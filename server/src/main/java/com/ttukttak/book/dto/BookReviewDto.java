@@ -13,14 +13,14 @@ import lombok.Setter;
 public class BookReviewDto {
 	private Long id;
 	private String content;
-	private int grade;
+	private double rating;
 	private BookDto book;
 	private UserDto reviewer;
 
 	public BookReviewDto(BookReview bookReview) {
 		this.id = bookReview.getId();
 		this.content = bookReview.getContent();
-		this.grade = bookReview.getGrade();
+		this.rating = bookReview.getRating();
 		this.book = new BookDto(bookReview.getBook());
 		this.reviewer = new UserDto(bookReview.getReviewer());
 	}
