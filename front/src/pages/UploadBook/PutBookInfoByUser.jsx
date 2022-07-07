@@ -1,14 +1,23 @@
 /* eslint-disable max-lines-per-function */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import style from './PutBookInfoByUser.style';
 import camera from '../../assets/img/userInterFace/Camera_enhance.png';
 import SelectPopupBottom from '../../components/Modal/SelectPopupBottom';
+import bookApi from '../../util/BookApi';
 
 const PutBookInfoByUser = () => {
   const { Wrapper, UploadImg, ImageContainer, InputText, OptionText } = style;
   const [title, setTitle] = useState('');
   const [contentList, setContentList] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [categoryList, setCategoryList] = useState([]);
+  const { getCategoryList } = bookApi;
+
+  useEffect(() => {
+    getCategoryList(setCategoryList);
+
+    return () => {};
+  }, []);
 
   const showCategoryModal = () => {
     setTitle('카테고리');

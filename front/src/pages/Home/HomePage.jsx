@@ -7,6 +7,7 @@ import style from './HomePage.style';
 import BookRentPage from './BookRentPage';
 import BookOnLoadPage from './BookOnLoanPage';
 import Popup from '../../components/Modal/SelectPopupBottom';
+import { useNavigate } from 'react-router-dom';
 const HomePage = () => {
   //-------------- header --------------
   const dispatch = useDispatch();
@@ -138,6 +139,7 @@ const HomePage = () => {
       setCategoryShowing(true);
     }
   };
+  const navigate = useNavigate();
 
   //close popup
   const modalEl = useRef(null);
