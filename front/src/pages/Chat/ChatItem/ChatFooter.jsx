@@ -11,14 +11,8 @@ const ChatFooter = ({ roomId, message, client, setMessage, publish }) => {
   return (
     <Wrapper>
       <AddBtn src={add}></AddBtn>
-      <Input
-        type={'text'}
-        placeholder={'메시지를 입력해 주세요.'}
-        value={message}
-        onChange={e => setMessage(e.target.value)}
-        onKeyPress={e => e.which === 13 && publish(roomId, userId, client, message, setMessage)}
-      ></Input>
-      <SendBtn src={send} onClick={publish(roomId, userId, client, message, setMessage)}></SendBtn>
+      <Input type={'text'} placeholder={'메시지를 입력해 주세요.'} value={message} onChange={e => setMessage(e.target.value)}></Input>
+      <SendBtn src={send} onClick={() => publish(roomId, userId, client, message, setMessage)}></SendBtn>
     </Wrapper>
   );
 };

@@ -23,12 +23,16 @@ import com.ttukttak.chat.dto.ChatRoomInfo;
 import com.ttukttak.chat.dto.ChatRoomRequest;
 import com.ttukttak.chat.dto.ChatUser;
 import com.ttukttak.chat.dto.LastMessage;
-import com.ttukttak.chat.entity.ChatMessage;
+import com.ttukttak.chat.entity.ChatGuest;
 import com.ttukttak.chat.entity.ChatRoom;
 import com.ttukttak.chat.entity.LastCheckedMessage;
+import com.ttukttak.chat.repository.ChatGuestRepository;
 import com.ttukttak.chat.repository.ChatMessageRepository;
 import com.ttukttak.chat.repository.ChatRoomRepository;
 import com.ttukttak.chat.repository.LastCheckedMessageRepository;
+import com.ttukttak.common.exception.DuplicatedException;
+import com.ttukttak.common.exception.InvalidParameterException;
+import com.ttukttak.common.exception.NotExistException;
 import com.ttukttak.oauth.entity.User;
 import com.ttukttak.oauth.repository.UserRepository;
 
@@ -43,6 +47,8 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 	private final ChatRoomRepository chatRoomRepository;
 	private final ChatMessageRepository chatMessageRepository;
 	private final LastCheckedMessageRepository lastCheckedMessageRepository;
+
+	private final ChatGuestRepository chatGuestRepository;
 	private final BookRepository bookRepository;
 	private final UserRepository userRepository;
 
@@ -66,23 +72,22 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
 	@Override
 	public List<ChatRoomCard> getRoomList(Long userId) {
-		return chatRoomRepository.findAllChatRoomByUserId(userId).stream().map(findRoom -> {
+		return lastCheckedMessageRepository.findAllLastCheckedMessagesByUserId(userId).stream().map(findRoom -> {
 			ChatRoom room = findRoom.getRoom();
-			ChatMessage lastChatMessage = chatMessageRepository.findFirstByChatRoomIdOrderBySendedAtDesc(room.getId());
+
+			LastMessage lastMessage = chatMessageRepository.findFirstByChatRoomIdOrderBySendedAtDesc(room.getId())
+				.map(chatMessage -> modelMapper.map(chatMessage, LastMessage.class))
+				.orElse(null);
 
 			LastCheckedMessage lastCheckedMessage = lastCheckedMessageRepository.findByRoomIdAndUserId(room.getId(),
-				userId);
+				userId).orElseThrow(() -> new NotExistException());
 
-			LastMessage lastMessage = null;
-
-			if (lastChatMessage != null) {
-				lastMessage = modelMapper.map(lastChatMessage, LastMessage.class);
-			}
-
-			LocalDateTime lastCheckedTime = findRoom.getRoom().getCreatedDate();
+			LocalDateTime lastCheckedTime;
 
 			if (lastCheckedMessage.getChatMessage() != null) {
 				lastCheckedTime = lastCheckedMessage.getChatMessage().getSendedAt();
+			} else {
+				lastCheckedTime = findRoom.getRoom().getCreatedDate();
 			}
 
 			int unReadCount = chatMessageRepository.countByChatRoomIdAndSendedAtAfterAndUserIdNot(
@@ -101,13 +106,26 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 	 */
 	@Transactional
 	public ChatRoomInfo createChatRoom(ChatRoomRequest request) {
-		//TODO: 예외처리
-		// 1. 자신과 채팅방 만드는 경우 Exception
-		// 2. 없는 책, 유저 아이디면 Exception
-		Book book = bookRepository.findById(request.getBookId()).orElse(null);
+		Book book = bookRepository.findById(request.getBookId())
+			.filter(findBook -> findBook.getIsDelete() == Book.DeleteStatus.N)
+			.orElseThrow(() -> new NotExistException());
 
 		User host = book.getOwner();
-		User guest = userRepository.findById(request.getUserId()).orElse(null);
+		User guest = userRepository.findById(request.getUserId()).orElseThrow(() -> new NotExistException());
+
+		if (host.equals(guest)) {
+			throw new InvalidParameterException();
+		}
+
+		boolean isDuplicated = chatGuestRepository.existsByBookIdAndUserId(book.getId(), guest.getId());
+
+		if (isDuplicated) {
+			throw new DuplicatedException();
+		}
+
+		ChatGuest chatGuest = ChatGuest.builder().book(book).user(guest).build();
+
+		chatGuestRepository.save(chatGuest);
 
 		ChatRoom chatRoom = ChatRoom.builder()
 			.book(book)
@@ -124,6 +142,8 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 		log.info(chatRoom.getId() + " : 생성");
 
 		opsHashChatRoom.put(CHAT_ROOMS, chatRoom.getId(), chatRoom);
+
+		enterChatRoom(chatRoom.getId());
 
 		return modelMapper.map(chatRoom, ChatRoomInfo.class);
 	}

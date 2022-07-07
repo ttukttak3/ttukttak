@@ -25,6 +25,7 @@ import com.ttukttak.book.dto.BookDto;
 import com.ttukttak.chat.entity.ChatRoom;
 import com.ttukttak.common.BaseTimeEntity;
 import com.ttukttak.oauth.entity.User;
+import com.ttukttak.rent.entity.Rent;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -48,12 +49,15 @@ public class Book extends BaseTimeEntity implements Serializable {
 
 	private int deposit;
 
+	@Enumerated(EnumType.STRING)
+	private BookGrade grade;
+
 	@ManyToOne
 	@JoinColumn(name = "owner_id")
 	private User owner;
 
 	@ManyToOne
-	@JoinColumn(name = "book_info_id")
+	@JoinColumn(name = "book_info_id", nullable = true)
 	private BookInfo bookInfo;
 
 	@ManyToOne
@@ -68,14 +72,18 @@ public class Book extends BaseTimeEntity implements Serializable {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "book")
 	private List<ChatRoom> chatRooms = new ArrayList<>();
 
-	//대여 Entity 추가 예정(대여 Entity의 진행상태로 대여가능 유무 판별 가능)
-
 	@Enumerated(EnumType.STRING)
 	@ColumnDefault("'N'")
-	private DeleteStatus isDelete;
+	private DeleteStatus isDelete = DeleteStatus.N;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "book", cascade = CascadeType.ALL)
 	private List<BookImage> images = new ArrayList<>();
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "book")
+	private List<BookReview> bookReview = new ArrayList<>();
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "book")
+	private List<Rent> rent = new ArrayList<>();
 
 	@OneToOne
 	@JoinColumn(name = "thumbnail_id")
@@ -84,26 +92,48 @@ public class Book extends BaseTimeEntity implements Serializable {
 	private String author;
 
 	@Enumerated(EnumType.STRING)
-	@ColumnDefault("'WAIT'")
-	private BookStatus status;
+	@ColumnDefault("'ABLE'")
+	private BookStatus status = BookStatus.ABLE;
 
 	public void addImage(BookImage image) {
 		images.add(image);
 		image.setBook(this);
 	}
 
+	public Book updateThumbnail(BookImage thumbnail) {
+		this.thumbnail = thumbnail;
+		return this;
+	}
+
+	public Book isDelete(DeleteStatus delteStatus) {
+		this.isDelete = delteStatus;
+		return this;
+	}
+
+	public Book updateStatus(BookStatus bookStatus) {
+		this.status = bookStatus;
+		return this;
+	}
+
+	public Book updateGrade(BookGrade bookGrade) {
+		this.grade = bookGrade;
+		return this;
+	}
+
 	@Builder
-	public Book(Long id, String subject, String content, int deposit, User owner,
-		BookInfo bookInfo, BookCategory bookCategory, BookImage thumbnail, String author) {
+	public Book(Long id, String subject, String content, int deposit, User owner, BookGrade grade,
+		BookInfo bookInfo, BookCategory bookCategory, BookImage thumbnail, String author, Town town) {
 		this.id = id;
 		this.subject = subject;
 		this.content = content;
 		this.deposit = deposit;
 		this.owner = owner;
+		this.grade = grade;
 		this.bookInfo = bookInfo;
 		this.bookCategory = bookCategory;
 		this.thumbnail = thumbnail;
 		this.author = author;
+		this.town = town;
 	}
 
 	public static Book of(BookDto BookDto) {
@@ -111,10 +141,11 @@ public class Book extends BaseTimeEntity implements Serializable {
 			.id(BookDto.getId())
 			.subject(BookDto.getSubject())
 			.content(BookDto.getContent())
+			.grade(BookDto.getGrade())
 			.owner(User.of(BookDto.getOwner()))
 			.bookInfo(BookDto.getBookInfo())
 			.bookCategory(BookDto.getBookCategory())
-			// .thumbnail(BookDto.getThumbnail())
+			.thumbnail(BookDto.getThumbnail())
 			.build();
 	}
 
@@ -125,7 +156,11 @@ public class Book extends BaseTimeEntity implements Serializable {
 
 	public enum BookStatus {
 		// 대여가능, 예약중 ,대여중
-		WAIT;
+		ABLE, ON, ING;
+	}
+
+	public enum BookGrade {
+		A, B, C;
 	}
 
 }

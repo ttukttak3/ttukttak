@@ -2,6 +2,7 @@ package com.ttukttak.chat.repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -12,5 +13,5 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long> 
 
 	int countByChatRoomIdAndSendedAtAfterAndUserIdNot(Long roomId, LocalDateTime sendedAt, Long userId);
 
-	ChatMessage findFirstByChatRoomIdOrderBySendedAtDesc(Long roomId);
+	Optional<ChatMessage> findFirstByChatRoomIdOrderBySendedAtDesc(Long roomId);
 }

@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ttukttak.book.dto.BookReviewDto;
 import com.ttukttak.common.BaseTimeEntity;
 import com.ttukttak.oauth.entity.User;
@@ -27,8 +28,9 @@ public class BookReview extends BaseTimeEntity {
 	@Column(columnDefinition = "TEXT")
 	private String content;
 
-	private int grade;
+	private double rating;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "book_id")
 	private Book book;
@@ -38,10 +40,10 @@ public class BookReview extends BaseTimeEntity {
 	private User reviewer;
 
 	@Builder
-	public BookReview(Long id, String content, int grade, Book book, User reviewer) {
+	public BookReview(Long id, String content, double rating, Book book, User reviewer) {
 		this.id = id;
 		this.content = content;
-		this.grade = grade;
+		this.rating = rating;
 		this.book = book;
 		this.reviewer = reviewer;
 	}
@@ -53,7 +55,7 @@ public class BookReview extends BaseTimeEntity {
 		return BookReview.builder()
 			.id(bookReviewDto.getId())
 			.content(bookReviewDto.getContent())
-			.grade(bookReviewDto.getGrade())
+			.rating(bookReviewDto.getRating())
 			.book(book)
 			.reviewer(reviewer)
 			.build();

@@ -13,7 +13,8 @@ public enum StatusCode {
 	INVALID_METHOD(HttpStatus.BAD_REQUEST, "C-3", "Invalid method"),
 	UNAUTHORIZED_USER(HttpStatus.UNAUTHORIZED, "C-4", "Not authorized"),
 	NOT_EXIST_OAUTH_ACCOUNT(HttpStatus.NOT_FOUND, "C-5", "Not exist auth account"),
-	// NO_SUCH_ELEMENT(HttpStatus.BAD_REQUEST, "C-3", "Not exist element"),
+	DUPLICATED_ELEMENT(HttpStatus.BAD_REQUEST, "C-6", "Already exist"),
+	NOT_EXIST_ENTITY(HttpStatus.BAD_REQUEST, "C-7", "Not exist entity"),
 	SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "S-1", "Server error");
 
 	private final HttpStatus httpStatus;

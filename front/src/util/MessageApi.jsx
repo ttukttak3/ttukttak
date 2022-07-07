@@ -1,21 +1,20 @@
 /* eslint-disable array-callback-return */
 import axios from 'axios';
-const baseUrl = 'http://localhost:8080/';
-// const baseUrl = 'http://localhost:8080/api';
+const baseUrl = process.env.REACT_APP_API_URL;
 
 //userId == 현재 login되어있는 user의 id
-
-//GET
 const getChatRoomInfo = async (roomId, setChatMessages, setMembers) => {
   console.log('getMessageList');
 
   try {
-    // const result = await axios.get(baseUrl + `chat/messages/${roomId}`);
-    const result = await axios.get(baseUrl + `messages/${roomId}`);
+    const result = await axios.get(baseUrl + `api/chat/messages/${roomId}`);
     const data = result.data;
-    setMembers(data.members);
+
+    data.members.map(data => {
+      setMembers(_memberList => [..._memberList, data]);
+    });
+
     data.messages.map(data => {
-      console.log(data);
       setChatMessages(_chatList => [..._chatList, data]);
     });
 
@@ -25,11 +24,10 @@ const getChatRoomInfo = async (roomId, setChatMessages, setMembers) => {
   }
 };
 
-//GET
 const getChatList = async (userId, setChatList) => {
+  console.log('getChatList');
   try {
-    // const result = await axios.get(baseUrl + `chat/rooms/${userId}`);
-    const result = await axios.get(baseUrl + `rooms/${userId}`);
+    const result = await axios.get(baseUrl + `api/chat/rooms/${userId}`);
     result.data.map(data => {
       setChatList(_chatList => [..._chatList, data]);
     });
@@ -39,18 +37,15 @@ const getChatList = async (userId, setChatList) => {
   }
 };
 
-//POST
 const makeChatRoom = async (bookId, userId) => {
   try {
-    // const result = await axios.post(baseUrl + `chat/rooms`, { bookId: bookId, userId: userId });
-    const result = await axios.post(baseUrl + `rooms`, { bookId: bookId, userId: userId });
+    const result = await axios.post(baseUrl + `api/chat/rooms`, { bookId: bookId, userId: userId });
     console.log(result.data);
   } catch (error) {
     console.log(error);
   }
 };
 
-//PUT
 const readMessages = async (messageId, userId, roomId) => {
   try {
     const result = await axios.patch(baseUrl + `api/chat/messages/last-checked`, {

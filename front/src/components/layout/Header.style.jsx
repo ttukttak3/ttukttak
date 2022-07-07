@@ -5,16 +5,16 @@ import styled from 'styled-components';
 const HeaderBox = styled.div`
   display: flex;
   flex-direction: row;
-  position: relative;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1;
+  transition: height 0.3s ease;
   height: 6.4rem;
   padding: 0 2.5rem;
   text-align: left;
-  width: 100%;
-
-  &.fixHeader {
-    position: fixed;
-    transition: height 0.3s ease;
-  }
+  background: ${({ theme }) => theme.colors.$black3};
 `;
 
 //왼쪽에 위치
@@ -56,7 +56,6 @@ const DownBtn = styled.a`
 
 //오른쪽에 위치
 const RightBox = styled.div`
-  //border: 1px solid red;
   height: 6.4rem;
   line-height: 6.4rem;
   margin-left: auto;

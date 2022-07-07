@@ -65,7 +65,7 @@ public class StorageUploader {
 		String uploadImageUrl = putS3(uploadFile, fileName);
 		removeNewFile(uploadFile);
 
-		return new FileUploadResponse(fileName, uploadImageUrl);
+		return new FileUploadResponse(originFilename, uploadImageUrl);
 	}
 
 	private String putS3(File uploadFile, String fileName) {

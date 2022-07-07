@@ -7,10 +7,9 @@ import Layout from './components/layout/Layout';
 const App = () => {
   return (
     <ThemeProvider theme={theme}>
-      <React.StrictMode>
-        <GlobalStyle />
-        <Layout />
-      </React.StrictMode>
+      <GlobalStyle />
+      <Layout />
+      {/* <React.StrictMode></React.StrictMode> */}
     </ThemeProvider>
   );
 };
