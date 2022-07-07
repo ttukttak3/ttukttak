@@ -53,8 +53,7 @@ const makeChatRoom = async (bookId, userId) => {
 //PUT
 const readMessages = async (messageId, userId, roomId) => {
   try {
-    // const result = await axios.put(baseUrl + `chat/messages/last-checked`, {
-    const result = await axios.put(baseUrl + `messages/last-checked`, {
+    const result = await axios.patch(baseUrl + `api/chat/messages/last-checked`, {
       messageId: messageId,
       userId: userId,
       roomId: roomId,
