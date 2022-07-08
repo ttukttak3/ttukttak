@@ -2,8 +2,7 @@ package com.ttukttak.common.exception;
 
 import java.util.Arrays;
 
-import javax.security.auth.message.AuthException;
-
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -12,11 +11,11 @@ public enum ExceptionFactory {
 	METHOD_ARGUMNET_INVALID(MethodArgumentNotValidException.class, StatusCode.INVALID_PARAMETER),
 	MISSING_REQUEST_PARAMETER(MissingServletRequestParameterException.class, StatusCode.MISSING_PARAMETER),
 	HTTP_METHOD_NOT_SUPPORTED(HttpRequestMethodNotSupportedException.class, StatusCode.INVALID_METHOD),
-	NOT_AUTHORIZED(AuthException.class, StatusCode.UNAUTHORIZED_USER),
 	NOT_FOUND_OAUTH2(ResourceNotFoundException.class, StatusCode.NOT_EXIST_OAUTH_ACCOUNT),
 	DUPLICATED(DuplicatedException.class, StatusCode.NOT_EXIST_OAUTH_ACCOUNT),
 	NOT_EXIST_ELEMENT(NotExistException.class, StatusCode.NOT_EXIST_ENTITY),
 	INVALID_PARAMETER(NotExistException.class, StatusCode.INVALID_PARAMETER),
+	AUTH_EXCEPTION(AuthenticationException.class, StatusCode.UNAUTH),
 	SERVER_EXCEPTION(Exception.class, StatusCode.SERVER_ERROR);
 
 	private final Class<? extends Exception> clazz;
@@ -29,7 +28,7 @@ public enum ExceptionFactory {
 
 	public static StatusCode getInstance(Exception e) {
 		return Arrays.stream(ExceptionFactory.values())
-			.filter(v -> v.clazz == e.getClass())
+			.filter(v -> v.clazz.isInstance(e))
 			.findFirst()
 			.orElse(SERVER_EXCEPTION).statusCode;
 	}
