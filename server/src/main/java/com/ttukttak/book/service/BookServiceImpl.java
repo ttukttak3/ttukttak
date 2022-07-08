@@ -105,18 +105,23 @@ public class BookServiceImpl implements BookService {
 			bookStatus.add(BookStatus.ON);
 		}
 
-		if (bookRequest.getQuery() == null) {
-			pageList = bookRepository.findByStatusInAndIsDeleteAndTownIdIn(
-				bookStatus,
-				DeleteStatus.N,
-				townIdList,
-				pageRequest);
-		} else {
+		/*
+		 * 카테고리 ID가 0인 것은 전체 카테고리 조회로 판단한다.
+		 */
+		if (bookRequest.getCategoryId().equals(Long.parseLong("0"))) {
 			pageList = bookRepository.findByStatusInAndIsDeleteAndSubjectContainsAndTownIdIn(
 				bookStatus,
 				DeleteStatus.N,
 				bookRequest.getQuery(),
 				townIdList,
+				pageRequest);
+		} else {
+			pageList = bookRepository.findByStatusInAndIsDeleteAndSubjectContainsAndTownIdInAndBookCategoryId(
+				bookStatus,
+				DeleteStatus.N,
+				bookRequest.getQuery(),
+				townIdList,
+				bookRequest.getCategoryId(),
 				pageRequest);
 		}
 
