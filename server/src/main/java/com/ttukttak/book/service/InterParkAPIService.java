@@ -59,10 +59,17 @@ public class InterParkAPIService {
 
 			//페이지번호
 			pageResponse.setPageNumber(Integer.parseInt(jsonObject.get("startIndex").toString()));
-			//총검색결과
-			pageResponse.setTotalPages(Integer.parseInt(jsonObject.get("totalResults").toString()));
-			//페이지당결과개수
-			pageResponse.setPageSize(Integer.parseInt(jsonObject.get("maxResults").toString()));
+			//총 페이지 수 => 총 totalResult / maxResults
+			try {
+				int totalResults = Integer.parseInt(jsonObject.get("totalResults").toString());
+				int totalPages = (int)Math.ceil((double)totalResults / (double)PAGE_SIZE);
+
+				pageResponse.setTotalPages(totalPages);
+			} catch (Exception e) {
+				pageResponse.setTotalPages(0);
+			}
+			//페이지 사이즈
+			pageResponse.setPageSize(PAGE_SIZE);
 
 			//Date 포맷터
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
@@ -96,9 +103,7 @@ public class InterParkAPIService {
 			in.close();
 			http.disconnect();
 
-		} catch (IOException e) {
-		} catch (ParseException e) {
-		}
+		} catch (IOException e) {} catch (ParseException e) {}
 
 		return pageResponse;
 	}

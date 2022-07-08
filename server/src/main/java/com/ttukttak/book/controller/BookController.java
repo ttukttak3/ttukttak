@@ -43,7 +43,10 @@ public class BookController {
 	private final InterParkAPIService interParkAPIService;
 	private final BookService bookService;
 
-	@ApiImplicitParam(name = "InterParkRequest", value = "인터파크 조회 값", required = true, dataType = "object", paramType = "body")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "pageNum", value = "페이지 번호", required = true, dataType = "int", paramType = "param"),
+		@ApiImplicitParam(name = "query", value = "검색어", required = true, dataType = "string", paramType = "param")
+	})
 	@ApiOperation(value = "인터파크 도서 조회")
 	@GetMapping("/interpark/search")
 	public ResponseEntity<PageResponse<BookInfoDto>> search(@RequestParam
