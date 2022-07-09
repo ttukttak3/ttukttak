@@ -13,8 +13,11 @@ const PutBookInfoByUser = () => {
   const [contentList, setContentList] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [categoryList, setCategoryList] = useState([]);
+  const [bookLevel, setBookLevel] = useState();
+  const [currentCategory, setCurrentCategory] = useState();
   const { getCategoryList } = bookApi;
   const dispatch = useDispatch();
+  const bookLevelList = ['A', 'B', 'C'];
 
   useEffect(() => {
     getCategoryList(setCategoryList);
@@ -25,33 +28,33 @@ const PutBookInfoByUser = () => {
 
   const showCategoryModal = () => {
     setTitle('카테고리');
-    setContentList(); //카테고리 내역 data front에서만?
+    const categoryOnclickList = [];
+    categoryList.map(item =>
+      categoryOnclickList.push({
+        onClick: () => {
+          setCurrentCategory(item.name);
+          setShowModal(false);
+        },
+        message: item.name,
+      }),
+    );
+    setContentList([...categoryOnclickList]);
     setShowModal(true);
   };
 
   const showBookLevel = () => {
-    const levelList = [
-      {
+    const levelList = [];
+    bookLevelList.map(item =>
+      levelList.push({
         onClick: () => {
+          setBookLevel(item);
           setShowModal(false);
         },
-        message: 'A',
-      },
-      {
-        onClick: () => {
-          setShowModal(false);
-        },
-        message: 'B',
-      },
-      {
-        onClick: () => {
-          setShowModal(false);
-        },
-        message: 'C',
-      },
-    ];
+        message: item,
+      }),
+    );
     setTitle('책 상태 등급');
-    setContentList([...contentList, ...levelList]);
+    setContentList([...levelList]);
     setShowModal(true);
   };
 

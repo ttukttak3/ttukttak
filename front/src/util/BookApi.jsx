@@ -60,11 +60,10 @@ const InterparkSearch = async (pageNum, query, setData) => {
 
 const getCategoryList = async setCategoryList => {
   try {
-    const result = await axios.get(baseUrl + `/api/book/category`);
+    // const result = await axios.get(baseUrl + `/api/book/category`); 서버 api 로 바꾸기
+    const result = await axios.get(baseUrl + `category`);
     const data = result.data;
-    data.map(data => {
-      setCategoryList(_category => [..._category, data]);
-    });
+    setCategoryList([...data]);
   } catch (error) {
     console.log(error);
   }
