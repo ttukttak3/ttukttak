@@ -1,9 +1,11 @@
 /* eslint-disable max-lines-per-function */
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import style from './PutBookInfoByUser.style';
 import camera from '../../assets/img/userInterFace/Camera_enhance.png';
 import SelectPopupBottom from '../../components/Modal/SelectPopupBottom';
 import bookApi from '../../util/BookApi';
+import { setSave, setAllFalse } from '../../app/headerSlice';
 
 const PutBookInfoByUser = () => {
   const { Wrapper, UploadImg, ImageContainer, InputText, OptionText } = style;
@@ -12,10 +14,12 @@ const PutBookInfoByUser = () => {
   const [showModal, setShowModal] = useState(false);
   const [categoryList, setCategoryList] = useState([]);
   const { getCategoryList } = bookApi;
+  const dispatch = useDispatch();
 
   useEffect(() => {
     getCategoryList(setCategoryList);
-
+    dispatch(setAllFalse());
+    dispatch(setSave(true));
     return () => {};
   }, []);
 

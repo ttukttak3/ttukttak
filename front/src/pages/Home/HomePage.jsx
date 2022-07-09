@@ -2,7 +2,7 @@
 /* eslint-disable max-lines-per-function */
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { setBack, setBackHome, setTitle, setLocation, setSearch, setTrash, setFavorite, setAlert } from '../../app/headerSlice';
+import { setBack, setBackHome, setTitle, setLocation, setSearch, setFavorite, setAlert, setAllFalse } from '../../app/headerSlice';
 import style from './HomePage.style';
 import BookRentPage from './BookRentPage';
 import BookOnLoadPage from './BookOnLoanPage';
@@ -12,12 +12,10 @@ const HomePage = () => {
   //-------------- header --------------
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(setBack(false));
-    dispatch(setBackHome(false));
+    dispatch(setAllFalse());
     dispatch(setTitle('우리집'));
     dispatch(setLocation(true));
     dispatch(setSearch(true));
-    dispatch(setTrash(false));
     dispatch(setFavorite(true));
     dispatch(setAlert(true));
     return () => {};

@@ -16,8 +16,8 @@ const ChatPage = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(setAllFalse());
     dispatch(setTitle('채팅'));
-    dispatch(setBack(false));
 
     getChatList(1, setChatList);
 

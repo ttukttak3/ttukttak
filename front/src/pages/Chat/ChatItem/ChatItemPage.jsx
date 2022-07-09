@@ -36,7 +36,7 @@ const ChatItemPage = () => {
     //messageId-> 마지막 메세지의 id --> 메세지 올때마다 호출해야함,,
     // readMessages(2, userId, roomId);
     // readMessages(messageId, userId, roomId);
-
+    dispatch(setAllFalse());
     dispatch(setBack(true));
     dispatch(setAlert(true));
 

@@ -12,6 +12,7 @@ export const headerSlice = createSlice({
         favorite: false,
         alert: false,
         trash: false,
+        save: false, //도서 등록 버튼 
     },
     reducers: {
         setTitle: (state, action) => {
@@ -38,9 +39,22 @@ export const headerSlice = createSlice({
         setTrash: (state, action) => {
             state.trash = action.payload;
         },
+        setSave: (state, action) => {
+            state.save = action.payload;
+        },
+        setAllFalse: (state, action) => {
+            state.alert = false;
+            state.back = false;
+            state.backHome = false;
+            state.favorite = false;
+            state.location = false;
+            state.save = false;
+            state.search = false;
+            state.trash = false;
+        }
     },
 });
 
-export const { setTitle, setBack, setBackHome, setLocation, setSearch, setFavorite, setAlert, setTrash } = headerSlice.actions;
+export const { setTitle, setBack, setBackHome, setLocation, setSearch, setFavorite, setAlert, setTrash, setSave, setAllFalse } = headerSlice.actions;
 
 export default headerSlice.reducer;

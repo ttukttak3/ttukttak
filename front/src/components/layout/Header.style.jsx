@@ -73,6 +73,13 @@ const RightBtn = styled.a`
   }
 `;
 
-const headerStyle = { HeaderBox, LeftBox, Title, BackBtn, DownBtn, RightBox, RightBtn };
+const RightText = styled.a`
+  font-size: 2rem;
+  height: 6.4rem;
+  line-height: 6.4rem;
+  color: #ffffff;
+`;
+
+const headerStyle = { HeaderBox, LeftBox, Title, BackBtn, DownBtn, RightBox, RightBtn, RightText };
 
 export default headerStyle;

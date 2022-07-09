@@ -12,10 +12,10 @@ import Notifications from '../../assets/img/userInterFace/Notifications.png';
 import Trash_Can from '../../assets/img/userInterFace/Trash_Can.png';
 
 const Header = () => {
-  const { HeaderBox, LeftBox, Title, BackBtn, DownBtn, RightBox, RightBtn } = style;
+  const { HeaderBox, LeftBox, Title, BackBtn, DownBtn, RightBox, RightBtn, RightText } = style;
   const navigate = useNavigate();
   const header = useSelector(state => state.header);
-  const { title, back, backHome, location, search, favorite, alert, trash } = header;
+  const { title, back, backHome, location, search, favorite, alert, trash, save } = header;
 
   return (
     <HeaderBox>
@@ -58,6 +58,7 @@ const Header = () => {
             <img src={Notifications} alt={'알림목록'} />
           </RightBtn>
         )}
+        {save && <RightText>완료</RightText>}
       </RightBox>
     </HeaderBox>
   );

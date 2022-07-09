@@ -12,8 +12,8 @@ const LoginPage = () => {
   //Header
   const dispatch = useDispatch();
   useEffect(() => {
+    dispatch(setAllFalse());
     dispatch(setBack(true));
-    dispatch(setBackHome(false));
     dispatch(setTitle('로그인'));
     return () => {
       // second;
