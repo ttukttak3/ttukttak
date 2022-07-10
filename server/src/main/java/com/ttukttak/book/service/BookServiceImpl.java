@@ -18,6 +18,7 @@ import com.ttukttak.address.entity.Town;
 import com.ttukttak.address.repository.HomeTownRepository;
 import com.ttukttak.address.service.AddressService;
 import com.ttukttak.book.dto.BookCategoryDto;
+import com.ttukttak.book.dto.BookDetailResponse;
 import com.ttukttak.book.dto.BookDto;
 import com.ttukttak.book.dto.BookInfoDto;
 import com.ttukttak.book.dto.BookRequest;
@@ -219,6 +220,13 @@ public class BookServiceImpl implements BookService {
 	public BookDto findById(Long bookId) {
 		return bookRepository.findById(bookId)
 			.map(book -> new BookDto(book))
+			.orElse(null);
+	}
+
+	@Override
+	public BookDetailResponse findByIdDetail(Long bookId) {
+		return bookRepository.findById(bookId)
+			.map(book -> new BookDetailResponse(book))
 			.orElse(null);
 	}
 

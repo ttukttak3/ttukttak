@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ttukttak.book.dto.BookCategoryDto;
-import com.ttukttak.book.dto.BookDto;
+import com.ttukttak.book.dto.BookDetailResponse;
 import com.ttukttak.book.dto.BookInfoDto;
 import com.ttukttak.book.dto.BookRequest;
 import com.ttukttak.book.dto.BookResponse;
@@ -157,14 +157,14 @@ public class BookController {
 	@ApiImplicitParam(name = "bookId", value = "도서 ID", required = true, dataType = "long", paramType = "path")
 	@ApiOperation(value = "도서 상세 정보")
 	@GetMapping("/{bookId}")
-	public ResponseEntity<BookDto> getBook(@PathVariable("bookId")
+	public ResponseEntity<BookDetailResponse> getBook(@PathVariable("bookId")
 	Long bookId) {
 
-		BookDto bookInfo = bookService.findById(bookId);
+		BookDetailResponse bookDetail = bookService.findByIdDetail(bookId);
 
 		return ResponseEntity
 			.status(HttpStatus.OK)
-			.body(bookInfo);
+			.body(bookDetail);
 	}
 
 	@ApiImplicitParam(name = "bookId", value = "도서 ID", required = true, dataType = "long", paramType = "path")
