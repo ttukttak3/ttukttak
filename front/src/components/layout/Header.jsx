@@ -58,7 +58,7 @@ const Header = () => {
             <img src={Notifications} alt={'알림목록'} />
           </RightBtn>
         )}
-        {save && <RightText>완료</RightText>}
+        {/* {save && <RightText onClick={() => saveNewBookByUser()}>완료</RightText>} */}
       </RightBox>
     </HeaderBox>
   );

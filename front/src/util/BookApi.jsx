@@ -17,32 +17,12 @@ const getBookList = async (param, setBookList) => {
 
 const UploadBook = async bookInfo => {
   try {
-    const { description, image } = bookInfo;
-    const result = await axios.post(
-      baseUrl + `api/book`,
-      {
-        description: 'API 도서 설명',
-        image: 'API 도서 이미지',
-        isbn: 'API 도서 번호',
-        name: 'API 도서명',
-        price: 'API 도서 정가',
-        publishedDate: 'API 도서 출판일', //ex) 2022-07-03
-        publisher: 'API 도서 출판사',
-        author: '저자명',
-        subject: '도서명 API 도서명과 같음',
-        bookCategoryId: '카테고리 ID',
-        content: '대여자의 말',
-        deposit: '보증금',
-        grade: '도서 등급',
-        thumbnail: '대표 이미지명, API 조회시 API 이미지명으로!',
-        imageFiles: '이미지 파일',
+    // const { description, image, isbn, name, price, publishedDate, publisher, author, subject, bookCategoryId, content, deposit, grade, thumbnail, imageFiles } = bookInfo;
+    const result = await axios.post(baseUrl + `api/book`, bookInfo, {
+      headers: {
+        'Content-Type': `multipart/form-data`,
       },
-      {
-        headers: {
-          'Content-Type': `multipart/form-data`,
-        },
-      },
-    );
+    });
   } catch (error) {
     console.log(error);
   }
