@@ -272,4 +272,94 @@ public class BookServiceImpl implements BookService {
 		return true;
 	}
 
+	/*
+	 * 도서 수정
+	 */
+	@Override
+	@Transactional
+	public Boolean bookUpdate(Long bookId, BookUploadRequest bookUploadRequest, List<MultipartFile> imageFiles) {
+		//변경 전 도서 조회
+		Book currBook = bookRepository.findById(bookId).orElse(null);
+
+		/*
+		 * 변경 될 사항들
+		 * API 도서 조회 <-> 직접 등록
+		 * 글 제목, 책 소개, 보증금, 책등급, 카테고리
+		 * 이미지 변경
+		 */
+
+		BookInfo bookInfo = null;
+		//API 도서 조회 <-> 직접 등록
+		if (currBook.getBookInfo() != null) {
+			if (!bookUploadRequest.getIsbn().equals(currBook.getBookInfo().getIsbn())) {
+				if (bookUploadRequest.getIsbn() != null && !bookUploadRequest.getIsbn().isEmpty()) {
+					//API 도서가 이미 등록되어있는지 체크
+					bookInfo = bookInfoRepository.findByIsbn(bookUploadRequest.getIsbn());
+					if (bookInfo == null) {
+						BookInfo bookInfoRequest = BookInfo.of(modelMapper.map(bookUploadRequest, BookInfoDto.class));
+						bookInfo = bookInfoRepository.saveAndFlush(bookInfoRequest);
+					}
+				}
+			}
+		} else {
+			if (bookUploadRequest.getIsbn() != null && !bookUploadRequest.getIsbn().isEmpty()) {
+				//API 도서가 이미 등록되어있는지 체크
+				bookInfo = bookInfoRepository.findByIsbn(bookUploadRequest.getIsbn());
+				if (bookInfo == null) {
+					BookInfo bookInfoRequest = BookInfo.of(modelMapper.map(bookUploadRequest, BookInfoDto.class));
+					bookInfo = bookInfoRepository.saveAndFlush(bookInfoRequest);
+				}
+			}
+		}
+
+		//섬네일 초기값 선언
+		BookImage bookImage = currBook.getThumbnail();
+
+		//변경 도서 빌더
+		Book updateBook = Book.builder()
+			.id(bookId)
+			.author(bookUploadRequest.getAuthor())
+			.content(bookUploadRequest.getContent())
+			.deposit(bookUploadRequest.getDeposit())
+			.subject(bookUploadRequest.getSubject())
+			.grade(bookUploadRequest.getGrade())
+			.bookInfo(bookInfo)
+			.bookCategory(BookCategory.builder().id(bookUploadRequest.getBookCategoryId()).build())
+			.owner(currBook.getOwner())
+			.town(currBook.getTown())
+			.thumbnail(bookImage)
+			.build();
+
+		/*
+		 * 이미지 변경 로직 -- 작업 진행중
+		 */
+		//섬네일 업데이트를 위한 리스트
+		List<FileUploadResponse> imageList = new ArrayList<>();
+
+		//API 도서 조회로 섬네일이 API 이미지 경로 인경우
+		if (!bookImage.getImageUrl().equals(bookUploadRequest.getThumbnail())) {
+			if (bookUploadRequest.getIsbn() != null && !bookUploadRequest.getIsbn().isEmpty()) {
+				imageList
+					.add(new FileUploadResponse(bookUploadRequest.getThumbnail(), bookUploadRequest.getThumbnail()));
+				updateBook.addImage(BookImage.builder().imageUrl(bookUploadRequest.getThumbnail()).build());
+			}
+		}
+
+		//이미지 업로드
+		try {
+			for (MultipartFile imageFile : imageFiles) {
+				FileUploadResponse fileUploadResponse = storageUploader.upload(imageFile, "book");
+				imageList.add(fileUploadResponse);
+				updateBook.addImage(BookImage.builder().imageUrl(fileUploadResponse.getUrl()).build());
+
+			}
+		} catch (Exception e) {}
+
+		//변경된 이미지 있는지 확인
+
+		bookRepository.save(updateBook);
+
+		return true;
+	}
+
 }

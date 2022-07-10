@@ -1,5 +1,7 @@
 package com.ttukttak.book.dto;
 
+import java.util.List;
+
 import com.ttukttak.book.entity.Book.BookGrade;
 
 import io.swagger.annotations.ApiModelProperty;
@@ -44,4 +46,8 @@ public class BookUploadRequest {
 	private String thumbnail;
 	@ApiModelProperty(example = "도서 등급")
 	private BookGrade grade;
+
+	//Book 이미지정보
+	@ApiModelProperty(example = "이미지목록")
+	private List<BookImageDto> bookImages;
 }

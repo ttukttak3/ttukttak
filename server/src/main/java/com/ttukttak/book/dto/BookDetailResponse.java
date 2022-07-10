@@ -33,7 +33,7 @@ public class BookDetailResponse {
 	private List<BookReviewResponse> review;
 
 	private BookImage thumbnail;
-	private List<BookImage> imageUrls;
+	private List<BookImage> bookImages;
 
 	public BookDetailResponse(Book book) {
 		this.id = book.getId();
@@ -46,7 +46,7 @@ public class BookDetailResponse {
 		this.bookCategory = book.getBookCategory();
 		this.bookTown = new TownDto(book.getTown());
 		this.thumbnail = book.getThumbnail();
-		this.imageUrls = book.getImages();
+		this.bookImages = book.getImages();
 		this.rating = book.getBookReview().stream().mapToDouble(review -> review.getRating()).average().orElse(0);
 		this.review = book.getBookReview().stream().map(r -> new BookReviewResponse(r)).collect(Collectors.toList());
 		this.rentCnt = book.getRent().size();

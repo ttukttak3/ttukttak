@@ -32,4 +32,6 @@ public interface BookService {
 
 	BookDetailResponse findByIdDetail(Long bookId);
 
+	Boolean bookUpdate(Long bookId, BookUploadRequest bookUploadRequest, List<MultipartFile> imageFiles);
+
 }

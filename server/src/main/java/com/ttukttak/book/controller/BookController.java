@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -219,6 +220,26 @@ public class BookController {
 			.status(HttpStatus.OK)
 			.body(result);
 
+	}
+
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "bookUploadRequest", value = "도서 정보 bookUploadRequest", required = true, dataType = "BookUploadRequest", paramType = "body"),
+		@ApiImplicitParam(name = "imageFiles", value = "이미지 파일", required = false, dataType = "file", paramType = "body"),
+	})
+	@ApiOperation(value = "도서 수정")
+	@PutMapping("/{bookId}")
+	public ResponseEntity<Boolean> updateBook(
+		@PathVariable("bookId")
+		Long bookId,
+		BookUploadRequest bookUploadRequest,
+		@RequestBody
+		List<MultipartFile> imageFiles) {
+
+		Boolean result = bookService.bookUpdate(bookId, bookUploadRequest, imageFiles);
+
+		return ResponseEntity
+			.status(HttpStatus.OK)
+			.body(result);
 	}
 
 }
