@@ -4,10 +4,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setBack, setBackHome, setTitle } from '../../../app/headerSlice';
-import { setRole, setNickName, setEmail, setImageFile, setHomeTown } from '../../../app/userSlice';
+import { setUserId, setRole, setNickName, setEmail, setImageFile, setHomeTown } from '../../../app/userSlice';
 import utils from '../../../util/ProfileApi';
 import style from './ProfilePage.style';
-import Popup from '../../../components/Modal/SelectPopupBottom';
 import noImg from '../../../assets/img/logo/no_img.png';
 const ProfilePage = () => {
   //Header setting
@@ -31,6 +30,7 @@ const ProfilePage = () => {
         //확인 차 !== 달아둠
         navigate(`/`);
       } else {
+        dispatch(setUserId(result.id));
         dispatch(setRole(result.role));
         dispatch(setNickName(result.nickname));
         dispatch(setEmail(result.email));
@@ -56,7 +56,6 @@ const ProfilePage = () => {
     fileReader.onload = () => {
       setImgFile(e.target.files[0]);
       setImgPreview(fileReader.result);
-      setIsShowing(false);
     };
   };
 
@@ -74,13 +73,12 @@ const ProfilePage = () => {
   };
 
   //img delete
-  const onDeleteImg = e => {
-    e.preventDefault();
-    dispatch(setImageFile(''));
-    setImgFile('');
-    setImgPreview('');
-    setIsShowing(false);
-  };
+  // const onDeleteImg = e => {
+  //   e.preventDefault();
+  //   dispatch(setImageFile(''));
+  //   setImgFile('');
+  //   setImgPreview('');
+  // };
 
   //check
   const onCheckHandler = () => {
@@ -120,6 +118,7 @@ const ProfilePage = () => {
     formData.append('townId', id);
     signUp(formData)
       .then(result => {
+        dispatch(setUserId(result.id));
         dispatch(setRole(result.role));
         dispatch(setNickName(result.nickname));
         dispatch(setEmail(result.email));
@@ -133,51 +132,17 @@ const ProfilePage = () => {
       });
   };
 
-  //bottom popup
-  const popupContents = [
-    {
-      message: '갤러리에서 선택',
-      onClick: onChangeImg,
-    },
-    {
-      message: '카메라로 사진 촬영',
-      onClick: () => {
-        alert('사진촬영');
-      },
-    },
-    {
-      message: '프로필 이미지 삭제',
-      onClick: onDeleteImg,
-    },
-  ];
-  //open popup
-  const [isShowing, setIsShowing] = useState(false);
-  const openModal = () => {
-    setIsShowing(true);
-  };
-  //close popup
-  const modalEl = useRef(null);
-  const handleClickOutside = ({ target }) => {
-    if (isShowing && !modalEl.current.contains(target)) setIsShowing(false);
-  };
-  useEffect(() => {
-    window.addEventListener('click', handleClickOutside);
-    return () => {
-      window.removeEventListener('click', handleClickOutside);
-    };
-  }, [handleClickOutside]);
-
   const onErrorImg = e => {
     e.target.src = noImg;
   };
 
   const { ProfileBox, ImgBox, ImgChangeBtn, InfoBox, SubmitBtn } = style;
   return (
-    <ProfileBox ref={modalEl}>
+    <ProfileBox>
       <ImgBox>
         <input type="file" accept="image/*" ref={inputRef} onChange={saveImage} style={{ display: 'none' }} />
         <img src={imgPreview} onError={onErrorImg} alt="이미지" />
-        <ImgChangeBtn onClick={openModal}></ImgChangeBtn>
+        <ImgChangeBtn onClick={onChangeImg}></ImgChangeBtn>
       </ImgBox>
       <InfoBox>
         <h4>닉네임</h4>
@@ -187,7 +152,6 @@ const ProfilePage = () => {
         <h6>{user.email}</h6>
       </InfoBox>
       <SubmitBtn onClick={onCheckHandler}>회원가입 완료</SubmitBtn>
-      {isShowing && <Popup title={'프로필 이미지 편집'} contents={popupContents} />}
     </ProfileBox>
   );
 };

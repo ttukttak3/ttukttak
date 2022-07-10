@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setBack, setBackHome, setTitle } from '../../../app/headerSlice';
 import style from './LoginPage.style';
+import { ACCESS_TOKEN } from '../../../util/ApiUtil';
 import utils from '../../../util/ProfileApi';
 import loginLogo from '../../../assets/img/logo/Croods_The_Feedback.png';
 import naverLogo from '../../../assets/img/logo/naver_logo.png';
@@ -12,6 +13,7 @@ const LoginPage = () => {
   //Header
   const dispatch = useDispatch();
   useEffect(() => {
+    localStorage.removeItem(ACCESS_TOKEN);
     dispatch(setBack(true));
     dispatch(setBackHome(false));
     dispatch(setTitle('로그인'));
