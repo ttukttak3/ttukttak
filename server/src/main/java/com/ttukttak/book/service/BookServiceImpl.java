@@ -281,6 +281,10 @@ public class BookServiceImpl implements BookService {
 		//변경 전 도서 조회
 		Book currBook = bookRepository.findById(bookId).orElse(null);
 
+		//이미지를 전체 변경했을 경우
+		List<Long> bookImageIds = currBook.getImages().stream().map(c -> new Long(c.getId()))
+			.collect(Collectors.toList());
+
 		/*
 		 * 변경 될 사항들
 		 * API 도서 조회 <-> 직접 등록
@@ -300,6 +304,8 @@ public class BookServiceImpl implements BookService {
 						bookInfo = bookInfoRepository.saveAndFlush(bookInfoRequest);
 					}
 				}
+			} else {
+				bookInfo = currBook.getBookInfo();
 			}
 		} else {
 			if (bookUploadRequest.getIsbn() != null && !bookUploadRequest.getIsbn().isEmpty()) {
@@ -355,9 +361,30 @@ public class BookServiceImpl implements BookService {
 			}
 		} catch (Exception e) {}
 
-		//변경된 이미지 있는지 확인
+		Book resultBook = bookRepository.saveAndFlush(updateBook);
 
-		bookRepository.save(updateBook);
+		//대표이미지 지정
+		for (FileUploadResponse uploadResponse : imageList) {
+			if (uploadResponse.getFileName().equals(bookUploadRequest.getThumbnail())) {
+				BookImage bookThumbnail = bookImageRepository.findByImageUrlAndBookId(uploadResponse.getUrl(),
+					bookId);
+				resultBook.updateThumbnail(bookThumbnail);
+				bookRepository.save(resultBook);
+				break;
+			}
+		}
+
+		//DB 이미지 리스트와 넘겨받은 Image 리스트의 ID 비교후 없으면 삭제.
+		for (Long currImageId : bookImageIds) {
+			if (bookUploadRequest.getBookImages() == null) {
+				bookImageRepository.deleteById(currImageId);
+			} else if (bookUploadRequest.getBookImages().size() == 0) {
+				bookImageRepository.deleteById(currImageId);
+			} else if (!bookUploadRequest.getBookImages().stream()
+				.anyMatch(image -> image.getId().equals(currImageId))) {
+				bookImageRepository.deleteById(currImageId);
+			}
+		}
 
 		return true;
 	}
