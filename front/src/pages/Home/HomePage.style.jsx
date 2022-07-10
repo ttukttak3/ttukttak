@@ -34,12 +34,12 @@ const TitleBox = styled.div`
   button {
     text-align: left;
     margin-top: 1.2rem;
-    padding-left: 1.45rem;
+    padding-left: 1.25rem;
     width: 8.1rem;
     height: 2.3rem;
     line-height: 2.3rem;
     border: 1px solid ${({ theme }) => theme.colors.$black3Line};
-    background: url(${Expand_more_gray}) 90% center no-repeat;
+    background: url(${Expand_more_gray}) 92% center no-repeat;
     font-size: 1.2rem;
     font-weight: 400;
     color: ${({ theme }) => theme.colors.$white3};
@@ -59,14 +59,14 @@ const TitleBox = styled.div`
 
 const BookWrap = styled.div`
   width: 34rem;
-  min-height: 59.5rem;
+  min-height: 50rem;
   margin: 2.8rem auto;
   text-align: left;
 `;
 
 const NoItem = styled.p`
-  height: 59.5rem;
-  line-height: 59.5rem;
+  height: 50rem;
+  line-height: 50rem;
   text-align: center;
   font-size: 1.6rem;
   font-weight: 400;
@@ -169,7 +169,7 @@ const BookPrice = styled.div`
   }
   div > span {
     display: inline-block;
-    font-size: 1.2em;
+    font-size: 1.2rem;
     font-weight: 400;
     color: ${({ theme }) => theme.colors.$white2};
     margin-right: 0.4rem;
@@ -191,7 +191,7 @@ const BookState = styled.div`
 
   p {
     padding-left: 1.9rem; //아이콘 사이즈 16 + 숫자 간격 3
-    width: 2.5rem;
+    width: auto;
     height: 1.6rem;
     line-height: 1.6rem;
     font-size: 1rem;

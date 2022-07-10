@@ -4,14 +4,17 @@ import { createSlice } from '@reduxjs/toolkit';
 export const headerSlice = createSlice({
     name: 'header',
     initialState: {
-        title: '우리집',
-        back: false,
-        backHome: false, //소셜 로그인 후 프로필 창에서 Back시 홈으로 이동(로그인 화면으로 보내면 로그인에서 백 시 다시 프로필로 오기 때문에 홈으로 이동한다.)
-        location: false, //아래버튼
-        search: false,
-        favorite: false,
-        alert: false,
-        trash: false,
+        title: '',
+        back: false,        //뒤로가기
+        backHome: false,    //소셜 로그인 후 프로필 창에서 Back시 홈으로 이동
+        location: false,    //위치(아래모양)
+        search: false,      //검색
+        favorite: false,    //북마크
+        alert: false,       //확인
+        trash: false,       //쓰레기
+        share: false,       //공유하기
+        more: false,        //더보기
+        save: false,        //도서 등록 버튼 
     },
     reducers: {
         setTitle: (state, action) => {
@@ -38,9 +41,31 @@ export const headerSlice = createSlice({
         setTrash: (state, action) => {
             state.trash = action.payload;
         },
+        setShare: (state, action) => {
+            state.share = action.payload;
+        },
+        setMore: (state, action) => {
+            state.more = action.payload;
+        },
+        setSave: (state, action) => {
+            state.save = action.payload;
+        },
+        setAllFalse: (state, action) => {
+            state.title = '';
+            state.alert = false;
+            state.back = false;
+            state.backHome = false;
+            state.favorite = false;
+            state.location = false;
+            state.save = false;
+            state.search = false;
+            state.trash = false;
+            state.share = false;
+            state.more = false;
+        }
     },
 });
 
-export const { setTitle, setBack, setBackHome, setLocation, setSearch, setFavorite, setAlert, setTrash } = headerSlice.actions;
+export const { setTitle, setBack, setBackHome, setLocation, setSearch, setFavorite, setAlert, setTrash, setShare, setMore, setSave, setAllFalse } = headerSlice.actions;
 
 export default headerSlice.reducer;
