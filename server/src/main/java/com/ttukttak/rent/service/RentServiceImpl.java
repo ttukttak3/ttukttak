@@ -23,7 +23,7 @@ public class RentServiceImpl implements RentService {
 
 		Page<RentCard> pageInfo = rentRepository
 			.findAllByOwnerIdAndIsReturnFalseOrderByBeginDateAsc(ownerId, pageable)
-			.map(RentCard::of);
+			.map(RentCard::from);
 
 		return PageResponse.<RentCard>builder()
 			.contents(pageInfo.getContent())
@@ -39,7 +39,7 @@ public class RentServiceImpl implements RentService {
 
 		Page<RentCard> pageInfo = rentRepository
 			.findAllByLenderIdAndIsReturnFalseOrderByBeginDateAsc(lenderId, pageable)
-			.map(RentCard::of);
+			.map(RentCard::from);
 
 		return PageResponse.<RentCard>builder()
 			.contents(pageInfo.getContent())

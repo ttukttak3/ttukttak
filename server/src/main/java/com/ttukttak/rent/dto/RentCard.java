@@ -31,13 +31,13 @@ public class RentCard {
 		this.rentedBook = rentedBook;
 	}
 
-	public static RentCard of(Rent rent) {
+	public static RentCard from(Rent rent) {
 
 		return RentCard.builder()
 			.beginDate(rent.getBeginDate())
 			.isReturn(rent.getIsReturn())
 			.status(rent.getStatus())
-			.rentedBook(RentedBook.of(rent.getBook()))
+			.rentedBook(RentedBook.from(rent.getBook()))
 			.build();
 	}
 

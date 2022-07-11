@@ -37,7 +37,7 @@ public class RentedBook {
 		this.status = status;
 	}
 
-	public static RentedBook of(Book book) {
+	public static RentedBook from(Book book) {
 		return RentedBook.builder()
 			.subject(book.getSubject())
 			.author(book.getAuthor())
