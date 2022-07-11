@@ -15,7 +15,7 @@ const Header = () => {
   const { HeaderBox, LeftBox, Title, BackBtn, DownBtn, RightBox, RightBtn, RightText } = style;
   const navigate = useNavigate();
   const header = useSelector(state => state.header);
-  const { title, back, backHome, location, search, favorite, alert, trash, save } = header;
+  const { title, back, backHome, location, search, favorite, alert, trash } = header;
 
   return (
     <HeaderBox>
@@ -58,7 +58,6 @@ const Header = () => {
             <img src={Notifications} alt={'알림목록'} />
           </RightBtn>
         )}
-        {/* {save && <RightText onClick={() => saveNewBookByUser()}>완료</RightText>} */}
       </RightBox>
     </HeaderBox>
   );

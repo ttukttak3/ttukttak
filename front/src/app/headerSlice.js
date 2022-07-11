@@ -12,7 +12,6 @@ export const headerSlice = createSlice({
         favorite: false,
         alert: false,
         trash: false,
-        save: false, //도서 등록 버튼 
     },
     reducers: {
         setTitle: (state, action) => {
@@ -38,9 +37,6 @@ export const headerSlice = createSlice({
         },
         setTrash: (state, action) => {
             state.trash = action.payload;
-        },
-        setSave: (state, action) => {
-            state.save = action.payload;
         },
         setAllFalse: (state, action) => {
             Object.keys(state).forEach(key => {

@@ -19,7 +19,6 @@ const UploadBookPage = () => {
   }, [dispatch]);
 
   const handleRadio = e => {
-    console.log(e.target.value);
     setRadioOpt(e.target.value);
   };
 
