@@ -41,8 +41,7 @@ const InterparkSearch = async (pageNum, query, setData) => {
 const getCategoryList = async setCategoryList => {
   try {
     // const result = await axios.get(baseUrl + `/api/book/category`); 서버 api 로 바꾸기
-    const result = await axios.get(baseUrl + `category`);
-    const data = result.data;
+    const { data } = await axios.get(baseUrl + `category`);
     setCategoryList([...data]);
   } catch (error) {
     console.log(error);

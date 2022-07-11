@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { setTitle, setBack, setAlert } from '../../../app/headerSlice';
+import { setTitle, setBack, setAlert, setAllFalse } from '../../../app/headerSlice';
 import { setUserId } from '../../../app/userSlice';
 import ChatBookInfo from './ChatBookInfo';
 import ChatFooter from './ChatFooter';

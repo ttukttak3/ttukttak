@@ -1,7 +1,7 @@
 /* eslint-disable max-lines-per-function */
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { setTitle, setBack } from '../../../app/headerSlice';
+import { setTitle, setBack, setAllFalse } from '../../../app/headerSlice';
 import ChatListItem from '../ChatList/ChatListItem';
 import Wrapper from '../ChatList/ChatPage.style';
 import messageApi from '../../../util/MessageApi';

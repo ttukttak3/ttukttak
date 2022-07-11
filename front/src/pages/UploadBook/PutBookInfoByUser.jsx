@@ -33,13 +33,13 @@ const PutBookInfoByUser = () => {
   const showCategoryModal = () => {
     setTitle('카테고리');
     const categoryOnclickList = [];
-    categoryList.map(item =>
+    categoryList.map(({ name }) =>
       categoryOnclickList.push({
         onClick: () => {
-          setCurrentCategory(item.name);
+          setCurrentCategory(name);
           setShowModal(false);
         },
-        message: item.name,
+        message: name,
       }),
     );
     setContentList([...categoryOnclickList]);

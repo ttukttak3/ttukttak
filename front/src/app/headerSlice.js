@@ -43,14 +43,11 @@ export const headerSlice = createSlice({
             state.save = action.payload;
         },
         setAllFalse: (state, action) => {
-            state.alert = false;
-            state.back = false;
-            state.backHome = false;
-            state.favorite = false;
-            state.location = false;
-            state.save = false;
-            state.search = false;
-            state.trash = false;
+            Object.keys(state).forEach(key => {
+                if (state[key]) {
+                    state[key] = false;
+                }
+            })
         }
     },
 });
