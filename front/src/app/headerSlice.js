@@ -48,6 +48,6 @@ export const headerSlice = createSlice({
     },
 });
 
-export const { setTitle, setBack, setBackHome, setLocation, setSearch, setFavorite, setAlert, setTrash, setSave, setAllFalse } = headerSlice.actions;
+export const { setTitle, setBack, setBackHome, setLocation, setSearch, setFavorite, setAlert, setTrash, setAllFalse } = headerSlice.actions;
 
 export default headerSlice.reducer;

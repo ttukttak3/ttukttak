@@ -5,7 +5,7 @@ import style from './PutBookInfoByUser.style';
 import camera from '../../assets/img/userInterFace/Camera_enhance.png';
 import SelectPopupBottom from '../../components/Modal/SelectPopupBottom';
 import bookApi from '../../util/BookApi';
-import { setSave, setAllFalse } from '../../app/headerSlice';
+import { setAllFalse } from '../../app/headerSlice';
 
 const PutBookInfoByUser = () => {
   const { Wrapper, UploadImg, ImageContainer, InputText, OptionText } = style;
@@ -26,7 +26,6 @@ const PutBookInfoByUser = () => {
   useEffect(() => {
     getCategoryList(setCategoryList);
     dispatch(setAllFalse());
-    dispatch(setSave(true));
     return () => {};
   }, []);
 
