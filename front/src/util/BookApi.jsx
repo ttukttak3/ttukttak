@@ -15,7 +15,7 @@ const getBookList = async (param, setBookList) => {
   }
 };
 
-const UploadBook = async bookInfo => {
+const uploadBook = async bookInfo => {
   try {
     // const { description, image, isbn, name, price, publishedDate, publisher, author, subject, bookCategoryId, content, deposit, grade, thumbnail, imageFiles } = bookInfo;
     const result = await axios.post(baseUrl + `api/book`, bookInfo, {
@@ -28,7 +28,7 @@ const UploadBook = async bookInfo => {
   }
 };
 
-const InterparkSearch = async (pageNum, query, setData) => {
+const interparkSearch = async (pageNum, query, setData) => {
   try {
     const result = await axios.get(baseUrl + `api/book/interpark/search/?pageNum=${pageNum}&query=${query}`);
     const data = result.data;
@@ -48,6 +48,6 @@ const getCategoryList = async setCategoryList => {
   }
 };
 
-const bookApi = { UploadBook, getBookList, InterparkSearch, getCategoryList };
+const bookApi = { uploadBook, getBookList, interparkSearch, getCategoryList };
 
 export default bookApi;
