@@ -24,11 +24,13 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Getter
 @NoArgsConstructor
 @Entity
 @EqualsAndHashCode
+@ToString
 public class User extends BaseTimeEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
