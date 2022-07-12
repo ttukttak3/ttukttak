@@ -1,4 +1,4 @@
-import utils from './api/Util';
+import utils from './ApiUtil';
 const { baseUrl, accessToken, apiUtil, formUtil } = utils;
 const redirectUrl = process.env.REACT_APP_API_URL + '/oauth2/redirect';
 const naverUrl = baseUrl + 'oauth2/authorize/naver?redirect_uri=' + redirectUrl;
