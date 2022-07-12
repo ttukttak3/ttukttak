@@ -20,10 +20,10 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
-@Api(value = "/api/chat/messages", description = "채팅메시지 API")
+@Api(value = "/api/v1/chat/messages", description = "채팅메시지 API")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/chat/messages")
+@RequestMapping("/api/v1/chat/messages")
 public class ChatMessageController {
 	private final ChatMessageService chatMessageService;
 

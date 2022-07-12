@@ -20,10 +20,10 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
-@Api(value = "/api/address", description = "지역 API")
+@Api(value = "/api/v1/address", description = "지역 API")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/address")
+@RequestMapping("/api/v1/address")
 public class AddressController {
 	private final AddressService addressService;
 	private final NaverMapService reverseGeocoding;
@@ -44,7 +44,7 @@ public class AddressController {
 	@ApiOperation(value = "인근 지역 조회", notes = "타운id를 받아와 해당 범위에 있는 주소를 반환한다.")
 	@GetMapping("/neartown")
 	public ResponseEntity<List<TownDto>> getNearTown(@RequestParam
-	Long townId) {
+		Long townId) {
 		/*
 		 * 범위 기본 값 3
 		 */
@@ -61,7 +61,7 @@ public class AddressController {
 	@ApiOperation(value = "지역 조회(지역동 검색)", notes = "동,면을 like로 검색한 결과를 반환.")
 	@GetMapping("/search")
 	public ResponseEntity<List<TownDto>> getSearch(@RequestParam
-	String townName) {
+		String townName) {
 
 		List<TownDto> townList = addressService.getSearchTown(townName);
 
@@ -74,7 +74,7 @@ public class AddressController {
 	@ApiOperation(value = "지역 조회(id)", notes = "townId를 받아 데이터 반환")
 	@GetMapping("/{townId}")
 	public ResponseEntity<TownDto> getSearch(@PathVariable("townId")
-	Long townId) {
+		Long townId) {
 
 		TownDto townDto = addressService.getById(townId);
 

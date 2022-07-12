@@ -19,10 +19,10 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import springfox.documentation.annotations.ApiIgnore;
 
-@Api(value = "/api/rent", description = "대여 API")
+@Api(value = "/api/v1/rent", description = "대여 API")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/rent")
+@RequestMapping("/api/v1/rent")
 public class RentController {
 
 	private final RentService rentService;
