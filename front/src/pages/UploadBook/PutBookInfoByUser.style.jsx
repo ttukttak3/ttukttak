@@ -26,6 +26,17 @@ const OptionText = styled.div`
   font-weight: 600;
 `;
 
-const style = { Wrapper, UploadImg, ImageContainer, InputText, OptionText };
+const SaveButton = styled.button`
+  display: inline-block;
+  height: 3.6rem;
+  line-height: 3.6rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+  letter-spacing: 0.1px;
+  color: ${({ theme }) => theme.colors.$whiteLine3}
+  text-align: center;
+`;
+
+const style = { Wrapper, UploadImg, ImageContainer, InputText, OptionText, SaveButton };
 
 export default style;

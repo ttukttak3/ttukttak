@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { setBack, setBackHome, setTitle } from '../../../app/headerSlice';
+import { setBack, setBackHome, setTitle, setAllFalse } from '../../../app/headerSlice';
 import style from './LoginPage.style';
 import utils from '../../../util/ProfileApi';
 import loginLogo from '../../../assets/img/logo/Croods_The_Feedback.png';
@@ -12,8 +12,8 @@ const LoginPage = () => {
   //Header
   const dispatch = useDispatch();
   useEffect(() => {
+    dispatch(setAllFalse());
     dispatch(setBack(true));
-    dispatch(setBackHome(false));
     dispatch(setTitle('로그인'));
     return () => {
       // second;
