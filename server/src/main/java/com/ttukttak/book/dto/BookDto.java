@@ -1,12 +1,12 @@
 package com.ttukttak.book.dto;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.ttukttak.address.dto.TownDto;
 import com.ttukttak.book.entity.Book;
 import com.ttukttak.book.entity.Book.BookGrade;
 import com.ttukttak.book.entity.BookCategory;
-import com.ttukttak.book.entity.BookImage;
 import com.ttukttak.book.entity.BookInfo;
 import com.ttukttak.book.entity.BookReview;
 import com.ttukttak.oauth.dto.UserDto;
@@ -30,8 +30,8 @@ public class BookDto {
 	private TownDto bookTown;
 	private List<BookReview> review;
 
-	private BookImage thumbnail;
-	private List<BookImage> imageUrls;
+	private BookImageDto thumbnail;
+	private List<BookImageDto> imageUrls;
 
 	public BookDto(Book book) {
 		this.id = book.getId();
@@ -43,8 +43,8 @@ public class BookDto {
 		this.bookInfo = book.getBookInfo();
 		this.bookCategory = book.getBookCategory();
 		this.bookTown = new TownDto(book.getTown());
-		this.thumbnail = book.getThumbnail();
-		this.imageUrls = book.getImages();
+		this.thumbnail = BookImageDto.from(book.getThumbnail());
+		this.imageUrls = book.getImages().stream().map(BookImageDto::from).collect(Collectors.toList());
 		this.review = book.getBookReview();
 	}
 

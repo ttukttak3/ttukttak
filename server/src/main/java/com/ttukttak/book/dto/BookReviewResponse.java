@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import com.ttukttak.book.entity.BookReview;
 import com.ttukttak.oauth.dto.UserResponse;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,12 +21,27 @@ public class BookReviewResponse {
 	private LocalDateTime createdDate;
 	private LocalDateTime modifiedDate;
 
-	public BookReviewResponse(BookReview bookReview) {
-		this.id = bookReview.getId();
-		this.content = bookReview.getContent();
-		this.rating = bookReview.getRating();
-		this.reviewer = new UserResponse(bookReview.getReviewer());
-		this.createdDate = bookReview.getCreatedDate();
-		this.modifiedDate = bookReview.getModifiedDate();
+	@Builder
+	private BookReviewResponse(Long id, String content, double rating, UserResponse reviewer, LocalDateTime createdDate,
+		LocalDateTime modifiedDate) {
+		super();
+		this.id = id;
+		this.content = content;
+		this.rating = rating;
+		this.reviewer = reviewer;
+		this.createdDate = createdDate;
+		this.modifiedDate = modifiedDate;
 	}
+
+	public static BookReviewResponse from(BookReview bookReview) {
+		return BookReviewResponse.builder()
+			.id(bookReview.getId())
+			.content(bookReview.getContent())
+			.rating(bookReview.getRating())
+			.reviewer(new UserResponse(bookReview.getReviewer()))
+			.createdDate(bookReview.getCreatedDate())
+			.modifiedDate(bookReview.getModifiedDate())
+			.build();
+	}
+
 }

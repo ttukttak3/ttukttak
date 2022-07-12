@@ -58,7 +58,7 @@ public class BookInfo extends BaseTimeEntity implements Serializable {
 		this.isbn = isbn;
 	}
 
-	public static BookInfo of(BookInfoDto bookInfoDto) {
+	public static BookInfo from(BookInfoDto bookInfoDto) {
 		return BookInfo.builder()
 			.name(bookInfoDto.getName())
 			.description(bookInfoDto.getDescription())

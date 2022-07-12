@@ -52,7 +52,7 @@ public class BookReview extends BaseTimeEntity implements Serializable {
 		this.reviewer = reviewer;
 	}
 
-	public static BookReview of(BookReviewDto bookReviewDto) {
+	public static BookReview from(BookReviewDto bookReviewDto) {
 		Book book = Book.builder().id(bookReviewDto.getBook().getId()).build();
 		User reviewer = User.builder().id(bookReviewDto.getReviewer().getId()).build();
 

@@ -7,8 +7,8 @@ import com.ttukttak.address.dto.TownDto;
 import com.ttukttak.book.entity.Book;
 import com.ttukttak.book.entity.Book.BookGrade;
 import com.ttukttak.book.entity.BookCategory;
-import com.ttukttak.book.entity.BookImage;
 import com.ttukttak.book.entity.BookInfo;
+import com.ttukttak.book.entity.BookReview;
 import com.ttukttak.oauth.dto.UserResponse;
 
 import lombok.Getter;
@@ -32,8 +32,8 @@ public class BookDetailResponse {
 	private int rentCnt;
 	private List<BookReviewResponse> review;
 
-	private BookImage thumbnail;
-	private List<BookImage> bookImages;
+	private BookImageDto thumbnail;
+	private List<BookImageDto> bookImages;
 
 	public BookDetailResponse(Book book) {
 		this.id = book.getId();
@@ -45,10 +45,10 @@ public class BookDetailResponse {
 		this.bookInfo = book.getBookInfo();
 		this.bookCategory = book.getBookCategory();
 		this.bookTown = new TownDto(book.getTown());
-		this.thumbnail = book.getThumbnail();
-		this.bookImages = book.getImages();
-		this.rating = book.getBookReview().stream().mapToDouble(review -> review.getRating()).average().orElse(0);
-		this.review = book.getBookReview().stream().map(r -> new BookReviewResponse(r)).collect(Collectors.toList());
+		this.thumbnail = BookImageDto.from(book.getThumbnail());
+		this.bookImages = book.getImages().stream().map(BookImageDto::from).collect(Collectors.toList());
+		this.rating = book.getBookReview().stream().mapToDouble(BookReview::getRating).average().orElse(0);
+		this.review = book.getBookReview().stream().map(BookReviewResponse::from).collect(Collectors.toList());
 		this.rentCnt = book.getRent().size();
 	}
 }

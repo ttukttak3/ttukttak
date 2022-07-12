@@ -1,5 +1,6 @@
 package com.ttukttak.book.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.ttukttak.book.entity.Book.BookGrade;
@@ -49,5 +50,5 @@ public class BookUploadRequest {
 
 	//Book 이미지정보
 	@ApiModelProperty(example = "이미지목록")
-	private List<BookImageDto> bookImages;
+	private List<BookImageDto> bookImages = new ArrayList<>();
 }
