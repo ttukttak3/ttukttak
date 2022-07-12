@@ -39,6 +39,7 @@ const getCategoryList = async setCategoryList => {
   try {
     const { data } = await apiUtil.get(baseUrl + `api/v1/book/category`);
     setCategoryList([...data]);
+    return data;
   } catch (error) {
     console.log(error);
   }
