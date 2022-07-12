@@ -13,6 +13,9 @@ const FooterBox = styled.div`
   background: ${({ theme }) => theme.colors.$black3};
   border-top: 1px solid ${({ theme }) => theme.colors.$black3Line};
   text-align: center;
+  &.hide {
+    display: none;
+  }
 `;
 const IconBox = styled.a`
   height: 4rem;

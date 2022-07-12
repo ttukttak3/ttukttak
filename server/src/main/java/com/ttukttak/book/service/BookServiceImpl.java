@@ -12,12 +12,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ttukttak.address.dto.TownDto;
 import com.ttukttak.address.entity.HomeTown;
 import com.ttukttak.address.entity.HomeTown.UseStatusType;
 import com.ttukttak.address.entity.Town;
 import com.ttukttak.address.repository.HomeTownRepository;
 import com.ttukttak.address.service.AddressService;
 import com.ttukttak.book.dto.BookCategoryDto;
+import com.ttukttak.book.dto.BookDetailResponse;
 import com.ttukttak.book.dto.BookDto;
 import com.ttukttak.book.dto.BookInfoDto;
 import com.ttukttak.book.dto.BookRequest;
@@ -37,6 +39,7 @@ import com.ttukttak.book.repository.BookRepository;
 import com.ttukttak.common.StorageUploader;
 import com.ttukttak.common.dto.FileUploadResponse;
 import com.ttukttak.common.dto.PageResponse;
+import com.ttukttak.common.exception.NotExistException;
 import com.ttukttak.oauth.dto.UserDto;
 import com.ttukttak.oauth.entity.User;
 import com.ttukttak.oauth.service.UserService;
@@ -86,7 +89,7 @@ public class BookServiceImpl implements BookService {
 		//인근 지역 ID 가져오기
 		List<Long> townIdList = addressService.getNearTown(bookRequest.getTownId(), 3)
 			.stream()
-			.map(c -> new Long(c.getId()))
+			.map(TownDto::getId)
 			.collect(Collectors.toList());
 
 		/*
@@ -105,18 +108,23 @@ public class BookServiceImpl implements BookService {
 			bookStatus.add(BookStatus.ON);
 		}
 
-		if (bookRequest.getQuery() == null) {
-			pageList = bookRepository.findByStatusInAndIsDeleteAndTownIdIn(
-				bookStatus,
-				DeleteStatus.N,
-				townIdList,
-				pageRequest);
-		} else {
+		/*
+		 * 카테고리 ID가 0인 것은 전체 카테고리 조회로 판단한다.
+		 */
+		if (bookRequest.getCategoryId().equals(Long.parseLong("0"))) {
 			pageList = bookRepository.findByStatusInAndIsDeleteAndSubjectContainsAndTownIdIn(
 				bookStatus,
 				DeleteStatus.N,
 				bookRequest.getQuery(),
 				townIdList,
+				pageRequest);
+		} else {
+			pageList = bookRepository.findByStatusInAndIsDeleteAndSubjectContainsAndTownIdInAndBookCategoryId(
+				bookStatus,
+				DeleteStatus.N,
+				bookRequest.getQuery(),
+				townIdList,
+				bookRequest.getCategoryId(),
 				pageRequest);
 		}
 
@@ -150,11 +158,9 @@ public class BookServiceImpl implements BookService {
 		BookInfo bookInfo = null;
 		if (bookUploadRequest.getIsbn() != null && !bookUploadRequest.getIsbn().isEmpty()) {
 			//API 도서가 이미 등록되어있는지 체크
-			bookInfo = bookInfoRepository.findByIsbn(bookUploadRequest.getIsbn());
-			if (bookInfo == null) {
-				BookInfo bookInfoRequest = BookInfo.of(modelMapper.map(bookUploadRequest, BookInfoDto.class));
-				bookInfo = bookInfoRepository.saveAndFlush(bookInfoRequest);
-			}
+			bookInfo = bookInfoRepository.findByIsbn(bookUploadRequest.getIsbn())
+				.orElse(bookInfoRepository.save(
+					BookInfo.from(modelMapper.map(bookUploadRequest, BookInfoDto.class))));
 		}
 
 		//Entity builder
@@ -190,19 +196,18 @@ public class BookServiceImpl implements BookService {
 			}
 		} catch (Exception e) {}
 
-		Book resultBook = bookRepository.saveAndFlush(book);
+		Book resultBook = bookRepository.save(book);
 
-		//대표이미지 지정
+		//대표이미지 지정		
 		for (FileUploadResponse uploadResponse : imageList) {
 			if (uploadResponse.getFileName().equals(bookUploadRequest.getThumbnail())) {
 				BookImage bookImage = bookImageRepository.findByImageUrlAndBookId(uploadResponse.getUrl(),
 					resultBook.getId());
 				resultBook.updateThumbnail(bookImage);
-
+				bookRepository.save(resultBook);
 				break;
 			}
 		}
-		bookRepository.save(resultBook);
 
 		return resultBook.getId();
 	}
@@ -214,7 +219,14 @@ public class BookServiceImpl implements BookService {
 	public BookDto findById(Long bookId) {
 		return bookRepository.findById(bookId)
 			.map(book -> new BookDto(book))
-			.orElse(null);
+			.orElseThrow(() -> new NotExistException());
+	}
+
+	@Override
+	public BookDetailResponse findByIdDetail(Long bookId) {
+		return bookRepository.findById(bookId)
+			.map(book -> new BookDetailResponse(book))
+			.orElseThrow(() -> new NotExistException());
 	}
 
 	/*
@@ -223,7 +235,7 @@ public class BookServiceImpl implements BookService {
 	@Override
 	@Transactional
 	public Boolean isDelete(Long bookId) {
-		Book book = bookRepository.findById(bookId).orElse(null);
+		Book book = bookRepository.findById(bookId).orElseThrow(() -> new NotExistException());
 		book.isDelete(DeleteStatus.Y);
 
 		bookRepository.save(book);
@@ -237,7 +249,7 @@ public class BookServiceImpl implements BookService {
 	@Override
 	@Transactional
 	public Boolean updateStatus(Long bookId, BookStatus status) {
-		Book book = bookRepository.findById(bookId).orElse(null);
+		Book book = bookRepository.findById(bookId).orElseThrow(() -> new NotExistException());
 		book.updateStatus(status);
 
 		bookRepository.save(book);
@@ -251,10 +263,106 @@ public class BookServiceImpl implements BookService {
 	@Override
 	@Transactional
 	public Boolean updateGrade(Long bookId, BookGrade grade) {
-		Book book = bookRepository.findById(bookId).orElse(null);
+		Book book = bookRepository.findById(bookId).orElseThrow(() -> new NotExistException());
 		book.updateGrade(grade);
 
 		bookRepository.save(book);
+
+		return true;
+	}
+
+	/*
+	 * 도서 수정
+	 */
+	@Override
+	@Transactional
+	public Boolean bookUpdate(Long bookId, BookUploadRequest bookUploadRequest, List<MultipartFile> imageFiles) {
+		//변경 전 도서 조회
+		Book currBook = bookRepository.findById(bookId).orElseThrow(() -> new NotExistException());
+
+		//이미지를 전체 변경했을 경우
+		List<Long> bookImageIds = currBook.getImages().stream().map(BookImage::getId)
+			.collect(Collectors.toList());
+
+		/*
+		 * 변경 될 사항들
+		 * API 도서 조회 <-> 직접 등록
+		 * 글 제목, 책 소개, 보증금, 책등급, 카테고리
+		 * 이미지 변경
+		 */
+
+		BookInfo bookInfo = null;
+		/*
+		 * Request로 받아온 ISBN 유무 체크
+		 * ISBN이 있으면 API도서 조회르 수정.
+		 * 이전에 등록된 도서와 상관없음!
+		 */
+		if (bookUploadRequest.getIsbn() != null && !bookUploadRequest.getIsbn().isEmpty()) {
+			bookInfo = bookInfoRepository.findByIsbn(bookUploadRequest.getIsbn())
+				.orElse(bookInfoRepository.save(
+					BookInfo.from(modelMapper.map(bookUploadRequest, BookInfoDto.class))));
+		}
+
+		//섬네일 초기값 선언
+		BookImage bookImage = currBook.getThumbnail();
+
+		//변경 도서 빌더
+		Book updateBook = Book.builder()
+			.id(bookId)
+			.author(bookUploadRequest.getAuthor())
+			.content(bookUploadRequest.getContent())
+			.deposit(bookUploadRequest.getDeposit())
+			.subject(bookUploadRequest.getSubject())
+			.grade(bookUploadRequest.getGrade())
+			.bookInfo(bookInfo)
+			.bookCategory(BookCategory.builder().id(bookUploadRequest.getBookCategoryId()).build())
+			.owner(currBook.getOwner())
+			.town(currBook.getTown())
+			.thumbnail(bookImage)
+			.build();
+
+		/*
+		 * 이미지 변경 로직 -- 작업 진행중
+		 */
+		//섬네일 업데이트를 위한 리스트
+		List<FileUploadResponse> imageList = new ArrayList<>();
+
+		//API 도서 조회로 섬네일이 API 이미지 경로 인경우
+		if (!bookImage.getImageUrl().equals(bookUploadRequest.getThumbnail())) {
+			if (bookUploadRequest.getIsbn() != null && !bookUploadRequest.getIsbn().isEmpty()) {
+				imageList
+					.add(new FileUploadResponse(bookUploadRequest.getThumbnail(), bookUploadRequest.getThumbnail()));
+				updateBook.addImage(BookImage.builder().imageUrl(bookUploadRequest.getThumbnail()).build());
+			}
+		}
+
+		//이미지 업로드
+		try {
+			for (MultipartFile imageFile : imageFiles) {
+				FileUploadResponse fileUploadResponse = storageUploader.upload(imageFile, "book");
+				imageList.add(fileUploadResponse);
+				updateBook.addImage(BookImage.builder().imageUrl(fileUploadResponse.getUrl()).build());
+
+			}
+		} catch (Exception e) {}
+
+		Book resultBook = bookRepository.save(updateBook);
+
+		//대표이미지 지정
+		for (FileUploadResponse uploadResponse : imageList) {
+			if (uploadResponse.getFileName().equals(bookUploadRequest.getThumbnail())) {
+				BookImage bookThumbnail = bookImageRepository.findByImageUrlAndBookId(uploadResponse.getUrl(),
+					bookId);
+				resultBook.updateThumbnail(bookThumbnail);
+				bookRepository.save(resultBook);
+				break;
+			}
+		}
+
+		//DB 이미지 리스트와 넘겨받은 Image 리스트의 ID 비교후 없으면 삭제.
+		bookImageIds.stream().filter(currImageId -> !bookUploadRequest.getBookImages()
+			.stream()
+			.anyMatch(image -> image.getId().equals(currImageId))).forEach(bookImageRepository::deleteById);
 
 		return true;
 	}

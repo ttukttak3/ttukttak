@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ttukttak.book.dto.BookCategoryDto;
-import com.ttukttak.book.dto.BookDto;
+import com.ttukttak.book.dto.BookDetailResponse;
 import com.ttukttak.book.dto.BookInfoDto;
 import com.ttukttak.book.dto.BookRequest;
 import com.ttukttak.book.dto.BookResponse;
@@ -34,6 +35,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import springfox.documentation.annotations.ApiIgnore;
 
 @Api(value = "/api/book", description = "도서 API")
 @RequiredArgsConstructor
@@ -43,7 +45,10 @@ public class BookController {
 	private final InterParkAPIService interParkAPIService;
 	private final BookService bookService;
 
-	@ApiImplicitParam(name = "InterParkRequest", value = "인터파크 조회 값", required = true, dataType = "object", paramType = "body")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "pageNum", value = "페이지 번호", required = true, dataType = "int", paramType = "param"),
+		@ApiImplicitParam(name = "query", value = "검색어", required = true, dataType = "string", paramType = "param")
+	})
 	@ApiOperation(value = "인터파크 도서 조회")
 	@GetMapping("/interpark/search")
 	public ResponseEntity<PageResponse<BookInfoDto>> search(@RequestParam
@@ -71,18 +76,24 @@ public class BookController {
 		@ApiImplicitParam(name = "pageNum", value = "페이지번호", required = true, dataType = "int", paramType = "param"),
 		@ApiImplicitParam(name = "order", value = "정렬", required = false, dataType = "string", paramType = "param"),
 		@ApiImplicitParam(name = "status", value = "도서 상태", required = true, dataType = "string", paramType = "param"),
-		@ApiImplicitParam(name = "townId", value = "지역 ID", required = true, dataType = "long", paramType = "param")
+		@ApiImplicitParam(name = "categoryId", value = "카테고리 ID", required = false, dataType = "long", paramType = "param"),
+		@ApiImplicitParam(name = "townId", value = "지역 ID", required = false, dataType = "long", paramType = "param")
 	})
 	@ApiOperation(value = "주변 도서 리스트 조회")
 	@GetMapping("/list")
 	public ResponseEntity<PageResponse<BookResponse>> getNearBookList(
 		@RequestParam(defaultValue = "1")
-		int pageNum, @RequestParam(defaultValue = "id")
-		String order, @RequestParam
-		BookStatus status, @RequestParam(defaultValue = "1111011900")
-		Long townId) {
+		int pageNum,
+		@RequestParam(defaultValue = "id")
+		String order,
+		@RequestParam
+		BookStatus status,
+		@RequestParam(defaultValue = "1111011900")
+		Long townId,
+		@RequestParam(defaultValue = "0")
+		Long categoryId) {
 
-		BookRequest bookRequest = new BookRequest(pageNum, order, status, townId, null);
+		BookRequest bookRequest = new BookRequest(pageNum, order, status, townId, categoryId, "");
 		PageResponse<BookResponse> bookList = bookService.findBookList(bookRequest);
 
 		return ResponseEntity
@@ -94,20 +105,27 @@ public class BookController {
 		@ApiImplicitParam(name = "pageNum", value = "페이지번호", required = true, dataType = "int", paramType = "param"),
 		@ApiImplicitParam(name = "order", value = "정렬", required = false, dataType = "string", paramType = "param"),
 		@ApiImplicitParam(name = "status", value = "도서 상태", required = true, dataType = "string", paramType = "param"),
-		@ApiImplicitParam(name = "townId", value = "지역 ID", required = true, dataType = "long", paramType = "param"),
-		@ApiImplicitParam(name = "query", value = "검색어", required = true, dataType = "string", paramType = "param")
+		@ApiImplicitParam(name = "townId", value = "지역 ID", required = false, dataType = "long", paramType = "param"),
+		@ApiImplicitParam(name = "categoryId", value = "카테고리 ID", required = false, dataType = "long", paramType = "param"),
+		@ApiImplicitParam(name = "query", value = "검색어", required = false, dataType = "string", paramType = "param")
 	})
 	@ApiOperation(value = "도서 겅색")
 	@GetMapping("/list/search")
 	public ResponseEntity<PageResponse<BookResponse>> getBookListSearch(
 		@RequestParam(defaultValue = "1")
-		int pageNum, @RequestParam(defaultValue = "id")
-		String order, @RequestParam
-		BookStatus status, @RequestParam(defaultValue = "1111011900")
-		Long townId, @RequestParam
+		int pageNum,
+		@RequestParam(defaultValue = "id")
+		String order,
+		@RequestParam
+		BookStatus status,
+		@RequestParam(defaultValue = "1111011900")
+		Long townId,
+		@RequestParam(defaultValue = "0")
+		Long categoryId,
+		@RequestParam
 		String query) {
 
-		BookRequest bookRequest = new BookRequest(pageNum, order, status, townId, query);
+		BookRequest bookRequest = new BookRequest(pageNum, order, status, townId, categoryId, query);
 		PageResponse<BookResponse> bookList = bookService.findBookList(bookRequest);
 
 		return ResponseEntity
@@ -124,6 +142,7 @@ public class BookController {
 	@PostMapping("")
 	public ResponseEntity<Long> setBook(
 		BookUploadRequest bookUploadRequest,
+		@ApiIgnore
 		@CurrentUser
 		UserPrincipal userPrincipal,
 		@RequestBody
@@ -139,14 +158,14 @@ public class BookController {
 	@ApiImplicitParam(name = "bookId", value = "도서 ID", required = true, dataType = "long", paramType = "path")
 	@ApiOperation(value = "도서 상세 정보")
 	@GetMapping("/{bookId}")
-	public ResponseEntity<BookDto> getBook(@PathVariable("bookId")
+	public ResponseEntity<BookDetailResponse> getBook(@PathVariable("bookId")
 	Long bookId) {
 
-		BookDto bookInfo = bookService.findById(bookId);
+		BookDetailResponse bookDetail = bookService.findByIdDetail(bookId);
 
 		return ResponseEntity
 			.status(HttpStatus.OK)
-			.body(bookInfo);
+			.body(bookDetail);
 	}
 
 	@ApiImplicitParam(name = "bookId", value = "도서 ID", required = true, dataType = "long", paramType = "path")
@@ -169,7 +188,7 @@ public class BookController {
 		@ApiImplicitParam(name = "status", value = "도서 상태값", required = true, dataType = "BookStatus", paramType = "body")
 	})
 	@ApiOperation(value = "도서 상태값 수정")
-	@PutMapping("/{bookId}/status")
+	@PatchMapping("/{bookId}/status")
 	public ResponseEntity<Boolean> updateBookStatus(
 		@PathVariable("bookId")
 		Long bookId,
@@ -189,7 +208,7 @@ public class BookController {
 		@ApiImplicitParam(name = "grade", value = "도서 등급", required = true, dataType = "BookGrade", paramType = "body")
 	})
 	@ApiOperation(value = "도서 등급 수정")
-	@PutMapping("/{bookId}/grade")
+	@PatchMapping("/{bookId}/grade")
 	public ResponseEntity<Boolean> updateBookGrade(
 		@PathVariable("bookId")
 		Long bookId, @RequestBody
@@ -201,6 +220,26 @@ public class BookController {
 			.status(HttpStatus.OK)
 			.body(result);
 
+	}
+
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "bookUploadRequest", value = "도서 정보 bookUploadRequest", required = true, dataType = "BookUploadRequest", paramType = "body"),
+		@ApiImplicitParam(name = "imageFiles", value = "이미지 파일", required = false, dataType = "file", paramType = "body"),
+	})
+	@ApiOperation(value = "도서 수정")
+	@PutMapping("/{bookId}")
+	public ResponseEntity<Boolean> updateBook(
+		@PathVariable("bookId")
+		Long bookId,
+		BookUploadRequest bookUploadRequest,
+		@RequestBody
+		List<MultipartFile> imageFiles) {
+
+		Boolean result = bookService.bookUpdate(bookId, bookUploadRequest, imageFiles);
+
+		return ResponseEntity
+			.status(HttpStatus.OK)
+			.body(result);
 	}
 
 }

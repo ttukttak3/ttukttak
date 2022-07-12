@@ -1,12 +1,12 @@
 package com.ttukttak.book.dto;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.ttukttak.address.dto.TownDto;
 import com.ttukttak.book.entity.Book;
 import com.ttukttak.book.entity.Book.BookGrade;
 import com.ttukttak.book.entity.BookCategory;
-import com.ttukttak.book.entity.BookImage;
 import com.ttukttak.book.entity.BookInfo;
 import com.ttukttak.book.entity.BookReview;
 import com.ttukttak.oauth.dto.UserDto;
@@ -28,12 +28,10 @@ public class BookDto {
 	private BookInfo bookInfo;
 	private BookCategory bookCategory;
 	private TownDto bookTown;
-	private double rating;
-	private int rentCnt;
 	private List<BookReview> review;
 
-	private BookImage thumbnail;
-	private List<BookImage> imageUrls;
+	private BookImageDto thumbnail;
+	private List<BookImageDto> imageUrls;
 
 	public BookDto(Book book) {
 		this.id = book.getId();
@@ -45,11 +43,9 @@ public class BookDto {
 		this.bookInfo = book.getBookInfo();
 		this.bookCategory = book.getBookCategory();
 		this.bookTown = new TownDto(book.getTown());
-		this.thumbnail = book.getThumbnail();
-		this.imageUrls = book.getImages();
-		this.rating = book.getBookReview().stream().mapToDouble(review -> review.getRating()).average().orElse(0);
+		this.thumbnail = BookImageDto.from(book.getThumbnail());
+		this.imageUrls = book.getImages().stream().map(BookImageDto::from).collect(Collectors.toList());
 		this.review = book.getBookReview();
-		this.rentCnt = book.getRent().size();
 	}
 
 }

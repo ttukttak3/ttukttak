@@ -35,7 +35,7 @@ public class RedisSubscriber implements MessageListener {
 			String publishMessage = (String)redisTemplate.getStringSerializer().deserialize(message.getBody());
 			ChatMessageDto roomMessage = objectMapper.readValue(publishMessage, ChatMessageDto.class);
 
-			chatMessageRepository.save(ChatMessage.of(roomMessage));
+			chatMessageRepository.save(ChatMessage.from(roomMessage));
 
 			log.info("redis 수신 : {}", roomMessage);
 			// Websocket 구독자에게 채팅 메시지 Send

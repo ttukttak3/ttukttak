@@ -18,7 +18,7 @@ const Auth = () => {
     //token setting
     if (token) {
       localStorage.setItem(ACCESS_TOKEN, token);
-      navigate('/profile');
+      window.location.replace('/profile');
     }else {
       navigate('/login');
     }
