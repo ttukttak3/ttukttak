@@ -34,7 +34,10 @@ const Title = styled.h2`
 const BackBtn = styled.a`
   height: 6.4rem;
   line-height: 6.4rem;
-
+  a {
+    width: 2.4rem;
+    height: 2.4rem;
+  }
   img {
     width: 2.4rem;
     height: 2.4rem;

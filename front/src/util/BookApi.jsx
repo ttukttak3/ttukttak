@@ -5,11 +5,20 @@ const baseUrl = process.env.REACT_APP_API_URL;
 
 const getBookList = async (param, setBookList) => {
   try {
-    const result = await apiUtil.get(`/api/book/list?pageNum=${param.pageNum}&order=${param.order}&status=${param.status}&townId=${param.townId}`);
-    console.log(result.data);
+    const result = await apiUtil.get(`/api/book/list?pageNum=${param.pageNum}&order=${param.order}&status=${param.status}&townId=${param.townId}&categoryId=${param.categoryId}`);
     result.data.contents.map(data => {
       return setBookList(_bookList => [..._bookList, data]);
     });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+const getBookCategory = async () => {
+  try {
+    const result = await apiUtil.get(`/api/book/category`);
+    return result.data;
   } catch (error) {
     console.log(error);
   }
@@ -38,16 +47,7 @@ const interparkSearch = async (pageNum, query, setData) => {
   }
 };
 
-const getCategoryList = async setCategoryList => {
-  try {
-    // const result = await axios.get(baseUrl + `/api/book/category`); 서버 api 로 바꾸기
-    const { data } = await axios.get(baseUrl + `category`);
-    setCategoryList([...data]);
-  } catch (error) {
-    console.log(error);
-  }
-};
+const bookApi = { uploadBook, getBookList, interparkSearch, getBookCategory };
 
-const bookApi = { uploadBook, getBookList, interparkSearch, getCategoryList };
 
 export default bookApi;
