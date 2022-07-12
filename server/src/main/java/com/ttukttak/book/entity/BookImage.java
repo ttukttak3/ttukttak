@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ttukttak.book.dto.BookImageDto;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -40,6 +41,13 @@ public class BookImage implements Serializable {
 		this.id = id;
 		this.imageUrl = imageUrl;
 		this.book = book;
+	}
+
+	public static BookImage from(BookImageDto bookImageDto) {
+		return BookImage.builder()
+			.id(bookImageDto.getId())
+			.imageUrl(bookImageDto.getImageUrl())
+			.build();
 	}
 
 }

@@ -29,7 +29,7 @@ public class ChatMessageServiceImpl implements ChatMessageService {
 
 	@Override
 	public ChatMessageDto saveChatMessage(ChatMessageDto chatMessageDto) {
-		chatMessageRepository.save(ChatMessage.of(chatMessageDto));
+		chatMessageRepository.save(ChatMessage.from(chatMessageDto));
 		return chatMessageDto;
 	}
 

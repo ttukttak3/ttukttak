@@ -2,12 +2,13 @@
 /* eslint-disable max-lines-per-function */
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { setAllFalse, setTitle, setLocation, setSearch, setFavorite, setAlert } from '../../app/headerSlice';
+import { setBack, setBackHome, setTitle, setLocation, setSearch, setFavorite, setAlert, setAllFalse } from '../../app/headerSlice';
 import style from './HomePage.style';
 import BookRentPage from './BookRentPage';
 import BookOnLoadPage from './BookOnLoanPage';
 import bookApi from '../../util/BookApi';
 import Popup from '../../components/Modal/SelectPopupBottom';
+import { useNavigate } from 'react-router-dom';
 const HomePage = () => {
   //-------------- Header --------------
   const dispatch = useDispatch();
@@ -113,6 +114,7 @@ const HomePage = () => {
       document.body.style.overflow = 'hidden';
     }
   };
+  const navigate = useNavigate();
 
   //close popup
   const modalEl = useRef(null);

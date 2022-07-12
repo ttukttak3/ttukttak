@@ -1,5 +1,6 @@
 package com.ttukttak.book.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -18,7 +19,9 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @Getter
-public class BookInfo extends BaseTimeEntity {
+public class BookInfo extends BaseTimeEntity implements Serializable {
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -55,7 +58,7 @@ public class BookInfo extends BaseTimeEntity {
 		this.isbn = isbn;
 	}
 
-	public static BookInfo of(BookInfoDto bookInfoDto) {
+	public static BookInfo from(BookInfoDto bookInfoDto) {
 		return BookInfo.builder()
 			.name(bookInfoDto.getName())
 			.description(bookInfoDto.getDescription())

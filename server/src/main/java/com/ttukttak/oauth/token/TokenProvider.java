@@ -12,12 +12,8 @@ import com.ttukttak.common.config.AppProperties;
 import com.ttukttak.oauth.entity.UserPrincipal;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.SignatureException;
-import io.jsonwebtoken.UnsupportedJwtException;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -66,25 +62,7 @@ public class TokenProvider {
 	}
 
 	public boolean validateToken(String authToken) {
-		try {
-			Jwts.parser().setSigningKey(appProperties.getAuth().getTokenSecret()).parseClaimsJws(authToken);
-			return true;
-		} catch (SignatureException ex) {
-			logger.error("유효하지 않은 JWT 서명");
-			this.jwtMsg = "유효하지 않은 JWT 서명";
-		} catch (MalformedJwtException ex) {
-			logger.error("유효하지 않은 JWT 토큰");
-			this.jwtMsg = "유효하지 않은 JWT 토큰";
-		} catch (ExpiredJwtException ex) {
-			logger.error("만료된 JWT 토큰");
-			this.jwtMsg = "만료된 JWT 토큰";
-		} catch (UnsupportedJwtException ex) {
-			logger.error("지원하지 않는 JWT 토큰");
-			this.jwtMsg = "지원하지 않는 JWT 토큰";
-		} catch (IllegalArgumentException ex) {
-			logger.error("비어있는 JWT");
-			this.jwtMsg = "비어있는 JWT";
-		}
-		return false;
+		Jwts.parser().setSigningKey(appProperties.getAuth().getTokenSecret()).parseClaimsJws(authToken);
+		return true;
 	}
 }

@@ -16,5 +16,6 @@ public class BookRequest {
 	private String order;
 	private BookStatus status;
 	private Long townId;
+	private Long categoryId;
 	private String query;
 }

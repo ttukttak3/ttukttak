@@ -14,7 +14,7 @@ import Share from '../../assets/img/userInterFace/share.png';
 import More_vert from '../../assets/img/userInterFace/more_vert.png';
 
 const Header = () => {
-  const { HeaderBox, LeftBox, Title, BackBtn, DownBtn, RightBox, RightBtn } = style;
+  const { HeaderBox, LeftBox, Title, BackBtn, DownBtn, RightBox, RightBtn, RightText } = style;
   const navigate = useNavigate();
   const header = useSelector(state => state.header);
   const { title, back, backHome, location, search, favorite, alert, trash, share, more } = header;

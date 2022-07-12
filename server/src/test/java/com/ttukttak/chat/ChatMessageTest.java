@@ -29,6 +29,6 @@ public class ChatMessageTest {
 		chatMessageDto.setRoomId(1L);
 		chatMessageDto.setUserId(1L);
 
-		chatMessageRepository.save(ChatMessage.of(chatMessageDto));
+		chatMessageRepository.save(ChatMessage.from(chatMessageDto));
 	}
 }
