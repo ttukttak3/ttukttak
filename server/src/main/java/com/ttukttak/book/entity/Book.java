@@ -136,7 +136,7 @@ public class Book extends BaseTimeEntity implements Serializable {
 		this.town = town;
 	}
 
-	public static Book of(BookDto BookDto) {
+	public static Book from(BookDto BookDto) {
 		return Book.builder()
 			.id(BookDto.getId())
 			.subject(BookDto.getSubject())
@@ -145,7 +145,7 @@ public class Book extends BaseTimeEntity implements Serializable {
 			.owner(User.of(BookDto.getOwner()))
 			.bookInfo(BookDto.getBookInfo())
 			.bookCategory(BookDto.getBookCategory())
-			.thumbnail(BookDto.getThumbnail())
+			.thumbnail(BookImage.from(BookDto.getThumbnail()))
 			.build();
 	}
 
