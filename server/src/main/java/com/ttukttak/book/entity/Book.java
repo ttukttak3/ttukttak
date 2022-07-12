@@ -20,6 +20,8 @@ import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.ColumnDefault;
 
+import net.minidev.json.annotate.JsonIgnore;
+
 import com.ttukttak.address.entity.Town;
 import com.ttukttak.book.dto.BookDto;
 import com.ttukttak.chat.entity.ChatRoom;
@@ -30,11 +32,12 @@ import com.ttukttak.rent.entity.Rent;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import net.minidev.json.annotate.JsonIgnore;
+import lombok.ToString;
 
 @Entity
 @Getter
 @NoArgsConstructor
+@ToString
 public class Book extends BaseTimeEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 

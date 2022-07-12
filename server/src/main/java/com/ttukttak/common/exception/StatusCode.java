@@ -2,6 +2,8 @@ package com.ttukttak.common.exception;
 
 import org.springframework.http.HttpStatus;
 
+import com.ttukttak.common.dto.StatusResponse;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -21,4 +23,7 @@ public enum StatusCode {
 	private final String code;
 	private final String message;
 
+	public StatusResponse toResponse() {
+		return new StatusResponse(this);
+	}
 }
