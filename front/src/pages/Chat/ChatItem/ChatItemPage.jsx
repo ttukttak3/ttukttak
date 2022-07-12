@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { setTitle, setBack, setAlert } from '../../../app/headerSlice';
+import { setTitle, setBack, setAlert, setAllFalse } from '../../../app/headerSlice';
 import { setUserId } from '../../../app/userSlice';
 import ChatBookInfo from './ChatBookInfo';
 import ChatFooter from './ChatFooter';
@@ -36,7 +36,7 @@ const ChatItemPage = () => {
     //messageId-> 마지막 메세지의 id --> 메세지 올때마다 호출해야함,,
     // readMessages(2, userId, roomId);
     // readMessages(messageId, userId, roomId);
-
+    dispatch(setAllFalse());
     dispatch(setBack(true));
     dispatch(setAlert(true));
 

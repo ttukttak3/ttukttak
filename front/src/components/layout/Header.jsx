@@ -12,7 +12,7 @@ import Notifications from '../../assets/img/userInterFace/Notifications.png';
 import Trash_Can from '../../assets/img/userInterFace/Trash_Can.png';
 
 const Header = () => {
-  const { HeaderBox, LeftBox, Title, BackBtn, DownBtn, RightBox, RightBtn } = style;
+  const { HeaderBox, LeftBox, Title, BackBtn, DownBtn, RightBox, RightBtn, RightText } = style;
   const navigate = useNavigate();
   const header = useSelector(state => state.header);
   const { title, back, backHome, location, search, favorite, alert, trash } = header;

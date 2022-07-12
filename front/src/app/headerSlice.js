@@ -38,9 +38,16 @@ export const headerSlice = createSlice({
         setTrash: (state, action) => {
             state.trash = action.payload;
         },
+        setAllFalse: (state, action) => {
+            Object.keys(state).forEach(key => {
+                if (state[key]) {
+                    state[key] = false;
+                }
+            })
+        }
     },
 });
 
-export const { setTitle, setBack, setBackHome, setLocation, setSearch, setFavorite, setAlert, setTrash } = headerSlice.actions;
+export const { setTitle, setBack, setBackHome, setLocation, setSearch, setFavorite, setAlert, setTrash, setAllFalse } = headerSlice.actions;
 
 export default headerSlice.reducer;
