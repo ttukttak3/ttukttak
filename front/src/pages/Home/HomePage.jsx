@@ -6,10 +6,11 @@ import { setBack, setBackHome, setTitle, setLocation, setSearch, setFavorite, se
 import style from './HomePage.style';
 import BookRentPage from './BookRentPage';
 import BookOnLoadPage from './BookOnLoanPage';
+import bookApi from '../../util/BookApi';
 import Popup from '../../components/Modal/SelectPopupBottom';
 import { useNavigate } from 'react-router-dom';
 const HomePage = () => {
-  //-------------- header --------------
+  //-------------- Header --------------
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(setAllFalse());
@@ -20,121 +21,97 @@ const HomePage = () => {
     dispatch(setAlert(true));
     return () => {};
   }, [dispatch]);
-  //-------------- tab --------------
-  const [activeIndex, setActiveIndex] = useState(0);
-  const tabClickHandler = index => {
-    setActiveIndex(index);
-  };
-  const tabContArr = [
-    {
-      tabTitle: (
-        <h2 key={0} className={activeIndex === 0 ? 'active' : 'hide'} onClick={() => tabClickHandler(1)}>
-          대여가능
-        </h2>
-      ),
-      tabCont: <BookRentPage state={'ABLE'} range={''} category={''} />,
-    },
-    {
-      tabTitle: (
-        <h2 key={1} className={activeIndex === 1 ? 'active' : 'hide'} onClick={() => tabClickHandler(0)}>
-          대여중/예약중
-        </h2>
-      ),
-      tabCont: <BookOnLoadPage range={''} category={''} />,
-    },
-  ];
 
   //-------------- popup --------------
-  const [range, setRange] = useState('최신순');
-  const sortEvent = N => {
-    if (N === 1) {
-      setRange('최신순');
-    } else if (N === 2) {
-      setRange('거리순');
-    } else if (N === 3) {
-      setRange('보증금순');
-    }
-  };
+  const [range, setRange] = useState({
+    id: 0,
+    text: '최신순',
+    param: 'id',
+  });
 
   const [rangeShowing, setRangeShowing] = useState(false);
   const rangeContents = [
     {
       message: '최신순',
       onClick: () => {
-        sortEvent(1);
+        setRange({
+          id: 0,
+          text: '최신순',
+          param: 'id',
+        });
+        setKeyEvent('최신순');
       },
     },
     {
       message: '거리순',
       onClick: () => {
-        sortEvent(2);
+        setRange({
+          id: 1,
+          text: '거리순',
+          param: 'location',
+        });
+        setKeyEvent('거리순');
       },
     },
     {
       message: '보증금순',
       onClick: () => {
-        sortEvent(3);
+        setRange({
+          id: 2,
+          text: '보증금순',
+          param: 'deposit',
+        });
+        setKeyEvent('보증금순');
       },
     },
   ];
 
-  const [category, setCategory] = useState('카테고리');
-  const categoryEvent = N => {
-    if (N === 1) {
-      setCategory('건강 ∙ 취미');
-    } else if (N === 2) {
-      setCategory('경제 ∙ 경영 ∙ 자기계발');
-    } else if (N === 3) {
-      setCategory('과학 ∙ 기술 ∙ 컴퓨터');
-    }
-  };
-
+  const { getBookCategory } = bookApi;
+  const [category, setCategory] = useState({
+    id: '0',
+    name: '카테고리',
+  });
   const [categoryShowing, setCategoryShowing] = useState(false);
+  const [categoryList, setCategoryList] = useState([]);
   const categoryContents = [
     {
-      message: '건강 ∙ 취미',
+      message: '전체',
       onClick: () => {
-        categoryEvent(1);
-      },
-    },
-    {
-      message: '경제 ∙ 경영 ∙ 자기계발',
-      onClick: () => {
-        categoryEvent(2);
-      },
-    },
-    {
-      message: '과학 ∙ 기술 ∙ 컴퓨터',
-      onClick: () => {
-        categoryEvent(3);
-      },
-    },
-    {
-      message: '건강 ∙ 취미',
-      onClick: () => {
-        categoryEvent(1);
-      },
-    },
-    {
-      message: '경제 ∙ 경영 ∙ 자기계발',
-      onClick: () => {
-        categoryEvent(2);
-      },
-    },
-    {
-      message: '과학 ∙ 기술 ∙ 컴퓨터',
-      onClick: () => {
-        categoryEvent(3);
+        setCategory({
+          id: 0,
+          name: '전체',
+        });
+        setKeyEvent('전체');
       },
     },
   ];
 
+  useEffect(() => {
+    getBookCategory().then(result => {
+      setCategoryList(result);
+    });
+  }, []);
+
+  categoryList.map(category => {
+    return categoryContents.push({
+      message: category.name,
+      onClick: () => {
+        setCategory({
+          id: category.id,
+          name: category.name,
+        });
+        setKeyEvent(category.name);
+      },
+    });
+  });
+
   const openModal = kind => {
-    console.log(kind);
     if (kind === 'range') {
       setRangeShowing(true);
+      document.body.style.overflow = 'hidden';
     } else {
       setCategoryShowing(true);
+      document.body.style.overflow = 'hidden';
     }
   };
   const navigate = useNavigate();
@@ -153,6 +130,33 @@ const HomePage = () => {
     };
   }, [handleClickOutside]);
 
+  //배열 렌더링 key값
+  const [keyEvent, setKeyEvent] = useState('');
+
+  //-------------- tab --------------
+  const [activeIndex, setActiveIndex] = useState(0);
+  const tabClickHandler = index => {
+    setActiveIndex(index);
+  };
+  const tabContArr = [
+    {
+      tabTitle: (
+        <h2 key={0} className={activeIndex === 0 ? 'active' : 'hide'} onClick={() => tabClickHandler(1)}>
+          대여가능
+        </h2>
+      ),
+      tabCont: <BookRentPage range={range.param} category={category.id} key={keyEvent} />,
+    },
+    {
+      tabTitle: (
+        <h2 key={1} className={activeIndex === 1 ? 'active' : 'hide'} onClick={() => tabClickHandler(0)}>
+          대여중/예약중
+        </h2>
+      ),
+      tabCont: <BookOnLoadPage range={range.param} category={category.id} key={keyEvent} />,
+    },
+  ];
+
   const { HomeWrap, TitleBox, PlusBtn } = style;
   return (
     <HomeWrap ref={modalEl}>
@@ -161,11 +165,12 @@ const HomePage = () => {
           //대여가능, 대여중/예약중
           return section.tabTitle;
         })}
-        <button onClick={() => openModal('range')}>{range}</button>
-        <button onClick={() => openModal('category')}>{category}</button>
+        <button onClick={() => openModal('range')}>{range.text}</button>
+        <button onClick={() => openModal('category')}>{category.name}</button>
       </TitleBox>
       {tabContArr[activeIndex].tabCont}
       <PlusBtn onClick={() => navigate('/upload')} />
+      {/* popup */}
       {rangeShowing && <Popup title={'정렬 설정'} contents={rangeContents} />}
       {categoryShowing && <Popup title={'카테고리'} contents={categoryContents} />}
     </HomeWrap>

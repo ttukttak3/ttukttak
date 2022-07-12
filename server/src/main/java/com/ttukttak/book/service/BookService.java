@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ttukttak.book.dto.BookCategoryDto;
+import com.ttukttak.book.dto.BookDetailResponse;
 import com.ttukttak.book.dto.BookDto;
 import com.ttukttak.book.dto.BookRequest;
 import com.ttukttak.book.dto.BookResponse;
@@ -28,5 +29,9 @@ public interface BookService {
 	Boolean updateStatus(Long bookId, BookStatus status);
 
 	Boolean updateGrade(Long bookId, BookGrade grade);
+
+	BookDetailResponse findByIdDetail(Long bookId);
+
+	Boolean bookUpdate(Long bookId, BookUploadRequest bookUploadRequest, List<MultipartFile> imageFiles);
 
 }

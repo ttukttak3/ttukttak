@@ -1,12 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import style from './HomePage.style';
+import { useNavigate } from 'react-router-dom';
 
 const BookListItem = ({ id, thumbnail, grade, subject, author, address, status, deposit, rating, rentCnt }) => {
-  const { BookBox, BookTitle, BookLocation, BookPrice, BookState } = style;
+  const chgDeposit = deposit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
+  const navigate = useNavigate();
+  const onDetailBookPage = () => {
+    navigate(`/detailBook`);
+  };
+  const { BookBox, BookTitle, BookLocation, BookPrice, BookState } = style;
   return (
-    <BookBox key={id}>
+    <BookBox key={id} onClick={onDetailBookPage}>
       <dt>
         <img src={thumbnail} alt="썸네일" />
         <button>{grade}</button>
@@ -17,7 +23,7 @@ const BookListItem = ({ id, thumbnail, grade, subject, author, address, status, 
           <span>{author}</span>
         </BookTitle>
         <BookLocation>
-          <span className="blue">{status === 'ABLE' ? '대여가능' : ''}</span>
+          {status === 'ABLE' ? <span className="blue">대여가능</span> : status === 'ON' ? <span className="gray">예약중</span> : status === 'ING' ? <span className="orange">대여중</span> : ''}
           {address}
         </BookLocation>
         <BookPrice>
@@ -27,7 +33,7 @@ const BookListItem = ({ id, thumbnail, grade, subject, author, address, status, 
           </div>
           <div>
             <span>보증금</span>
-            <p>{deposit}원</p>
+            <p>{chgDeposit}원</p>
           </div>
         </BookPrice>
         <BookState>
