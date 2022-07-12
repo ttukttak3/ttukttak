@@ -1,11 +1,11 @@
 import axios from 'axios';
 import utils from './ApiUtil';
-const { apiUtil } = utils;
+const { apiUtil, formUtil } = utils;
 const baseUrl = process.env.REACT_APP_API_URL;
 
 const getBookList = async (param, setBookList) => {
   try {
-    const result = await apiUtil.get(`/api/book/list?pageNum=${param.pageNum}&order=${param.order}&status=${param.status}&townId=${param.townId}`);
+    const result = await apiUtil.get(`api/v1/book/list?pageNum=${param.pageNum}&order=${param.order}&status=${param.status}&townId=${param.townId}`);
     console.log(result.data);
     result.data.contents.map(data => {
       return setBookList(_bookList => [..._bookList, data]);
@@ -18,11 +18,8 @@ const getBookList = async (param, setBookList) => {
 const uploadBook = async bookInfo => {
   try {
     // const { description, image, isbn, name, price, publishedDate, publisher, author, subject, bookCategoryId, content, deposit, grade, thumbnail, imageFiles } = bookInfo;
-    const result = await axios.post(baseUrl + `api/book`, bookInfo, {
-      headers: {
-        'Content-Type': `multipart/form-data`,
-      },
-    });
+    const result = await formUtil.post(baseUrl + `api/v1/book`, bookInfo);
+    return result.data;
   } catch (error) {
     console.log(error);
   }
@@ -30,7 +27,7 @@ const uploadBook = async bookInfo => {
 
 const interparkSearch = async (pageNum, query, setData) => {
   try {
-    const result = await axios.get(baseUrl + `api/book/interpark/search/?pageNum=${pageNum}&query=${query}`);
+    const result = await apiUtil.get(baseUrl + `api/v1/book/interpark/search/?pageNum=${pageNum}&query=${query}`);
     const data = result.data;
     setData(data.contents); //수정 필요
   } catch (error) {
@@ -40,8 +37,7 @@ const interparkSearch = async (pageNum, query, setData) => {
 
 const getCategoryList = async setCategoryList => {
   try {
-    // const result = await axios.get(baseUrl + `/api/book/category`); 서버 api 로 바꾸기
-    const { data } = await axios.get(baseUrl + `category`);
+    const { data } = await apiUtil.get(baseUrl + `api/v1/book/category`);
     setCategoryList([...data]);
   } catch (error) {
     console.log(error);

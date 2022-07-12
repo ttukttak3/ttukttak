@@ -1,6 +1,6 @@
-import utils from './ApiUtil';
+import utils from './api/Util';
 const { baseUrl, accessToken, apiUtil, formUtil } = utils;
-const redirectUrl = 'http://101.101.219.43/oauth2/redirect';
+const redirectUrl = process.env.REACT_APP_API_URL + '/oauth2/redirect';
 const naverUrl = baseUrl + 'oauth2/authorize/naver?redirect_uri=' + redirectUrl;
 const kakaoUrl = baseUrl + 'oauth2/authorize/kakao?redirect_uri=' + redirectUrl;
 
@@ -9,7 +9,7 @@ const getCurrentUser = async () => {
     if (!localStorage.getItem(accessToken)) {
       return Promise.reject('No access token set.');
     }
-    const result = await apiUtil.get(`/api/user/me`);
+    const result = await apiUtil.get(`api/v1/user/me`);
     return result.data;
   } catch (error) {
     console.log(error);
@@ -18,7 +18,7 @@ const getCurrentUser = async () => {
 
 const nickNameCheck = async nickName => {
   try {
-    const result = await apiUtil.get(`/api/user/chknickname?nickname=${nickName}`);
+    const result = await apiUtil.get(`api/v1/user/chknickname?nickname=${nickName}`);
     return result.data;
   } catch (error) {
     console.log(error);
@@ -27,7 +27,7 @@ const nickNameCheck = async nickName => {
 
 const locationValue = async position => {
   try {
-    const result = await apiUtil.get(`/api/address/location?latitude=${position.coords.latitude.toString()}&longitude=${position.coords.longitude.toString()}`);
+    const result = await apiUtil.get(`api/v1/address/location?latitude=${position.coords.latitude.toString()}&longitude=${position.coords.longitude.toString()}`);
     return result.data;
   } catch (error) {
     console.log(error);
@@ -36,7 +36,7 @@ const locationValue = async position => {
 
 const signUp = async formData => {
   try {
-    const result = await formUtil.post(`/api/user/signup`, formData);
+    const result = await formUtil.post(`api/v1/user/signup`, formData);
     return result.data;
   } catch (error) {
     console.log(error);
