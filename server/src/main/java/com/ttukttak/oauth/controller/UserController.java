@@ -23,10 +23,10 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
-@Api(value = "/api/user", description = "유저 API")
+@Api(value = "/api/v1/user", description = "유저 API")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/v1/user")
 public class UserController {
 
 	private final UserService userService;
@@ -35,7 +35,7 @@ public class UserController {
 	@ApiOperation(value = "로그인한 유저정보 조회")
 	@GetMapping("/me")
 	public ResponseEntity<UserDto> getCurrentUser(@CurrentUser
-	UserPrincipal userPrincipal) {
+		UserPrincipal userPrincipal) {
 		/*
 		 * 현재는 매개변수를 통해 Oauth 로그인한 사용자 정보를 가져오고 있음
 		 * 매개변수 없이 가져오는 법
@@ -53,8 +53,8 @@ public class UserController {
 	@ApiOperation(value = "닉네임 중복 체크")
 	@GetMapping("/chknickname")
 	public ResponseEntity<Boolean> chkName(@CurrentUser
-	UserPrincipal userPrincipal, @RequestParam
-	String nickname) {
+		UserPrincipal userPrincipal, @RequestParam
+		String nickname) {
 
 		return ResponseEntity
 			.status(HttpStatus.OK)
@@ -68,8 +68,8 @@ public class UserController {
 	@ApiOperation(value = "회원가입")
 	@PostMapping("/signup")
 	public ResponseEntity<UserDto> setSignUp(@CurrentUser
-	UserPrincipal userPrincipal, SignUpRequest signUpRequest, @RequestBody
-	MultipartFile imageFile) {
+		UserPrincipal userPrincipal, SignUpRequest signUpRequest, @RequestBody
+		MultipartFile imageFile) {
 
 		UserDto userDto = userService.setSignUp(userPrincipal.getId(), signUpRequest, imageFile);
 
