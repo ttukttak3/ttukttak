@@ -5,7 +5,7 @@ const baseUrl = process.env.REACT_APP_API_URL;
 
 const getBookList = async (param, setBookList) => {
   try {
-    const result = await apiUtil.get(`api/v1/book/list?pageNum=${param.pageNum}&order=${param.order}&status=${param.status}&townId=${param.townId}`);
+    const result = await apiUtil.get(`api/v1/book/list?pageNum=${param.pageNum}&order=${param.order}&status=${param.status}&townId=${param.townId}&categoryId=${param.categoryId}`);
     console.log(result.data);
     result.data.contents.map(data => {
       return setBookList(_bookList => [..._bookList, data]);
