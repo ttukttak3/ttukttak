@@ -11,7 +11,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ttukttak.common.dto.StatusMessage;
+import com.ttukttak.common.dto.StatusResponse;
 import com.ttukttak.common.exception.ExceptionFactory;
 import com.ttukttak.common.exception.StatusCode;
 
@@ -26,7 +26,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 		AuthenticationException authException) throws IOException {
 
 		StatusCode statusCode = ExceptionFactory.getInstance(authException);
-		StatusMessage message = new StatusMessage(statusCode);
+		StatusResponse message = new StatusResponse(statusCode);
 
 		response.setContentType("application/json;charset=UTF-8");
 		response.setStatus(statusCode.getHttpStatus().value());
