@@ -7,7 +7,7 @@ const getChatRoomInfo = async (roomId, setChatMessages, setMembers) => {
   console.log('getMessageList');
 
   try {
-    const result = await axios.get(baseUrl + `api/chat/messages/${roomId}`);
+    const result = await axios.get(baseUrl + `api/v1/chat/messages/${roomId}`);
     const data = result.data;
 
     data.members.map(data => {
@@ -27,7 +27,7 @@ const getChatRoomInfo = async (roomId, setChatMessages, setMembers) => {
 const getChatList = async (userId, setChatList) => {
   console.log('getChatList');
   try {
-    const result = await axios.get(baseUrl + `api/chat/rooms/${userId}`);
+    const result = await axios.get(baseUrl + `api/v1/chat/rooms/${userId}`);
     result.data.map(data => {
       setChatList(_chatList => [..._chatList, data]);
     });
@@ -39,7 +39,7 @@ const getChatList = async (userId, setChatList) => {
 
 const makeChatRoom = async (bookId, userId) => {
   try {
-    const result = await axios.post(baseUrl + `api/chat/rooms`, { bookId: bookId, userId: userId });
+    const result = await axios.post(baseUrl + `api/v1/chat/rooms`, { bookId: bookId, userId: userId });
     console.log(result.data);
   } catch (error) {
     console.log(error);
@@ -48,7 +48,7 @@ const makeChatRoom = async (bookId, userId) => {
 
 const readMessages = async (messageId, userId, roomId) => {
   try {
-    const result = await axios.patch(baseUrl + `api/chat/messages/last-checked`, {
+    const result = await axios.patch(baseUrl + `api/v1/chat/messages/last-checked`, {
       messageId: messageId,
       userId: userId,
       roomId: roomId,

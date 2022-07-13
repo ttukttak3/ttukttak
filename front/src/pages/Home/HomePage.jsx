@@ -66,7 +66,7 @@ const HomePage = () => {
     },
   ];
 
-  const { getBookCategory } = bookApi;
+  const { getCategoryList } = bookApi;
   const [category, setCategory] = useState({
     id: '0',
     name: '카테고리',
@@ -87,7 +87,7 @@ const HomePage = () => {
   ];
 
   useEffect(() => {
-    getBookCategory().then(result => {
+    getCategoryList().then(result => {
       setCategoryList(result);
     });
   }, []);
