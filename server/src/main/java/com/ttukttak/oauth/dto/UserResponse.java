@@ -25,7 +25,7 @@ public class UserResponse {
 		this.nickname = user.getNickname();
 		this.email = user.getEmail();
 		this.imageUrl = user.getImageUrl();
-		this.address = new TownDto(
+		this.address = TownDto.from(
 			user.getHomeTown()
 				.stream()
 				.filter(homeTown -> homeTown.getUseStatus().equals(UseStatusType.Y))
@@ -35,6 +35,6 @@ public class UserResponse {
 						new Town((long)1111011900, "서울특별시", "종로구", "세종로", "", 37.58028530, 126.97675720),
 						UseStatusType.Y))
 				.getTown())
-					.getAddress();
+			.getAddress();
 	}
 }

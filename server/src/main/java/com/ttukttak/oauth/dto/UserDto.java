@@ -1,12 +1,11 @@
 package com.ttukttak.oauth.dto;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import com.ttukttak.address.dto.HomeTownDto;
+import com.ttukttak.address.entity.HomeTown.UseStatusType;
 import com.ttukttak.oauth.entity.Role;
 import com.ttukttak.oauth.entity.User;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,18 +19,30 @@ public class UserDto {
 	private String email;
 	private String imageUrl;
 	private Role role;
-	private List<HomeTownDto> homeTown;
+	private HomeTownDto homeTown;
 
-	public UserDto(User user) {
-		this.id = user.getId();
-		this.nickname = user.getNickname();
-		this.email = user.getEmail();
-		this.imageUrl = user.getImageUrl();
-		this.role = user.getRole();
-		this.homeTown = user.getHomeTown()
-			.stream()
-			.map(c -> new HomeTownDto(c))
-			.collect(Collectors.toList());
+	@Builder
+	private UserDto(Long id, String nickname, String email, String imageUrl, Role role, HomeTownDto homeTown) {
+		this.id = id;
+		this.nickname = nickname;
+		this.email = email;
+		this.imageUrl = imageUrl;
+		this.role = role;
+		this.homeTown = homeTown;
+	}
+
+	public static UserDto from(User user) {
+		return UserDto.builder()
+			.id(user.getId())
+			.nickname(user.getNickname())
+			.email(user.getEmail())
+			.imageUrl(user.getImageUrl())
+			.role(user.getRole())
+			.homeTown(HomeTownDto.from(user.getHomeTown().stream()
+				.filter(homeTown -> homeTown.getUseStatus().equals(UseStatusType.Y))
+				.findFirst()
+				.orElse(null)))
+			.build();
 	}
 
 }

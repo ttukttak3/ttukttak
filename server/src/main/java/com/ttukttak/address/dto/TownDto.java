@@ -2,6 +2,7 @@ package com.ttukttak.address.dto;
 
 import com.ttukttak.address.entity.Town;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,12 +22,24 @@ public class TownDto {
 		return (district + " " + name).trim();
 	}
 
-	public TownDto(Town town) {
-		this.id = town.getId();
-		this.city = town.getCity();
-		this.district = town.getDistrict();
-		this.name = town.getName();
-		this.etc = town.getEtc();
+	@Builder
+	public TownDto(Long id, String city, String district, String name, String etc) {
+		super();
+		this.id = id;
+		this.city = city;
+		this.district = district;
+		this.name = name;
+		this.etc = etc;
+	}
+
+	public static TownDto from(Town town) {
+		return TownDto.builder()
+			.id(town.getId())
+			.city(town.getCity())
+			.district(town.getDistrict())
+			.name(town.getName())
+			.etc(town.getEtc())
+			.build();
 	}
 
 }

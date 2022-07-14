@@ -26,7 +26,7 @@ public class AddressServiceImpl implements AddressService {
 
 		return addressRepository.getNearTown(town.getLatitude(), town.getLongitude(), ranged)
 			.stream()
-			.map(c -> new TownDto(c))
+			.map(TownDto::from)
 			.collect(Collectors.toList());
 	}
 
@@ -39,14 +39,14 @@ public class AddressServiceImpl implements AddressService {
 	public List<TownDto> getSearchTown(String name) {
 		return addressRepositoryCustom.findByNameContains(name)
 			.stream()
-			.map(c -> new TownDto(c))
+			.map(TownDto::from)
 			.collect(Collectors.toList());
 	}
 
 	@Override
 	public TownDto getById(Long townId) {
 		Town town = addressRepository.getById(townId);
-		return new TownDto(town);
+		return TownDto.from(town);
 	}
 
 }

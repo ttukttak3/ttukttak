@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
 	public UserDto getById(Long id) {
 		User user = userRepository.findById(id).orElse(null);
 
-		return new UserDto(user);
+		return UserDto.from(user);
 	}
 
 	@Override
@@ -75,7 +75,7 @@ public class UserServiceImpl implements UserService {
 
 			homeTownService.save(user, town);
 
-			userDto = new UserDto(userRepository.findById(user.getId()).orElse(null));
+			userDto = UserDto.from(userRepository.findById(user.getId()).orElse(null));
 
 		} catch (IOException e) {
 			return userDto;

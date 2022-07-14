@@ -3,6 +3,7 @@ package com.ttukttak.address.dto;
 import com.ttukttak.address.entity.HomeTown;
 import com.ttukttak.address.entity.HomeTown.UseStatusType;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,11 +18,23 @@ public class HomeTownDto {
 	private Double ranged;
 	private UseStatusType useStatus;
 
-	public HomeTownDto(HomeTown homeTown) {
-		this.id = homeTown.getId();
-		this.userId = homeTown.getUser().getId();
-		this.town = new TownDto(homeTown.getTown());
-		this.ranged = homeTown.getRanged();
-		this.useStatus = homeTown.getUseStatus();
+	@Builder
+	public HomeTownDto(Long id, Long userId, TownDto town, Double ranged, UseStatusType useStatus) {
+		super();
+		this.id = id;
+		this.userId = userId;
+		this.town = town;
+		this.ranged = ranged;
+		this.useStatus = useStatus;
+	}
+
+	public static HomeTownDto from(HomeTown homeTown) {
+		return HomeTownDto.builder()
+			.id(homeTown.getId())
+			.userId(homeTown.getUser().getId())
+			.town(TownDto.from(homeTown.getTown()))
+			.ranged(homeTown.getRanged())
+			.useStatus(homeTown.getUseStatus())
+			.build();
 	}
 }
