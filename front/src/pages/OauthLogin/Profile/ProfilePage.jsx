@@ -26,8 +26,7 @@ const ProfilePage = () => {
   //user info setting
   useEffect(() => {
     getCurrentUser().then(result => {
-      if (result.role !== 'USER') {
-        //확인 차 !== 달아둠
+      if (result.role === 'USER') {
         navigate(`/`);
       } else {
         dispatch(setUserId(result.id));

@@ -87,9 +87,7 @@ const HomePage = () => {
   ];
 
   useEffect(() => {
-    getCategoryList().then(result => {
-      setCategoryList(result);
-    });
+    getCategoryList(setCategoryList);
   }, []);
 
   categoryList.map(category => {
