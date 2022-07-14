@@ -24,15 +24,15 @@ const BookListItem = ({ id, thumbnail, grade, subject, author, address, status, 
         </BookTitle>
         <BookLocation>
           {status === 'ABLE' ? <span className="blue">대여가능</span> : status === 'ON' ? <span className="gray">예약중</span> : status === 'ING' ? <span className="orange">대여중</span> : ''}
-          {address}
+          <p>{address}</p>
         </BookLocation>
         <BookPrice>
           <div>
-            <span>대여료</span>
+            <p>대여료</p>
             <p>2,000원</p>
           </div>
           <div>
-            <span>보증금</span>
+            <p>보증금</p>
             <p>{chgDeposit}원</p>
           </div>
         </BookPrice>

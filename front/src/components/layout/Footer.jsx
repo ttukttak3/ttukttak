@@ -27,7 +27,7 @@ const Footer = () => {
   const { FooterBox, IconBox } = style;
 
   return (
-    <FooterBox className={url.data === '/detailBook' ? 'hide' : ''}>
+    <FooterBox className={url.data === '/detailBook' ? 'hide' : 'show'}>
       <IconBox
         onClick={() => {
           navigate(`/`);
