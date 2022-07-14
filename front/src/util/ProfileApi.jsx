@@ -1,6 +1,6 @@
 import utils from './ApiUtil';
-const { baseUrl, baseHost, accessToken, apiUtil, apiAuthUtil, formUtil } = utils;
-const redirectUrl = baseUrl + 'oauth2/redirect';
+const { baseHost, accessToken, apiUtil, apiAuthUtil, formUtil } = utils;
+const redirectUrl = process.env.REACT_APP_API_URL + 'oauth2/redirect';
 const naverUrl = baseHost + 'oauth2/authorize/naver?redirect_uri=' + redirectUrl;
 const kakaoUrl = baseHost + 'oauth2/authorize/kakao?redirect_uri=' + redirectUrl;
 
@@ -18,7 +18,7 @@ const getCurrentUser = async () => {
 
 const nickNameCheck = async nickName => {
   try {
-    const result = await apiUtil.get(`api/v1/user/chknickname?nickname=${nickName}`);
+    const result = await apiAuthUtil.get(`api/v1/user/chknickname?nickname=${nickName}`);
     return result.data;
   } catch (error) {
     console.log(error);
