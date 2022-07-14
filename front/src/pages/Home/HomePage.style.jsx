@@ -59,14 +59,14 @@ const TitleBox = styled.div`
 
 const BookWrap = styled.div`
   width: 34rem;
-  min-height: 50rem;
+  min-height: 40rem;
   margin: 2.8rem auto;
   text-align: left;
 `;
 
 const NoItem = styled.p`
-  height: 50rem;
-  line-height: 50rem;
+  height: 40rem;
+  line-height: 40rem;
   text-align: center;
   font-size: 1.6rem;
   font-weight: 400;
@@ -127,34 +127,46 @@ const BookTitle = styled.div`
 `;
 
 const BookLocation = styled.div`
+  height: auto;
+  margin: 1.6rem 0 0.8rem 0;
+
+  p {
+    display: inline-block;
+    height: 2rem;
+    line-height: 2rem;
+    vertical-align: middle;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: ${({ theme }) => theme.colors.$white2};
+  }
+
   span {
     display: inline-block;
+    height: 2rem;
+    line-height: 2.2rem;
+    vertical-align: middle;
     font-size: 1rem;
     color: ${({ theme }) => theme.colors.$white1};
     width: 3.8rem;
     text-align: center;
     margin-right: 0.4rem;
-    letter-spacing: -0.06rem;
   }
+
   span.orange {
     background: ${({ theme }) => theme.colors.$primaryDeepOrageP};
+    letter-spacing: -0.06rem;
   }
 
   span.gray {
     background: ${({ theme }) => theme.colors.$white4};
+    letter-spacing: -0.06rem;
   }
 
   span.blue {
     background: ${({ theme }) => theme.colors.$primaryBlueP};
+    letter-spacing: -0.06rem;
     width: 4.7rem;
   }
-
-  font-size: 1.2rem;
-  font-weight: 400;
-  color: ${({ theme }) => theme.colors.$white2};
-  height: 1.8rem;
-  line-height: 1.8rem;
-  margin: 1.6rem 0 0.8rem 0;
 `;
 
 const BookPrice = styled.div`
@@ -167,13 +179,11 @@ const BookPrice = styled.div`
     height: 1.4rem;
     line-height: 1.4rem;
   }
-  div > span {
-    display: inline-block;
+  div > p:first-child {
     font-size: 1.2rem;
     font-weight: 400;
     color: ${({ theme }) => theme.colors.$white2};
     margin-right: 0.4rem;
-    vertical-align: text-bottom;
   }
   div > p {
     display: inline-block;
