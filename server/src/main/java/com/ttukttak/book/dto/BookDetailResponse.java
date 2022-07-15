@@ -44,7 +44,7 @@ public class BookDetailResponse {
 		this.owner = new UserResponse(book.getOwner());
 		this.bookInfo = book.getBookInfo();
 		this.bookCategory = book.getBookCategory();
-		this.bookTown = new TownDto(book.getTown());
+		this.bookTown = TownDto.from(book.getTown());
 		this.thumbnail = BookImageDto.from(book.getThumbnail());
 		this.bookImages = book.getImages().stream().map(BookImageDto::from).collect(Collectors.toList());
 		this.rating = book.getBookReview().stream().mapToDouble(BookReview::getRating).average().orElse(0);

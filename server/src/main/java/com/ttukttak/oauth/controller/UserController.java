@@ -15,7 +15,6 @@ import com.ttukttak.oauth.dto.UserDto;
 import com.ttukttak.oauth.entity.CurrentUser;
 import com.ttukttak.oauth.entity.UserPrincipal;
 import com.ttukttak.oauth.service.UserService;
-import com.ttukttak.oauth.token.TokenProvider;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -30,12 +29,11 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 
 	private final UserService userService;
-	private final TokenProvider tokenProvider;
 
 	@ApiOperation(value = "로그인한 유저정보 조회")
 	@GetMapping("/me")
 	public ResponseEntity<UserDto> getCurrentUser(@CurrentUser
-		UserPrincipal userPrincipal) {
+	UserPrincipal userPrincipal) {
 		/*
 		 * 현재는 매개변수를 통해 Oauth 로그인한 사용자 정보를 가져오고 있음
 		 * 매개변수 없이 가져오는 법
@@ -53,8 +51,8 @@ public class UserController {
 	@ApiOperation(value = "닉네임 중복 체크")
 	@GetMapping("/chknickname")
 	public ResponseEntity<Boolean> chkName(@CurrentUser
-		UserPrincipal userPrincipal, @RequestParam
-		String nickname) {
+	UserPrincipal userPrincipal, @RequestParam
+	String nickname) {
 
 		return ResponseEntity
 			.status(HttpStatus.OK)
@@ -68,8 +66,8 @@ public class UserController {
 	@ApiOperation(value = "회원가입")
 	@PostMapping("/signup")
 	public ResponseEntity<UserDto> setSignUp(@CurrentUser
-		UserPrincipal userPrincipal, SignUpRequest signUpRequest, @RequestBody
-		MultipartFile imageFile) {
+	UserPrincipal userPrincipal, SignUpRequest signUpRequest, @RequestBody
+	MultipartFile imageFile) {
 
 		UserDto userDto = userService.setSignUp(userPrincipal.getId(), signUpRequest, imageFile);
 

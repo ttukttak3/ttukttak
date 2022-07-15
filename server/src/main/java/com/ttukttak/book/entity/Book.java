@@ -20,8 +20,6 @@ import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.ColumnDefault;
 
-import net.minidev.json.annotate.JsonIgnore;
-
 import com.ttukttak.address.entity.Town;
 import com.ttukttak.book.dto.BookDto;
 import com.ttukttak.chat.entity.ChatRoom;
@@ -33,6 +31,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import net.minidev.json.annotate.JsonIgnore;
 
 @Entity
 @Getter
@@ -145,7 +144,7 @@ public class Book extends BaseTimeEntity implements Serializable {
 			.subject(BookDto.getSubject())
 			.content(BookDto.getContent())
 			.grade(BookDto.getGrade())
-			.owner(User.of(BookDto.getOwner()))
+			.owner(User.from(BookDto.getOwner()))
 			.bookInfo(BookDto.getBookInfo())
 			.bookCategory(BookDto.getBookCategory())
 			.thumbnail(BookImage.from(BookDto.getThumbnail()))

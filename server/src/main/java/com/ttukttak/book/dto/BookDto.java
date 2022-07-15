@@ -39,10 +39,10 @@ public class BookDto {
 		this.content = book.getContent();
 		this.deposit = book.getDeposit();
 		this.grade = book.getGrade();
-		this.owner = new UserDto(book.getOwner());
+		this.owner = UserDto.from(book.getOwner());
 		this.bookInfo = book.getBookInfo();
 		this.bookCategory = book.getBookCategory();
-		this.bookTown = new TownDto(book.getTown());
+		this.bookTown = TownDto.from(book.getTown());
 		this.thumbnail = BookImageDto.from(book.getThumbnail());
 		this.imageUrls = book.getImages().stream().map(BookImageDto::from).collect(Collectors.toList());
 		this.review = book.getBookReview();

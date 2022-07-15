@@ -89,7 +89,7 @@ public class User extends BaseTimeEntity implements Serializable {
 		return this;
 	}
 
-	public static User of(UserDto userDto) {
+	public static User from(UserDto userDto) {
 
 		return User.builder()
 			.id(userDto.getId())

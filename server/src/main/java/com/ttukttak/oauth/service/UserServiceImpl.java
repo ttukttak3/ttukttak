@@ -11,6 +11,7 @@ import com.ttukttak.address.service.AddressService;
 import com.ttukttak.address.service.HomeTownService;
 import com.ttukttak.common.StorageUploader;
 import com.ttukttak.common.dto.FileUploadResponse;
+import com.ttukttak.common.exception.ResourceNotFoundException;
 import com.ttukttak.oauth.dto.SignUpRequest;
 import com.ttukttak.oauth.dto.UserDto;
 import com.ttukttak.oauth.entity.Role;
@@ -31,7 +32,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserDto getById(Long id) {
-		User user = userRepository.findById(id).orElse(null);
+		User user = userRepository.findById(id).orElseThrow(
+			() -> new ResourceNotFoundException("User", "id", id));
 
 		return UserDto.from(user);
 	}
@@ -45,13 +47,13 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public UserDto setSignUp(Long userId, SignUpRequest signUpRequest, MultipartFile imageFile) {
 		UserDto userDto = new UserDto();
-		User user = userRepository.findById(userId).orElse(null);
+		User user = userRepository.findById(userId).orElseThrow(
+			() -> new ResourceNotFoundException("User", "id", userId));
 		try {
 			/*
 			 * 파일 업로드 (파일이 없는 경우 업로드 X)
 			 * 업로드시에는 기존파일 삭제
 			 */
-			System.out.println(imageFile);
 			if (imageFile != null) {
 				String currentImg = user.getImageUrl();
 				FileUploadResponse fileUploadResponse = storageUploader.upload(imageFile, "profile");
@@ -75,7 +77,8 @@ public class UserServiceImpl implements UserService {
 
 			homeTownService.save(user, town);
 
-			userDto = UserDto.from(userRepository.findById(user.getId()).orElse(null));
+			userDto = UserDto.from(userRepository.findById(user.getId()).orElseThrow(
+				() -> new ResourceNotFoundException("User", "id", user.getId())));
 
 		} catch (IOException e) {
 			return userDto;

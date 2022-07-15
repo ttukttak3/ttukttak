@@ -22,6 +22,6 @@ public class BookReviewDto {
 		this.content = bookReview.getContent();
 		this.rating = bookReview.getRating();
 		this.book = new BookDto(bookReview.getBook());
-		this.reviewer = new UserDto(bookReview.getReviewer());
+		this.reviewer = UserDto.from(bookReview.getReviewer());
 	}
 }

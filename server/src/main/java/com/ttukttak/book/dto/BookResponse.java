@@ -32,7 +32,7 @@ public class BookResponse {
 		this.author = book.getAuthor();
 		this.status = book.getStatus();
 		this.deposit = book.getDeposit();
-		this.address = new TownDto(book.getTown()).getAddress();
+		this.address = TownDto.from(book.getTown()).getAddress();
 		this.thumbnail = book.getThumbnail().getImageUrl();
 		this.grade = book.getGrade();
 		this.rating = book.getBookReview().stream().mapToDouble(review -> review.getRating()).average().orElse(0);
