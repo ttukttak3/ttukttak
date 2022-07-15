@@ -2,19 +2,23 @@ package com.ttukttak.rent.entity;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.persistence.Column;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import com.ttukttak.book.entity.Book;
 import com.ttukttak.common.BaseTimeEntity;
-import com.ttukttak.common.exception.InvalidParameterException;
 import com.ttukttak.oauth.entity.User;
+import com.ttukttak.rent.dto.RentRequest;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -27,6 +31,8 @@ import lombok.ToString;
 @ToString
 public class Rent extends BaseTimeEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
+	private static final int DEFAULT_RENT_DAYS = 14;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -45,32 +51,39 @@ public class Rent extends BaseTimeEntity implements Serializable {
 
 	private LocalDate beginDate;
 
-	private LocalDate endDate;
+	private LocalDate returnDate;
 
-	@Column(nullable = false, columnDefinition = "tinyint(1) default 0")
-	private Boolean isReturn;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "rent", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Extend> extendList = new ArrayList<>();
 
 	public RentStatus getStatus() {
-		//TODO: 상태값 구하는 로직
+		if (returnDate != null) {
+			return RentStatus.RENTED;
+		}
 
 		return RentStatus.RETURN;
 	}
 
 	public enum RentStatus {
-		//TODO: 대여일, 반납일로 현재 상태 구하는 로직
-
-		// 대여중, 연체중, 반납완료
-		RETURN;
+		RENTED, RETURN;
 	}
 
 	public void returnBook() {
-		isReturn = true;
+		returnDate = LocalDate.now();
+	}
+
+	public static Rent from(RentRequest request) {
+		return Rent.builder()
+			.owner(User.builder().id(request.getOwnerId()).build())
+			.lender(User.builder().id(request.getLenderId()).build())
+			.book(Book.builder().id(request.getBookId()).build())
+			.beginDate(request.getBeginDate()).build();
 	}
 
 	@Builder
-	public Rent(Long id, User owner, User lender, Book book, LocalDate beginDate, LocalDate endDate) {
+	public Rent(Long id, User owner, User lender, Book book, LocalDate beginDate) {
 		if (!checkValid(owner, lender)) {
-			throw new InvalidParameterException();
+			throw new IllegalArgumentException();
 		}
 
 		this.id = id;
@@ -78,8 +91,12 @@ public class Rent extends BaseTimeEntity implements Serializable {
 		this.lender = lender;
 		this.book = book;
 		this.beginDate = beginDate;
-		this.endDate = endDate;
-		this.isReturn = false;
+	}
+
+	public LocalDate getEndDate() {
+		int extendDays = extendList.stream().map(Extend::getExtendDays).reduce(0, Integer::sum);
+
+		return beginDate.plusDays(DEFAULT_RENT_DAYS + extendDays);
 	}
 
 	private boolean checkValid(User owner, User lender) {
