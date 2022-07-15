@@ -18,15 +18,18 @@ public class UserDto {
 	private String nickname;
 	private String email;
 	private String imageUrl;
+	private String introduction;
 	private Role role;
 	private HomeTownDto homeTown;
 
 	@Builder
-	private UserDto(Long id, String nickname, String email, String imageUrl, Role role, HomeTownDto homeTown) {
+	private UserDto(Long id, String nickname, String email, String imageUrl, String introduction, Role role,
+		HomeTownDto homeTown) {
 		this.id = id;
 		this.nickname = nickname;
 		this.email = email;
 		this.imageUrl = imageUrl;
+		this.introduction = introduction;
 		this.role = role;
 		this.homeTown = homeTown;
 	}
@@ -37,6 +40,7 @@ public class UserDto {
 			.nickname(user.getNickname())
 			.email(user.getEmail())
 			.imageUrl(user.getImageUrl())
+			.introduction(user.getIntroduction())
 			.role(user.getRole())
 			.homeTown(HomeTownDto.from(user.getHomeTown().stream()
 				.filter(homeTown -> homeTown.getUseStatus().equals(UseStatusType.Y))
