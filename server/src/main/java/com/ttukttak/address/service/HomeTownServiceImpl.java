@@ -26,7 +26,7 @@ public class HomeTownServiceImpl implements HomeTownService {
 	@Override
 	@Transactional
 	public Boolean save(User user, Town town) {
-		HomeTown homeTown = homeTownRepository.getByUserId(user.getId());
+		HomeTown homeTown = homeTownRepository.getByUserIdAndUseStatus(user.getId(), UseStatusType.Y);
 
 		Long homeTownId = null;
 

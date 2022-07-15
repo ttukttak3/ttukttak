@@ -4,12 +4,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ttukttak.oauth.dto.ProfileRequest;
 import com.ttukttak.oauth.dto.SignUpRequest;
 import com.ttukttak.oauth.dto.UserDto;
 import com.ttukttak.oauth.entity.CurrentUser;
@@ -21,6 +23,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import springfox.documentation.annotations.ApiIgnore;
 
 @Api(value = "/api/v1/user", description = "유저 API")
 @RequiredArgsConstructor
@@ -32,8 +35,10 @@ public class UserController {
 
 	@ApiOperation(value = "로그인한 유저정보 조회")
 	@GetMapping("/me")
-	public ResponseEntity<UserDto> getCurrentUser(@CurrentUser
-	UserPrincipal userPrincipal) {
+	public ResponseEntity<UserDto> getCurrentUser(
+		@ApiIgnore
+		@CurrentUser
+		UserPrincipal userPrincipal) {
 		/*
 		 * 현재는 매개변수를 통해 Oauth 로그인한 사용자 정보를 가져오고 있음
 		 * 매개변수 없이 가져오는 법
@@ -50,9 +55,12 @@ public class UserController {
 	@ApiImplicitParam(name = "nickname", value = "닉네임", required = true, dataType = "String", paramType = "Param")
 	@ApiOperation(value = "닉네임 중복 체크")
 	@GetMapping("/chknickname")
-	public ResponseEntity<Boolean> chkName(@CurrentUser
-	UserPrincipal userPrincipal, @RequestParam
-	String nickname) {
+	public ResponseEntity<Boolean> chkName(
+		@ApiIgnore
+		@CurrentUser
+		UserPrincipal userPrincipal,
+		@RequestParam
+		String nickname) {
 
 		return ResponseEntity
 			.status(HttpStatus.OK)
@@ -65,11 +73,37 @@ public class UserController {
 	})
 	@ApiOperation(value = "회원가입")
 	@PostMapping("/signup")
-	public ResponseEntity<UserDto> setSignUp(@CurrentUser
-	UserPrincipal userPrincipal, SignUpRequest signUpRequest, @RequestBody
-	MultipartFile imageFile) {
+	public ResponseEntity<UserDto> setSignUp(
+		@ApiIgnore
+		@CurrentUser
+		UserPrincipal userPrincipal,
+		SignUpRequest signUpRequest,
+		@RequestBody
+		MultipartFile imageFile) {
 
 		UserDto userDto = userService.setSignUp(userPrincipal.getId(), signUpRequest, imageFile);
+
+		return ResponseEntity
+			.status(HttpStatus.OK)
+			.body(userDto);
+
+	}
+
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "ProfileRequest", value = "프로필수정 Request", required = true, dataType = "object", paramType = "body"),
+		@ApiImplicitParam(name = "imageFile", value = "이지미 파일", required = false, dataType = "MultipartFile", paramType = "body")
+	})
+	@ApiOperation(value = "프로필 수정")
+	@PutMapping
+	public ResponseEntity<UserDto> setProfile(
+		@ApiIgnore
+		@CurrentUser
+		UserPrincipal userPrincipal,
+		ProfileRequest profileRequest,
+		@RequestBody
+		MultipartFile imageFile) {
+
+		UserDto userDto = userService.setProfile(userPrincipal.getId(), profileRequest, imageFile);
 
 		return ResponseEntity
 			.status(HttpStatus.OK)

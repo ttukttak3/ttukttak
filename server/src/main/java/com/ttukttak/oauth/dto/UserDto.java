@@ -42,10 +42,11 @@ public class UserDto {
 			.imageUrl(user.getImageUrl())
 			.introduction(user.getIntroduction())
 			.role(user.getRole())
-			.homeTown(HomeTownDto.from(user.getHomeTown().stream()
-				.filter(homeTown -> homeTown.getUseStatus().equals(UseStatusType.Y))
+			.homeTown(user.getHomeTown().stream()
+				.filter(home -> home.getUseStatus().equals(UseStatusType.Y))
 				.findFirst()
-				.orElse(null)))
+				.map(HomeTownDto::from)
+				.orElse(null))
 			.build();
 	}
 

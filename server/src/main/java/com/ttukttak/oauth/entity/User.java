@@ -86,10 +86,19 @@ public class User extends BaseTimeEntity implements Serializable {
 		this.introduction = introduction;
 	}
 
+	//회원가입
 	public User update(String nickname, String imageUrl, Role role) {
 		this.nickname = nickname;
 		this.imageUrl = imageUrl;
 		this.role = role;
+		return this;
+	}
+
+	//프로필수정
+	public User update(String nickname, String imageUrl, String introduction) {
+		this.nickname = nickname;
+		this.imageUrl = imageUrl;
+		this.introduction = introduction;
 		return this;
 	}
 
