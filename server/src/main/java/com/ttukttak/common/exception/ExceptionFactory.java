@@ -13,8 +13,7 @@ public enum ExceptionFactory {
 	HTTP_METHOD_NOT_SUPPORTED(HttpRequestMethodNotSupportedException.class, StatusCode.INVALID_METHOD),
 	NOT_FOUND_OAUTH2(ResourceNotFoundException.class, StatusCode.NOT_EXIST_OAUTH_ACCOUNT),
 	DUPLICATED(DuplicatedException.class, StatusCode.NOT_EXIST_OAUTH_ACCOUNT),
-	NOT_EXIST_ELEMENT(NotExistException.class, StatusCode.NOT_EXIST_ENTITY),
-	INVALID_PARAMETER(NotExistException.class, StatusCode.INVALID_PARAMETER),
+	ILLEGAL_ARGUMENT(IllegalArgumentException.class, StatusCode.ILLEGAL_ARGUMENT),
 	AUTH_EXCEPTION(AuthenticationException.class, StatusCode.UNAUTH),
 	SERVER_EXCEPTION(Exception.class, StatusCode.SERVER_ERROR);
 
