@@ -18,12 +18,12 @@ const Auth = () => {
     //token setting
     if (token) {
       localStorage.setItem(ACCESS_TOKEN, token);
-      // window.location.replace('/profile');
-      navigate('/'); //이전 페이지를 기억하고 있다가 보내야함
+      window.location.replace('/profile');
+      //navigate('/'); //이전 페이지를 기억하고 있다가 보내야함
     } else {
-      navigate('/login');
+      //navigate('/login');
     }
-  }, [navigate]);
+  }, []);
 
   return <div></div>;
 };
