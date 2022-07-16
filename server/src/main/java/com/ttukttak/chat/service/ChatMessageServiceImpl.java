@@ -81,4 +81,17 @@ public class ChatMessageServiceImpl implements ChatMessageService {
 
 		lastCheckedMessageRepository.save(lastCheckedMessage);
 	}
+
+	@Override
+	public void removeLastCheckedMessageById(Long lastCheckedMessageId, Long userId) {
+		LastCheckedMessage lastCheckedMessage = lastCheckedMessageRepository.findById(lastCheckedMessageId)
+			.orElseThrow(() -> new IllegalArgumentException());
+
+		if (lastCheckedMessage.getUser().getId() != userId) {
+			throw new UnauthChangeException();
+		}
+
+		lastCheckedMessageRepository.delete(lastCheckedMessage);
+	}
+
 }

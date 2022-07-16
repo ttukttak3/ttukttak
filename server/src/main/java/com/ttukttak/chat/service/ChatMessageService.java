@@ -10,4 +10,6 @@ public interface ChatMessageService {
 	ChatRoomInfo getChatMessages(Long roomId, Long userId);
 
 	void updateLastCheckedMessage(LastCheckedMessageRequest request);
+
+	void removeLastCheckedMessageById(Long lastCheckedMessageId, Long userId);
 }
