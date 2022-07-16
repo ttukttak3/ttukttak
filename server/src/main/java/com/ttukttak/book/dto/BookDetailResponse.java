@@ -7,10 +7,10 @@ import com.ttukttak.address.dto.TownDto;
 import com.ttukttak.book.entity.Book;
 import com.ttukttak.book.entity.Book.BookGrade;
 import com.ttukttak.book.entity.BookCategory;
-import com.ttukttak.book.entity.BookInfo;
 import com.ttukttak.book.entity.BookReview;
 import com.ttukttak.oauth.dto.UserResponse;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,7 +25,7 @@ public class BookDetailResponse {
 	private BookGrade grade;
 	private int deposit;
 	private UserResponse owner;
-	private BookInfo bookInfo;
+	private BookInfoDto bookInfo;
 	private BookCategory bookCategory;
 	private TownDto bookTown;
 	private double rating;
@@ -35,20 +35,44 @@ public class BookDetailResponse {
 	private BookImageDto thumbnail;
 	private List<BookImageDto> bookImages;
 
-	public BookDetailResponse(Book book) {
-		this.id = book.getId();
-		this.subject = book.getSubject();
-		this.content = book.getContent();
-		this.deposit = book.getDeposit();
-		this.grade = book.getGrade();
-		this.owner = new UserResponse(book.getOwner());
-		this.bookInfo = book.getBookInfo();
-		this.bookCategory = book.getBookCategory();
-		this.bookTown = TownDto.from(book.getTown());
-		this.thumbnail = BookImageDto.from(book.getThumbnail());
-		this.bookImages = book.getImages().stream().map(BookImageDto::from).collect(Collectors.toList());
-		this.rating = book.getBookReview().stream().mapToDouble(BookReview::getRating).average().orElse(0);
-		this.review = book.getBookReview().stream().map(BookReviewResponse::from).collect(Collectors.toList());
-		this.rentCnt = book.getRent().size();
+	@Builder
+	private BookDetailResponse(Long id, String subject, String content, BookGrade grade, int deposit,
+		UserResponse owner,
+		BookInfoDto bookInfo, BookCategory bookCategory, TownDto bookTown, double rating, int rentCnt,
+		List<BookReviewResponse> review, BookImageDto thumbnail, List<BookImageDto> bookImages) {
+		this.id = id;
+		this.subject = subject;
+		this.content = content;
+		this.grade = grade;
+		this.deposit = deposit;
+		this.owner = owner;
+		this.bookInfo = bookInfo;
+		this.bookCategory = bookCategory;
+		this.bookTown = bookTown;
+		this.rating = rating;
+		this.rentCnt = rentCnt;
+		this.review = review;
+		this.thumbnail = thumbnail;
+		this.bookImages = bookImages;
 	}
+
+	public static BookDetailResponse from(Book book) {
+		return BookDetailResponse.builder()
+			.id(book.getId())
+			.subject(book.getSubject())
+			.content(book.getContent())
+			.grade(book.getGrade())
+			.deposit(book.getDeposit())
+			.owner(UserResponse.from(book.getOwner()))
+			.bookInfo(BookInfoDto.from(book.getBookInfo()))
+			.bookCategory(book.getBookCategory())
+			.bookTown(TownDto.from(book.getTown()))
+			.rating(book.getBookReview().stream().mapToDouble(BookReview::getRating).average().orElse(0))
+			.rentCnt(book.getRent().size())
+			.review(book.getBookReview().stream().map(BookReviewResponse::from).collect(Collectors.toList()))
+			.thumbnail(BookImageDto.from(book.getThumbnail()))
+			.bookImages(book.getImages().stream().map(BookImageDto::from).collect(Collectors.toList()))
+			.build();
+	}
+
 }

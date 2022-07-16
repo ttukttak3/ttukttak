@@ -19,7 +19,7 @@ public class HomeTownDto {
 	private UseStatusType useStatus;
 
 	@Builder
-	public HomeTownDto(Long id, Long userId, TownDto town, Double ranged, UseStatusType useStatus) {
+	private HomeTownDto(Long id, Long userId, TownDto town, Double ranged, UseStatusType useStatus) {
 		super();
 		this.id = id;
 		this.userId = userId;

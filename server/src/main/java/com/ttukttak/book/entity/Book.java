@@ -106,7 +106,7 @@ public class Book extends BaseTimeEntity implements Serializable {
 		return this;
 	}
 
-	public Book isDelete() {
+	public Book removeBook() {
 		this.isDelete = true;
 		return this;
 	}
@@ -144,7 +144,7 @@ public class Book extends BaseTimeEntity implements Serializable {
 			.content(BookDto.getContent())
 			.grade(BookDto.getGrade())
 			.owner(User.from(BookDto.getOwner()))
-			.bookInfo(BookDto.getBookInfo())
+			.bookInfo(BookInfo.from(BookDto.getBookInfo()))
 			.bookCategory(BookDto.getBookCategory())
 			.thumbnail(BookImage.from(BookDto.getThumbnail()))
 			.build();

@@ -55,7 +55,7 @@ public class UserController {
 	@ApiImplicitParam(name = "nickname", value = "닉네임", required = true, dataType = "String", paramType = "Param")
 	@ApiOperation(value = "닉네임 중복 체크")
 	@GetMapping("/chknickname")
-	public ResponseEntity<Boolean> chkName(
+	public ResponseEntity<Boolean> getNickName(
 		@ApiIgnore
 		@CurrentUser
 		UserPrincipal userPrincipal,

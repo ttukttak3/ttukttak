@@ -211,14 +211,14 @@ public class BookServiceImpl implements BookService {
 	@Override
 	public BookDto findById(Long bookId) {
 		return bookRepository.findById(bookId)
-			.map(book -> new BookDto(book))
+			.map(book -> BookDto.from(book))
 			.orElseThrow(() -> new NotExistException());
 	}
 
 	@Override
 	public BookDetailResponse findByIdDetail(Long bookId) {
 		return bookRepository.findById(bookId)
-			.map(book -> new BookDetailResponse(book))
+			.map(BookDetailResponse::from)
 			.orElseThrow(() -> new NotExistException());
 	}
 
@@ -229,7 +229,7 @@ public class BookServiceImpl implements BookService {
 	@Transactional
 	public Boolean isDelete(Long bookId) {
 		Book book = bookRepository.findById(bookId).orElseThrow(() -> new NotExistException());
-		book.isDelete();
+		book.removeBook();
 
 		bookRepository.save(book);
 
