@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ttukttak.book.entity.Book;
 import com.ttukttak.book.repository.BookRepository;
@@ -32,6 +33,7 @@ public class RentServiceImpl implements RentService {
 	private final UserRepository userRepository;
 
 	@Override
+	@Transactional(readOnly = true)
 	public PageResponse<RentResponse> getRentedList(Long ownerId, int pageNum) {
 		Pageable pageable = PageRequest.of(pageNum, PAGE_SIZE);
 
@@ -48,6 +50,7 @@ public class RentServiceImpl implements RentService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public PageResponse<RentResponse> getBorrowedList(Long lenderId, int pageNum) {
 		Pageable pageable = PageRequest.of(pageNum, PAGE_SIZE);
 
@@ -64,6 +67,7 @@ public class RentServiceImpl implements RentService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public RentResponse getRentById(Long rentId) {
 		return rentRepository.findById(rentId)
 			.map(RentResponse::from)

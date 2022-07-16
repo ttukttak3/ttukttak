@@ -25,15 +25,15 @@ public interface BookService {
 
 	BookDto findById(Long bookId);
 
-	Boolean isDelete(Long bookId);
+	void removeBook(Long bookId);
 
-	Boolean updateStatus(Long bookId, BookStatus status);
+	void updateStatus(Long bookId, BookStatus status);
 
-	Boolean updateGrade(Long bookId, BookGrade grade);
+	void updateGrade(Long bookId, BookGrade grade);
 
 	BookDetailResponse findByIdDetail(Long bookId);
 
-	Boolean bookUpdate(Long bookId, BookUploadRequest bookUploadRequest, List<MultipartFile> imageFiles);
+	void bookUpdate(Long bookId, BookUploadRequest bookUploadRequest, List<MultipartFile> imageFiles);
 
 	PageResponse<MyBookResponse> getMyBookList(Long id, int pageNum);
 

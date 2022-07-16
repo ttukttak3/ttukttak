@@ -226,12 +226,10 @@ public class BookServiceImpl implements BookService {
 	 */
 	@Override
 	@Transactional
-	public Boolean isDelete(Long bookId) {
+	public void removeBook(Long bookId) {
 		Book book = bookRepository.findById(bookId).orElseThrow(() -> new IllegalArgumentException());
 		book.removeBook();
 		bookRepository.save(book);
-
-		return true;
 	}
 
 	/*
@@ -239,13 +237,11 @@ public class BookServiceImpl implements BookService {
 	 */
 	@Override
 	@Transactional
-	public Boolean updateStatus(Long bookId, BookStatus status) {
+	public void updateStatus(Long bookId, BookStatus status) {
 		Book book = bookRepository.findById(bookId).orElseThrow(() -> new IllegalArgumentException());
 		book.updateStatus(status);
 
 		bookRepository.save(book);
-
-		return true;
 	}
 
 	/*
@@ -253,13 +249,11 @@ public class BookServiceImpl implements BookService {
 	 */
 	@Override
 	@Transactional
-	public Boolean updateGrade(Long bookId, BookGrade grade) {
+	public void updateGrade(Long bookId, BookGrade grade) {
 		Book book = bookRepository.findById(bookId).orElseThrow(() -> new IllegalArgumentException());
 		book.updateGrade(grade);
 
 		bookRepository.save(book);
-
-		return true;
 	}
 
 	/*
@@ -267,7 +261,7 @@ public class BookServiceImpl implements BookService {
 	 */
 	@Override
 	@Transactional
-	public Boolean bookUpdate(Long bookId, BookUploadRequest bookUploadRequest, List<MultipartFile> imageFiles) {
+	public void bookUpdate(Long bookId, BookUploadRequest bookUploadRequest, List<MultipartFile> imageFiles) {
 		//변경 전 도서 조회
 		Book currBook = bookRepository.findById(bookId).orElseThrow(() -> new IllegalArgumentException());
 
@@ -357,7 +351,6 @@ public class BookServiceImpl implements BookService {
 			.stream()
 			.anyMatch(image -> image.getId().equals(currImageId))).forEach(bookImageRepository::deleteById);
 
-		return true;
 	}
 
 	@Override

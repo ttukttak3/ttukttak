@@ -30,40 +30,40 @@ import springfox.documentation.annotations.ApiIgnore;
 @Api(value = "/api/v1/rent", description = "대여 API")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/rent")
+@RequestMapping("/api/v1")
 public class RentController {
 
 	private final RentService rentService;
 
-	@GetMapping
+	@GetMapping("/users/{userId}/rent")
 	@ApiOperation(value = "대여내역 조회")
 	@ApiImplicitParam(name = "pageNum", value = "페이지 번호", required = true, dataType = "int", paramType = "param")
 	public ResponseEntity<PageResponse<RentResponse>> getRentList(
-		@ApiIgnore @CurrentUser UserPrincipal userPrincipal,
+		@PathVariable Long userId,
 		@RequestParam(defaultValue = "1") int pageNum) {
 
 		return ResponseEntity
-			.ok(rentService.getRentedList(userPrincipal.getId(), pageNum));
+			.ok(rentService.getRentedList(userId, pageNum));
 	}
 
-	@GetMapping("/borrow")
+	@GetMapping("/users/{userId}/rent/borrow")
 	@ApiOperation(value = "차입내역 조회")
 	@ApiImplicitParam(name = "pageNum", value = "페이지 번호", required = true, dataType = "int", paramType = "param")
 	public ResponseEntity<PageResponse<RentResponse>> getBorrowingList(
-		@ApiIgnore @CurrentUser UserPrincipal userPrincipal,
+		@PathVariable Long userId,
 		@RequestParam(defaultValue = "1") int pageNum) {
 
 		return ResponseEntity
-			.ok(rentService.getBorrowedList(userPrincipal.getId(), pageNum));
+			.ok(rentService.getBorrowedList(userId, pageNum));
 	}
 
-	@GetMapping("/{rentId}")
+	@GetMapping("/rent/{rentId}")
 	@ApiOperation(value = "대여 상세조회")
 	public ResponseEntity<RentResponse> getRentById(@PathVariable Long rentId) {
 		return ResponseEntity.ok(rentService.getRentById(rentId));
 	}
 
-	@PostMapping
+	@PostMapping("/rent")
 	public ResponseEntity<RentResponse> addRent(
 		@ApiIgnore
 		@CurrentUser
@@ -83,7 +83,7 @@ public class RentController {
 
 	}
 
-	@PatchMapping("/{rentId}/return")
+	@PatchMapping("/rent/{rentId}/return")
 	public ResponseEntity<RentResponse> changeRentStatus(
 		@ApiIgnore
 		@CurrentUser
@@ -93,7 +93,7 @@ public class RentController {
 			.ok(rentService.changeRentStatus(rentId, userPrincipal.getId()));
 	}
 
-	@PostMapping("/{rentId}/extend")
+	@PostMapping("/rent/{rentId}/extend")
 	public ResponseEntity<ExtendResponse> addExtend(
 		@ApiIgnore
 		@CurrentUser

@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
-import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.data.redis.core.HashOperations;
@@ -15,6 +14,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ttukttak.book.entity.Book;
 import com.ttukttak.book.repository.BookRepository;
@@ -65,6 +65,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<ChatRoomCard> getRoomList(Long userId) {
 		return chatMemberRepository.findAllChatMemberByUserId(userId).stream().map(findRoom -> {
 			ChatRoom room = findRoom.getRoom();
