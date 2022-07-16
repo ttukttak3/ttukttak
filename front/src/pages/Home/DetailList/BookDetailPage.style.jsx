@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import starBlue from '../../../assets/img/userInterFace/star_blue.png';
 import libraryBlue from '../../../assets/img/userInterFace/local_library_blue.png';
+import gradation from '../../../assets/img/userInterFace/gradation.png';
 const Wrap = styled.div``;
 const BookWrap = styled.div`
   width: 34rem;

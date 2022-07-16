@@ -12,7 +12,7 @@ const LenderInfoPage = content => {
       <LenderInfo>
         <img src="/" onError={onErrorImg} alt="이미지" />
         <div>
-          <h2>{content.nickName}</h2>
+          <h2>{/*{content.nickName}*/}</h2>
           <p>수원시 권선구 고색동</p>
         </div>
       </LenderInfo>
