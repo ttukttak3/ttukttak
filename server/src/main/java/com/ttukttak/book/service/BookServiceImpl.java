@@ -186,8 +186,7 @@ public class BookServiceImpl implements BookService {
 				book.addImage(BookImage.builder().imageUrl(fileUploadResponse.getUrl()).build());
 
 			}
-		} catch (Exception e) {
-		}
+		} catch (Exception e) {}
 
 		Book resultBook = bookRepository.save(book);
 
@@ -211,14 +210,14 @@ public class BookServiceImpl implements BookService {
 	@Override
 	public BookDto findById(Long bookId) {
 		return bookRepository.findById(bookId)
-			.map(book -> new BookDto(book))
+			.map(book -> BookDto.from(book))
 			.orElseThrow(() -> new IllegalArgumentException());
 	}
 
 	@Override
 	public BookDetailResponse findByIdDetail(Long bookId) {
 		return bookRepository.findById(bookId)
-			.map(book -> new BookDetailResponse(book))
+			.map(book -> BookDetailResponse.from(book))
 			.orElseThrow(() -> new IllegalArgumentException());
 	}
 
@@ -229,7 +228,7 @@ public class BookServiceImpl implements BookService {
 	@Transactional
 	public Boolean isDelete(Long bookId) {
 		Book book = bookRepository.findById(bookId).orElseThrow(() -> new IllegalArgumentException());
-		book.isDelete(DeleteStatus.Y);
+		book.removeBook();
 		bookRepository.save(book);
 
 		return true;
@@ -338,8 +337,7 @@ public class BookServiceImpl implements BookService {
 				updateBook.addImage(BookImage.builder().imageUrl(fileUploadResponse.getUrl()).build());
 
 			}
-		} catch (Exception e) {
-		}
+		} catch (Exception e) {}
 
 		Book resultBook = bookRepository.save(updateBook);
 
