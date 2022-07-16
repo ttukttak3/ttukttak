@@ -1,5 +1,4 @@
 import axios from 'axios';
-
 const baseUrl = process.env.REACT_APP_SERVER_API_URL;
 const baseHost = process.env.REACT_APP_SERVER_IP_URL;
 const accessToken = 'accessToken';

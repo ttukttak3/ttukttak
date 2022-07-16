@@ -1,10 +1,11 @@
 /* eslint-disable */
 import React, { useEffect } from 'react';
-import { ACCESS_TOKEN } from '../../../util/ApiUtil';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-
+import { ACCESS_TOKEN } from '../../../util/ApiUtil';
+import utils from '../../../util/ProfileApi';
+import { setUserId, setRole, setNickName, setEmail, setImageFile, setHomeTown } from '../../../app/userSlice';
 const Auth = () => {
-  const navigate = useNavigate();
   //정규형 변환
   const getToken = name => {
     name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
@@ -12,18 +13,26 @@ const Auth = () => {
     var results = regex.exec(new URL(window.location.href).search);
     return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
   };
+  const { getCurrentUser } = utils;
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   //렌더링 후 실행
   useEffect(() => {
     const token = getToken('token');
     //token setting
     if (token) {
       localStorage.setItem(ACCESS_TOKEN, token);
-      window.location.replace('/profile');
-      //navigate('/'); //이전 페이지를 기억하고 있다가 보내야함
-    } else {
-      //navigate('/login');
+      getCurrentUser().then(result => {
+        dispatch(setUserId(result.id));
+        dispatch(setRole(result.role));
+        dispatch(setNickName(result.nickname));
+        dispatch(setEmail(result.email));
+        dispatch(setImageFile(result.imageUrl));
+        dispatch(setHomeTown(result.homeTown));
+      });
+      navigate(`/profile`);
     }
-  }, []);
+  }, [dispatch, getCurrentUser]);
 
   return <div></div>;
 };
