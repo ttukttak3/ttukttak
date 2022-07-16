@@ -21,10 +21,10 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
-@Api(value = "/api/v1/chat", description = "채팅방 API")
+@Api(value = "/api/v1", description = "채팅방 API")
 @RequiredArgsConstructor
 @Controller
-@RequestMapping("/api/v1/chat")
+@RequestMapping("/api/v1")
 public class ChatRoomController {
 
 	private final ChatRoomService chatRoomService;
@@ -36,7 +36,7 @@ public class ChatRoomController {
 		, dataType = "long"
 		, paramType = "path")
 	@ApiOperation(value = "모든 채팅방 목록 조회")
-	@GetMapping("/users/{userId}/rooms")
+	@GetMapping("/users/{userId}/chat/rooms")
 	@ResponseBody
 	public ResponseEntity<List<ChatRoomCard>> getRooms(@PathVariable Long userId) {
 		//TODO: 로그인한 유저인지 확인?
@@ -50,7 +50,7 @@ public class ChatRoomController {
 		, dataType = "object"
 		, paramType = "body")
 	@ApiOperation(value = "채팅방 생성")
-	@PostMapping("/rooms")
+	@PostMapping("/chat/rooms")
 	@ResponseBody
 	public ResponseEntity<ChatRoomInfo> createRoom(@RequestBody ChatRoomRequest chatRoomRequest) {
 

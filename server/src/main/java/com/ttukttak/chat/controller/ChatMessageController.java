@@ -22,10 +22,10 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import springfox.documentation.annotations.ApiIgnore;
 
-@Api(value = "/api/v1/chat/messages", description = "채팅메시지 API")
+@Api(value = "/api/v1", description = "채팅메시지 API")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/chat")
+@RequestMapping("/api/v1")
 public class ChatMessageController {
 	private final ChatMessageService chatMessageService;
 
@@ -36,13 +36,13 @@ public class ChatMessageController {
 		, dataType = "long"
 		, paramType = "path")
 	@ApiOperation(value = "채팅방 전체 메시지 조회")
-	@GetMapping("/rooms/{roomId}/messages")
+	@GetMapping("/chat/rooms/{roomId}/messages")
 	public ResponseEntity<ChatRoomInfo> findAllChats(
 		@ApiIgnore
 		@CurrentUser
 			UserPrincipal userPrincipal, @PathVariable Long roomId) {
-		return ResponseEntity
-			.ok(chatMessageService.getChatMessages(roomId, userPrincipal.getId()));
+
+		return ResponseEntity.ok(chatMessageService.getChatMessages(roomId, userPrincipal.getId()));
 	}
 
 	@ApiImplicitParam(
@@ -52,7 +52,7 @@ public class ChatMessageController {
 		, dataType = "LastCheckedMessageRequest"
 		, paramType = "body")
 	@ApiOperation(value = "마지막으로 확인한 메시지 갱신")
-	@PatchMapping("/members/{memberId}/last-checked")
+	@PatchMapping("/chat/members/{memberId}/last-checked")
 	public ResponseEntity<Boolean> updateLastCheckedMessage(
 		@ApiIgnore
 		@CurrentUser
@@ -63,7 +63,7 @@ public class ChatMessageController {
 	}
 
 	@ApiOperation(value = "채팅방 나가기")
-	@DeleteMapping("/members/{memberId}")
+	@DeleteMapping("/chat/members/{memberId}")
 	public ResponseEntity<Boolean> removeChatMember(
 		@ApiIgnore
 		@CurrentUser
