@@ -28,12 +28,17 @@ public class ChatGuest {
 	private Book book;
 
 	@ManyToOne
+	@JoinColumn(name = "room_id")
+	private ChatRoom room;
+
+	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user;
 
 	@Builder
-	public ChatGuest(Book book, User user) {
+	public ChatGuest(Book book, ChatRoom room, User user) {
 		this.book = book;
+		this.room = room;
 		this.user = user;
 	}
 }
