@@ -30,7 +30,7 @@ const GlobalStyle = createGlobalStyle`
             font-size: 10px = 62.5%
             10px : 1rem / 12px : 1.2rem / 14px : 1.4rem / 20px : 2rem
         */
-        font-family: 'Pretendard';
+        font-family: "Pretendard";
         vertical-align: baseline;
         box-sizing: border-box;
         word-break:keep-all; 
@@ -44,7 +44,7 @@ const GlobalStyle = createGlobalStyle`
     }
     body {
         line-height: 1;
-        font-family: 'Pretendard';
+        font-family: "Pretendard";
     }
     ol, ul {
         list-style-type:none;
@@ -77,6 +77,7 @@ const GlobalStyle = createGlobalStyle`
     }
     img {
         vertical-align:middle;
+        border: none;
     }
     input:focus::-webkit-input-placeholder,
     input:focus::-moz-input-placeholder,

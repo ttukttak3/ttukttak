@@ -42,6 +42,16 @@ const getCategoryList = async setCategoryList => {
   }
 };
 
-const bookApi = { uploadBook, getBookList, interparkSearch, getCategoryList };
+const getDetailView = async bookId => {
+  try {
+    const result = await apiUtil.get(`api/v1/book/${bookId}`);
+    console.log(result.data);
+    return result.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const bookApi = { uploadBook, getBookList, getDetailView, interparkSearch, getCategoryList };
 
 export default bookApi;
