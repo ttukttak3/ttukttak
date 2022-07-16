@@ -210,14 +210,14 @@ public class BookServiceImpl implements BookService {
 	@Override
 	public BookDto findById(Long bookId) {
 		return bookRepository.findById(bookId)
-			.map(book -> BookDto.from(book))
+			.map(BookDto::from)
 			.orElseThrow(() -> new IllegalArgumentException());
 	}
 
 	@Override
 	public BookDetailResponse findByIdDetail(Long bookId) {
 		return bookRepository.findById(bookId)
-			.map(book -> BookDetailResponse.from(book))
+			.map(BookDetailResponse::from)
 			.orElseThrow(() -> new IllegalArgumentException());
 	}
 
