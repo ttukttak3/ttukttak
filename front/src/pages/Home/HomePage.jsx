@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setTitle, setLocation, setSearch, setFavorite, setAlert, setAllFalse } from '../../app/headerSlice';
-import { setData } from '../../app/urlSlice';
+
 import style from './HomePage.style';
 import BookRentPage from './BookRentPage';
 import BookOnLoadPage from './BookOnLoanPage';
@@ -14,7 +14,6 @@ const HomePage = () => {
   //-------------- Header --------------
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(setData('/'));
     dispatch(setAllFalse());
     dispatch(setTitle('우리집'));
     dispatch(setLocation(true));

@@ -1,7 +1,5 @@
 import utils from './ApiUtil';
 const { apiUtil, formUtil } = utils;
-const baseUrl = process.env.REACT_APP_API_URL;
-
 const getBookList = async (param, setBookList) => {
   try {
     const result = await apiUtil.get(`api/v1/book/list?pageNum=${param.pageNum}&order=${param.order}&status=${param.status}&townId=${param.townId}&categoryId=${param.categoryId}`);

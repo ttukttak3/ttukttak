@@ -1,6 +1,6 @@
 /* eslint-disable array-callback-return */
 import axios from 'axios';
-const baseUrl = process.env.REACT_APP_API_URL;
+const baseUrl = process.env.REACT_APP_SERVER_API_URL;
 
 //userId == 현재 login되어있는 user의 id
 const getChatRoomInfo = async (roomId, setChatMessages, setMembers) => {

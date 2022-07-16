@@ -12,7 +12,8 @@ const getCurrentUser = async () => {
     const result = await apiAuthUtil.get(`api/v1/user/me`);
     return result.data;
   } catch (error) {
-    console.log(error);
+    console.log(error.response.data);
+    return Promise.reject(error);
   }
 };
 
@@ -46,18 +47,3 @@ const signUp = async formData => {
 const profileApi = { naverUrl, kakaoUrl, getCurrentUser, nickNameCheck, locationValue, signUp };
 
 export default profileApi;
-
-// export function getLoginCheck() {
-//     return request({
-//       url: API_BASE_URL + 'api/user/me',
-//       method: 'GET',
-//     })
-//       .then(response => {
-//         console.log('아직 로그인 중이다!');
-//       })
-//       .catch(error => {
-//         alert('로그인 해주세요!');
-//         localStorage.clear();
-//         window.location.replace('/login');
-//       });
-//   }
