@@ -10,10 +10,11 @@ import com.ttukttak.chat.dto.ChatMessageDto;
 import com.ttukttak.chat.dto.ChatRoomInfo;
 import com.ttukttak.chat.dto.ChatUser;
 import com.ttukttak.chat.dto.LastCheckedMessageRequest;
+import com.ttukttak.chat.entity.ChatMember;
 import com.ttukttak.chat.entity.ChatMessage;
-import com.ttukttak.chat.entity.LastCheckedMessage;
+import com.ttukttak.chat.repository.ChatMemberRepository;
 import com.ttukttak.chat.repository.ChatMessageRepository;
-import com.ttukttak.chat.repository.LastCheckedMessageRepository;
+import com.ttukttak.common.exception.UnauthChangeException;
 import com.ttukttak.oauth.entity.User;
 import com.ttukttak.oauth.repository.UserRepository;
 
@@ -24,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class ChatMessageServiceImpl implements ChatMessageService {
 	private final ModelMapper modelMapper;
 	private final ChatMessageRepository chatMessageRepository;
-	private final LastCheckedMessageRepository lastCheckedMessageRepository;
+	private final ChatMemberRepository chatMemberRepository;
 	private final UserRepository userRepository;
 
 	private final ChatRoomService chatRoomService;
@@ -39,9 +40,9 @@ public class ChatMessageServiceImpl implements ChatMessageService {
 	public ChatRoomInfo getChatMessages(Long roomId, Long userId) {
 		User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException());
 
-		List<LastCheckedMessage> lastCheckedMessages = lastCheckedMessageRepository.findAllByRoomId(roomId);
+		List<ChatMember> chatMembers = chatMemberRepository.findAllByRoomId(roomId);
 
-		LastCheckedMessage findLastCheckedMessage = lastCheckedMessages.stream()
+		ChatMember findChatMember = chatMembers.stream()
 			.filter(lcm -> lcm.getUser().getId() == user.getId())
 			.findFirst()
 			.orElseThrow(() -> new IllegalArgumentException());
@@ -52,8 +53,8 @@ public class ChatMessageServiceImpl implements ChatMessageService {
 		if (chatMessages.size() > 0) {
 			ChatMessage lastChatMessage = chatMessages.get(chatMessages.size() - 1);
 
-			findLastCheckedMessage.setChatMessage(lastChatMessage);
-			lastCheckedMessageRepository.save(findLastCheckedMessage);
+			findChatMember.setLastCheckedMessage(lastChatMessage);
+			chatMemberRepository.save(findChatMember);
 		}
 
 		List<ChatMessageDto> messageDtos = chatMessages
@@ -61,7 +62,7 @@ public class ChatMessageServiceImpl implements ChatMessageService {
 			.map(chatMessage -> modelMapper.map(chatMessage, ChatMessageDto.class))
 			.collect(Collectors.toList());
 
-		List<ChatUser> members = lastCheckedMessages
+		List<ChatUser> members = chatMembers
 			.stream()
 			.map(lastCheckedMessage -> modelMapper.map(lastCheckedMessage.getUser(), ChatUser.class))
 			.collect(
@@ -74,24 +75,24 @@ public class ChatMessageServiceImpl implements ChatMessageService {
 
 	@Override
 	public void updateLastCheckedMessage(LastCheckedMessageRequest request) {
-		LastCheckedMessage lastCheckedMessage = lastCheckedMessageRepository.findByRoomIdAndUserId(request.getRoomId(),
+		ChatMember chatMember = chatMemberRepository.findByRoomIdAndUserId(request.getRoomId(),
 			request.getUserId()).orElseThrow(() -> new IllegalArgumentException());
 
-		lastCheckedMessage.setChatMessage(ChatMessage.builder().id(request.getMessageId()).build());
+		chatMember.setLastCheckedMessage(ChatMessage.builder().id(request.getMessageId()).build());
 
-		lastCheckedMessageRepository.save(lastCheckedMessage);
+		chatMemberRepository.save(chatMember);
 	}
 
 	@Override
-	public void removeLastCheckedMessageById(Long lastCheckedMessageId, Long userId) {
-		LastCheckedMessage lastCheckedMessage = lastCheckedMessageRepository.findById(lastCheckedMessageId)
+	public void removeChatMember(Long lastCheckedMessageId, Long userId) {
+		ChatMember chatMember = chatMemberRepository.findById(lastCheckedMessageId)
 			.orElseThrow(() -> new IllegalArgumentException());
 
-		if (lastCheckedMessage.getUser().getId() != userId) {
+		if (chatMember.getUser().getId() != userId) {
 			throw new UnauthChangeException();
 		}
 
-		lastCheckedMessageRepository.delete(lastCheckedMessage);
+		chatMemberRepository.delete(chatMember);
 	}
 
 }

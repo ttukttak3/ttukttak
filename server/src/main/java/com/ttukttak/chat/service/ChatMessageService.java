@@ -11,5 +11,5 @@ public interface ChatMessageService {
 
 	void updateLastCheckedMessage(LastCheckedMessageRequest request);
 
-	void removeLastCheckedMessageById(Long lastCheckedMessageId, Long userId);
+	void removeChatMember(Long lastCheckedMessageId, Long userId);
 }
