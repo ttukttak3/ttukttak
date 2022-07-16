@@ -36,7 +36,7 @@ public class RentServiceImpl implements RentService {
 		Pageable pageable = PageRequest.of(pageNum, PAGE_SIZE);
 
 		Page<RentResponse> pageInfo = rentRepository
-			.findAllByOwnerIdAndIsReturnFalseOrderByBeginDateAsc(ownerId, pageable)
+			.findAllByOwnerIdAndReturnDateIsNullOrderByBeginDateAsc(ownerId, pageable)
 			.map(RentResponse::from);
 
 		return PageResponse.<RentResponse>builder()
@@ -52,7 +52,7 @@ public class RentServiceImpl implements RentService {
 		Pageable pageable = PageRequest.of(pageNum, PAGE_SIZE);
 
 		Page<RentResponse> pageInfo = rentRepository
-			.findAllByLenderIdAndIsReturnFalseOrderByBeginDateAsc(lenderId, pageable)
+			.findAllByLenderIdAndReturnDateIsNullOrderByBeginDateAsc(lenderId, pageable)
 			.map(RentResponse::from);
 
 		return PageResponse.<RentResponse>builder()

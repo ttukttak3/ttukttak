@@ -27,9 +27,9 @@ public class RentResponse {
 
 		return RentResponse.builder()
 			.id(rent.getId())
-			.owner(new UserDto(rent.getOwner()))
-			.lender(new UserDto(rent.getLender()))
-			.book(new BookDto(rent.getBook()))
+			.owner(UserDto.from(rent.getOwner()))
+			.lender(UserDto.from(rent.getLender()))
+			.book(BookDto.from(rent.getBook()))
 			.beginDate(rent.getBeginDate())
 			.endDate(rent.getEndDate())
 			.status(rent.getStatus())
