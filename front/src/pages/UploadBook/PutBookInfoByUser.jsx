@@ -28,7 +28,7 @@ const PutBookInfoByUser = () => {
     getCategoryList(setCategoryList);
     dispatch(setAllFalse());
     return () => {};
-  }, []);
+  }, [dispatch, getCategoryList]);
 
   const showCategoryModal = () => {
     setTitle('카테고리');

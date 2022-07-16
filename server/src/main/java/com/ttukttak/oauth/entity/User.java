@@ -65,12 +65,15 @@ public class User extends BaseTimeEntity implements Serializable {
 	@Column
 	private String age;
 
+	@Column(columnDefinition = "TEXT")
+	private String introduction;
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 	private List<HomeTown> homeTown = new ArrayList<>();
 
 	@Builder
 	public User(Long id, String nickname, String email, String imageUrl, Role role, AuthProvider provider,
-		String providerId, String gender, String age) {
+		String providerId, String gender, String age, String introduction) {
 		this.id = id;
 		this.nickname = nickname;
 		this.email = email;
@@ -80,8 +83,10 @@ public class User extends BaseTimeEntity implements Serializable {
 		this.providerId = providerId;
 		this.gender = gender;
 		this.age = age;
+		this.introduction = introduction;
 	}
 
+	//회원가입
 	public User update(String nickname, String imageUrl, Role role) {
 		this.nickname = nickname;
 		this.imageUrl = imageUrl;
@@ -89,7 +94,15 @@ public class User extends BaseTimeEntity implements Serializable {
 		return this;
 	}
 
-	public static User of(UserDto userDto) {
+	//프로필수정
+	public User update(String nickname, String imageUrl, String introduction) {
+		this.nickname = nickname;
+		this.imageUrl = imageUrl;
+		this.introduction = introduction;
+		return this;
+	}
+
+	public static User from(UserDto userDto) {
 
 		return User.builder()
 			.id(userDto.getId())

@@ -1,11 +1,22 @@
 import axios from 'axios';
 
 const baseUrl = process.env.REACT_APP_SERVER_API_URL;
+const baseHost = process.env.REACT_APP_SERVER_IP_URL;
 const accessToken = 'accessToken';
 const token = localStorage.getItem(accessToken);
 export const ACCESS_TOKEN = 'accessToken';
 
 const apiUtil = axios.create({
+  baseURL: baseUrl,
+  changeOrigin: true,
+  timeout: 5000,
+  headers: {
+    'Content-Type': 'application/json',
+    charset: 'UTF-8',
+  },
+});
+
+const apiAuthUtil = axios.create({
   baseURL: baseUrl,
   changeOrigin: true,
   timeout: 5000,
@@ -50,5 +61,5 @@ apiUtil.interceptors.response.use(
   },
 );
 
-const utils = { baseUrl, accessToken, apiUtil, formUtil };
+const utils = { baseUrl, baseHost, accessToken, apiUtil, apiAuthUtil, formUtil };
 export default utils;

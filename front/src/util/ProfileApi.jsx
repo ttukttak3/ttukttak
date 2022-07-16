@@ -1,15 +1,15 @@
 import utils from './ApiUtil';
-const { baseUrl, accessToken, apiUtil, formUtil } = utils;
-const redirectUrl = process.env.REACT_APP_API_URL + '/oauth2/redirect';
-const naverUrl = baseUrl + 'oauth2/authorize/naver?redirect_uri=' + redirectUrl;
-const kakaoUrl = baseUrl + 'oauth2/authorize/kakao?redirect_uri=' + redirectUrl;
+const { baseHost, accessToken, apiUtil, apiAuthUtil, formUtil } = utils;
+const redirectUrl = process.env.REACT_APP_API_URL + 'oauth2/redirect';
+const naverUrl = baseHost + 'oauth2/authorize/naver?redirect_uri=' + redirectUrl;
+const kakaoUrl = baseHost + 'oauth2/authorize/kakao?redirect_uri=' + redirectUrl;
 
 const getCurrentUser = async () => {
   try {
     if (!localStorage.getItem(accessToken)) {
       return Promise.reject('No access token set.');
     }
-    const result = await apiUtil.get(`api/v1/user/me`);
+    const result = await apiAuthUtil.get(`api/v1/user/me`);
     return result.data;
   } catch (error) {
     console.log(error);
@@ -18,7 +18,7 @@ const getCurrentUser = async () => {
 
 const nickNameCheck = async nickName => {
   try {
-    const result = await apiUtil.get(`api/v1/user/chknickname?nickname=${nickName}`);
+    const result = await apiAuthUtil.get(`api/v1/user/chknickname?nickname=${nickName}`);
     return result.data;
   } catch (error) {
     console.log(error);

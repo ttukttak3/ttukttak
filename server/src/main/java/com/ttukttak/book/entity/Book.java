@@ -20,8 +20,6 @@ import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.ColumnDefault;
 
-import net.minidev.json.annotate.JsonIgnore;
-
 import com.ttukttak.address.entity.Town;
 import com.ttukttak.book.dto.BookDto;
 import com.ttukttak.chat.entity.ChatRoom;
@@ -33,6 +31,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import net.minidev.json.annotate.JsonIgnore;
 
 @Entity
 @Getter
@@ -75,9 +74,8 @@ public class Book extends BaseTimeEntity implements Serializable {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "book")
 	private List<ChatRoom> chatRooms = new ArrayList<>();
 
-	@Enumerated(EnumType.STRING)
-	@ColumnDefault("'N'")
-	private DeleteStatus isDelete = DeleteStatus.N;
+	@Column(nullable = false, columnDefinition = "tinyint(1) default 0")
+	private Boolean isDelete = false;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "book", cascade = CascadeType.ALL)
 	private List<BookImage> images = new ArrayList<>();
@@ -108,8 +106,8 @@ public class Book extends BaseTimeEntity implements Serializable {
 		return this;
 	}
 
-	public Book isDelete(DeleteStatus delteStatus) {
-		this.isDelete = delteStatus;
+	public Book removeBook() {
+		this.isDelete = true;
 		return this;
 	}
 
@@ -145,16 +143,11 @@ public class Book extends BaseTimeEntity implements Serializable {
 			.subject(BookDto.getSubject())
 			.content(BookDto.getContent())
 			.grade(BookDto.getGrade())
-			.owner(User.of(BookDto.getOwner()))
-			.bookInfo(BookDto.getBookInfo())
+			.owner(User.from(BookDto.getOwner()))
+			.bookInfo(BookInfo.from(BookDto.getBookInfo()))
 			.bookCategory(BookDto.getBookCategory())
 			.thumbnail(BookImage.from(BookDto.getThumbnail()))
 			.build();
-	}
-
-	public enum DeleteStatus {
-		Y, N;
-
 	}
 
 	public enum BookStatus {

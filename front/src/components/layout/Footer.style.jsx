@@ -16,10 +16,13 @@ const FooterBox = styled.div`
   &.hide {
     display: none;
   }
+  &.show {
+    display: flex;
+  }
 `;
 const IconBox = styled.a`
   height: 4rem;
-  margin-top: 1rem;
+  margin-top: 0.7rem;
   font-size: 1.2rem;
   font-weight: 400;
   color: ${({ theme }) => theme.colors.$white3};
