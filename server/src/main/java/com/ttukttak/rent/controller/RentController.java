@@ -16,7 +16,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.ttukttak.common.dto.PageResponse;
 import com.ttukttak.oauth.entity.CurrentUser;
 import com.ttukttak.oauth.entity.UserPrincipal;
-import com.ttukttak.rent.dto.RentRequest;
+import com.ttukttak.rent.dto.CreateRentRequest;
+import com.ttukttak.rent.dto.ExtendResponse;
 import com.ttukttak.rent.dto.RentResponse;
 import com.ttukttak.rent.service.RentService;
 
@@ -62,10 +63,13 @@ public class RentController {
 		return ResponseEntity.ok(rentService.getRentById(rentId));
 	}
 
-	//TODO: 차입자만 요청할 수 있는지 확인 필요
 	@PostMapping
-	public ResponseEntity<RentResponse> addRent(@RequestBody RentRequest request) {
-		RentResponse rentResponse = rentService.addRent(request);
+	public ResponseEntity<RentResponse> addRent(
+		@ApiIgnore
+		@CurrentUser
+			UserPrincipal userPrincipal, @RequestBody CreateRentRequest request) {
+
+		RentResponse rentResponse = rentService.addRent(request, userPrincipal.getId());
 
 		URI location = ServletUriComponentsBuilder
 			.fromCurrentRequest()
@@ -80,26 +84,23 @@ public class RentController {
 	}
 
 	@PatchMapping("/{rentId}/return")
-	public ResponseEntity<RentResponse> changeRentStatus(@PathVariable Long rentId) {
+	public ResponseEntity<RentResponse> changeRentStatus(
+		@ApiIgnore
+		@CurrentUser
+			UserPrincipal userPrincipal, @PathVariable Long rentId) {
+
 		return ResponseEntity
-			.ok(rentService.changeRentStatus(rentId));
+			.ok(rentService.changeRentStatus(rentId, userPrincipal.getId()));
 	}
 
-	//TODO: 연장하기
+	@PostMapping("/{rentId}/extend")
+	public ResponseEntity<ExtendResponse> addExtend(
+		@ApiIgnore
+		@CurrentUser
+			UserPrincipal userPrincipal, @PathVariable Long rentId) {
 
-	// @PostMapping("/{rentId}/extend")
-	// public ResponseEntity<ExtendRequest> addExtend(@PathVariable Long rentId, @RequestBody ExtendRequest request) {
-	// 	RentResponse rentResponse = rentService.addRent(request);
-	//
-	// 	URI location = ServletUriComponentsBuilder
-	// 		.fromCurrentRequest()
-	// 		.path("/{rentId}")
-	// 		.buildAndExpand(rentResponse.getId())
-	// 		.toUri();
-	//
-	// 	return ResponseEntity
-	// 		.created(location)
-	// 		.body(rentResponse);
-	//
-	// }
+		return ResponseEntity
+			.ok(rentService.addExtend(rentId, userPrincipal.getId()));
+
+	}
 }

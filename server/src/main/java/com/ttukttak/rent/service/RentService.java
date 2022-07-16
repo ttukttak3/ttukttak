@@ -1,7 +1,8 @@
 package com.ttukttak.rent.service;
 
 import com.ttukttak.common.dto.PageResponse;
-import com.ttukttak.rent.dto.RentRequest;
+import com.ttukttak.rent.dto.CreateRentRequest;
+import com.ttukttak.rent.dto.ExtendResponse;
 import com.ttukttak.rent.dto.RentResponse;
 
 public interface RentService {
@@ -11,8 +12,10 @@ public interface RentService {
 
 	RentResponse getRentById(Long rentId);
 
-	RentResponse addRent(RentRequest request);
+	RentResponse addRent(CreateRentRequest request, Long userId);
 
-	RentResponse changeRentStatus(Long rentId);
+	RentResponse changeRentStatus(Long rentId, Long userId);
+
+	ExtendResponse addExtend(Long rentId, Long userId);
 
 }
