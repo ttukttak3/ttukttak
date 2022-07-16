@@ -15,6 +15,7 @@ public enum ExceptionFactory {
 	DUPLICATED(DuplicatedException.class, StatusCode.NOT_EXIST_OAUTH_ACCOUNT),
 	ILLEGAL_ARGUMENT(IllegalArgumentException.class, StatusCode.ILLEGAL_ARGUMENT),
 	AUTH_EXCEPTION(AuthenticationException.class, StatusCode.UNAUTH),
+	UNAUTH_REQUEST(UnauthChangeException.class, StatusCode.UNAUTH),
 	SERVER_EXCEPTION(Exception.class, StatusCode.SERVER_ERROR);
 
 	private final Class<? extends Exception> clazz;
