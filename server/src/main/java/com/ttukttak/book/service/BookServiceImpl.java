@@ -25,10 +25,10 @@ import com.ttukttak.book.dto.BookInfoDto;
 import com.ttukttak.book.dto.BookRequest;
 import com.ttukttak.book.dto.BookResponse;
 import com.ttukttak.book.dto.BookUploadRequest;
+import com.ttukttak.book.dto.MyBookResponse;
 import com.ttukttak.book.entity.Book;
 import com.ttukttak.book.entity.Book.BookGrade;
 import com.ttukttak.book.entity.Book.BookStatus;
-import com.ttukttak.book.entity.Book.DeleteStatus;
 import com.ttukttak.book.entity.BookCategory;
 import com.ttukttak.book.entity.BookImage;
 import com.ttukttak.book.entity.BookInfo;
@@ -112,16 +112,14 @@ public class BookServiceImpl implements BookService {
 		 * 카테고리 ID가 0인 것은 전체 카테고리 조회로 판단한다.
 		 */
 		if (bookRequest.getCategoryId().equals(Long.parseLong("0"))) {
-			pageList = bookRepository.findByStatusInAndIsDeleteAndSubjectContainsAndTownIdIn(
+			pageList = bookRepository.findByStatusInAndIsDeleteFalseAndSubjectContainsAndTownIdIn(
 				bookStatus,
-				DeleteStatus.N,
 				bookRequest.getQuery(),
 				townIdList,
 				pageRequest);
 		} else {
-			pageList = bookRepository.findByStatusInAndIsDeleteAndSubjectContainsAndTownIdInAndBookCategoryId(
+			pageList = bookRepository.findByStatusInAndIsDeleteFalseAndSubjectContainsAndTownIdInAndBookCategoryId(
 				bookStatus,
-				DeleteStatus.N,
 				bookRequest.getQuery(),
 				townIdList,
 				bookRequest.getCategoryId(),
@@ -236,7 +234,7 @@ public class BookServiceImpl implements BookService {
 	@Transactional
 	public Boolean isDelete(Long bookId) {
 		Book book = bookRepository.findById(bookId).orElseThrow(() -> new NotExistException());
-		book.isDelete(DeleteStatus.Y);
+		book.isDelete();
 
 		bookRepository.save(book);
 
@@ -365,6 +363,21 @@ public class BookServiceImpl implements BookService {
 			.anyMatch(image -> image.getId().equals(currImageId))).forEach(bookImageRepository::deleteById);
 
 		return true;
+	}
+
+	@Override
+	public PageResponse<MyBookResponse> getMyBookList(Long ownerId, int pageNum) {
+		PageRequest pageRequest = PageRequest.of(pageNum - 1, PAGESIZE);
+
+		Page<MyBookResponse> myBookList = bookRepository.findByOwnerId(ownerId, pageRequest)
+			.map(MyBookResponse::from);
+
+		return PageResponse.<MyBookResponse>builder()
+			.contents(myBookList.getContent())
+			.pageNumber(myBookList.getNumber())
+			.pageSize(myBookList.getSize())
+			.totalPages(myBookList.getTotalPages())
+			.build();
 	}
 
 }
