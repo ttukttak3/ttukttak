@@ -40,7 +40,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import springfox.documentation.annotations.ApiIgnore;
 
-@Api(value = "/api/v1/book", description = "도서 API")
+@Api(value = "/api/v1", description = "도서 API")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1")

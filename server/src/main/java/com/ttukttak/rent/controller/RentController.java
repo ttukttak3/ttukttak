@@ -27,7 +27,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import springfox.documentation.annotations.ApiIgnore;
 
-@Api(value = "/api/v1/rent", description = "대여 API")
+@Api(value = "/api/v1", description = "대여 API")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1")
@@ -42,8 +42,7 @@ public class RentController {
 		@PathVariable Long userId,
 		@RequestParam(defaultValue = "1") int pageNum) {
 
-		return ResponseEntity
-			.ok(rentService.getRentedList(userId, pageNum));
+		return ResponseEntity.ok(rentService.getRentedList(userId, pageNum));
 	}
 
 	@GetMapping("/users/{userId}/rent/borrow")
@@ -53,8 +52,7 @@ public class RentController {
 		@PathVariable Long userId,
 		@RequestParam(defaultValue = "1") int pageNum) {
 
-		return ResponseEntity
-			.ok(rentService.getBorrowedList(userId, pageNum));
+		return ResponseEntity.ok(rentService.getBorrowedList(userId, pageNum));
 	}
 
 	@GetMapping("/rent/{rentId}")
@@ -89,8 +87,7 @@ public class RentController {
 		@CurrentUser
 			UserPrincipal userPrincipal, @PathVariable Long rentId) {
 
-		return ResponseEntity
-			.ok(rentService.changeRentStatus(rentId, userPrincipal.getId()));
+		return ResponseEntity.ok(rentService.changeRentStatus(rentId, userPrincipal.getId()));
 	}
 
 	@PostMapping("/rent/{rentId}/extend")
@@ -99,8 +96,7 @@ public class RentController {
 		@CurrentUser
 			UserPrincipal userPrincipal, @PathVariable Long rentId) {
 
-		return ResponseEntity
-			.ok(rentService.addExtend(rentId, userPrincipal.getId()));
+		return ResponseEntity.ok(rentService.addExtend(rentId, userPrincipal.getId()));
 
 	}
 }
