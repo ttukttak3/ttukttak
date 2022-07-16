@@ -14,7 +14,8 @@ import com.ttukttak.chat.entity.ChatMessage;
 import com.ttukttak.chat.entity.LastCheckedMessage;
 import com.ttukttak.chat.repository.ChatMessageRepository;
 import com.ttukttak.chat.repository.LastCheckedMessageRepository;
-import com.ttukttak.common.exception.NotExistException;
+import com.ttukttak.oauth.entity.User;
+import com.ttukttak.oauth.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,6 +25,7 @@ public class ChatMessageServiceImpl implements ChatMessageService {
 	private final ModelMapper modelMapper;
 	private final ChatMessageRepository chatMessageRepository;
 	private final LastCheckedMessageRepository lastCheckedMessageRepository;
+	private final UserRepository userRepository;
 
 	private final ChatRoomService chatRoomService;
 
@@ -34,14 +36,32 @@ public class ChatMessageServiceImpl implements ChatMessageService {
 	}
 
 	@Override
-	public ChatRoomInfo getChatMessages(Long roomId) {
+	public ChatRoomInfo getChatMessages(Long roomId, Long userId) {
+		User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException());
 
-		List<ChatMessageDto> messages = chatMessageRepository.findAllByChatRoomIdOrderBySendedAtAsc(roomId)
+		List<LastCheckedMessage> lastCheckedMessages = lastCheckedMessageRepository.findAllByRoomId(roomId);
+
+		LastCheckedMessage findLastCheckedMessage = lastCheckedMessages.stream()
+			.filter(lcm -> lcm.getUser().getId() == user.getId())
+			.findFirst()
+			.orElseThrow(() -> new IllegalArgumentException());
+
+		List<ChatMessage> chatMessages = chatMessageRepository.findAllByChatRoomIdOrderBySendedAtAsc(roomId);
+
+		// 마지막 읽은 메시지 갱신
+		if (chatMessages.size() > 0) {
+			ChatMessage lastChatMessage = chatMessages.get(chatMessages.size() - 1);
+
+			findLastCheckedMessage.setChatMessage(lastChatMessage);
+			lastCheckedMessageRepository.save(findLastCheckedMessage);
+		}
+
+		List<ChatMessageDto> messageDtos = chatMessages
 			.stream()
 			.map(chatMessage -> modelMapper.map(chatMessage, ChatMessageDto.class))
 			.collect(Collectors.toList());
 
-		List<ChatUser> members = lastCheckedMessageRepository.findAllByRoomId(roomId)
+		List<ChatUser> members = lastCheckedMessages
 			.stream()
 			.map(lastCheckedMessage -> modelMapper.map(lastCheckedMessage.getUser(), ChatUser.class))
 			.collect(
@@ -49,13 +69,13 @@ public class ChatMessageServiceImpl implements ChatMessageService {
 
 		chatRoomService.enterChatRoom(roomId);
 
-		return ChatRoomInfo.builder().roomId(roomId).members(members).messages(messages).build();
+		return ChatRoomInfo.builder().roomId(roomId).members(members).messages(messageDtos).build();
 	}
 
 	@Override
 	public void updateLastCheckedMessage(LastCheckedMessageRequest request) {
 		LastCheckedMessage lastCheckedMessage = lastCheckedMessageRepository.findByRoomIdAndUserId(request.getRoomId(),
-			request.getUserId()).orElseThrow(() -> new NotExistException());
+			request.getUserId()).orElseThrow(() -> new IllegalArgumentException());
 
 		lastCheckedMessage.setChatMessage(ChatMessage.builder().id(request.getMessageId()).build());
 
