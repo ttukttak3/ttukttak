@@ -80,7 +80,7 @@ public class BookController {
 		@ApiImplicitParam(name = "query", value = "검색어", required = false, dataType = "string", paramType = "param")
 	})
 
-	@ApiOperation(value = "주변 도서 리스트 조회")
+	@ApiOperation(value = "도서 리스트 조회")
 	@GetMapping("/books")
 	public ResponseEntity<PageResponse<BookResponse>> getNearBookList(
 		@RequestParam(defaultValue = "1")

@@ -90,8 +90,8 @@ public class ChatMessageServiceImpl implements ChatMessageService {
 	}
 
 	@Override
-	public void removeChatMember(Long lastCheckedMessageId, Long userId) {
-		ChatMember chatMember = chatMemberRepository.findById(lastCheckedMessageId)
+	public void removeChatMember(Long roomId, Long userId) {
+		ChatMember chatMember = chatMemberRepository.findByRoomIdAndUserId(roomId, userId)
 			.orElseThrow(() -> new IllegalArgumentException());
 
 		if (chatMember.getUser().getId() != userId) {
