@@ -24,7 +24,6 @@ public class BookReviewResponse {
 	@Builder
 	private BookReviewResponse(Long id, String content, double rating, UserResponse reviewer, LocalDateTime createdDate,
 		LocalDateTime modifiedDate) {
-		super();
 		this.id = id;
 		this.content = content;
 		this.rating = rating;
