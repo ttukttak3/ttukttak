@@ -1,6 +1,6 @@
 package com.ttukttak.rent.dto;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import com.ttukttak.rent.entity.Extend;
 
@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 public class ExtendResponse {
 	private Long id;
-	private LocalDateTime extendDate;
+	private LocalDate extendDate;
 	private Integer extendDays;
 
 	public static ExtendResponse from(Extend extend) {
@@ -22,7 +22,7 @@ public class ExtendResponse {
 	}
 
 	@Builder
-	private ExtendResponse(Long id, LocalDateTime extendDate, Integer extendDays) {
+	private ExtendResponse(Long id, LocalDate extendDate, Integer extendDays) {
 		this.id = id;
 		this.extendDate = extendDate;
 		this.extendDays = extendDays;
