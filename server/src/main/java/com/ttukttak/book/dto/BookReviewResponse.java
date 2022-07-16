@@ -38,7 +38,7 @@ public class BookReviewResponse {
 			.id(bookReview.getId())
 			.content(bookReview.getContent())
 			.rating(bookReview.getRating())
-			.reviewer(new UserResponse(bookReview.getReviewer()))
+			.reviewer(UserResponse.from(bookReview.getReviewer()))
 			.createdDate(bookReview.getCreatedDate())
 			.modifiedDate(bookReview.getModifiedDate())
 			.build();

@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { setAllFalse, setBack, setFavorite, setShare, setMore } from '../../../app/headerSlice';
-import { setData } from '../../../app/urlSlice';
 import bookApi from '../../../util/BookApi';
 import style from './BookDetailPage.style';
 import LenderInfoPage from './LenderInfoPage';
@@ -56,8 +55,6 @@ const BookDetailPage = () => {
         nickName: result.owner.nickname,
       });
     });
-
-    dispatch(setData('/detailBook'));
     dispatch(setAllFalse());
     dispatch(setBack(true));
     dispatch(setFavorite(true));

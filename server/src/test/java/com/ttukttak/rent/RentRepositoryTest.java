@@ -18,7 +18,6 @@ import com.ttukttak.book.entity.BookCategory;
 import com.ttukttak.book.repository.BookCategoryRepositroy;
 import com.ttukttak.book.repository.BookRepository;
 import com.ttukttak.common.config.QuerydslConfig;
-import com.ttukttak.common.exception.InvalidParameterException;
 import com.ttukttak.oauth.entity.Role;
 import com.ttukttak.oauth.entity.User;
 import com.ttukttak.oauth.repository.UserRepository;
@@ -93,24 +92,18 @@ public class RentRepositoryTest {
 			Rent rent1 = Rent.builder()
 				.book(book)
 				.beginDate(LocalDate.now())
-				.endDate(endDate1)
-				.owner(owner)
 				.lender(lender1)
 				.build();
 
 			Rent rent2 = Rent.builder()
 				.book(book)
 				.beginDate(beginDate2)
-				.endDate(endDate2)
-				.owner(owner)
 				.lender(lender1)
 				.build();
 
 			Rent rent3 = Rent.builder()
 				.book(book)
 				.beginDate(beginDate3)
-				.endDate(endDate3)
-				.owner(owner)
 				.lender(lender2)
 				.build();
 
@@ -122,7 +115,7 @@ public class RentRepositoryTest {
 		@Test
 		@DisplayName("차입목록 조회")
 		void borrowingList() {
-			List<Rent> rentList = rentRepository.findAllByLenderIdAndIsReturnFalseOrderByBeginDateAsc(
+			List<Rent> rentList = rentRepository.findAllByLenderIdAndReturnDateIsNullOrderByBeginDateAsc(
 				lender1.getId());
 
 			Assertions.assertThat(rentList.size()).isEqualTo(2);
@@ -134,7 +127,7 @@ public class RentRepositoryTest {
 		@Test
 		@DisplayName("대여목록 조회")
 		void rentList() {
-			List<Rent> rentList = rentRepository.findAllByOwnerIdAndIsReturnFalseOrderByBeginDateAsc(owner.getId());
+			List<Rent> rentList = rentRepository.findAllByOwnerIdAndReturnDateIsNullOrderByBeginDateAsc(owner.getId());
 
 			Assertions.assertThat(rentList.size()).isEqualTo(3);
 			Assertions.assertThat(rentList.get(0).getBeginDate()).isEqualTo(LocalDate.of(2022, 7, 11));
@@ -153,22 +146,14 @@ public class RentRepositoryTest {
 		void create() {
 			Assertions.assertThatThrownBy(() -> {
 				LocalDate beginDate = LocalDate.of(2022, 7, 11);
-				LocalDate endDate = beginDate.plusWeeks(1);
 
-				Rent rent3 = Rent.builder()
+				Rent.builder()
 					.book(book)
 					.beginDate(beginDate)
-					.endDate(endDate)
-					.owner(owner)
 					.lender(owner)
 					.build();
-			}).isInstanceOf(InvalidParameterException.class);
+			}).isInstanceOf(IllegalArgumentException.class);
 		}
 	}
 
-	@Nested
-	@DisplayName("상태 변경 테스트")
-	class PatchTest {
-
-	}
 }

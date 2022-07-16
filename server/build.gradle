@@ -49,7 +49,6 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     implementation 'org.modelmapper:modelmapper:2.3.8'
-    implementation group: 'it.ozimov', name: 'embedded-redis', version: '0.7.2'
 
     implementation("com.querydsl:querydsl-core")
     implementation("com.querydsl:querydsl-jpa")

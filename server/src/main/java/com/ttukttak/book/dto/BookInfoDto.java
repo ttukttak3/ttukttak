@@ -6,6 +6,7 @@ import java.util.Date;
 
 import com.ttukttak.book.entity.BookInfo;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,27 +24,44 @@ public class BookInfoDto {
 	private String author;
 	private String isbn;
 
-	public BookInfoDto(BookInfo bookInfo) {
-		this.name = bookInfo.getName();
-		this.description = bookInfo.getDescription();
-		this.publishedDate = bookInfo.getPublishedDate();
-		this.price = bookInfo.getPrice();
-		this.image = bookInfo.getImage();
-		this.publisher = bookInfo.getPublisher();
-		this.author = bookInfo.getAuthor();
-		this.isbn = bookInfo.getIsbn();
+	@Builder
+	private BookInfoDto(String name, String description, Date publishedDate, int price, String image, String publisher,
+		String author, String isbn) {
+		this.name = name;
+		this.description = description;
+		this.publishedDate = publishedDate;
+		this.price = price;
+		this.image = image;
+		this.publisher = publisher;
+		this.author = author;
+		this.isbn = isbn;
 	}
 
-	public BookInfoDto(BookUploadRequest uploadRequest) throws ParseException {
+	public static BookInfoDto from(BookInfo bookInfo) {
+		return BookInfoDto.builder()
+			.name(bookInfo.getName())
+			.description(bookInfo.getDescription())
+			.publishedDate(bookInfo.getPublishedDate())
+			.price(bookInfo.getPrice())
+			.image(bookInfo.getImage())
+			.publisher(bookInfo.getPublisher())
+			.author(bookInfo.getAuthor())
+			.isbn(bookInfo.getIsbn())
+			.build();
+	}
+
+	public static BookInfoDto from(BookUploadRequest uploadRequest) throws ParseException {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		this.name = uploadRequest.getName();
-		this.description = uploadRequest.getDescription();
-		this.publishedDate = formatter.parse(uploadRequest.getPublishedDate().toString());
-		this.price = uploadRequest.getPrice();
-		this.image = uploadRequest.getImage();
-		this.publisher = uploadRequest.getPublisher();
-		this.author = uploadRequest.getAuthor();
-		this.isbn = uploadRequest.getIsbn();
+		return BookInfoDto.builder()
+			.name(uploadRequest.getName())
+			.description(uploadRequest.getDescription())
+			.publishedDate(formatter.parse(uploadRequest.getPublishedDate().toString()))
+			.price(uploadRequest.getPrice())
+			.image(uploadRequest.getImage())
+			.publisher(uploadRequest.getPublisher())
+			.author(uploadRequest.getAuthor())
+			.isbn(uploadRequest.getIsbn())
+			.build();
 	}
 
 }

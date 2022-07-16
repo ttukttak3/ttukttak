@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React, { useEffect } from 'react';
-import {ACCESS_TOKEN} from '../../../util/ApiUtil';
+import { ACCESS_TOKEN } from '../../../util/ApiUtil';
 import { useNavigate } from 'react-router-dom';
 
 const Auth = () => {
@@ -18,8 +18,9 @@ const Auth = () => {
     //token setting
     if (token) {
       localStorage.setItem(ACCESS_TOKEN, token);
-      window.location.replace('/profile');
-    }else {
+      // window.location.replace('/profile');
+      navigate('/'); //이전 페이지를 기억하고 있다가 보내야함
+    } else {
       navigate('/login');
     }
   }, [navigate]);

@@ -1,6 +1,5 @@
 import utils from './ApiUtil';
 const { apiUtil, formUtil } = utils;
-
 const getBookList = async (param, setBookList) => {
   try {
     const result = await apiUtil.get(`api/v1/book/list?pageNum=${param.pageNum}&order=${param.order}&status=${param.status}&townId=${param.townId}&categoryId=${param.categoryId}`);
@@ -23,11 +22,11 @@ const uploadBook = async bookInfo => {
   }
 };
 
-const interparkSearch = async (pageNum, query, setData) => {
+const interparkSearch = async (pageNum, query) => {
   try {
     const result = await apiUtil.get(`api/v1/book/interpark/search/?pageNum=${pageNum}&query=${query}`);
     const data = result.data;
-    setData(data.contents); //수정 필요
+    return data;
   } catch (error) {
     console.log(error);
   }

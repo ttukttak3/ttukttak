@@ -7,7 +7,9 @@ import com.ttukttak.chat.dto.LastCheckedMessageRequest;
 public interface ChatMessageService {
 	ChatMessageDto saveChatMessage(ChatMessageDto chatMessageDto);
 
-	ChatRoomInfo getChatMessages(Long roomId);
+	ChatRoomInfo getChatMessages(Long roomId, Long userId);
 
 	void updateLastCheckedMessage(LastCheckedMessageRequest request);
+
+	void removeChatMember(Long lastCheckedMessageId, Long userId);
 }

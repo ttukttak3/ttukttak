@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
+import com.ttukttak.book.entity.Book;
 import com.ttukttak.oauth.entity.User;
 
 import lombok.Builder;
@@ -21,7 +22,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @Entity
-public class LastCheckedMessage implements Serializable {
+public class ChatMember implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -36,22 +37,27 @@ public class LastCheckedMessage implements Serializable {
 	@JoinColumn(name = "room_id")
 	private ChatRoom room;
 
+	@ManyToOne
+	@JoinColumn(name = "book_id")
+	private Book book;
+
 	@OneToOne
 	@JoinColumn(name = "message_id")
-	private ChatMessage chatMessage;
+	private ChatMessage lastCheckedMessage;
 
 	public void changeRoom(ChatRoom room) {
 		this.room = room;
 	}
 
 	@Builder
-	public LastCheckedMessage(User user, ChatRoom room, ChatMessage chatMessage) {
+	public ChatMember(User user, ChatRoom room, Book book, ChatMessage lastCheckedMessage) {
 		this.user = user;
 		this.room = room;
-		this.chatMessage = chatMessage;
+		this.book = book;
+		this.lastCheckedMessage = lastCheckedMessage;
 	}
 
-	public void setChatMessage(ChatMessage chatMessage) {
-		this.chatMessage = chatMessage;
+	public void setLastCheckedMessage(ChatMessage chatMessage) {
+		this.lastCheckedMessage = chatMessage;
 	}
 }

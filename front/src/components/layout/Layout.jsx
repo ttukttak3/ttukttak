@@ -12,6 +12,8 @@ import ChatAlertPage from '../../pages/Chat/ChatList/ChatAlert/ChatAlertPage';
 import HomePage from '../../pages/Home/HomePage';
 import BookDetailPage from '../../pages/Home/DetailList/BookDetailPage';
 import UploadBookPage from '../../pages/UploadBook/UploadBookPage';
+import AuthCheckRouter from '../../pages/OauthLogin/Login/AuthCheckRouter';
+import SearchListPage from '../../pages/Search/SearchListPage';
 
 const Layout = () => {
   const navi = useLocation();
@@ -23,13 +25,16 @@ const Layout = () => {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/detailBook" element={<BookDetailPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/oauth2/redirect" element={<Auth />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="chat" element={<Chat />} />
-          <Route path="chat/:roomId" element={<ChatItem />} />
-          <Route path="chat/alert" element={<ChatAlertPage />} />
-          <Route path="upload" element={<UploadBookPage />} />
+          <Route element={<AuthCheckRouter />}>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/oauth2/redirect" element={<Auth />} />
+            <Route path="/account" element={<ProfilePage />} />
+            <Route path="chat" element={<Chat />} />
+            <Route path="chat/:roomId" element={<ChatItem />} />
+            <Route path="chat/alert" element={<ChatAlertPage />} />
+            <Route path="upload" element={<UploadBookPage />} />
+            <Route path="search" element={<SearchListPage />} />
+          </Route>
         </Routes>
       </Section>
       <Footer />

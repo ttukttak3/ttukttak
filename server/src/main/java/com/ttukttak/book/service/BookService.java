@@ -10,6 +10,7 @@ import com.ttukttak.book.dto.BookDto;
 import com.ttukttak.book.dto.BookRequest;
 import com.ttukttak.book.dto.BookResponse;
 import com.ttukttak.book.dto.BookUploadRequest;
+import com.ttukttak.book.dto.MyBookResponse;
 import com.ttukttak.book.entity.Book.BookGrade;
 import com.ttukttak.book.entity.Book.BookStatus;
 import com.ttukttak.common.dto.PageResponse;
@@ -33,5 +34,7 @@ public interface BookService {
 	BookDetailResponse findByIdDetail(Long bookId);
 
 	Boolean bookUpdate(Long bookId, BookUploadRequest bookUploadRequest, List<MultipartFile> imageFiles);
+
+	PageResponse<MyBookResponse> getMyBookList(Long id, int pageNum);
 
 }

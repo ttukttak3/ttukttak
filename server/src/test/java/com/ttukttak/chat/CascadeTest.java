@@ -12,11 +12,11 @@ import org.springframework.context.annotation.Import;
 
 import com.ttukttak.book.entity.Book;
 import com.ttukttak.book.repository.BookRepository;
+import com.ttukttak.chat.entity.ChatMember;
 import com.ttukttak.chat.entity.ChatRoom;
-import com.ttukttak.chat.entity.LastCheckedMessage;
+import com.ttukttak.chat.repository.ChatMemberRepository;
 import com.ttukttak.chat.repository.ChatMessageRepository;
 import com.ttukttak.chat.repository.ChatRoomRepository;
-import com.ttukttak.chat.repository.LastCheckedMessageRepository;
 import com.ttukttak.common.config.QuerydslConfig;
 import com.ttukttak.oauth.entity.User;
 import com.ttukttak.oauth.repository.UserRepository;
@@ -39,7 +39,7 @@ public class CascadeTest {
 	ChatRoomRepository chatRoomRepository;
 
 	@Autowired
-	LastCheckedMessageRepository lastCheckedMessageRepository;
+	ChatMemberRepository chatMemberRepository;
 
 	@Test
 	@DisplayName("채팅방 Cascade insert 테스트")
@@ -55,22 +55,22 @@ public class CascadeTest {
 
 		ChatRoom chatRoom = ChatRoom.builder().book(book).build();
 
-		LastCheckedMessage lastCheckedMessage1 = LastCheckedMessage.builder().user(host).build();
-		LastCheckedMessage lastCheckedMessage2 = LastCheckedMessage.builder().user(guest).build();
+		ChatMember chatMember1 = ChatMember.builder().user(host).build();
+		ChatMember chatMember2 = ChatMember.builder().user(guest).build();
 
-		chatRoom.addLastCheckedMessage(lastCheckedMessage1);
-		chatRoom.addLastCheckedMessage(lastCheckedMessage2);
+		chatRoom.addChatMember(chatMember1);
+		chatRoom.addChatMember(chatMember2);
 
 		chatRoomRepository.save(chatRoom);
 
-		List<LastCheckedMessage> lastCheckedMessages = chatRoom.getLastCheckedMessages();
+		List<ChatMember> chatMembers = chatRoom.getChatMembers();
 
 		// 채팅룸 삭제
 		chatRoomRepository.deleteById(chatRoom.getId());
 
 		// lastCheckedMessage도 insert 됐는지 확인
-		Assertions.assertThat(lastCheckedMessage1.getId()).isNotNull();
-		Assertions.assertThat(lastCheckedMessage2.getId()).isNotNull();
+		Assertions.assertThat(chatMember1.getId()).isNotNull();
+		Assertions.assertThat(chatMember2.getId()).isNotNull();
 
 	}
 
@@ -86,17 +86,17 @@ public class CascadeTest {
 
 		ChatRoom chatRoom = ChatRoom.builder().book(book).build();
 
-		LastCheckedMessage lastCheckedMessage = LastCheckedMessage.builder().user(user).build();
-		chatRoom.addLastCheckedMessage(lastCheckedMessage);
+		ChatMember chatMember = ChatMember.builder().user(user).build();
+		chatRoom.addChatMember(chatMember);
 
 		chatRoomRepository.save(chatRoom);
 
-		Long messageId = lastCheckedMessage.getId();
+		Long messageId = chatMember.getId();
 
 		// 채팅룸 삭제
 		chatRoomRepository.delete(chatRoom);
 
-		LastCheckedMessage findMessage = lastCheckedMessageRepository.findById(messageId).orElse(null);
+		ChatMember findMessage = chatMemberRepository.findById(messageId).orElse(null);
 
 		// LastCheckedMessage도 delete 됐는지 확인
 		Assertions.assertThat(findMessage).isNull();

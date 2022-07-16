@@ -8,17 +8,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.ttukttak.book.entity.Book;
 import com.ttukttak.book.entity.Book.BookStatus;
-import com.ttukttak.book.entity.Book.DeleteStatus;
 
 public interface BookRepository extends JpaRepository<Book, Long> {
 
-	Page<Book> findByStatusInAndIsDeleteAndTownIdIn(List<BookStatus> bookStatus, DeleteStatus n, List<Long> townIdList,
-		PageRequest pageRequest);
+	Page<Book> findByOwnerId(Long ownerId, PageRequest pageRequest);
 
-	Page<Book> findByStatusInAndIsDeleteAndSubjectContainsAndTownIdIn(List<BookStatus> bookStatus, DeleteStatus n,
-		String query, List<Long> townIdList, PageRequest pageRequest);
+	Page<Book> findByStatusInAndIsDeleteFalseAndSubjectContainsAndTownIdIn(List<BookStatus> bookStatus, String query,
+		List<Long> townIdList, PageRequest pageRequest);
 
-	Page<Book> findByStatusInAndIsDeleteAndSubjectContainsAndTownIdInAndBookCategoryId(List<BookStatus> bookStatus,
-		DeleteStatus n, String query, List<Long> townIdList, Long categoryId, PageRequest pageRequest);
+	Page<Book> findByStatusInAndIsDeleteFalseAndSubjectContainsAndTownIdInAndBookCategoryId(List<BookStatus> bookStatus,
+		String query, List<Long> townIdList, Long categoryId, PageRequest pageRequest);
 
 }

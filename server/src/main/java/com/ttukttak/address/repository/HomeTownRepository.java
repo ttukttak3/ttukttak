@@ -11,4 +11,6 @@ public interface HomeTownRepository extends JpaRepository<HomeTown, Long> {
 
 	HomeTown findByUserIdAndUseStatus(Long id, UseStatusType y);
 
+	HomeTown getByUserIdAndUseStatus(Long id, UseStatusType y);
+
 }
