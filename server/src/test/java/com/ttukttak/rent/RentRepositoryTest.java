@@ -115,7 +115,7 @@ public class RentRepositoryTest {
 		@Test
 		@DisplayName("차입목록 조회")
 		void borrowingList() {
-			List<Rent> rentList = rentRepository.findAllByLenderIdAndIsReturnFalseOrderByBeginDateAsc(
+			List<Rent> rentList = rentRepository.findAllByLenderIdAndReturnDateIsNullOrderByBeginDateAsc(
 				lender1.getId());
 
 			Assertions.assertThat(rentList.size()).isEqualTo(2);
@@ -127,7 +127,7 @@ public class RentRepositoryTest {
 		@Test
 		@DisplayName("대여목록 조회")
 		void rentList() {
-			List<Rent> rentList = rentRepository.findAllByOwnerIdAndIsReturnFalseOrderByBeginDateAsc(owner.getId());
+			List<Rent> rentList = rentRepository.findAllByOwnerIdAndReturnDateIsNullOrderByBeginDateAsc(owner.getId());
 
 			Assertions.assertThat(rentList.size()).isEqualTo(3);
 			Assertions.assertThat(rentList.get(0).getBeginDate()).isEqualTo(LocalDate.of(2022, 7, 11));

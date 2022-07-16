@@ -28,7 +28,6 @@ import com.ttukttak.chat.entity.ChatRoom;
 import com.ttukttak.chat.repository.ChatMemberRepository;
 import com.ttukttak.chat.repository.ChatMessageRepository;
 import com.ttukttak.chat.repository.ChatRoomRepository;
-import com.ttukttak.common.exception.InvalidParameterException;
 import com.ttukttak.oauth.entity.User;
 import com.ttukttak.oauth.repository.UserRepository;
 
@@ -103,7 +102,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 	@Transactional
 	public ChatRoomInfo createChatRoom(ChatRoomRequest request) {
 		Book book = bookRepository.findById(request.getBookId())
-			.filter(findBook -> findBook.getIsDelete() == Book.DeleteStatus.N)
+			.filter(findBook -> !findBook.getIsDelete())
 			.orElseThrow(() -> new IllegalArgumentException());
 
 		User host = book.getOwner();
