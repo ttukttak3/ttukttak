@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserDto getById(Long id) {
 		User user = userRepository.findById(id).orElseThrow(
-			() -> new ResourceNotFoundException("User", "id", id));
+			() -> new IllegalArgumentException());
 
 		return UserDto.from(user);
 	}
@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
 	public UserDto setSignUp(Long userId, SignUpRequest signUpRequest, MultipartFile imageFile) {
 		UserDto userDto = new UserDto();
 		User user = userRepository.findById(userId).orElseThrow(
-			() -> new ResourceNotFoundException("User", "id", userId));
+			() -> new IllegalArgumentException());
 		try {
 			/*
 			 * 파일 업로드 (파일이 없는 경우 업로드 X)
@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
 			homeTownService.save(user, town);
 
 			userDto = UserDto.from(userRepository.findById(user.getId()).orElseThrow(
-				() -> new ResourceNotFoundException("User", "id", user.getId())));
+				() -> new IllegalArgumentException()));
 
 		} catch (IOException e) {
 			return userDto;
@@ -92,7 +92,7 @@ public class UserServiceImpl implements UserService {
 	public UserDto setProfile(Long userId, ProfileRequest profileRequest, MultipartFile imageFile) {
 		UserDto userDto = new UserDto();
 		User user = userRepository.findById(userId).orElseThrow(
-			() -> new ResourceNotFoundException("User", "id", userId));
+			() -> new IllegalArgumentException());
 		try {
 			/*
 			 * 파일 업로드 (파일이 없는 경우 업로드 X)

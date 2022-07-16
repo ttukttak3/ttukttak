@@ -186,8 +186,7 @@ public class BookServiceImpl implements BookService {
 				book.addImage(BookImage.builder().imageUrl(fileUploadResponse.getUrl()).build());
 
 			}
-		} catch (Exception e) {
-		}
+		} catch (Exception e) {}
 
 		Book resultBook = bookRepository.save(book);
 
@@ -338,8 +337,7 @@ public class BookServiceImpl implements BookService {
 				updateBook.addImage(BookImage.builder().imageUrl(fileUploadResponse.getUrl()).build());
 
 			}
-		} catch (Exception e) {
-		}
+		} catch (Exception e) {}
 
 		Book resultBook = bookRepository.save(updateBook);
 
