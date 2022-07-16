@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAllFalse, setBack, setFavorite, setShare, setMore } from '../../../app/headerSlice';
-import { setData } from '../../../app/urlSlice';
 import style from './BookDetailPage.style';
 import LenderInfoPage from './LenderInfoPage';
 import ReviewPage from './ReviewPage';
@@ -13,7 +12,6 @@ const BookDetailPage = () => {
   console.log(userId);
   //-------------- Header & Footer Off --------------
   useEffect(() => {
-    dispatch(setData('/detailBook'));
     dispatch(setAllFalse());
     dispatch(setBack(true));
     dispatch(setFavorite(true));
