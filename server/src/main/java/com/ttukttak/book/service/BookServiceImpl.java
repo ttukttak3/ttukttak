@@ -284,7 +284,7 @@ public class BookServiceImpl implements BookService {
 		 * 이미지 변경
 		 */
 
-		BookInfo bookInfo = null;
+		BookInfo bookInfo = currBook.getBookInfo();
 		/*
 		 * Request로 받아온 ISBN 유무 체크
 		 * ISBN이 있으면 API도서 조회르 수정.
@@ -294,6 +294,8 @@ public class BookServiceImpl implements BookService {
 			bookInfo = bookInfoRepository.findByIsbn(bookUploadRequest.getIsbn())
 				.orElse(bookInfoRepository.save(
 					BookInfo.from(modelMapper.map(bookUploadRequest, BookInfoDto.class))));
+		} else {
+			bookInfo = null;
 		}
 
 		//섬네일 초기값 선언

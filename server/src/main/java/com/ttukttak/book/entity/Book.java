@@ -75,7 +75,7 @@ public class Book extends BaseTimeEntity implements Serializable {
 	private List<ChatRoom> chatRooms = new ArrayList<>();
 
 	@Column(nullable = false, columnDefinition = "tinyint(1) default 0")
-	private Boolean isDelete;
+	private Boolean isDelete = false;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "book", cascade = CascadeType.ALL)
 	private List<BookImage> images = new ArrayList<>();
