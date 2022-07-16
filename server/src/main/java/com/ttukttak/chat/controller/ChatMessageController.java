@@ -1,5 +1,6 @@
 package com.ttukttak.chat.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -58,7 +59,7 @@ public class ChatMessageController {
 			UserPrincipal userPrincipal, @RequestBody LastCheckedMessageRequest request) {
 		chatMessageService.updateLastCheckedMessage(request, userPrincipal.getId());
 
-		return ResponseEntity.ok(true);
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 
 	@ApiOperation(value = "채팅방 나가기")
@@ -70,6 +71,6 @@ public class ChatMessageController {
 
 		chatMessageService.removeChatMember(memberId, userPrincipal.getId());
 
-		return ResponseEntity.ok(true);
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 }
