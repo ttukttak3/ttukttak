@@ -3,6 +3,8 @@ package com.ttukttak.book.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
 import com.ttukttak.book.entity.Book.BookGrade;
 
 import io.swagger.annotations.ApiModelProperty;
@@ -32,20 +34,26 @@ public class BookUploadRequest {
 
 	//API와 공통 영역
 	@ApiModelProperty(example = "저자명")
+	@NotNull
 	private String author;
 
 	//Book 등록정보
 	@ApiModelProperty(example = "대여자의 말")
 	private String content;
 	@ApiModelProperty(example = "보증금")
+	@NotNull
 	private int deposit;
 	@ApiModelProperty(example = "도서명 API 도서명과 같음")
+	@NotNull
 	private String subject;
 	@ApiModelProperty(example = "카테고리 ID")
+	@NotNull
 	private Long bookCategoryId;
 	@ApiModelProperty(example = "대표 이미지명, API 조회시 API 이미지명으로!")
+	@NotNull
 	private String thumbnail;
 	@ApiModelProperty(example = "도서 등급")
+	@NotNull
 	private BookGrade grade;
 
 	//Book 이미지정보
