@@ -76,9 +76,13 @@ public class ChatMessageServiceImpl implements ChatMessageService {
 	}
 
 	@Override
-	public void updateLastCheckedMessage(LastCheckedMessageRequest request) {
+	public void updateLastCheckedMessage(LastCheckedMessageRequest request, Long userId) {
 		ChatMember chatMember = chatMemberRepository.findByRoomIdAndUserId(request.getRoomId(),
 			request.getUserId()).orElseThrow(() -> new IllegalArgumentException());
+
+		if (request.getUserId() != userId) {
+			throw new UnauthChangeException();
+		}
 
 		chatMember.setLastCheckedMessage(ChatMessage.builder().id(request.getMessageId()).build());
 

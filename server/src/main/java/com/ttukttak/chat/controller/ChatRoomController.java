@@ -2,7 +2,6 @@ package com.ttukttak.chat.controller;
 
 import java.util.List;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,11 +39,8 @@ public class ChatRoomController {
 	@GetMapping("/rooms/{userId}")
 	@ResponseBody
 	public ResponseEntity<List<ChatRoomCard>> getRooms(@PathVariable Long userId) {
-		List<ChatRoomCard> chatRooms = chatRoomService.getRoomList(userId);
 
-		return ResponseEntity
-			.status(HttpStatus.OK)
-			.body(chatRooms);
+		return ResponseEntity.ok(chatRoomService.getRoomList(userId));
 	}
 
 	@ApiImplicitParam(
@@ -57,11 +53,8 @@ public class ChatRoomController {
 	@PostMapping("/rooms")
 	@ResponseBody
 	public ResponseEntity<ChatRoomInfo> createRoom(@RequestBody ChatRoomRequest chatRoomRequest) {
-		ChatRoomInfo chatRoomInfo = chatRoomService.createChatRoom(chatRoomRequest);
-
-		return ResponseEntity
-			.status(HttpStatus.OK)
-			.body(chatRoomInfo);
+		
+		return ResponseEntity.ok(chatRoomService.createChatRoom(chatRoomRequest));
 	}
 
 }
