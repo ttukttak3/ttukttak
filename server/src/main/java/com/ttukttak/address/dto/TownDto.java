@@ -22,6 +22,11 @@ public class TownDto {
 		return (district + " " + name).trim();
 	}
 
+	//반환값 시 + 구 + 동 + 외
+	public String getFullAddress() {
+		return (city + " " + district + " " + name + " " + etc).trim();
+	}
+
 	@Builder
 	public TownDto(Long id, String city, String district, String name, String etc) {
 		super();
