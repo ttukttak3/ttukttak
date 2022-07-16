@@ -74,9 +74,8 @@ public class Book extends BaseTimeEntity implements Serializable {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "book")
 	private List<ChatRoom> chatRooms = new ArrayList<>();
 
-	@Enumerated(EnumType.STRING)
-	@ColumnDefault("'N'")
-	private DeleteStatus isDelete = DeleteStatus.N;
+	@Column(nullable = false, columnDefinition = "tinyint(1) default 0")
+	private Boolean isDelete;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "book", cascade = CascadeType.ALL)
 	private List<BookImage> images = new ArrayList<>();
@@ -107,8 +106,8 @@ public class Book extends BaseTimeEntity implements Serializable {
 		return this;
 	}
 
-	public Book isDelete(DeleteStatus delteStatus) {
-		this.isDelete = delteStatus;
+	public Book isDelete() {
+		this.isDelete = true;
 		return this;
 	}
 
@@ -149,11 +148,6 @@ public class Book extends BaseTimeEntity implements Serializable {
 			.bookCategory(BookDto.getBookCategory())
 			.thumbnail(BookImage.from(BookDto.getThumbnail()))
 			.build();
-	}
-
-	public enum DeleteStatus {
-		Y, N;
-
 	}
 
 	public enum BookStatus {
