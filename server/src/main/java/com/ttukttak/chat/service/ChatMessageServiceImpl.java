@@ -17,7 +17,6 @@ import com.ttukttak.chat.repository.ChatMessageRepository;
 import com.ttukttak.common.exception.UnauthChangeException;
 import com.ttukttak.oauth.entity.User;
 import com.ttukttak.oauth.repository.UserRepository;
-
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

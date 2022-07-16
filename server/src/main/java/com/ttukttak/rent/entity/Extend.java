@@ -1,7 +1,7 @@
 package com.ttukttak.rent.entity;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,11 +9,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.ColumnDefault;
 
 import com.ttukttak.common.BaseTimeEntity;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -30,15 +32,17 @@ public class Extend extends BaseTimeEntity implements Serializable {
 	@JoinColumn(name = "rent")
 	private Rent rent;
 
-	private LocalDateTime extendDate;
+	private LocalDate extendDate;
 
+	@NotNull
 	@ColumnDefault("7")
-	private Integer extendDays;
+	private int extendDays;
 
-	public Extend(Long id, Rent rent, LocalDateTime extendDate, Integer extendDays) {
+	@Builder
+	public Extend(Long id, Rent rent, int extendDays) {
 		this.id = id;
 		this.rent = rent;
-		this.extendDate = extendDate;
+		this.extendDate = rent.getEndDate();
 		this.extendDays = extendDays;
 	}
 }

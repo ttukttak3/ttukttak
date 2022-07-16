@@ -44,7 +44,7 @@ public class Town {
 		this.longitude = longitude;
 	}
 
-	public static Town of(TownDto townDto) {
+	public static Town from(TownDto townDto) {
 		return Town.builder()
 			.id(townDto.getId())
 			.city(townDto.getCity())

@@ -2,6 +2,7 @@ package com.ttukttak.oauth.service;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ttukttak.oauth.dto.ProfileRequest;
 import com.ttukttak.oauth.dto.SignUpRequest;
 import com.ttukttak.oauth.dto.UserDto;
 
@@ -12,5 +13,7 @@ public interface UserService {
 	Boolean existsByName(String nickname, Long id);
 
 	UserDto setSignUp(Long userId, SignUpRequest signUpRequest, MultipartFile imageFile);
+
+	UserDto setProfile(Long id, ProfileRequest profileRequest, MultipartFile imageFile);
 
 }
