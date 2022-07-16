@@ -62,6 +62,7 @@ public class RentController {
 	}
 
 	@PostMapping("/rent")
+	@ApiOperation(value = "대여하기")
 	public ResponseEntity<RentResponse> addRent(
 		@ApiIgnore
 		@CurrentUser
@@ -82,6 +83,7 @@ public class RentController {
 	}
 
 	@PatchMapping("/rent/{rentId}/return")
+	@ApiOperation(value = "반납하기")
 	public ResponseEntity<RentResponse> changeRentStatus(
 		@ApiIgnore
 		@CurrentUser
@@ -91,6 +93,7 @@ public class RentController {
 	}
 
 	@PostMapping("/rent/{rentId}/extend")
+	@ApiOperation(value = "대여기간 연장하기")
 	public ResponseEntity<ExtendResponse> addExtend(
 		@ApiIgnore
 		@CurrentUser
