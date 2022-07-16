@@ -52,24 +52,27 @@ public class ChatMessageController {
 		, dataType = "LastCheckedMessageRequest"
 		, paramType = "body")
 	@ApiOperation(value = "마지막으로 확인한 메시지 갱신")
-	@PatchMapping("/chat/members/{memberId}/last-checked")
+	@PatchMapping("/chat/members/{roomId}/last-checked")
 	public ResponseEntity<Boolean> updateLastCheckedMessage(
 		@ApiIgnore
 		@CurrentUser
-			UserPrincipal userPrincipal, @RequestBody LastCheckedMessageRequest request) {
+			UserPrincipal userPrincipal,
+		@PathVariable
+			Long roomId,
+		@RequestBody LastCheckedMessageRequest request) {
 		chatMessageService.updateLastCheckedMessage(request, userPrincipal.getId());
 
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 
 	@ApiOperation(value = "채팅방 나가기")
-	@DeleteMapping("/chat/members/{memberId}")
+	@DeleteMapping("/chat/members/{roomId}")
 	public ResponseEntity<Boolean> removeChatMember(
 		@ApiIgnore
 		@CurrentUser
-			UserPrincipal userPrincipal, @PathVariable Long memberId) {
+			UserPrincipal userPrincipal, @PathVariable Long roomId) {
 
-		chatMessageService.removeChatMember(memberId, userPrincipal.getId());
+		chatMessageService.removeChatMember(roomId, userPrincipal.getId());
 
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
