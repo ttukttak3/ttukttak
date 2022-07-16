@@ -13,6 +13,7 @@ import HomePage from '../../pages/Home/HomePage';
 import BookDetailPage from '../../pages/Home/DetailList/BookDetailPage';
 import UploadBookPage from '../../pages/UploadBook/UploadBookPage';
 import AuthCheckRouter from '../../pages/OauthLogin/Login/AuthCheckRouter';
+import SearchListPage from '../../pages/Search/SearchListPage';
 
 const Layout = () => {
   const { LayoutBox, Section } = style;
@@ -31,6 +32,7 @@ const Layout = () => {
             <Route path="chat/:roomId" element={<ChatItem />} />
             <Route path="chat/alert" element={<ChatAlertPage />} />
             <Route path="upload" element={<UploadBookPage />} />
+            <Route path="search" element={<SearchListPage />} />
           </Route>
         </Routes>
       </Section>

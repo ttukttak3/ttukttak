@@ -22,11 +22,11 @@ const uploadBook = async bookInfo => {
   }
 };
 
-const interparkSearch = async (pageNum, query, setData) => {
+const interparkSearch = async (pageNum, query) => {
   try {
     const result = await apiUtil.get(`api/v1/book/interpark/search/?pageNum=${pageNum}&query=${query}`);
     const data = result.data;
-    setData(data.contents); //수정 필요
+    return data;
   } catch (error) {
     console.log(error);
   }
