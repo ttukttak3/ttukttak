@@ -1,7 +1,7 @@
 import * as StompJs from '@stomp/stompjs';
 import * as SockJs from 'sockjs-client';
 
-const baseUrl = process.env.REACT_APP_API_URL;
+const baseUrl = process.env.REACT_APP_SERVER_API_URL;
 
 //1. stomp.client 객체 만들기
 const connect = (client, roomId, setChatMessages, setMessage) => {

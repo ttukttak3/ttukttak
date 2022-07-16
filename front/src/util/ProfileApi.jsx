@@ -12,7 +12,7 @@ const getCurrentUser = async () => {
     const result = await apiAuthUtil.get(`api/v1/user/me`);
     return result.data;
   } catch (error) {
-    console.log(error);
+    console.log(error.response.data);
     return Promise.reject(error);
   }
 };
