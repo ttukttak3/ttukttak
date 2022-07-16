@@ -104,10 +104,11 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 	/**
 	 * 채팅방 생성 : 서버간 채팅방 공유를 위해 redis hash에 저장한다.
 	 */
+	@Override
 	@Transactional
 	public ChatRoomInfo createChatRoom(ChatRoomRequest request) {
 		Book book = bookRepository.findById(request.getBookId())
-			.filter(findBook -> findBook.getIsDelete() == Book.DeleteStatus.N)
+			.filter(findBook -> findBook.getIsDelete() == false)
 			.orElseThrow(() -> new NotExistException());
 
 		User host = book.getOwner();
@@ -151,6 +152,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 	/**
 	 * 채팅방 입장 : redis에 topic을 만들고 pub/sub 통신을 하기 위해 리스너를 설정한다.
 	 */
+	@Override
 	public void enterChatRoom(Long roomId) {
 		ChannelTopic topic = topics.get(roomId);
 		if (topic == null) {
@@ -160,6 +162,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 		}
 	}
 
+	@Override
 	public ChannelTopic getTopic(Long roomId) {
 		return topics.get(roomId);
 	}
