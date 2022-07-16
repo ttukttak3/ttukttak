@@ -31,8 +31,6 @@ import com.ttukttak.chat.repository.ChatMessageRepository;
 import com.ttukttak.chat.repository.ChatRoomRepository;
 import com.ttukttak.chat.repository.LastCheckedMessageRepository;
 import com.ttukttak.common.exception.DuplicatedException;
-import com.ttukttak.common.exception.InvalidParameterException;
-import com.ttukttak.common.exception.NotExistException;
 import com.ttukttak.oauth.entity.User;
 import com.ttukttak.oauth.repository.UserRepository;
 
@@ -80,7 +78,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 				.orElse(null);
 
 			LastCheckedMessage lastCheckedMessage = lastCheckedMessageRepository.findByRoomIdAndUserId(room.getId(),
-				userId).orElseThrow(() -> new NotExistException());
+				userId).orElseThrow(() -> new IllegalArgumentException());
 
 			LocalDateTime lastCheckedTime;
 
@@ -108,14 +106,14 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 	@Transactional
 	public ChatRoomInfo createChatRoom(ChatRoomRequest request) {
 		Book book = bookRepository.findById(request.getBookId())
-			.filter(findBook -> findBook.getIsDelete() == false)
-			.orElseThrow(() -> new NotExistException());
+			.filter(findBook -> findBook.getIsDelete() == Book.DeleteStatus.N)
+			.orElseThrow(() -> new IllegalArgumentException());
 
 		User host = book.getOwner();
-		User guest = userRepository.findById(request.getUserId()).orElseThrow(() -> new NotExistException());
+		User guest = userRepository.findById(request.getUserId()).orElseThrow(() -> new IllegalArgumentException());
 
 		if (host.equals(guest)) {
-			throw new InvalidParameterException();
+			throw new IllegalArgumentException();
 		}
 
 		boolean isDuplicated = chatGuestRepository.existsByBookIdAndUserId(book.getId(), guest.getId());

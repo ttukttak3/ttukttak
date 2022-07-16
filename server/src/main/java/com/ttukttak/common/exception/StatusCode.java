@@ -15,7 +15,7 @@ public enum StatusCode {
 	INVALID_METHOD(HttpStatus.BAD_REQUEST, "C-IM", "Invalid method"),
 	NOT_EXIST_OAUTH_ACCOUNT(HttpStatus.NOT_FOUND, "C-NEOA", "Not exist auth account"),
 	DUPLICATED_ELEMENT(HttpStatus.BAD_REQUEST, "C-DE", "Already exist"),
-	NOT_EXIST_ENTITY(HttpStatus.BAD_REQUEST, "C-NEE", "Not exist entity"),
+	ILLEGAL_ARGUMENT(HttpStatus.BAD_REQUEST, "C-NEE", "Illegal argument"),
 	UNAUTH(HttpStatus.UNAUTHORIZED, "C-U", "Unauthorized request"),
 	SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "S-1", "Server error");
 

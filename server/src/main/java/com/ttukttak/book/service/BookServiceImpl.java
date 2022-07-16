@@ -39,7 +39,6 @@ import com.ttukttak.book.repository.BookRepository;
 import com.ttukttak.common.StorageUploader;
 import com.ttukttak.common.dto.FileUploadResponse;
 import com.ttukttak.common.dto.PageResponse;
-import com.ttukttak.common.exception.NotExistException;
 import com.ttukttak.oauth.dto.UserDto;
 import com.ttukttak.oauth.entity.User;
 import com.ttukttak.oauth.service.UserService;
@@ -187,7 +186,8 @@ public class BookServiceImpl implements BookService {
 				book.addImage(BookImage.builder().imageUrl(fileUploadResponse.getUrl()).build());
 
 			}
-		} catch (Exception e) {}
+		} catch (Exception e) {
+		}
 
 		Book resultBook = bookRepository.save(book);
 
@@ -211,15 +211,15 @@ public class BookServiceImpl implements BookService {
 	@Override
 	public BookDto findById(Long bookId) {
 		return bookRepository.findById(bookId)
-			.map(book -> BookDto.from(book))
-			.orElseThrow(() -> new NotExistException());
+			.map(book -> new BookDto(book))
+			.orElseThrow(() -> new IllegalArgumentException());
 	}
 
 	@Override
 	public BookDetailResponse findByIdDetail(Long bookId) {
 		return bookRepository.findById(bookId)
-			.map(BookDetailResponse::from)
-			.orElseThrow(() -> new NotExistException());
+			.map(book -> new BookDetailResponse(book))
+			.orElseThrow(() -> new IllegalArgumentException());
 	}
 
 	/*
@@ -228,9 +228,8 @@ public class BookServiceImpl implements BookService {
 	@Override
 	@Transactional
 	public Boolean isDelete(Long bookId) {
-		Book book = bookRepository.findById(bookId).orElseThrow(() -> new NotExistException());
-		book.removeBook();
-
+		Book book = bookRepository.findById(bookId).orElseThrow(() -> new IllegalArgumentException());
+		book.isDelete(DeleteStatus.Y);
 		bookRepository.save(book);
 
 		return true;
@@ -242,7 +241,7 @@ public class BookServiceImpl implements BookService {
 	@Override
 	@Transactional
 	public Boolean updateStatus(Long bookId, BookStatus status) {
-		Book book = bookRepository.findById(bookId).orElseThrow(() -> new NotExistException());
+		Book book = bookRepository.findById(bookId).orElseThrow(() -> new IllegalArgumentException());
 		book.updateStatus(status);
 
 		bookRepository.save(book);
@@ -256,7 +255,7 @@ public class BookServiceImpl implements BookService {
 	@Override
 	@Transactional
 	public Boolean updateGrade(Long bookId, BookGrade grade) {
-		Book book = bookRepository.findById(bookId).orElseThrow(() -> new NotExistException());
+		Book book = bookRepository.findById(bookId).orElseThrow(() -> new IllegalArgumentException());
 		book.updateGrade(grade);
 
 		bookRepository.save(book);
@@ -271,7 +270,7 @@ public class BookServiceImpl implements BookService {
 	@Transactional
 	public Boolean bookUpdate(Long bookId, BookUploadRequest bookUploadRequest, List<MultipartFile> imageFiles) {
 		//변경 전 도서 조회
-		Book currBook = bookRepository.findById(bookId).orElseThrow(() -> new NotExistException());
+		Book currBook = bookRepository.findById(bookId).orElseThrow(() -> new IllegalArgumentException());
 
 		//이미지를 전체 변경했을 경우
 		List<Long> bookImageIds = currBook.getImages().stream().map(BookImage::getId)
@@ -339,7 +338,8 @@ public class BookServiceImpl implements BookService {
 				updateBook.addImage(BookImage.builder().imageUrl(fileUploadResponse.getUrl()).build());
 
 			}
-		} catch (Exception e) {}
+		} catch (Exception e) {
+		}
 
 		Book resultBook = bookRepository.save(updateBook);
 

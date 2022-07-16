@@ -1,6 +1,7 @@
 package com.ttukttak.rent.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,4 +17,6 @@ public interface RentRepository extends JpaRepository<Rent, Long> {
 	List<Rent> findAllByOwnerIdAndIsReturnFalseOrderByBeginDateAsc(Long ownerId);
 
 	Page<Rent> findAllByOwnerIdAndIsReturnFalseOrderByBeginDateAsc(Long ownerId, Pageable pageable);
+
+	Optional<Rent> findByBookIdAndLenderId(Long bookId, Long lenderId);
 }

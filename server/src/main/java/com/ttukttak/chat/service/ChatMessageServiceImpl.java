@@ -14,7 +14,6 @@ import com.ttukttak.chat.entity.ChatMessage;
 import com.ttukttak.chat.entity.LastCheckedMessage;
 import com.ttukttak.chat.repository.ChatMessageRepository;
 import com.ttukttak.chat.repository.LastCheckedMessageRepository;
-import com.ttukttak.common.exception.NotExistException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -55,7 +54,7 @@ public class ChatMessageServiceImpl implements ChatMessageService {
 	@Override
 	public void updateLastCheckedMessage(LastCheckedMessageRequest request) {
 		LastCheckedMessage lastCheckedMessage = lastCheckedMessageRepository.findByRoomIdAndUserId(request.getRoomId(),
-			request.getUserId()).orElseThrow(() -> new NotExistException());
+			request.getUserId()).orElseThrow(() -> new IllegalArgumentException());
 
 		lastCheckedMessage.setChatMessage(ChatMessage.builder().id(request.getMessageId()).build());
 
