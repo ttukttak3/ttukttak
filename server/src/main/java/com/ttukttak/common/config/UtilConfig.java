@@ -25,7 +25,7 @@ public class UtilConfig {
 		ModelMapper modelMapper = new ModelMapper();
 
 		modelMapper.createTypeMap(ChatRoom.class, ChatRoomInfo.class).setConverter(context -> {
-			List<ChatUser> members = context.getSource().getLastCheckedMessages()
+			List<ChatUser> members = context.getSource().getChatMembers()
 				.stream()
 				.map(v -> modelMapper.map(v.getUser(), ChatUser.class))
 				.collect(

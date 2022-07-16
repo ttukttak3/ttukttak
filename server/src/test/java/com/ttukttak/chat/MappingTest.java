@@ -17,12 +17,12 @@ import com.ttukttak.chat.dto.ChatMessageDto;
 import com.ttukttak.chat.dto.ChatRoomInfo;
 import com.ttukttak.chat.dto.ChatUser;
 import com.ttukttak.chat.dto.MessageType;
+import com.ttukttak.chat.entity.ChatMember;
 import com.ttukttak.chat.entity.ChatMessage;
 import com.ttukttak.chat.entity.ChatRoom;
-import com.ttukttak.chat.entity.LastCheckedMessage;
+import com.ttukttak.chat.repository.ChatMemberRepository;
 import com.ttukttak.chat.repository.ChatMessageRepository;
 import com.ttukttak.chat.repository.ChatRoomRepository;
-import com.ttukttak.chat.repository.LastCheckedMessageRepository;
 import com.ttukttak.common.config.QuerydslConfig;
 import com.ttukttak.common.config.UtilConfig;
 import com.ttukttak.oauth.entity.User;
@@ -45,7 +45,7 @@ public class MappingTest {
 	ChatRoomRepository chatRoomRepository;
 
 	@Autowired
-	LastCheckedMessageRepository lastCheckedMessageRepository;
+	ChatMemberRepository chatMemberRepository;
 
 	@Autowired
 	ModelMapper modelMapper;
@@ -62,9 +62,9 @@ public class MappingTest {
 
 		ChatRoom chatRoom = ChatRoom.builder().book(book).build();
 
-		LastCheckedMessage lastCheckedMessage = LastCheckedMessage.builder().user(user).build();
+		ChatMember chatMember = ChatMember.builder().user(user).build();
 
-		chatRoom.addLastCheckedMessage(lastCheckedMessage);
+		chatRoom.addChatMember(chatMember);
 
 		ChatMessage chatMessage = ChatMessage.builder()
 			.message("test message")
@@ -101,11 +101,11 @@ public class MappingTest {
 
 		ChatRoom chatRoom = ChatRoom.builder().book(book).build();
 
-		LastCheckedMessage lastCheckedMessage = LastCheckedMessage.builder().user(user).build();
-		LastCheckedMessage lastCheckedMessage2 = LastCheckedMessage.builder().user(user2).build();
+		ChatMember chatMember = ChatMember.builder().user(user).build();
+		ChatMember chatMember2 = ChatMember.builder().user(user2).build();
 
-		chatRoom.addLastCheckedMessage(lastCheckedMessage);
-		chatRoom.addLastCheckedMessage(lastCheckedMessage2);
+		chatRoom.addChatMember(chatMember);
+		chatRoom.addChatMember(chatMember2);
 
 		ChatMessage chatMessage = ChatMessage.builder()
 			.message("test message")
