@@ -97,7 +97,7 @@ public class BookServiceImpl implements BookService {
 		 * query 파라미터 유무에 따라 검색인지 리스트 조회인지 판단(?)
 		 * 대여중/예약중 리스트를 같이 보려면 쿼리를 구분해줘야할듯!
 		 */
-		Page<Book> pageList;
+		Page<BookResponse> pageList;
 
 		//도서 상태 IN절
 		List<BookStatus> bookStatus = new ArrayList<>();
@@ -116,25 +116,20 @@ public class BookServiceImpl implements BookService {
 				bookStatus,
 				bookRequest.getQuery(),
 				townIdList,
-				pageRequest);
+				pageRequest).map(BookResponse::from);
 		} else {
 			pageList = bookRepository.findByStatusInAndIsDeleteFalseAndSubjectContainsAndTownIdInAndBookCategoryId(
 				bookStatus,
 				bookRequest.getQuery(),
 				townIdList,
 				bookRequest.getCategoryId(),
-				pageRequest);
+				pageRequest).map(BookResponse::from);
+			;
 		}
 
-		//Entity -> Dto 변환
-		List<BookResponse> bookResponses = pageList.getContent()
-			.stream()
-			.map(book -> new BookResponse(book))
-			.collect(Collectors.toList());
-
 		return PageResponse.<BookResponse>builder()
-			.contents(bookResponses)
-			.pageNumber(bookRequest.getPageNum())
+			.contents(pageList.getContent())
+			.pageNumber(pageList.getNumber())
 			.pageSize(pageList.getSize())
 			.totalPages(pageList.getTotalPages())
 			.build();
