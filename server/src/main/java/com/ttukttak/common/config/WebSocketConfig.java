@@ -1,4 +1,4 @@
-package com.ttukttak.chat.config;
+package com.ttukttak.common.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;

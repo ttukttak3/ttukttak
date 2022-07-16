@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ttukttak.chat.dto.ChatMessageDto;
 import com.ttukttak.chat.dto.ChatRoomInfo;
@@ -17,6 +18,7 @@ import com.ttukttak.chat.repository.ChatMessageRepository;
 import com.ttukttak.common.exception.UnauthChangeException;
 import com.ttukttak.oauth.entity.User;
 import com.ttukttak.oauth.repository.UserRepository;
+
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -36,6 +38,7 @@ public class ChatMessageServiceImpl implements ChatMessageService {
 	}
 
 	@Override
+	@Transactional
 	public ChatRoomInfo getChatMessages(Long roomId, Long userId) {
 		User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException());
 
