@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { setBack, setBackHome, setTitle, setAllFalse } from '../../../app/headerSlice';
+import { setBack, setTitle, setAllFalse } from '../../../app/headerSlice';
 import style from './LoginPage.style';
 import { ACCESS_TOKEN } from '../../../util/ApiUtil';
 import utils from '../../../util/ProfileApi';
@@ -13,7 +13,6 @@ const LoginPage = () => {
   //Header
   const dispatch = useDispatch();
   useEffect(() => {
-    localStorage.removeItem(ACCESS_TOKEN);
     dispatch(setAllFalse());
     dispatch(setBack(true));
     dispatch(setTitle('로그인'));

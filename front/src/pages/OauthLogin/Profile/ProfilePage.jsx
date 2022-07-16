@@ -26,17 +26,13 @@ const ProfilePage = () => {
   //user info setting
   useEffect(() => {
     getCurrentUser().then(result => {
-      if (result.role === 'USER') {
-        navigate(`/`);
-      } else {
-        dispatch(setUserId(result.id));
-        dispatch(setRole(result.role));
-        dispatch(setNickName(result.nickname));
-        dispatch(setEmail(result.email));
-        dispatch(setImageFile(result.imageUrl));
-        dispatch(setHomeTown(result.homeTown));
-        setImgPreview(result.imageUrl);
-      }
+      dispatch(setUserId(result.id));
+      dispatch(setRole(result.role));
+      dispatch(setNickName(result.nickname));
+      dispatch(setEmail(result.email));
+      dispatch(setImageFile(result.imageUrl));
+      dispatch(setHomeTown(result.homeTown));
+      setImgPreview(result.imageUrl);
     });
   }, [dispatch, getCurrentUser, navigate]);
 

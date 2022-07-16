@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import Expand_more_gray from '../../assets/img/arrows/expand_more_gray.png';
-import Posting from '../../assets/img/btn/posting.png';
-import Star from '../../assets/img/userInterFace/star.png';
-import local_library from '../../assets/img/userInterFace/local_library.png';
+import posting from '../../assets/img/btn/posting.png';
+import star from '../../assets/img/userInterFace/star.png';
+import library from '../../assets/img/userInterFace/local_library.png';
 import gradation from '../../assets/img/userInterFace/gradation.png';
 
 //scroll시 titlebox가 header가 되기에 width 따로 작업.
@@ -210,17 +210,17 @@ const BookState = styled.div`
   }
 
   p.bookmark {
-    background: url(${Star}) left center no-repeat;
+    background: url(${star}) left center no-repeat;
     margin-right: 1.8rem;
   }
 
   p.loanCount {
-    background: url(${local_library}) left center no-repeat;
+    background: url(${library}) left center no-repeat;
   }
 `;
 
 const PlusBtn = styled.button`
-  background: url(${Posting});
+  background: url(${posting});
   width: 4.4rem;
   height: 4.4rem;
   position: fixed;

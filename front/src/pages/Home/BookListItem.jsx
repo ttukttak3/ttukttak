@@ -8,7 +8,7 @@ const BookListItem = ({ id, thumbnail, grade, subject, author, address, status, 
 
   const navigate = useNavigate();
   const onDetailBookPage = () => {
-    navigate(`/detailBook`);
+    navigate(`/detailBook`, { state: { id: id } });
   };
   const { BookBox, BookTitle, BookLocation, BookPrice, BookState } = style;
   return (
