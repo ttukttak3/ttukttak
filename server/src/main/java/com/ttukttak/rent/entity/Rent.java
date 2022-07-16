@@ -15,10 +15,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.springframework.data.annotation.CreatedDate;
+
 import com.ttukttak.book.entity.Book;
 import com.ttukttak.common.BaseTimeEntity;
 import com.ttukttak.oauth.entity.User;
-import com.ttukttak.rent.dto.RentRequest;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -49,6 +50,7 @@ public class Rent extends BaseTimeEntity implements Serializable {
 	@JoinColumn(name = "book_id")
 	private Book book;
 
+	@CreatedDate
 	private LocalDate beginDate;
 
 	private LocalDate returnDate;
@@ -72,16 +74,10 @@ public class Rent extends BaseTimeEntity implements Serializable {
 		returnDate = LocalDate.now();
 	}
 
-	public static Rent from(RentRequest request) {
-		return Rent.builder()
-			.owner(User.builder().id(request.getOwnerId()).build())
-			.lender(User.builder().id(request.getLenderId()).build())
-			.book(Book.builder().id(request.getBookId()).build())
-			.beginDate(request.getBeginDate()).build();
-	}
-
 	@Builder
-	public Rent(Long id, User owner, User lender, Book book, LocalDate beginDate) {
+	public Rent(Long id, User lender, Book book, LocalDate beginDate) {
+		User owner = book.getOwner();
+
 		if (!checkValid(owner, lender)) {
 			throw new IllegalArgumentException();
 		}

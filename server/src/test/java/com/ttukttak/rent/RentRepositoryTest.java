@@ -92,21 +92,18 @@ public class RentRepositoryTest {
 			Rent rent1 = Rent.builder()
 				.book(book)
 				.beginDate(LocalDate.now())
-				.owner(owner)
 				.lender(lender1)
 				.build();
 
 			Rent rent2 = Rent.builder()
 				.book(book)
 				.beginDate(beginDate2)
-				.owner(owner)
 				.lender(lender1)
 				.build();
 
 			Rent rent3 = Rent.builder()
 				.book(book)
 				.beginDate(beginDate3)
-				.owner(owner)
 				.lender(lender2)
 				.build();
 
@@ -153,7 +150,6 @@ public class RentRepositoryTest {
 				Rent.builder()
 					.book(book)
 					.beginDate(beginDate)
-					.owner(owner)
 					.lender(owner)
 					.build();
 			}).isInstanceOf(IllegalArgumentException.class);
