@@ -38,8 +38,8 @@ public class AddressController {
 
 	@ApiImplicitParam(name = "townId", value = "지역 ID", required = true, dataType = "Long", paramType = "param")
 	@ApiOperation(value = "인근 지역 조회", notes = "타운id를 받아와 해당 범위에 있는 주소를 반환한다.")
-	@GetMapping("/neartown")
-	public ResponseEntity<List<TownDto>> getNearTown(@RequestParam
+	@GetMapping("/towns/{townId}/neartown")
+	public ResponseEntity<List<TownDto>> getNearTown(@PathVariable
 		Long townId) {
 
 		return ResponseEntity.ok(addressService.getNearTown(townId, DEFAULT_RANGED));
@@ -47,7 +47,7 @@ public class AddressController {
 
 	@ApiImplicitParam(name = "townName", value = "지역동 Name", required = true, dataType = "String", paramType = "param")
 	@ApiOperation(value = "지역 조회(지역동 검색)", notes = "동,면을 like로 검색한 결과를 반환.")
-	@GetMapping("/search")
+	@GetMapping("/towns")
 	public ResponseEntity<List<TownDto>> getSearch(@RequestParam
 		String townName) {
 
@@ -56,8 +56,8 @@ public class AddressController {
 
 	@ApiImplicitParam(name = "townId", value = "지역 Id", required = true, dataType = "Long", paramType = "path")
 	@ApiOperation(value = "지역 조회(id)", notes = "townId를 받아 데이터 반환")
-	@GetMapping("/{townId}")
-	public ResponseEntity<TownDto> getSearch(@PathVariable("townId")
+	@GetMapping("/towns/{townId}")
+	public ResponseEntity<TownDto> getSearch(@PathVariable
 		Long townId) {
 
 		return ResponseEntity.ok(addressService.getById(townId));

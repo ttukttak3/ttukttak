@@ -25,7 +25,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @Api(value = "/api/v1/chat/messages", description = "채팅메시지 API")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/chat/messages")
+@RequestMapping("/api/v1/chat")
 public class ChatMessageController {
 	private final ChatMessageService chatMessageService;
 
@@ -36,7 +36,7 @@ public class ChatMessageController {
 		, dataType = "long"
 		, paramType = "path")
 	@ApiOperation(value = "채팅방 전체 메시지 조회")
-	@GetMapping("/{roomId}")
+	@GetMapping("/rooms/{roomId}/messages")
 	public ResponseEntity<ChatRoomInfo> findAllChats(
 		@ApiIgnore
 		@CurrentUser
@@ -52,7 +52,7 @@ public class ChatMessageController {
 		, dataType = "LastCheckedMessageRequest"
 		, paramType = "body")
 	@ApiOperation(value = "마지막으로 확인한 메시지 갱신")
-	@PatchMapping("/members/last-checked")
+	@PatchMapping("/members/{memberId}/last-checked")
 	public ResponseEntity<Boolean> updateLastCheckedMessage(
 		@ApiIgnore
 		@CurrentUser

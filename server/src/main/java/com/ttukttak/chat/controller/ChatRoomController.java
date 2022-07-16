@@ -36,10 +36,10 @@ public class ChatRoomController {
 		, dataType = "long"
 		, paramType = "path")
 	@ApiOperation(value = "모든 채팅방 목록 조회")
-	@GetMapping("/rooms/{userId}")
+	@GetMapping("/users/{userId}/rooms")
 	@ResponseBody
 	public ResponseEntity<List<ChatRoomCard>> getRooms(@PathVariable Long userId) {
-
+		//TODO: 로그인한 유저인지 확인?
 		return ResponseEntity.ok(chatRoomService.getRoomList(userId));
 	}
 
@@ -53,7 +53,7 @@ public class ChatRoomController {
 	@PostMapping("/rooms")
 	@ResponseBody
 	public ResponseEntity<ChatRoomInfo> createRoom(@RequestBody ChatRoomRequest chatRoomRequest) {
-		
+
 		return ResponseEntity.ok(chatRoomService.createChatRoom(chatRoomRequest));
 	}
 
