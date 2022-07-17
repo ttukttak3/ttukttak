@@ -26,8 +26,8 @@ const AuthCheckRouter = () => {
   };
 
   useEffect(() => {
-    authCheck();
-  }, [location]);
+    //authCheck();
+  }, []);
 
   return <Outlet />;
 };
