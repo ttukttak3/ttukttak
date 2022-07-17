@@ -1,5 +1,6 @@
 package com.ttukttak.address.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ttukttak.address.entity.Town;
 
 import lombok.Builder;
@@ -23,6 +24,7 @@ public class TownDto {
 	}
 
 	//반환값 시 + 구 + 동 + 외
+	@JsonIgnore
 	public String getFullAddress() {
 		return (city + " " + district + " " + name + " " + etc).trim();
 	}
