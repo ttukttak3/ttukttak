@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import com.ttukttak.address.dto.TownDto;
 import com.ttukttak.book.entity.Book;
 import com.ttukttak.book.entity.Book.BookGrade;
+import com.ttukttak.book.entity.Book.BookStatus;
 import com.ttukttak.book.entity.BookCategory;
 import com.ttukttak.book.entity.BookReview;
 import com.ttukttak.oauth.dto.UserResponse;
@@ -23,6 +24,7 @@ public class BookDetailResponse {
 	private String subject;
 	private String content;
 	private BookGrade grade;
+	private BookStatus status;
 	private int deposit;
 	private UserResponse owner;
 	private BookInfoDto bookInfo;
@@ -36,13 +38,14 @@ public class BookDetailResponse {
 	private List<BookImageDto> bookImages;
 
 	@Builder
-	private BookDetailResponse(Long id, String subject, String content, BookGrade grade, int deposit,
+	private BookDetailResponse(Long id, String subject, String content, BookStatus status, BookGrade grade, int deposit,
 		UserResponse owner,
 		BookInfoDto bookInfo, BookCategory bookCategory, TownDto bookTown, double rating, int rentCnt,
 		List<BookReviewResponse> review, BookImageDto thumbnail, List<BookImageDto> bookImages) {
 		this.id = id;
 		this.subject = subject;
 		this.content = content;
+		this.status = status;
 		this.grade = grade;
 		this.deposit = deposit;
 		this.owner = owner;
@@ -61,6 +64,7 @@ public class BookDetailResponse {
 			.id(book.getId())
 			.subject(book.getSubject())
 			.content(book.getContent())
+			.status(book.getStatus())
 			.grade(book.getGrade())
 			.deposit(book.getDeposit())
 			.owner(UserResponse.from(book.getOwner()))
