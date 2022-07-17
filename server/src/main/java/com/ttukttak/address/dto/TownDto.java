@@ -16,25 +16,16 @@ public class TownDto {
 	private String district;
 	private String name;
 	private String etc;
-
-	//반환값 지역구 + 동
-	public String getAddress() {
-		return (district + " " + name).trim();
-	}
-
-	//반환값 시 + 구 + 동 + 외
-	public String getFullAddress() {
-		return (city + " " + district + " " + name + " " + etc).trim();
-	}
+	private String address;
 
 	@Builder
 	public TownDto(Long id, String city, String district, String name, String etc) {
-		super();
 		this.id = id;
 		this.city = city;
 		this.district = district;
 		this.name = name;
 		this.etc = etc;
+		this.address = (district + " " + name).trim();
 	}
 
 	public static TownDto from(Town town) {
