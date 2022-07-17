@@ -38,6 +38,10 @@ public class BookInfoDto {
 	}
 
 	public static BookInfoDto from(BookInfo bookInfo) {
+		//직접등록인 경우에는 NULL
+		if (bookInfo == null) {
+			return new BookInfoDto();
+		}
 		return BookInfoDto.builder()
 			.name(bookInfo.getName())
 			.description(bookInfo.getDescription())
