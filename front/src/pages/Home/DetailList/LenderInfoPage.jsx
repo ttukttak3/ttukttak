@@ -1,8 +1,7 @@
 import React from 'react';
 import style from './BookDetailPage.style';
 import noImg from '../../../assets/img/logo/no_img.png';
-const LenderInfoPage = content => {
-  console.log(content);
+const LenderInfoPage = ({ owner }) => {
   const onErrorImg = e => {
     e.target.src = noImg;
   };
@@ -10,10 +9,10 @@ const LenderInfoPage = content => {
   return (
     <LenderWrap>
       <LenderInfo>
-        <img src="/" onError={onErrorImg} alt="이미지" />
+        <img src={owner.imageUrl} onError={onErrorImg} alt="이미지" />
         <div>
-          <h2>{/*{content.nickName}*/}</h2>
-          <p>수원시 권선구 고색동</p>
+          <h2>{owner.nickName}</h2>
+          <p>{owner.address}</p>
         </div>
       </LenderInfo>
       <Counting>
