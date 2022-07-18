@@ -10,6 +10,7 @@ import bookApi from '../../util/BookApi';
 import Popup from '../../components/Modal/SelectPopupBottom';
 import { useNavigate } from 'react-router-dom';
 const HomePage = () => {
+  localStorage.setItem('historyUrl', '/');
   //-------------- Header --------------
   const dispatch = useDispatch();
   useEffect(() => {

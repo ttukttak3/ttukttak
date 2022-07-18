@@ -1,11 +1,12 @@
 /* eslint-disable max-lines-per-function */
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { setTitle, setBack, setAllFalse } from '../../../app/headerSlice';
+import { setTitle, setAllFalse } from '../../../app/headerSlice';
 import ChatListItem from '../ChatList/ChatListItem';
 import Wrapper from '../ChatList/ChatPage.style';
 import messageApi from '../../../util/MessageApi';
 const ChatPage = () => {
+  localStorage.setItem('historyUrl', '/chat');
   const [chatList, setChatList] = useState([]);
 
   const { getChatList, makeChatRoom } = messageApi;
@@ -18,7 +19,6 @@ const ChatPage = () => {
   useEffect(() => {
     dispatch(setAllFalse());
     dispatch(setTitle('채팅'));
-
     getChatList(1, setChatList);
 
     return () => {

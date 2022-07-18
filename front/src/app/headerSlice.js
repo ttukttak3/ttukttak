@@ -15,7 +15,7 @@ export const headerSlice = createSlice({
         share: false,       //공유하기
         more: false,        //더보기
         moreBookId: 0,      //더보기 팝업 클릭 시 컨트롤할 책 ID값
-        save: false,        //도서 등록 버튼 
+        save: false,        //도서 등록 버튼
     },
     reducers: {
         setTitle: (state, action) => {
