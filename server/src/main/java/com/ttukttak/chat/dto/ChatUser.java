@@ -16,6 +16,6 @@ import lombok.ToString;
 public class ChatUser implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Long id;
-	private String name;
+	private String nickname;
 	private String imageUrl;
 }

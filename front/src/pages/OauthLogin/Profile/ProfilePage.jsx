@@ -11,6 +11,9 @@ import noImg from '../../../assets/img/logo/no_img.png';
 const ProfilePage = () => {
   //Header setting
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const user = useSelector(state => state.user);
+
   useEffect(() => {
     dispatch(setBack(false));
     dispatch(setBackHome(true));
@@ -20,28 +23,10 @@ const ProfilePage = () => {
     };
   }, [dispatch]);
 
-  const { getCurrentUser, nickNameCheck, locationValue, signUp } = utils;
-  const [imgPreview, setImgPreview] = useState('');
-  const navigate = useNavigate();
-  //user info setting
-  useEffect(() => {
-    getCurrentUser().then(result => {
-      dispatch(setUserId(result.id));
-      dispatch(setRole(result.role));
-      dispatch(setNickName(result.nickname));
-      dispatch(setEmail(result.email));
-      dispatch(setImageFile(result.imageUrl));
-      dispatch(setHomeTown(result.homeTown));
-      setImgPreview(result.imageUrl);
-    });
-  }, [dispatch, getCurrentUser, navigate]);
-
-  // store 의 상태가 바뀔 때마다 상태를 받아온다.
-  const user = useSelector(state => state.user);
-
   //img change, preview
   const inputRef = useRef(null);
   const [imgFile, setImgFile] = useState('');
+  const [imgPreview, setImgPreview] = useState('');
   const saveImage = e => {
     e.preventDefault();
     const fileReader = new FileReader();
@@ -76,6 +61,7 @@ const ProfilePage = () => {
   // };
 
   //check
+  const { nickNameCheck, locationValue, signUp } = utils;
   const onCheckHandler = () => {
     if (user.nickName === '') {
       setError('닉네임 입력이 필요합니다.');
@@ -113,13 +99,7 @@ const ProfilePage = () => {
     formData.append('townId', id);
     signUp(formData)
       .then(result => {
-        dispatch(setUserId(result.id));
-        dispatch(setRole(result.role));
-        dispatch(setNickName(result.nickname));
-        dispatch(setEmail(result.email));
         dispatch(setImageFile(result.imageUrl));
-        dispatch(setHomeTown(result.homeTown));
-
         navigate(`/`);
       })
       .catch(error => {
@@ -136,7 +116,7 @@ const ProfilePage = () => {
     <ProfileBox>
       <ImgBox>
         <input type="file" accept="image/*" ref={inputRef} onChange={saveImage} style={{ display: 'none' }} />
-        <img src={imgPreview} onError={onErrorImg} alt="이미지" />
+        <img src={imgPreview === '' ? user.imageFile : imgPreview} onError={onErrorImg} alt="이미지" />
         <ImgChangeBtn onClick={onChangeImg}></ImgChangeBtn>
       </ImgBox>
       <InfoBox>

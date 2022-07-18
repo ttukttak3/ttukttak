@@ -3,7 +3,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setTitle, setLocation, setSearch, setFavorite, setAlert, setAllFalse } from '../../app/headerSlice';
-
 import style from './HomePage.style';
 import BookRentPage from './BookRentPage';
 import BookOnLoadPage from './BookOnLoanPage';

@@ -1,4 +1,4 @@
-package com.ttukttak.chat.config;
+package com.ttukttak.common.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
@@ -15,13 +15,13 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
 	@Override
 	public void configureMessageBroker(MessageBrokerRegistry config) {
-		config.enableSimpleBroker("/sub");
-		config.setApplicationDestinationPrefixes("/pub");
+		config.enableSimpleBroker("/api/sub");
+		config.setApplicationDestinationPrefixes("/api/pub");
 	}
 
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
-		registry.addEndpoint("/ws-stomp").setAllowedOriginPatterns("*")
+		registry.addEndpoint("/api/ws-stomp").setAllowedOriginPatterns("*")
 			.withSockJS();
 	}
 }

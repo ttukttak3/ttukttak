@@ -98,7 +98,7 @@ const BookDetailPage = () => {
           </TitleBox>
           <BookSlideBox>
             <img src={detailView.thumbnail} alt="" />
-            <button>{grade}</button>
+            <button>{detailView.grade}</button>
           </BookSlideBox>
           <BookCont>
             <h4>대여자의 말</h4>

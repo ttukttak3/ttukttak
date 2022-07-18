@@ -2,7 +2,6 @@ package com.ttukttak.address.controller;
 
 import java.util.List;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/address")
 public class AddressController {
+	private static final double DEFAULT_RANGED = 3.0;
 	private final AddressService addressService;
 	private final NaverMapService reverseGeocoding;
 
@@ -33,53 +33,33 @@ public class AddressController {
 	@GetMapping("/location")
 	public ResponseEntity<TownDto> getLocation(CoordinateRequest coordinateRequest) {
 
-		TownDto townDto = reverseGeocoding.getReverseGeocoding(coordinateRequest);
-
-		return ResponseEntity
-			.status(HttpStatus.OK)
-			.body(townDto);
+		return ResponseEntity.ok(reverseGeocoding.getReverseGeocoding(coordinateRequest));
 	}
 
 	@ApiImplicitParam(name = "townId", value = "지역 ID", required = true, dataType = "Long", paramType = "param")
 	@ApiOperation(value = "인근 지역 조회", notes = "타운id를 받아와 해당 범위에 있는 주소를 반환한다.")
-	@GetMapping("/neartown")
-	public ResponseEntity<List<TownDto>> getNearTown(@RequestParam
+	@GetMapping("/towns/{townId}/neartown")
+	public ResponseEntity<List<TownDto>> getNearTown(@PathVariable
 		Long townId) {
-		/*
-		 * 범위 기본 값 3
-		 */
-		double ranged = 3.0;
 
-		List<TownDto> townList = addressService.getNearTown(townId, ranged);
-
-		return ResponseEntity
-			.status(HttpStatus.OK)
-			.body(townList);
+		return ResponseEntity.ok(addressService.getNearTown(townId, DEFAULT_RANGED));
 	}
 
 	@ApiImplicitParam(name = "townName", value = "지역동 Name", required = true, dataType = "String", paramType = "param")
 	@ApiOperation(value = "지역 조회(지역동 검색)", notes = "동,면을 like로 검색한 결과를 반환.")
-	@GetMapping("/search")
+	@GetMapping("/towns")
 	public ResponseEntity<List<TownDto>> getSearch(@RequestParam
 		String townName) {
 
-		List<TownDto> townList = addressService.getSearchTown(townName);
-
-		return ResponseEntity
-			.status(HttpStatus.OK)
-			.body(townList);
+		return ResponseEntity.ok(addressService.getSearchTown(townName));
 	}
 
 	@ApiImplicitParam(name = "townId", value = "지역 Id", required = true, dataType = "Long", paramType = "path")
 	@ApiOperation(value = "지역 조회(id)", notes = "townId를 받아 데이터 반환")
-	@GetMapping("/{townId}")
-	public ResponseEntity<TownDto> getSearch(@PathVariable("townId")
+	@GetMapping("/towns/{townId}")
+	public ResponseEntity<TownDto> getSearch(@PathVariable
 		Long townId) {
 
-		TownDto townDto = addressService.getById(townId);
-
-		return ResponseEntity
-			.status(HttpStatus.OK)
-			.body(townDto);
+		return ResponseEntity.ok(addressService.getById(townId));
 	}
 }

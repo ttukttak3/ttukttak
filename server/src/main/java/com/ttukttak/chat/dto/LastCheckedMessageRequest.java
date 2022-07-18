@@ -2,6 +2,8 @@ package com.ttukttak.chat.dto;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotNull;
+
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,12 +19,15 @@ import lombok.ToString;
 public class LastCheckedMessageRequest implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	@NotNull
 	@ApiModelProperty(example = "메시지 ID")
 	private Long messageId;
 
+	@NotNull
 	@ApiModelProperty(example = "채팅방 ID")
 	private Long roomId;
 
+	@NotNull
 	@ApiModelProperty(example = "확인한 유저 ID")
 	private Long userId;
 }
