@@ -3,7 +3,6 @@ package com.ttukttak.address.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +21,7 @@ public class AddressServiceImpl implements AddressService {
 	private final AddressRepositoryCustom addressRepositoryCustom;
 
 	@Override
-	@Cacheable(value = "nearTown", key = "#townId")
+	//@Cacheable(value = "nearTown", key = "#townId")
 	public List<TownDto> getNearTown(Long townId, double ranged) {
 		Town town = addressRepository.getById(townId);
 
@@ -46,7 +45,7 @@ public class AddressServiceImpl implements AddressService {
 	}
 
 	@Override
-	@Cacheable(value = "townInfo", key = "#townId")
+	//@Cacheable(value = "townInfo", key = "#townId")
 	public TownDto getById(Long townId) {
 		Town town = addressRepository.getById(townId);
 		return TownDto.from(town);

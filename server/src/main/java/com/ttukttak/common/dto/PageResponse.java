@@ -21,11 +21,15 @@ public class PageResponse<T> {
 
 	private Integer totalPages;
 
+	private Integer totalElements;
+
 	@Builder
-	public PageResponse(List<T> contents, Integer pageNumber, Integer pageSize, Integer totalPages) {
+	public PageResponse(List<T> contents, Integer pageNumber, Integer pageSize, Integer totalPages,
+		Integer totalElements) {
 		this.contents = contents;
 		this.pageNumber = pageNumber;
 		this.pageSize = pageSize;
 		this.totalPages = totalPages;
+		this.totalElements = totalElements;
 	}
 }
