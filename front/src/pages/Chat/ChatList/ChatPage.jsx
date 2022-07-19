@@ -6,7 +6,6 @@ import ChatListItem from '../ChatList/ChatListItem';
 import Wrapper from '../ChatList/ChatPage.style';
 import messageApi from '../../../util/MessageApi';
 const ChatPage = () => {
-  localStorage.setItem('historyUrl', '/chat');
   const [chatList, setChatList] = useState([]);
 
   const { getChatList, makeChatRoom } = messageApi;

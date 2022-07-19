@@ -26,8 +26,8 @@ const Layout = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="/detailBook" element={<BookDetailPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/oauth2/redirect" element={<Auth />} />
           <Route element={<AuthCheckRouter />}>
-            <Route path="/oauth2/redirect" element={<Auth />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="chat" element={<Chat />} />
             <Route path="chat/:roomId" element={<ChatItem />} />
