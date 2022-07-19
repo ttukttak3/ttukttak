@@ -61,7 +61,7 @@ public class InterParkAPIService {
 			pageResponse.setPageNumber(Integer.parseInt(jsonObject.get("startIndex").toString()));
 			//총 페이지 수 => 총 totalResult / maxResults
 			int totalResults = Integer.parseInt(jsonObject.get("totalResults").toString());
-			pageResponse.setTotalElements(totalResults);
+			pageResponse.setTotalElements(Long.valueOf(totalResults));
 			try {
 				int totalPages = (int)Math.ceil((double)totalResults / (double)PAGE_SIZE);
 

@@ -21,11 +21,11 @@ public class PageResponse<T> {
 
 	private Integer totalPages;
 
-	private Integer totalElements;
+	private Long totalElements;
 
 	@Builder
 	public PageResponse(List<T> contents, Integer pageNumber, Integer pageSize, Integer totalPages,
-		Integer totalElements) {
+		Long totalElements) {
 		this.contents = contents;
 		this.pageNumber = pageNumber;
 		this.pageSize = pageSize;

@@ -46,7 +46,7 @@ public class RentServiceImpl implements RentService {
 			.pageNumber(pageInfo.getNumber())
 			.pageSize(pageInfo.getSize())
 			.totalPages(pageInfo.getTotalPages())
-			.totalElements((int)pageInfo.getTotalElements())
+			.totalElements(pageInfo.getTotalElements())
 			.build();
 	}
 
@@ -64,7 +64,7 @@ public class RentServiceImpl implements RentService {
 			.pageNumber(pageInfo.getNumber())
 			.pageSize(pageInfo.getSize())
 			.totalPages(pageInfo.getTotalPages())
-			.totalElements((int)pageInfo.getTotalElements())
+			.totalElements(pageInfo.getTotalElements())
 			.build();
 	}
 
