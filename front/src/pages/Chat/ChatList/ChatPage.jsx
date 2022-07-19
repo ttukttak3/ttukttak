@@ -27,7 +27,7 @@ const ChatPage = () => {
     return () => {
       // second
     };
-  }, [dispatch, getChatList]);
+  }, [dispatch, getChatList, userId]);
 
   return <Wrapper>{ChatListShow}</Wrapper>;
 };
