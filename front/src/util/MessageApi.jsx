@@ -1,7 +1,6 @@
 /* eslint-disable array-callback-return */
-import axios from 'axios';
 import utils from './ApiUtil';
-const { apiUtil, apiAuthUtil, formUtil } = utils;
+const { apiAuthUtil } = utils;
 const baseUrl = process.env.REACT_APP_SERVER_API_URL;
 
 //userId == 현재 login되어있는 user의 id
@@ -41,8 +40,9 @@ const getChatList = async (userId, setChatList) => {
 };
 
 const makeChatRoom = async (bookId, userId) => {
+  console.log(bookId, userId);
   try {
-    const result = await apiAuthUtil.post(baseUrl + `api/v1/chat/rooms`, { bookId: bookId, userId: userId });
+    const result = await apiAuthUtil.post(baseUrl + `api/v1/chat/rooms`, { bookId, userId });
     console.log(result.data);
   } catch (error) {
     console.log(error);
