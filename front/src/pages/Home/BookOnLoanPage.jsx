@@ -13,8 +13,8 @@ const BookOnLoadPage = ({ range, category }) => {
     order: range,
     status: 'ING',
     townId: '1147010100',
-    categoryId: category,
     //로그인 유저일 경우 유저 슬라이스 값 / 비회원일 경우 처음 위치 허용 값 / 비허용일 시 1111011900
+    categoryId: category,
   });
 
   const [bookList, setBookList] = useState([]);

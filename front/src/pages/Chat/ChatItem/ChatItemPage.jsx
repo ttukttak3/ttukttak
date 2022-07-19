@@ -39,7 +39,6 @@ const ChatItemPage = () => {
     dispatch(setAllFalse());
     dispatch(setBack(true));
     dispatch(setAlert(true));
-
     return () => {
       client.current.deactivate();
     };

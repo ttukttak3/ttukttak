@@ -142,14 +142,14 @@ const BookLocation = styled.div`
 
   span {
     display: inline-block;
-    height: 2rem;
-    line-height: 2.2rem;
-    vertical-align: middle;
+    width: 3.8rem;
+    height: 1.8rem;
+    line-height: 1.9rem;
+    margin-right: 0.4rem;
     font-size: 1rem;
     color: ${({ theme }) => theme.colors.$white1};
-    width: 3.8rem;
     text-align: center;
-    margin-right: 0.4rem;
+    vertical-align: middle;
   }
 
   span.orange {

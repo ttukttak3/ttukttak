@@ -14,7 +14,8 @@ export const headerSlice = createSlice({
         trash: false,       //쓰레기
         share: false,       //공유하기
         more: false,        //더보기
-        save: false,        //도서 등록 버튼 
+        moreBookId: 0,      //더보기 팝업 클릭 시 컨트롤할 책 ID값
+        save: false,        //도서 등록 버튼
     },
     reducers: {
         setTitle: (state, action) => {
@@ -41,12 +42,14 @@ export const headerSlice = createSlice({
         setTrash: (state, action) => {
             state.trash = action.payload;
         },
-
         setShare: (state, action) => {
             state.share = action.payload;
         },
         setMore: (state, action) => {
             state.more = action.payload;
+        },
+        setMoreBookId: (state, action) => {
+            state.moreBookId = action.payload;
         },
         setSave: (state, action) => {
             state.save = action.payload;
@@ -61,6 +64,6 @@ export const headerSlice = createSlice({
     },
 });
 
-export const { setTitle, setBack, setBackHome, setLocation, setSearch, setFavorite, setAlert, setTrash, setShare, setMore, setSave, setAllFalse } = headerSlice.actions;
+export const { setTitle, setBack, setBackHome, setLocation, setSearch, setFavorite, setAlert, setTrash, setShare, setMore, setMoreBookId, setSave, setAllFalse } = headerSlice.actions;
 
 export default headerSlice.reducer;

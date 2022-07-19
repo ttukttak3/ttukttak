@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import starBlue from '../../../assets/img/userInterFace/star_blue.png';
 import libraryBlue from '../../../assets/img/userInterFace/local_library_blue.png';
-import gradation from '../../../assets/img/userInterFace/gradation.png';
+import gradation from '../../../assets/img/userInterFace/big_gradation.png';
 const Wrap = styled.div``;
 const BookWrap = styled.div`
   width: 34rem;
@@ -44,8 +44,8 @@ const BookSlideBox = styled.div`
   //book state
   button {
     display: block;
-    width: 8rem;
-    height: 2.2rem;
+    width: 19.3rem;
+    height: 5.3rem;
     position: absolute;
     bottom: 0;
     right: 0;
@@ -53,6 +53,16 @@ const BookSlideBox = styled.div`
     font-size: 1.6rem;
     font-weight: 700;
     color: #fff;
+
+    &.noCursor {
+      cursor: default;
+    }
+
+    img {
+      vertical-align: text-top;
+      width: 2.4rem;
+      height: 2.4rem;
+    }
   }
 `;
 const BookCont = styled.div`
@@ -171,29 +181,53 @@ const LeftBox = styled.div`
   text-align: left;
   flex: 1;
   span {
+    position: relative;
     display: inline-block;
-    height: 2rem;
-    line-height: 2.2rem;
+    width: 3.8rem;
+    padding-left: 0.4rem;
+    height: 1.8rem;
+    line-height: 1.9rem;
     vertical-align: middle;
     font-size: 1rem;
     letter-spacing: -0.06rem;
     color: ${({ theme }) => theme.colors.$white1};
-    width: 3.8rem;
-    text-align: center;
-    margin-right: 0.4rem;
-  }
 
+    //버튼
+    img {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.4rem;
+      width: 0.8rem;
+      height: 0.49rem;
+    }
+  }
+  //대여중
   span.orange {
     background: ${({ theme }) => theme.colors.$primaryDeepOrageP};
   }
-
+  //예약중
   span.gray {
     background: ${({ theme }) => theme.colors.$white4};
   }
-
+  //대여가능
   span.blue {
     background: ${({ theme }) => theme.colors.$primaryBlueP};
     width: 4.7rem;
+  }
+  //대여중 downbtn
+  span.bigOrange {
+    background: ${({ theme }) => theme.colors.$primaryDeepOrageP};
+    width: 4.8rem;
+  }
+  //예약중 downbtn
+  span.bigGray {
+    background: ${({ theme }) => theme.colors.$white4};
+    width: 4.8rem;
+  }
+  //대여가능 downbtn
+  span.bigBlue {
+    background: ${({ theme }) => theme.colors.$primaryBlueP};
+    width: 5.7rem;
   }
 `;
 const BookPrice = styled.div`
