@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,7 @@ public class InterParkAPIService {
 
 		try {
 			URL url = new URL("https://book.interpark.com/api/"
-				+ "search.api?query=" + query
+				+ "search.api?query=" + URLEncoder.encode(query, "UTF-8")
 				+ "&key=" + key
 				+ "&maxResults=" + PAGE_SIZE
 				+ "&start=" + pageNum
