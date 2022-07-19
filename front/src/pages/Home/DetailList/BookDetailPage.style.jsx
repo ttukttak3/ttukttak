@@ -49,7 +49,7 @@ const BookSlideBox = styled.div`
     position: absolute;
     bottom: 0;
     right: 0;
-    background: url(${gradation}) no-repeat;
+    background: url(${gradation});
     font-size: 1.6rem;
     font-weight: 700;
     color: #fff;
