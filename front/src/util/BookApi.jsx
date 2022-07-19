@@ -22,8 +22,9 @@ const uploadBook = async bookInfo => {
 };
 
 const interparkSearch = async (pageNum, query) => {
+  const encodingQuery = encodeURIComponent(query.trim());
   try {
-    const result = await apiUtil.get(`api/v1/books/interpark/search?pageNum=${pageNum}&query=${query}`);
+    const result = await apiUtil.get(`api/v1/books/interpark/search?pageNum=${pageNum}&query=${encodingQuery}`);
     const data = result.data;
     return data;
   } catch (error) {
