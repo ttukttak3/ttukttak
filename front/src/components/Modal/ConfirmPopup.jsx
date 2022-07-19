@@ -2,7 +2,7 @@ import { createPortal } from 'react-dom';
 import React, { useEffect } from 'react';
 import style from './ConfirmPopup.style';
 
-const ConfirmPopup = ({ contents }) => {
+const ConfirmPopup = ({ title, contents }) => {
   useEffect(() => {
     //팝업 뒤 스크롤 막기
     document.body.style.cssText = `
@@ -21,10 +21,13 @@ const ConfirmPopup = ({ contents }) => {
   return createPortal(
     <Wrap>
       <PopupBox>
-        <ContBox>{contents}</ContBox>
+        <ContBox>{title}</ContBox>
         <ButtonBox>
-          <button>취소</button>
-          <button>확인</button>
+          {contents.map((item, idx) => (
+            <button key={idx} onClick={item.onClick}>
+              {item.message}
+            </button>
+          ))}
         </ButtonBox>
       </PopupBox>
     </Wrap>,

@@ -1,17 +1,16 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
-import LoginPage from './LoginPage';
-import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { Outlet, useNavigate } from 'react-router-dom';
 import profileApi from '../../../util/ProfileApi';
 
 const AuthCheckRouter = () => {
   const [authenticated, setAuthenticated] = useState(false);
-  const location = useLocation();
-  const { pathname } = location;
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const authCheck = async () => {
     try {
       const returnVal = await profileApi.getCurrentUser();
-      console.log(returnVal);
       if (returnVal) {
         setAuthenticated(true);
       } else {
@@ -26,8 +25,8 @@ const AuthCheckRouter = () => {
   };
 
   useEffect(() => {
-    //authCheck();
-  }, []);
+    authCheck();
+  }, [dispatch]);
 
   return <Outlet />;
 };

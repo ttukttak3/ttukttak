@@ -15,9 +15,6 @@ import accountOff from '../../assets/img/userInterFace/Account_circle_off.png';
 
 const Footer = () => {
   const navigate = useNavigate();
-
-  // store 의 상태가 바뀔 때마다 상태를 받아온다.
-  // const url = useSelector(state => state.url);
   const location = useLocation();
   const { pathname } = location;
   const { FooterBox, IconBox } = style;

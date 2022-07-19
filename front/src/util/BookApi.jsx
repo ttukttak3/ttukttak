@@ -2,8 +2,7 @@ import utils from './ApiUtil';
 const { apiUtil, formUtil } = utils;
 const getBookList = async (param, setBookList) => {
   try {
-    const result = await apiUtil.get(`api/v1/book/list?pageNum=${param.pageNum}&order=${param.order}&status=${param.status}&townId=${param.townId}&categoryId=${param.categoryId}`);
-    console.log(result.data);
+    const result = await apiUtil.get(`api/v1/books?pageNum=${param.pageNum}&order=${param.order}&status=${param.status}&townId=${param.townId}&categoryId=${param.categoryId}`);
     result.data.contents.map(data => {
       return setBookList(_bookList => [..._bookList, data]);
     });
@@ -15,7 +14,7 @@ const getBookList = async (param, setBookList) => {
 const uploadBook = async bookInfo => {
   try {
     // const { description, image, isbn, name, price, publishedDate, publisher, author, subject, bookCategoryId, content, deposit, grade, thumbnail, imageFiles } = bookInfo;
-    const result = await formUtil.post(`api/v1/book`, bookInfo);
+    const result = await formUtil.post(`api/v1/books`, bookInfo);
     return result.data;
   } catch (error) {
     console.log(error);
@@ -24,7 +23,7 @@ const uploadBook = async bookInfo => {
 
 const interparkSearch = async (pageNum, query) => {
   try {
-    const result = await apiUtil.get(`api/v1/book/interpark/search/?pageNum=${pageNum}&query=${query}`);
+    const result = await apiUtil.get(`api/v1/books/interpark/search?pageNum=${pageNum}&query=${query}`);
     const data = result.data;
     return data;
   } catch (error) {
@@ -34,7 +33,7 @@ const interparkSearch = async (pageNum, query) => {
 
 const getCategoryList = async setCategoryList => {
   try {
-    const { data } = await apiUtil.get(`api/v1/book/category`);
+    const { data } = await apiUtil.get(`api/v1/books/category`);
     setCategoryList([...data]);
     return data;
   } catch (error) {
@@ -44,14 +43,40 @@ const getCategoryList = async setCategoryList => {
 
 const getDetailView = async bookId => {
   try {
-    const result = await apiUtil.get(`api/v1/book/${bookId}`);
-    console.log(result.data);
+    const result = await apiUtil.get(`api/v1/books/${bookId}`);
     return result.data;
   } catch (error) {
     console.log(error);
   }
 };
 
-const bookApi = { uploadBook, getBookList, getDetailView, interparkSearch, getCategoryList };
+const updateBookGrade = async (bookId, grade) => {
+  try {
+    const result = await apiUtil.patch(`api/v1/books/${bookId}/grade`, grade);
+    return result.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const updateBookStatus = async (bookId, status) => {
+  try {
+    const result = await apiUtil.patch(`api/v1/books/${bookId}/status`, status);
+    return result.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const bookDelete = async bookId => {
+  try {
+    const result = await apiUtil.delete(`api/v1/books/${bookId}`);
+    return result.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const bookApi = { uploadBook, getBookList, getDetailView, interparkSearch, getCategoryList, updateBookGrade, updateBookStatus, bookDelete };
 
 export default bookApi;

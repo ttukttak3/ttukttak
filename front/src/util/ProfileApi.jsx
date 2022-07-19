@@ -9,7 +9,7 @@ const getCurrentUser = async () => {
     if (!localStorage.getItem(accessToken)) {
       return Promise.reject('No access token set.');
     }
-    const result = await apiAuthUtil.get(`api/v1/user/me`);
+    const result = await apiAuthUtil.get(`api/v1/oauth/profile`);
     return result.data;
   } catch (error) {
     console.log(error.response.data);
@@ -19,7 +19,7 @@ const getCurrentUser = async () => {
 
 const nickNameCheck = async nickName => {
   try {
-    const result = await apiAuthUtil.get(`api/v1/user/chknickname?nickname=${nickName}`);
+    const result = await apiAuthUtil.get(`api/v1/oauth/check-nickname?nickname=${nickName}`);
     return result.data;
   } catch (error) {
     console.log(error);
@@ -37,7 +37,7 @@ const locationValue = async position => {
 
 const signUp = async formData => {
   try {
-    const result = await formUtil.post(`api/v1/user/signup`, formData);
+    const result = await formUtil.post(`api/v1/oauth/signup`, formData);
     return result.data;
   } catch (error) {
     console.log(error);

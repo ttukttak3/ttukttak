@@ -13,7 +13,8 @@ const LoginPage = () => {
   //Header
   const dispatch = useDispatch();
   useEffect(() => {
-    // localStorage.removeItem(ACCESS_TOKEN); 문제가 생기면 다시 원복
+    //로그인 페이지 진입은 토큰의 문제가 있는 경우(만료 등)라 판단하여 토큰을 지우고 로그인하여 재 할당 받는다.
+    localStorage.removeItem(ACCESS_TOKEN);
     dispatch(setAllFalse());
     dispatch(setBack(true));
     dispatch(setTitle('로그인'));

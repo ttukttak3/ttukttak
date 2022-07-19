@@ -1,10 +1,9 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable max-lines-per-function */
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setBack, setBackHome, setTitle } from '../../../app/headerSlice';
-import { setUserId, setRole, setNickName, setEmail, setImageFile, setHomeTown } from '../../../app/userSlice';
+import { setNickName, setImageFile } from '../../../app/userSlice';
 import utils from '../../../util/ProfileApi';
 import style from './ProfilePage.style';
 import noImg from '../../../assets/img/logo/no_img.png';
