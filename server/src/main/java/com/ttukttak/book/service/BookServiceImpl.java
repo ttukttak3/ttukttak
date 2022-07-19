@@ -131,6 +131,7 @@ public class BookServiceImpl implements BookService {
 			.pageNumber(pageList.getNumber())
 			.pageSize(pageList.getSize())
 			.totalPages(pageList.getTotalPages())
+			.totalElements(pageList.getTotalElements())
 			.build();
 	}
 
@@ -365,6 +366,7 @@ public class BookServiceImpl implements BookService {
 			.pageNumber(myBookList.getNumber())
 			.pageSize(myBookList.getSize())
 			.totalPages(myBookList.getTotalPages())
+			.totalElements(myBookList.getTotalElements())
 			.build();
 	}
 

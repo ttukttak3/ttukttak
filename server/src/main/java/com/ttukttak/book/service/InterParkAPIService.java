@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,7 @@ public class InterParkAPIService {
 
 		try {
 			URL url = new URL("https://book.interpark.com/api/"
-				+ "search.api?query=" + query
+				+ "search.api?query=" + URLEncoder.encode(query, "UTF-8")
 				+ "&key=" + key
 				+ "&maxResults=" + PAGE_SIZE
 				+ "&start=" + pageNum
@@ -60,8 +61,9 @@ public class InterParkAPIService {
 			//페이지번호
 			pageResponse.setPageNumber(Integer.parseInt(jsonObject.get("startIndex").toString()));
 			//총 페이지 수 => 총 totalResult / maxResults
+			int totalResults = Integer.parseInt(jsonObject.get("totalResults").toString());
+			pageResponse.setTotalElements(Long.valueOf(totalResults));
 			try {
-				int totalResults = Integer.parseInt(jsonObject.get("totalResults").toString());
 				int totalPages = (int)Math.ceil((double)totalResults / (double)PAGE_SIZE);
 
 				pageResponse.setTotalPages(totalPages);
@@ -70,6 +72,7 @@ public class InterParkAPIService {
 			}
 			//페이지 사이즈
 			pageResponse.setPageSize(PAGE_SIZE);
+			//검색 결과 수
 
 			//Date 포맷터
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
