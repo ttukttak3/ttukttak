@@ -17,8 +17,8 @@ const ChatItemPage = () => {
   const { roomId } = useParams();
   const { Wrapper } = style;
   const dispatch = useDispatch();
-  // const { userId } = useSelector(state => state.user);
-  const userId = 1; //임시값
+  const { userId } = useSelector(state => state.user);
+  // const userId = 1; //임시값
   const { connect, publish } = chatSocketApi;
   const { getChatRoomInfo, readMessages } = messageApi;
   const [chatMessages, setChatMessages] = useState([]);
@@ -39,6 +39,9 @@ const ChatItemPage = () => {
     dispatch(setAllFalse());
     dispatch(setBack(true));
     dispatch(setAlert(true));
+
+    console.log(userId);
+
     return () => {
       client.current.deactivate();
     };

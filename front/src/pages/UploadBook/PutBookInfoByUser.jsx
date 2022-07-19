@@ -17,7 +17,7 @@ const PutBookInfoByUser = () => {
   const [bookTitle, setBookTitle] = useState();
   const [bookAuthor, setBookAuthor] = useState();
   const [deposit, setDeposit] = useState();
-  const [bookImg, setBookImg] = useState();
+  const [bookImg, setBookImg] = useState('');
   const [description, setDescription] = useState();
   const [currentCategory, setCurrentCategory] = useState();
   const { getCategoryList, uploadBook } = bookApi;
@@ -71,8 +71,13 @@ const PutBookInfoByUser = () => {
         image: bookImg,
         name: bookTitle,
         price: deposit,
+        publishedDate: '',
+        publisher: '',
         author: bookAuthor,
+        subject: '',
         bookCategoryId: currentCategory,
+        content: '',
+        deposite: '',
         grade: bookGrade,
         thumbnail: bookImg,
         imageFiles: bookImg,
