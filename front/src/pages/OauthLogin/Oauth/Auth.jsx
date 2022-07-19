@@ -39,7 +39,6 @@ const Auth = () => {
         //소셜 로그인 시 user 권한일 경우 history back
         if (result.role === 'USER') {
           //이전 페이지 이동
-          //navigate(localStorage.getItem('historyUrl'));
           navigate(-3);
         } else {
           navigate('/profile');

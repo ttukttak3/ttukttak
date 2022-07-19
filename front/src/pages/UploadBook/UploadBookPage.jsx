@@ -6,7 +6,6 @@ import PutBookInfoByUser from './PutBookInfoByUser';
 import SearchBookPage from './SearchBookPage';
 
 const UploadBookPage = () => {
-  localStorage.setItem('historyUrl', '/upload');
   const { Wrapper, RadioBtn, OptionLabel } = style;
   const dispatch = useDispatch();
   const [radioOpt, setRadioOpt] = useState('saveByPut');
