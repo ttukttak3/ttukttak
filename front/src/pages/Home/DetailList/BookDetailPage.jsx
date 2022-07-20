@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { setAllFalse, setBack, setFavorite, setShare, setMore, setMoreBookId } from '../../../app/headerSlice';
 import bookApi from '../../../util/BookApi';
+import messageApi from '../../../util/MessageApi';
 import style from './BookDetailPage.style';
 import LenderInfoPage from './LenderInfoPage';
 import expandMore from '../../../assets/img/arrows/expand_more.png';
@@ -16,6 +17,7 @@ const BookDetailPage = () => {
   const location = useLocation();
   const bookId = location.state.id;
   const { getDetailView, updateBookGrade, updateBookStatus } = bookApi;
+  const { makeChatRoom } = messageApi;
 
   const dispatch = useDispatch();
   const [detailView, setDetailView] = useState({
@@ -218,7 +220,7 @@ const BookDetailPage = () => {
               </div>
             </BookPrice>
           </LeftBox>
-          <button>채팅하기</button>
+          <button onClick={() => makeChatRoom(bookId, userId)}>채팅하기</button>
         </FooterBox>
       </BookFooter>
       {/* popup */}

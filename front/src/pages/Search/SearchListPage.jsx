@@ -10,7 +10,9 @@ const SearchListPage = () => {
   const [keyword, setKeyword] = useState();
 
   const searchKeyword = async () => {
+    console.log(keyword);
     const result = await interparkSearch(1, keyword);
+    setResultList([...resultList, ...result.contents]);
     console.log(result);
   };
 
