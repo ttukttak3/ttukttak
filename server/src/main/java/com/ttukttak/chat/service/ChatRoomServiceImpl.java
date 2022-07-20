@@ -89,8 +89,8 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 				lastCheckedTime = room.getCreatedDate();
 			}
 
-			int unReadCount = chatMessageRepository.countByChatRoomIdAndSendedAtAfterAndUserIdNot(
-				room.getId(), lastCheckedTime, userId);
+			int unReadCount = chatMessageRepository.countByChatRoomIdAndSendedAtAfterAndMemberIdNot(
+				room.getId(), lastCheckedTime, member.getId());
 
 			return ChatRoomCard.builder().roomId(room.getId())
 				.another(MemberResponse.from(another))
