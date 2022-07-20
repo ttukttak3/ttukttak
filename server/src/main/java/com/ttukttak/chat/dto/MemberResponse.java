@@ -17,14 +17,14 @@ import lombok.ToString;
 @ToString
 public class MemberResponse implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private Long id;
+	private Long memberId;
 	private Long roomId;
 	private Long bookId;
 	private UserDto user;
 
 	@Builder
-	private MemberResponse(Long id, Long roomId, Long bookId, UserDto user) {
-		this.id = id;
+	private MemberResponse(Long memberId, Long roomId, Long bookId, UserDto user) {
+		this.memberId = memberId;
 		this.roomId = roomId;
 		this.bookId = bookId;
 		this.user = user;
@@ -32,7 +32,7 @@ public class MemberResponse implements Serializable {
 
 	public static MemberResponse from(ChatMember chatMember) {
 		return MemberResponse.builder()
-			.id(chatMember.getId())
+			.memberId(chatMember.getId())
 			.roomId(chatMember.getRoom().getId())
 			.bookId(chatMember.getBook().getId())
 			.user(UserDto.from(chatMember.getUser()))
