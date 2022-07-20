@@ -22,12 +22,12 @@ import com.ttukttak.chat.dto.ChatRoomCard;
 import com.ttukttak.chat.dto.ChatRoomInfo;
 import com.ttukttak.chat.dto.ChatRoomRequest;
 import com.ttukttak.chat.dto.LastMessage;
-import com.ttukttak.chat.dto.MemberResponse;
 import com.ttukttak.chat.entity.ChatMember;
 import com.ttukttak.chat.entity.ChatRoom;
 import com.ttukttak.chat.repository.ChatMemberRepository;
 import com.ttukttak.chat.repository.ChatMessageRepository;
 import com.ttukttak.chat.repository.ChatRoomRepository;
+import com.ttukttak.oauth.dto.UserDto;
 import com.ttukttak.oauth.entity.User;
 import com.ttukttak.oauth.repository.UserRepository;
 
@@ -75,7 +75,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 				.map(chatMessage -> modelMapper.map(chatMessage, LastMessage.class))
 				.orElse(null);
 
-			ChatMember another = room.getChatMembers()
+			ChatMember anotherMember = room.getChatMembers()
 				.stream()
 				.filter(m -> m.getId() != member.getId())
 				.findFirst()
@@ -83,8 +83,8 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
 			LocalDateTime lastCheckedTime;
 
-			if (another.getLastCheckedMessage() != null) {
-				lastCheckedTime = another.getLastCheckedMessage().getSendedAt();
+			if (anotherMember.getLastCheckedMessage() != null) {
+				lastCheckedTime = anotherMember.getLastCheckedMessage().getSendedAt();
 			} else {
 				lastCheckedTime = room.getCreatedDate();
 			}
@@ -93,7 +93,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 				room.getId(), lastCheckedTime, member.getId());
 
 			return ChatRoomCard.builder().roomId(room.getId())
-				.another(MemberResponse.from(another))
+				.another(UserDto.from(anotherMember.getUser()))
 				.lastMessage(lastMessage)
 				.unread(unReadCount)
 				.build();
