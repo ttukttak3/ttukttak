@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ttukttak.chat.dto.ChatMessageDto;
 import com.ttukttak.chat.dto.ChatRoomInfo;
-import com.ttukttak.chat.dto.ChatUser;
+import com.ttukttak.chat.dto.MemberResponse;
 import com.ttukttak.chat.entity.ChatRoom;
 
 @Configuration
@@ -25,15 +25,15 @@ public class UtilConfig {
 		ModelMapper modelMapper = new ModelMapper();
 
 		modelMapper.createTypeMap(ChatRoom.class, ChatRoomInfo.class).setConverter(context -> {
-			List<ChatUser> members = context.getSource().getChatMembers()
+			List<MemberResponse> members = context.getSource().getChatMembers()
 				.stream()
-				.map(v -> modelMapper.map(v.getUser(), ChatUser.class))
+				.map(MemberResponse::from)
 				.collect(
 					Collectors.toList());
 
 			List<ChatMessageDto> messages = context.getSource().getMessages()
 				.stream()
-				.map(v -> modelMapper.map(v, ChatMessageDto.class))
+				.map(ChatMessageDto::from)
 				.collect(
 					Collectors.toList());
 			return ChatRoomInfo.builder()

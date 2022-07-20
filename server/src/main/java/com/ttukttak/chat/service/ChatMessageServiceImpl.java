@@ -3,14 +3,13 @@ package com.ttukttak.chat.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ttukttak.chat.dto.ChatMessageDto;
 import com.ttukttak.chat.dto.ChatRoomInfo;
-import com.ttukttak.chat.dto.ChatUser;
 import com.ttukttak.chat.dto.LastCheckedMessageRequest;
+import com.ttukttak.chat.dto.MemberResponse;
 import com.ttukttak.chat.entity.ChatMember;
 import com.ttukttak.chat.entity.ChatMessage;
 import com.ttukttak.chat.repository.ChatMemberRepository;
@@ -24,7 +23,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Service
 public class ChatMessageServiceImpl implements ChatMessageService {
-	private final ModelMapper modelMapper;
 	private final ChatMessageRepository chatMessageRepository;
 	private final ChatMemberRepository chatMemberRepository;
 	private final UserRepository userRepository;
@@ -45,7 +43,7 @@ public class ChatMessageServiceImpl implements ChatMessageService {
 		List<ChatMember> chatMembers = chatMemberRepository.findAllByRoomId(roomId);
 
 		ChatMember findChatMember = chatMembers.stream()
-			.filter(lcm -> lcm.getUser().getId() == user.getId())
+			.filter(member -> member.getUser().getId() == user.getId())
 			.findFirst()
 			.orElseThrow(() -> new IllegalArgumentException());
 
@@ -59,28 +57,28 @@ public class ChatMessageServiceImpl implements ChatMessageService {
 			chatMemberRepository.save(findChatMember);
 		}
 
-		List<ChatMessageDto> messageDtos = chatMessages
+		List<ChatMessageDto> messages = chatMessages
 			.stream()
-			.map(chatMessage -> modelMapper.map(chatMessage, ChatMessageDto.class))
+			.map(ChatMessageDto::from)
 			.collect(Collectors.toList());
 
-		List<ChatUser> members = chatMembers
+		List<MemberResponse> members = chatMembers
 			.stream()
-			.map(lastCheckedMessage -> modelMapper.map(lastCheckedMessage.getUser(), ChatUser.class))
+			.map(MemberResponse::from)
 			.collect(
 				Collectors.toList());
 
 		chatRoomService.enterChatRoom(roomId);
 
-		return ChatRoomInfo.builder().roomId(roomId).members(members).messages(messageDtos).build();
+		return ChatRoomInfo.builder().roomId(roomId).members(members).messages(messages).build();
 	}
 
 	@Override
-	public void updateLastCheckedMessage(LastCheckedMessageRequest request, Long userId) {
-		ChatMember chatMember = chatMemberRepository.findByRoomIdAndUserId(request.getRoomId(),
-			request.getUserId()).orElseThrow(() -> new IllegalArgumentException());
+	public void updateLastCheckedMessage(LastCheckedMessageRequest request, Long memberId, Long userId) {
+		ChatMember chatMember = chatMemberRepository.findById(memberId)
+			.orElseThrow(() -> new IllegalArgumentException());
 
-		if (request.getUserId() != userId) {
+		if (chatMember.getUser().getId() != userId) {
 			throw new UnauthChangeException();
 		}
 
@@ -90,8 +88,8 @@ public class ChatMessageServiceImpl implements ChatMessageService {
 	}
 
 	@Override
-	public void removeChatMember(Long roomId, Long userId) {
-		ChatMember chatMember = chatMemberRepository.findByRoomIdAndUserId(roomId, userId)
+	public void removeChatMember(Long memberId, Long userId) {
+		ChatMember chatMember = chatMemberRepository.findById(memberId)
 			.orElseThrow(() -> new IllegalArgumentException());
 
 		if (chatMember.getUser().getId() != userId) {
