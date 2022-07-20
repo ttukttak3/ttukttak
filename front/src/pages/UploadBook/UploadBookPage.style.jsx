@@ -3,14 +3,29 @@ import styled from 'styled-components';
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 2rem;
+  margin-left: 2rem;
+  margin-right: 2rem;
 `;
+
 const RadioOptBox = styled.div`
   display: flex;
   flex-direction: row;
+  padding-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.$black3Line};
 `;
-const RadioBtn = styled.input`
+
+const Option = styled.div`
   flex: 1;
+`;
+
+const RadioBtn = styled.input`
+  color: ${({ theme }) => theme.colors.$black4};
+  background: ${({ theme }) => theme.colors.$black4};
+  &:checked {
+    background: ${({ theme }) => theme.colors.$primaryBlueP};
+    border: 2px solid ${({ theme }) => theme.colors.$primaryBlueP};
+  }
 `;
 
 const OptionLabel = styled.label`
@@ -19,6 +34,6 @@ const OptionLabel = styled.label`
   font-weight: 600;
 `;
 
-const style = { Wrapper, RadioBtn, OptionLabel, RadioOptBox };
+const style = { Wrapper, RadioBtn, OptionLabel, RadioOptBox, Option };
 
 export default style;
