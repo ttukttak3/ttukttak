@@ -21,7 +21,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.ttukttak.chat.dto.ChatMessageDto;
 import com.ttukttak.chat.dto.MessageType;
-import com.ttukttak.oauth.entity.User;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -45,8 +44,8 @@ public class ChatMessage implements Serializable {
 	private ChatRoom chatRoom;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id", nullable = false)
-	private User user;
+	@JoinColumn(name = "member_id", nullable = false)
+	private ChatMember member;
 
 	@NotNull
 	private String message;
@@ -59,10 +58,10 @@ public class ChatMessage implements Serializable {
 	private LocalDateTime sendedAt;
 
 	@Builder
-	public ChatMessage(Long id, ChatRoom chatRoom, User user, String message, MessageType messageType) {
+	public ChatMessage(Long id, ChatRoom chatRoom, ChatMember member, String message, MessageType messageType) {
 		this.id = id;
 		this.chatRoom = chatRoom;
-		this.user = user;
+		this.member = member;
 		this.message = message;
 		this.messageType = messageType;
 	}
@@ -73,11 +72,11 @@ public class ChatMessage implements Serializable {
 
 	public static ChatMessage from(ChatMessageDto chatMessageDto) {
 		ChatRoom chatRoom = ChatRoom.builder().id(chatMessageDto.getRoomId()).build();
-		User user = User.builder().id(chatMessageDto.getUserId()).build();
+		ChatMember member = ChatMember.builder().id(chatMessageDto.getMemberId()).build();
 
 		return ChatMessage.builder()
 			.chatRoom(chatRoom)
-			.user(user)
+			.member(member)
 			.message(chatMessageDto.getMessage())
 			.messageType(chatMessageDto.getMessageType())
 			.build();

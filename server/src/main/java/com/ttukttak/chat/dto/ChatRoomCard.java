@@ -17,14 +17,14 @@ import lombok.ToString;
 public class ChatRoomCard implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Long roomId;
-	private ChatUser other;
+	private MemberResponse another;
 	private LastMessage lastMessage;
 	private int unread = 0;
 
 	@Builder
-	public ChatRoomCard(Long roomId, ChatUser other, LastMessage lastMessage, int unread) {
+	public ChatRoomCard(Long roomId, MemberResponse another, LastMessage lastMessage, int unread) {
 		this.roomId = roomId;
-		this.other = other;
+		this.another = another;
 		this.lastMessage = lastMessage;
 		this.unread = unread;
 	}

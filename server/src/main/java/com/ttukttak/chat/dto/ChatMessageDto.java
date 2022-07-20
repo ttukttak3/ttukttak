@@ -6,8 +6,10 @@ import java.time.LocalDateTime;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import com.ttukttak.chat.entity.ChatMessage;
+
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,7 +17,6 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 @ToString
 public class ChatMessageDto implements Serializable {
@@ -25,8 +26,8 @@ public class ChatMessageDto implements Serializable {
 	private Long id;
 
 	@NotNull
-	@ApiModelProperty(example = "보낸사람 ID")
-	private Long userId;
+	@ApiModelProperty(example = "보낸 멤버 ID")
+	private Long memberId;
 
 	@NotNull
 	@ApiModelProperty(example = "채팅방 ID")
@@ -42,5 +43,27 @@ public class ChatMessageDto implements Serializable {
 
 	@ApiModelProperty
 	private LocalDateTime sendedAt;
+
+	@Builder
+	private ChatMessageDto(Long id, Long memberId, Long roomId, String message,
+		MessageType messageType, LocalDateTime sendedAt) {
+		this.id = id;
+		this.memberId = memberId;
+		this.roomId = roomId;
+		this.message = message;
+		this.messageType = messageType;
+		this.sendedAt = sendedAt;
+	}
+
+	public static ChatMessageDto from(ChatMessage chatMessage) {
+		return ChatMessageDto.builder()
+			.id(chatMessage.getId())
+			.memberId(chatMessage.getMember().getId())
+			.roomId(chatMessage.getChatRoom().getId())
+			.message(chatMessage.getMessage())
+			.messageType(chatMessage.getMessageType())
+			.sendedAt(chatMessage.getSendedAt())
+			.build();
+	}
 
 }
