@@ -21,13 +21,13 @@ import com.ttukttak.book.repository.BookRepository;
 import com.ttukttak.chat.dto.ChatRoomCard;
 import com.ttukttak.chat.dto.ChatRoomInfo;
 import com.ttukttak.chat.dto.ChatRoomRequest;
-import com.ttukttak.chat.dto.ChatUser;
 import com.ttukttak.chat.dto.LastMessage;
 import com.ttukttak.chat.entity.ChatMember;
 import com.ttukttak.chat.entity.ChatRoom;
 import com.ttukttak.chat.repository.ChatMemberRepository;
 import com.ttukttak.chat.repository.ChatMessageRepository;
 import com.ttukttak.chat.repository.ChatRoomRepository;
+import com.ttukttak.oauth.dto.UserDto;
 import com.ttukttak.oauth.entity.User;
 import com.ttukttak.oauth.repository.UserRepository;
 
@@ -67,29 +67,33 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 	@Override
 	@Transactional(readOnly = true)
 	public List<ChatRoomCard> getRoomList(Long userId) {
-		return chatMemberRepository.findAllChatMemberByUserId(userId).stream().map(findRoom -> {
-			ChatRoom room = findRoom.getRoom();
+
+		return chatMemberRepository.findAllByUserId(userId).stream().map(member -> {
+			ChatRoom room = member.getRoom();
 
 			LastMessage lastMessage = chatMessageRepository.findFirstByChatRoomIdOrderBySendedAtDesc(room.getId())
 				.map(chatMessage -> modelMapper.map(chatMessage, LastMessage.class))
 				.orElse(null);
 
-			ChatMember chatMember = chatMemberRepository.findByRoomIdAndUserId(room.getId(),
-				userId).orElseThrow(() -> new IllegalArgumentException());
+			ChatMember anotherMember = room.getChatMembers()
+				.stream()
+				.filter(m -> m.getId() != member.getId())
+				.findFirst()
+				.orElse(null);
 
 			LocalDateTime lastCheckedTime;
 
-			if (chatMember.getLastCheckedMessage() != null) {
-				lastCheckedTime = chatMember.getLastCheckedMessage().getSendedAt();
+			if (anotherMember.getLastCheckedMessage() != null) {
+				lastCheckedTime = anotherMember.getLastCheckedMessage().getSendedAt();
 			} else {
-				lastCheckedTime = findRoom.getRoom().getCreatedDate();
+				lastCheckedTime = room.getCreatedDate();
 			}
 
-			int unReadCount = chatMessageRepository.countByChatRoomIdAndSendedAtAfterAndUserIdNot(
-				findRoom.getRoom().getId(), lastCheckedTime, userId);
+			int unReadCount = chatMessageRepository.countByChatRoomIdAndSendedAtAfterAndMemberIdNot(
+				room.getId(), lastCheckedTime, member.getId());
 
-			return ChatRoomCard.builder().roomId(findRoom.getRoom().getId())
-				.other(modelMapper.map(findRoom.getUser(), ChatUser.class))
+			return ChatRoomCard.builder().roomId(room.getId())
+				.another(UserDto.from(anotherMember.getUser()))
 				.lastMessage(lastMessage)
 				.unread(unReadCount)
 				.build();
