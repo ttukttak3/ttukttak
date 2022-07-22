@@ -11,7 +11,7 @@ import com.ttukttak.chat.entity.ChatMessage;
 public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long> {
 	List<ChatMessage> findAllByChatRoomIdOrderBySendedAtAsc(Long roomId);
 
-	int countByChatRoomIdAndSendedAtAfterAndUserIdNot(Long roomId, LocalDateTime sendedAt, Long userId);
+	int countByChatRoomIdAndSendedAtAfterAndMemberIdNot(Long roomId, LocalDateTime sendedAt, Long memberId);
 
 	Optional<ChatMessage> findFirstByChatRoomIdOrderBySendedAtDesc(Long roomId);
 }

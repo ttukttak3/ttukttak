@@ -21,12 +21,12 @@ public class ChatRoomInfo implements Serializable {
 
 	private Long roomId;
 
-	private List<ChatUser> members;
+	private List<MemberResponse> members;
 
 	private List<ChatMessageDto> messages = new ArrayList<>();
 
 	@Builder
-	public ChatRoomInfo(Long roomId, List<ChatUser> members, List<ChatMessageDto> messages) {
+	public ChatRoomInfo(Long roomId, List<MemberResponse> members, List<ChatMessageDto> messages) {
 		this.roomId = roomId;
 		this.members = members;
 		this.messages = messages;

@@ -14,4 +14,6 @@ public interface ChatMemberRepository
 	Optional<ChatMember> findByUserId(Long userId);
 
 	List<ChatMember> findAllByRoomId(Long roomId);
+	
+	List<ChatMember> findAllByUserId(Long userId);
 }

@@ -26,8 +26,4 @@ public class LastCheckedMessageRequest implements Serializable {
 	@NotNull
 	@ApiModelProperty(example = "채팅방 ID")
 	private Long roomId;
-
-	@NotNull
-	@ApiModelProperty(example = "확인한 유저 ID")
-	private Long userId;
 }

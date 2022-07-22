@@ -38,15 +38,15 @@ public class ChatMessageController {
 	}
 
 	@ApiOperation(value = "마지막으로 확인한 메시지 갱신")
-	@PatchMapping("/chat/members/{roomId}/last-checked")
+	@PatchMapping("/chat/members/{memberId}/last-checked")
 	public ResponseEntity<Boolean> updateLastCheckedMessage(
 		@ApiIgnore
 		@CurrentUser
 			UserPrincipal userPrincipal,
 		@PathVariable
-			Long roomId,
+			Long memberId,
 		@RequestBody LastCheckedMessageRequest request) {
-		chatMessageService.updateLastCheckedMessage(request, userPrincipal.getId());
+		chatMessageService.updateLastCheckedMessage(request, memberId, userPrincipal.getId());
 
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}

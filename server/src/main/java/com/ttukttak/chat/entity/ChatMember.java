@@ -50,7 +50,8 @@ public class ChatMember implements Serializable {
 	}
 
 	@Builder
-	public ChatMember(User user, ChatRoom room, Book book, ChatMessage lastCheckedMessage) {
+	public ChatMember(Long id, User user, ChatRoom room, Book book, ChatMessage lastCheckedMessage) {
+		this.id = id;
 		this.user = user;
 		this.room = room;
 		this.book = book;
