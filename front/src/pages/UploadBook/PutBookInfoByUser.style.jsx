@@ -76,6 +76,14 @@ const SaveButton = styled.div`
   color: ${({ theme }) => theme.colors.$whiteLine1};
 `;
 
-const style = { Wrapper, UploadImg, UplodedImg, ImageContainer, InputText, OptionText, ImgBox, SaveButton, CountImg };
+const VerticalScrollWrapper = styled.div`
+  overflow: scroll;
+  overflow: auto;
+  white-space: nowrap;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+`;
+const style = { Wrapper, UploadImg, UplodedImg, ImageContainer, InputText, OptionText, ImgBox, SaveButton, CountImg, VerticalScrollWrapper };
 
 export default style;

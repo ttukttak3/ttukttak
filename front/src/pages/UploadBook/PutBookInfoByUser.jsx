@@ -11,7 +11,7 @@ import ConfirmPopup from '../../components/Modal/ConfirmPopup';
 import { useNavigate } from 'react-router-dom';
 
 const PutBookInfoByUser = () => {
-  const { Wrapper, UploadImg, ImageContainer, InputText, UplodedImg, OptionText, ImgBox, SaveButton, CountImg } = style;
+  const { Wrapper, UploadImg, ImageContainer, InputText, UplodedImg, OptionText, ImgBox, SaveButton, CountImg, VerticalScrollWrapper } = style;
   const [title, setTitle] = useState('');
   const [contentList, setContentList] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -27,8 +27,7 @@ const PutBookInfoByUser = () => {
   const { getCategoryList, uploadBook } = bookApi;
   const dispatch = useDispatch();
   const inputRef = useRef(null);
-  const [imgFiles, setImgFiles] = useState([]);
-  const [imgPreviews, setImgPreviews] = useState([]);
+
   const bookGradeList = ['A', 'B', 'C'];
   const [confirmTitle, setConfirmTitle] = useState('');
   const [isConfirm, setIsConfirm] = useState(false);
@@ -73,31 +72,31 @@ const PutBookInfoByUser = () => {
     setShowModal(true);
   };
 
-  const saveBookInfo = () => {
+  const saveBookInfo = async () => {
     if (!bookTitle && !bookAuthor && !currentCategory && !bookGrade) {
       alert('도서 제목, 저자명, 카테고리, 도서 상태 등급은 필수 입력 항목이에요.');
     } else {
       const saveData = {
         description: description,
-        image: bookImg,
+        image: imgFiles[0],
         name: bookTitle,
-        price: deposit,
+        price: '',
         publishedDate: '',
         publisher: '',
         author: bookAuthor,
-        subject: '',
+        subject: bookTitle,
         bookCategoryId: currentCategory,
-        content: '',
-        deposite: '',
+        content: description,
+        deposite: deposit,
         grade: bookGrade,
-        thumbnail: bookImg,
-        imageFiles: bookImg,
+        thumbnail: imgFiles[0].name,
+        imageFiles: imgFiles,
       };
       console.log(saveData);
 
-      uploadBook(saveData);
+      const bookId = await uploadBook(saveData);
       confirmClose();
-      navigate('/');
+      navigate(`/detailBook`, { state: { id: bookId } });
     }
   };
 
@@ -119,41 +118,54 @@ const PutBookInfoByUser = () => {
     inputRef.current.click();
   };
 
-  const saveImage = async e => {
+  const [firstPicPreview, setFirstPicPreview] = useState('');
+  const [secondPicPreview, setSecondPicPreview] = useState('');
+  const [thirdPicPreview, setThirdPicPreview] = useState('');
+  const [imgFiles, setImgFiles] = useState([]);
+
+  const saveImage = e => {
     e.preventDefault();
     const files = e.target.files;
-    console.log(files);
-    if (files.length > 0) {
-      await Promise.all(
-        [...files].map(async file => {
-          const fileContents = await handleChosenFile(file);
-          return fileContents;
-        }),
-      );
-    }
-  };
-  const handleChosenFile = async file => {
-    return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-      fileReader.onload = () => {
-        setImgFiles([...imgFiles, file]);
-        setImgPreviews([...imgPreviews, fileReader.result]); //promise 두개가 동시에 처리돼서 하나만 보이는중,,
+    const fileReader1 = new FileReader();
+    setImgFiles(files);
+
+    if (files[0]) {
+      fileReader1.readAsDataURL(files[0]);
+      fileReader1.onload = () => {
+        setFirstPicPreview(fileReader1.result);
       };
-    });
+    }
+
+    const fileReader2 = new FileReader();
+    if (files[1]) {
+      fileReader2.readAsDataURL(files[1]);
+      fileReader2.onload = () => {
+        setSecondPicPreview(fileReader2.result);
+      };
+    }
+
+    const fileReader3 = new FileReader();
+    if (files[2]) {
+      fileReader3.readAsDataURL(files[2]);
+      fileReader3.onload = () => {
+        setThirdPicPreview(fileReader3.result);
+      };
+    }
   };
 
   return (
     <Wrapper>
       <ImageContainer>
-        <ImgBox>
-          <UploadImg src={camera} onClick={onChangeImg}></UploadImg>
-          <input type="file" accept="image/*" multiple capture="camera" ref={inputRef} onChange={saveImage} style={{ display: 'none' }} />
-          <CountImg>0/3</CountImg>
-        </ImgBox>
-        {imgPreviews.map((index, item) => (
-          <UplodedImg src={item} key={index} />
-        ))}
+        <VerticalScrollWrapper>
+          <ImgBox>
+            <UploadImg src={camera} onClick={onChangeImg}></UploadImg>
+            <input type="file" accept="image/*" multiple capture="camera" ref={inputRef} onChange={saveImage} style={{ display: 'none' }} />
+            <CountImg>0/3</CountImg>
+          </ImgBox>
+          {firstPicPreview !== '' && <UplodedImg src={firstPicPreview} />}
+          {secondPicPreview !== '' && <UplodedImg src={secondPicPreview} />}
+          {thirdPicPreview !== '' && <UplodedImg src={thirdPicPreview} />}
+        </VerticalScrollWrapper>
       </ImageContainer>
       <InputText placeholder="도서 제목" value={bookTitle} onChange={e => setBookTitle(e.target.value)}></InputText>
       <InputText placeholder="저자명" value={bookAuthor} onChange={e => setBookAuthor(e.target.value)}></InputText>
