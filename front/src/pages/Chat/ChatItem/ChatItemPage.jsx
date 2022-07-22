@@ -4,7 +4,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { setTitle, setBack, setAlert, setAllFalse } from '../../../app/headerSlice';
-import { setUserId } from '../../../app/userSlice';
 import ChatBookInfo from './ChatBookInfo';
 import ChatFooter from './ChatFooter';
 import chatSocketApi from '../../../util/ChatSocketApi';
@@ -25,27 +24,26 @@ const ChatItemPage = () => {
   const [message, setMessage] = useState('');
   const [members, setMembers] = useState([]);
   const [otherUser, setOtherUser] = useState({});
-  const [tempMsg, setTempMsg] = useState('');
   const client = useRef({});
 
   useEffect(() => {
     connect(client, roomId, setChatMessages, setMessage);
-
     getChatRoomInfo(roomId, setChatMessages, setMembers);
 
-    //messageId-> 마지막 메세지의 id --> 메세지 올때마다 호출해야함,,
-    // readMessages(2, userId, roomId);
-    // readMessages(messageId, userId, roomId);
     dispatch(setAllFalse());
     dispatch(setBack(true));
     dispatch(setAlert(true));
-
-    console.log(userId);
 
     return () => {
       client.current.deactivate();
     };
   }, []);
+
+  useEffect(() => {
+    const messageId = chatMessages[chatMessages.length - 1].messages.id;
+    //messageId-> 마지막 메세지의 id --> 메세지 올때마다 호출해야함,,
+    readMessages(messageId, otherUser.id, roomId);
+  }, [chatMessages]);
 
   useEffect(() => {
     // 상대방 골라내기

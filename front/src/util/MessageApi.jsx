@@ -49,18 +49,27 @@ const makeChatRoom = async (bookId, userId) => {
   }
 };
 
-const readMessages = async (messageId, userId, roomId) => {
+const readMessages = async (messageId, memberId, roomId) => {
   try {
-    const result = await apiAuthUtil.patch(baseUrl + `api/v1/chat/messages/last-checked`, {
+    const result = await apiAuthUtil.patch(baseUrl + `api/v1/chat/members/${memberId}/last-checked`, {
       messageId: messageId,
-      userId: userId,
       roomId: roomId,
     });
+    return result.data;
   } catch (error) {
     console.log(error);
   }
 };
 
-const messageApi = { getChatRoomInfo, getChatList, makeChatRoom, readMessages };
+const chatRoomOut = async memberId => {
+  try {
+    const result = await apiAuthUtil.delete(baseUrl + `api/v1/chat/members/${memberId}`);
+    return result.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const messageApi = { getChatRoomInfo, getChatList, makeChatRoom, readMessages, chatRoomOut };
 
 export default messageApi;
