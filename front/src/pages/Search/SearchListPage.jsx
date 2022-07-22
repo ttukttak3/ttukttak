@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import style from './SearchListPage.style';
 import bookApi from '../../util/BookApi';
 import Search from '../../assets/img/userInterFace/Search.png';
+import BookResultItem from './BookResultItem';
 
 const SearchListPage = () => {
   const { Wrapper, SearchBar, SearchBtn } = style;
@@ -9,11 +10,15 @@ const SearchListPage = () => {
   const [resultList, setResultList] = useState([]);
   const [keyword, setKeyword] = useState();
 
+  useEffect(() => {
+    //header 끄기 옵션 추가
+  }, []);
+
   const searchKeyword = async () => {
     console.log(keyword);
     const result = await interparkSearch(1, keyword);
     setResultList([...resultList, ...result.contents]);
-    console.log(result);
+    console.log(result.contents);
   };
 
   return (
@@ -22,7 +27,7 @@ const SearchListPage = () => {
       <SearchBtn onClick={() => searchKeyword()}>
         <img src={Search} alt="search" />
       </SearchBtn>
-      {resultList.length <= 0 ? <div>찾고 싶은 책을 검색해보세요.</div> : resultList.map(item => <>{item.contents}</>)}
+      {resultList.length <= 0 ? <div>찾고 싶은 책을 검색해보세요.</div> : resultList.map(item => <BookResultItem item={item} />)}
     </Wrapper>
   );
 };

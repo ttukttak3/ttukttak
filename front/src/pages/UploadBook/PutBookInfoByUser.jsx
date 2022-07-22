@@ -7,6 +7,8 @@ import expand_more from '../../assets/img/arrows/expand_more.png';
 import SelectPopupBottom from '../../components/Modal/SelectPopupBottom';
 import bookApi from '../../util/BookApi';
 import { setAllFalse } from '../../app/headerSlice';
+import ConfirmPopup from '../../components/Modal/ConfirmPopup';
+import { useNavigate } from 'react-router-dom';
 
 const PutBookInfoByUser = () => {
   const { Wrapper, UploadImg, ImageContainer, InputText, UplodedImg, OptionText, ImgBox, SaveButton, CountImg } = style;
@@ -28,7 +30,10 @@ const PutBookInfoByUser = () => {
   const [imgFiles, setImgFiles] = useState([]);
   const [imgPreviews, setImgPreviews] = useState([]);
   const bookGradeList = ['A', 'B', 'C'];
-
+  const [confirmTitle, setConfirmTitle] = useState('');
+  const [isConfirm, setIsConfirm] = useState(false);
+  const [confirmBtns, setConfirmBtns] = useState();
+  const navigate = useNavigate();
   useEffect(() => {
     getCategoryList(setCategoryList);
     dispatch(setAllFalse());
@@ -89,8 +94,24 @@ const PutBookInfoByUser = () => {
         imageFiles: bookImg,
       };
       console.log(saveData);
+
       uploadBook(saveData);
+      confirmClose();
+      navigate('/');
     }
+  };
+
+  const onSaveHandler = () => {
+    setConfirmTitle('작성을 완료 하시겠습니까?');
+    setConfirmBtns([
+      { onClick: confirmClose, message: '취소' },
+      { onClick: saveBookInfo, message: '확인' },
+    ]);
+    setIsConfirm(true);
+  };
+
+  const confirmClose = () => {
+    setIsConfirm(false);
   };
 
   const onChangeImg = e => {
@@ -103,7 +124,6 @@ const PutBookInfoByUser = () => {
     const files = e.target.files;
     console.log(files);
     if (files.length > 0) {
-      console.log(files.length);
       await Promise.all(
         [...files].map(async file => {
           const fileContents = await handleChosenFile(file);
@@ -148,7 +168,8 @@ const PutBookInfoByUser = () => {
       <InputText placeholder="보증금" value={deposit} onChange={e => setDeposit(e.target.value)}></InputText>
       <InputText placeholder="책에 대한 설명이나 느낀점을 소개해주세요." value={description} onChange={e => setDescription(e.target.value)}></InputText>
       {showModal && <SelectPopupBottom title={title} contents={contentList} />}
-      <SaveButton onClick={() => saveBookInfo()}>완료</SaveButton>
+      <SaveButton onClick={() => onSaveHandler()}>완료</SaveButton>
+      {isConfirm && <ConfirmPopup title={confirmTitle} contents={confirmBtns} />}
     </Wrapper>
   );
 };
