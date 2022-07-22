@@ -78,9 +78,10 @@ const PutBookInfoByUser = () => {
     } else {
       const saveData = {
         description: description,
-        image: imgFiles[0],
+        image: '',
+        isbn: '',
         name: bookTitle,
-        price: '',
+        price: 0,
         publishedDate: '',
         publisher: '',
         author: bookAuthor,
@@ -95,6 +96,7 @@ const PutBookInfoByUser = () => {
       console.log(saveData);
 
       const bookId = await uploadBook(saveData);
+      console.log(bookId);
       confirmClose();
       navigate(`/detailBook`, { state: { id: bookId } });
     }
