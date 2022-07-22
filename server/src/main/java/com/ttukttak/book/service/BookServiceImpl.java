@@ -64,6 +64,7 @@ public class BookServiceImpl implements BookService {
 	private final UserService userService;
 
 	private static int PAGESIZE = 20;
+	private static final double DEFAULT_RANGED = 3.0;
 
 	/*
 	 * 카테고리 조회
@@ -72,7 +73,7 @@ public class BookServiceImpl implements BookService {
 	public List<BookCategoryDto> findAllBookCategory() {
 		return bookCategoryRepositroy.findAll()
 			.stream()
-			.map(category -> modelMapper.map(category, BookCategoryDto.class))
+			.map(BookCategoryDto::from)
 			.collect(Collectors.toList());
 	}
 
@@ -86,7 +87,7 @@ public class BookServiceImpl implements BookService {
 			Sort.by(bookRequest.getOrder()).descending());
 
 		//인근 지역 ID 가져오기
-		List<Long> townIdList = addressService.getNearTown(bookRequest.getTownId(), 3)
+		List<Long> townIdList = addressService.getNearTown(bookRequest.getTownId(), DEFAULT_RANGED)
 			.stream()
 			.map(TownDto::getId)
 			.collect(Collectors.toList());
@@ -151,9 +152,14 @@ public class BookServiceImpl implements BookService {
 		BookInfo bookInfo = null;
 		if (bookUploadRequest.getIsbn() != null && !bookUploadRequest.getIsbn().isEmpty()) {
 			//API 도서가 이미 등록되어있는지 체크
+			/*
+			 * orElse 사용시 isbn이 같은 데이터를 찾아 반환하고 save시에 새로운 객체를 생성하는 문제 발생
+			 * orElseGet 으로 변경
+			 * orElse는 값을 포함하더라도 항상 객체를 생성
+			 */
 			bookInfo = bookInfoRepository.findByIsbn(bookUploadRequest.getIsbn())
-				.orElse(bookInfoRepository.save(
-					BookInfo.from(modelMapper.map(bookUploadRequest, BookInfoDto.class))));
+				.orElseGet(() -> bookInfoRepository
+					.save(BookInfo.from(modelMapper.map(bookUploadRequest, BookInfoDto.class))));
 		}
 
 		//Entity builder
@@ -191,16 +197,17 @@ public class BookServiceImpl implements BookService {
 
 		Book resultBook = bookRepository.save(book);
 
-		//대표이미지 지정		
-		for (FileUploadResponse uploadResponse : imageList) {
-			if (uploadResponse.getFileName().equals(bookUploadRequest.getThumbnail())) {
-				BookImage bookImage = bookImageRepository.findByImageUrlAndBookId(uploadResponse.getUrl(),
-					resultBook.getId());
-				resultBook.updateThumbnail(bookImage);
-				bookRepository.save(resultBook);
-				break;
-			}
-		}
+		//대표이미지 지정
+		//대표이미지 지정이 없을 경우 첫 이미지가 대표이미지라고 생각하기
+		FileUploadResponse thumbnail = imageList.stream()
+			.filter(uploadResponse -> uploadResponse.getFileName().equals(bookUploadRequest.getThumbnail()))
+			.findFirst()
+			.orElse(imageList.get(0));
+
+		BookImage bookImage = bookImageRepository.findByImageUrlAndBookId(thumbnail.getUrl(),
+			resultBook.getId());
+		resultBook.updateThumbnail(bookImage);
+		bookRepository.save(resultBook);
 
 		return resultBook.getId();
 	}
@@ -277,7 +284,7 @@ public class BookServiceImpl implements BookService {
 		 * 이미지 변경
 		 */
 
-		BookInfo bookInfo = currBook.getBookInfo();
+		BookInfo bookInfo = null;
 		/*
 		 * Request로 받아온 ISBN 유무 체크
 		 * ISBN이 있으면 API도서 조회르 수정.
@@ -285,10 +292,8 @@ public class BookServiceImpl implements BookService {
 		 */
 		if (bookUploadRequest.getIsbn() != null && !bookUploadRequest.getIsbn().isEmpty()) {
 			bookInfo = bookInfoRepository.findByIsbn(bookUploadRequest.getIsbn())
-				.orElse(bookInfoRepository.save(
-					BookInfo.from(modelMapper.map(bookUploadRequest, BookInfoDto.class))));
-		} else {
-			bookInfo = null;
+				.orElseGet(() -> bookInfoRepository
+					.save(BookInfo.from(modelMapper.map(bookUploadRequest, BookInfoDto.class))));
 		}
 
 		//섬네일 초기값 선언
@@ -309,9 +314,6 @@ public class BookServiceImpl implements BookService {
 			.thumbnail(bookImage)
 			.build();
 
-		/*
-		 * 이미지 변경 로직 -- 작업 진행중
-		 */
 		//섬네일 업데이트를 위한 리스트
 		List<FileUploadResponse> imageList = new ArrayList<>();
 
@@ -319,7 +321,8 @@ public class BookServiceImpl implements BookService {
 		if (!bookImage.getImageUrl().equals(bookUploadRequest.getThumbnail())) {
 			if (bookUploadRequest.getIsbn() != null && !bookUploadRequest.getIsbn().isEmpty()) {
 				imageList
-					.add(new FileUploadResponse(bookUploadRequest.getThumbnail(), bookUploadRequest.getThumbnail()));
+					.add(
+						new FileUploadResponse(bookUploadRequest.getThumbnail(), bookUploadRequest.getThumbnail()));
 				updateBook.addImage(BookImage.builder().imageUrl(bookUploadRequest.getThumbnail()).build());
 			}
 		}
@@ -337,15 +340,15 @@ public class BookServiceImpl implements BookService {
 		Book resultBook = bookRepository.save(updateBook);
 
 		//대표이미지 지정
-		for (FileUploadResponse uploadResponse : imageList) {
-			if (uploadResponse.getFileName().equals(bookUploadRequest.getThumbnail())) {
-				BookImage bookThumbnail = bookImageRepository.findByImageUrlAndBookId(uploadResponse.getUrl(),
-					bookId);
-				resultBook.updateThumbnail(bookThumbnail);
-				bookRepository.save(resultBook);
-				break;
-			}
-		}
+		FileUploadResponse thumbnail = imageList.stream()
+			.filter(uploadResponse -> uploadResponse.getFileName().equals(bookUploadRequest.getThumbnail()))
+			.findFirst()
+			.orElse(imageList.get(0));
+
+		BookImage bookThumbnail = bookImageRepository.findByImageUrlAndBookId(thumbnail.getUrl(),
+			resultBook.getId());
+		resultBook.updateThumbnail(bookThumbnail);
+		bookRepository.save(resultBook);
 
 		//DB 이미지 리스트와 넘겨받은 Image 리스트의 ID 비교후 없으면 삭제.
 		bookImageIds.stream().filter(currImageId -> !bookUploadRequest.getBookImages()
