@@ -1,7 +1,7 @@
+/* eslint-disable max-lines-per-function */
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-
 import style from './SearchListPage.style';
 import bookApi from '../../util/BookApi';
 import Search from '../../assets/img/userInterFace/Search.png';
@@ -16,6 +16,7 @@ const SearchListPage = () => {
   const [resultList, setResultList] = useState([]);
   const [keyword, setKeyword] = useState('');
   const [totalResultCount, setTotalResultCount] = useState(0);
+  const [selectedBook, setSelectedBook] = useState({});
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -23,11 +24,22 @@ const SearchListPage = () => {
     dispatch(setAllFalse());
   }, []);
 
+  useEffect(() => {
+    console.log(selectedBook);
+  }, [selectedBook]);
+
+  //scroll 됐을 때 pagination 요청
   const searchKeyword = async () => {
     console.log(keyword);
     const result = await interparkSearch(1, keyword);
     setResultList([...resultList, ...result.contents]);
     setTotalResultCount(result.pageSize * result.totalPages);
+  };
+
+  const setCurrentBook = item => {
+    // console.log(item);
+    setSelectedBook(item);
+    navigate(`/upload`, { state: { item: item } });
   };
 
   return (
@@ -47,7 +59,9 @@ const SearchListPage = () => {
         </SearchBtn>
       </SearchBarWrapper>
       <SearchResult>검색결과 ({totalResultCount})</SearchResult>
-      <BookList>{resultList.length <= 0 ? <NoResult>찾고 싶은 책을 검색해보세요.</NoResult> : resultList.map((item, index) => <BookResultItem item={item} key={index} />)}</BookList>
+      <BookList>
+        {resultList.length <= 0 ? <NoResult>찾고 싶은 책을 검색해보세요.</NoResult> : resultList.map((item, index) => <BookResultItem item={item} key={index} setCurrentBook={setCurrentBook} />)}
+      </BookList>
     </Wrapper>
   );
 };

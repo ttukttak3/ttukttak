@@ -1,30 +1,29 @@
 /* eslint-disable max-lines-per-function */
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import style from './PutBookInfoByUser.style';
 import camera from '../../assets/img/userInterFace/Camera_enhance.png';
 import expand_more from '../../assets/img/arrows/expand_more.png';
-import SelectPopupBottom from '../../components/Modal/SelectPopupBottom';
 import bookApi from '../../util/BookApi';
 import { setAllFalse } from '../../app/headerSlice';
 import ConfirmPopup from '../../components/Modal/ConfirmPopup';
-import { useNavigate } from 'react-router-dom';
+import SelectPopupBottom from '../../components/Modal/SelectPopupBottom';
 
-const PutBookInfoByUser = () => {
+const PutBookInfoByUser = ({ categoryList }) => {
   const { Wrapper, UploadImg, ImageContainer, InputText, UplodedImg, OptionText, ImgBox, SaveButton, CountImg, VerticalScrollWrapper } = style;
-  const [title, setTitle] = useState('');
+  const [modalTitle, setModalTitle] = useState('');
   const [contentList, setContentList] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [categoryList, setCategoryList] = useState([]);
   const [bookGrade, setBookGrade] = useState('');
   const [bookTitle, setBookTitle] = useState();
   const [bookAuthor, setBookAuthor] = useState();
   const [deposit, setDeposit] = useState();
   const [bookImg, setBookImg] = useState('');
-  const [description, setDescription] = useState();
+  const [review, setReview] = useState();
   const [currentCategory, setCurrentCategory] = useState('');
   const [currentCategoryTitle, setCurrentCategoryTitle] = useState('');
-  const { getCategoryList, uploadBook } = bookApi;
+  const { uploadBook } = bookApi;
   const dispatch = useDispatch();
   const inputRef = useRef(null);
 
@@ -34,13 +33,12 @@ const PutBookInfoByUser = () => {
   const [confirmBtns, setConfirmBtns] = useState();
   const navigate = useNavigate();
   useEffect(() => {
-    getCategoryList(setCategoryList);
     dispatch(setAllFalse());
     return () => {};
-  }, [dispatch, getCategoryList]);
+  }, [dispatch]);
 
   const showCategoryModal = () => {
-    setTitle('카테고리');
+    setModalTitle('카테고리');
     const categoryOnclickList = [];
     categoryList.map(item =>
       categoryOnclickList.push({
@@ -57,6 +55,7 @@ const PutBookInfoByUser = () => {
   };
 
   const showBookGrade = () => {
+    setModalTitle('책 상태 등급');
     const gradeList = [];
     bookGradeList.map(item =>
       gradeList.push({
@@ -67,7 +66,6 @@ const PutBookInfoByUser = () => {
         message: item,
       }),
     );
-    setTitle('책 상태 등급');
     setContentList([...gradeList]);
     setShowModal(true);
   };
@@ -77,7 +75,7 @@ const PutBookInfoByUser = () => {
       alert('도서 제목, 저자명, 카테고리, 도서 상태 등급은 필수 입력 항목이에요.');
     } else {
       const saveData = {
-        description: description,
+        description: '',
         image: '',
         isbn: '',
         name: bookTitle,
@@ -87,7 +85,7 @@ const PutBookInfoByUser = () => {
         author: bookAuthor,
         subject: bookTitle,
         bookCategoryId: currentCategory,
-        content: description,
+        content: review,
         deposite: deposit,
         grade: bookGrade,
         thumbnail: imgFiles[0].name,
@@ -180,8 +178,8 @@ const PutBookInfoByUser = () => {
         <img src={expand_more} alt={'책 상태 등급 선택'}></img>
       </OptionText>
       <InputText placeholder="보증금" value={deposit} onChange={e => setDeposit(e.target.value)}></InputText>
-      <InputText placeholder="책에 대한 설명이나 느낀점을 소개해주세요." value={description} onChange={e => setDescription(e.target.value)}></InputText>
-      {showModal && <SelectPopupBottom title={title} contents={contentList} />}
+      <InputText placeholder="책에 대한 설명이나 느낀점을 소개해주세요." value={review} onChange={e => setReview(e.target.value)}></InputText>
+      {showModal && <SelectPopupBottom title={modalTitle} contents={contentList} />}
       <SaveButton onClick={() => onSaveHandler()}>완료</SaveButton>
       {isConfirm && <ConfirmPopup title={confirmTitle} contents={confirmBtns} />}
     </Wrapper>
