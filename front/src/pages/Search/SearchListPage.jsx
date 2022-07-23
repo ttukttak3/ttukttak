@@ -5,10 +5,11 @@ import Search from '../../assets/img/userInterFace/Search.png';
 import BookResultItem from './BookResultItem';
 
 const SearchListPage = () => {
-  const { Wrapper, SearchBar, SearchBtn } = style;
+  const { Wrapper, SearchBar, SearchBtn, BookList } = style;
   const { interparkSearch } = bookApi;
   const [resultList, setResultList] = useState([]);
   const [keyword, setKeyword] = useState();
+  const [totalResultCount, setTotalResultCount] = useState(0);
 
   useEffect(() => {
     //header 끄기 옵션 추가
@@ -27,7 +28,8 @@ const SearchListPage = () => {
       <SearchBtn onClick={() => searchKeyword()}>
         <img src={Search} alt="search" />
       </SearchBtn>
-      {resultList.length <= 0 ? <div>찾고 싶은 책을 검색해보세요.</div> : resultList.map(item => <BookResultItem item={item} />)}
+      <div>검색결과 ({totalResultCount})</div>
+      <BookList>{resultList.length <= 0 ? <div>찾고 싶은 책을 검색해보세요.</div> : resultList.map((item, index) => <BookResultItem item={item} key={index} />)}</BookList>
     </Wrapper>
   );
 };

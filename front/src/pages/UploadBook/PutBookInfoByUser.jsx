@@ -128,9 +128,9 @@ const PutBookInfoByUser = () => {
   const saveImage = e => {
     e.preventDefault();
     const files = e.target.files;
-    const fileReader1 = new FileReader();
     setImgFiles(files);
 
+    const fileReader1 = new FileReader();
     if (files[0]) {
       fileReader1.readAsDataURL(files[0]);
       fileReader1.onload = () => {

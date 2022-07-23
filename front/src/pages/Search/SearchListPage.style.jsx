@@ -32,6 +32,15 @@ const SearchBtn = styled.a`
   }
 `;
 
-const style = { Wrapper, SearchBar, SearchBtn };
+const BookList = styled.li`
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  border-bottom: 0.3px solid ${({ theme }) => theme.colors.$whiteLine4};
+  margin: 1rem;
+  font-size: 2rem;
+`;
+
+const style = { Wrapper, SearchBar, SearchBtn, BookList };
 
 export default style;
