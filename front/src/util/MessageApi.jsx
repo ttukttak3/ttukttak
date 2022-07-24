@@ -1,14 +1,12 @@
 /* eslint-disable array-callback-return */
 import utils from './ApiUtil';
 const { apiAuthUtil } = utils;
-const baseUrl = process.env.REACT_APP_SERVER_API_URL;
 
-//userId == 현재 login되어있는 user의 id
 const getChatRoomInfo = async (roomId, setChatMessages, setMembers) => {
   console.log('getMessageList');
 
   try {
-    const result = await apiAuthUtil.get(baseUrl + `api/v1/chat/rooms/${roomId}/messages`);
+    const result = await apiAuthUtil.get(`api/v1/chat/rooms/${roomId}/messages`);
     const data = result.data;
 
     data.members.map(data => {
@@ -28,7 +26,7 @@ const getChatRoomInfo = async (roomId, setChatMessages, setMembers) => {
 const getChatList = async (userId, setChatList) => {
   console.log('getChatList');
   try {
-    const result = await apiAuthUtil.get(baseUrl + `api/v1/users/${userId}/chat/rooms`);
+    const result = await apiAuthUtil.get(`api/v1/users/${userId}/chat/rooms`);
     result.data.map(data => {
       setChatList(_chatList => [..._chatList, data]);
     });
@@ -42,7 +40,7 @@ const getChatList = async (userId, setChatList) => {
 const makeChatRoom = async (bookId, userId) => {
   console.log(bookId, userId);
   try {
-    const result = await apiAuthUtil.post(baseUrl + `api/v1/chat/rooms`, { bookId, userId });
+    const result = await apiAuthUtil.post(`api/v1/chat/rooms`, { bookId, userId });
     console.log(result.data);
   } catch (error) {
     console.log(error);
@@ -51,7 +49,7 @@ const makeChatRoom = async (bookId, userId) => {
 
 const readMessages = async (messageId, memberId, roomId) => {
   try {
-    const result = await apiAuthUtil.patch(baseUrl + `api/v1/chat/members/${memberId}/last-checked`, {
+    const result = await apiAuthUtil.patch(`api/v1/chat/members/${memberId}/last-checked`, {
       messageId: messageId,
       roomId: roomId,
     });
@@ -63,7 +61,7 @@ const readMessages = async (messageId, memberId, roomId) => {
 
 const chatRoomOut = async memberId => {
   try {
-    const result = await apiAuthUtil.delete(baseUrl + `api/v1/chat/members/${memberId}`);
+    const result = await apiAuthUtil.delete(`api/v1/chat/members/${memberId}`);
     return result.data;
   } catch (error) {
     console.log(error);

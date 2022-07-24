@@ -17,13 +17,14 @@ const ChatItemPage = () => {
   const { Wrapper } = style;
   const dispatch = useDispatch();
   const { userId } = useSelector(state => state.user);
-  // const userId = 1; //임시값
-  const { connect, publish } = chatSocketApi;
+  const { connect } = chatSocketApi;
   const { getChatRoomInfo, readMessages } = messageApi;
   const [chatMessages, setChatMessages] = useState([]);
   const [message, setMessage] = useState('');
   const [members, setMembers] = useState([]);
-  const [otherUser, setOtherUser] = useState({});
+  const [myMemberInfo, setMyMemberInfo] = useState({});
+  const [otherMemberInfo, setOtherMemberInfo] = useState({});
+
   const client = useRef({});
 
   useEffect(() => {
@@ -40,17 +41,21 @@ const ChatItemPage = () => {
   }, []);
 
   useEffect(() => {
-    const messageId = chatMessages[chatMessages.length - 1].messages.id;
-    //messageId-> 마지막 메세지의 id --> 메세지 올때마다 호출해야함,,
-    readMessages(messageId, otherUser.id, roomId);
+    if (chatMessages.length > 0) {
+      const messageId = chatMessages[chatMessages.length - 1].messages.id;
+      readMessages(messageId, myMemberInfo.memberId, roomId);
+    }
   }, [chatMessages]);
 
   useEffect(() => {
     // 상대방 골라내기
+    console.log(members);
     if (members.length > 0) {
-      const other = members.filter(item => userId !== item.userId)[0];
-      dispatch(setTitle(other.nickname));
-      setOtherUser(other);
+      const myMember = members.filter(item => userId === item.user.id)[0];
+      const otherMember = members.filter(item => userId !== item.user.id)[0];
+      dispatch(setTitle(otherMember.nickname));
+      setOtherMemberInfo(otherMember);
+      setMyMemberInfo(myMember);
     }
   }, [members]);
 
@@ -60,7 +65,7 @@ const ChatItemPage = () => {
       {chatMessages.map((item, idx) => (
         <>{userId === item.userId ? <ChatMessage side={'right'} message={item.message}></ChatMessage> : <ChatMessage side={'left'} message={item.message}></ChatMessage>}</>
       ))}
-      <ChatFooter roomId={roomId} message={message} client={client} setMessage={setMessage} publish={() => publish(roomId, userId, client, setMessage, message)}></ChatFooter>
+      <ChatFooter roomId={roomId} message={message} memberId={myMemberInfo.memberId} client={client} setMessage={setMessage}></ChatFooter>
     </Wrapper>
   );
 };
