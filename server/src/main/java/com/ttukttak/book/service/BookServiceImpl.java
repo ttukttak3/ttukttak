@@ -199,15 +199,17 @@ public class BookServiceImpl implements BookService {
 
 		//대표이미지 지정
 		//대표이미지 지정이 없을 경우 첫 이미지가 대표이미지라고 생각하기
-		FileUploadResponse thumbnail = imageList.stream()
-			.filter(uploadResponse -> uploadResponse.getFileName().equals(bookUploadRequest.getThumbnail()))
-			.findFirst()
-			.orElse(imageList.get(0));
+		if (imageList.size() > 0) {
+			FileUploadResponse thumbnail = imageList.stream()
+				.filter(uploadResponse -> uploadResponse.getFileName().equals(bookUploadRequest.getThumbnail()))
+				.findFirst()
+				.orElse(imageList.get(0));
 
-		BookImage bookImage = bookImageRepository.findByImageUrlAndBookId(thumbnail.getUrl(),
-			resultBook.getId());
-		resultBook.updateThumbnail(bookImage);
-		bookRepository.save(resultBook);
+			BookImage bookImage = bookImageRepository.findByImageUrlAndBookId(thumbnail.getUrl(),
+				resultBook.getId());
+			resultBook.updateThumbnail(bookImage);
+			bookRepository.save(resultBook);
+		}
 
 		return resultBook.getId();
 	}
@@ -340,15 +342,17 @@ public class BookServiceImpl implements BookService {
 		Book resultBook = bookRepository.save(updateBook);
 
 		//대표이미지 지정
-		FileUploadResponse thumbnail = imageList.stream()
-			.filter(uploadResponse -> uploadResponse.getFileName().equals(bookUploadRequest.getThumbnail()))
-			.findFirst()
-			.orElse(imageList.get(0));
+		if (imageList.size() > 0) {
+			FileUploadResponse thumbnail = imageList.stream()
+				.filter(uploadResponse -> uploadResponse.getFileName().equals(bookUploadRequest.getThumbnail()))
+				.findFirst()
+				.orElse(imageList.get(0));
 
-		BookImage bookThumbnail = bookImageRepository.findByImageUrlAndBookId(thumbnail.getUrl(),
-			resultBook.getId());
-		resultBook.updateThumbnail(bookThumbnail);
-		bookRepository.save(resultBook);
+			BookImage bookThumbnail = bookImageRepository.findByImageUrlAndBookId(thumbnail.getUrl(),
+				resultBook.getId());
+			resultBook.updateThumbnail(bookThumbnail);
+			bookRepository.save(resultBook);
+		}
 
 		//DB 이미지 리스트와 넘겨받은 Image 리스트의 ID 비교후 없으면 삭제.
 		bookImageIds.stream().filter(currImageId -> !bookUploadRequest.getBookImages()
