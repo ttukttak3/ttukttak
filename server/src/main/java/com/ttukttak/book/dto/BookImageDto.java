@@ -21,6 +21,10 @@ public class BookImageDto {
 	}
 
 	public static BookImageDto from(BookImage bookImage) {
+		if (bookImage == null) {
+			return null;
+		}
+
 		return BookImageDto.builder()
 			.id(bookImage.getId())
 			.imageUrl(bookImage.getImageUrl())
