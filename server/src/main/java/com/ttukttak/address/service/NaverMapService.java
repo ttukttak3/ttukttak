@@ -59,26 +59,29 @@ public class NaverMapService {
 
 			//TownID값과 동일함.
 			JSONObject jsonCode = (JSONObject)jsonResult.get("code");
-			townDto.setId(Long.parseLong(jsonCode.get("id").toString()));
 
 			//주소
 			JSONObject jsonRegion = (JSONObject)jsonResult.get("region");
 
 			//시도
 			JSONObject jsonCity = (JSONObject)jsonRegion.get("area1");
-			townDto.setCity(jsonCity.get("name").toString());
 
 			//시군구
 			JSONObject jsonDistrict = (JSONObject)jsonRegion.get("area2");
-			townDto.setDistrict(jsonDistrict.get("name").toString());
 
 			//읍면동
 			JSONObject jsonName = (JSONObject)jsonRegion.get("area3");
-			townDto.setName(jsonName.get("name").toString());
 
 			//하위
 			JSONObject jsonEtc = (JSONObject)jsonRegion.get("area4");
-			townDto.setEtc(jsonEtc.get("name").toString());
+
+			townDto = TownDto.builder()
+				.id(Long.parseLong(jsonCode.get("id").toString()))
+				.city(jsonCity.get("name").toString())
+				.district(jsonDistrict.get("name").toString())
+				.name(jsonName.get("name").toString())
+				.etc(jsonEtc.get("name").toString())
+				.build();
 
 			br.close();
 			in.close();
