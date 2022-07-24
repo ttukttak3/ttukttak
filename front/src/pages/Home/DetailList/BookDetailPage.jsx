@@ -2,7 +2,7 @@
 /* eslint-disable max-lines-per-function */
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { setAllFalse, setBack, setFavorite, setShare, setMore, setMoreBookId } from '../../../app/headerSlice';
 import bookApi from '../../../util/BookApi';
 import messageApi from '../../../util/MessageApi';
@@ -18,7 +18,7 @@ const BookDetailPage = () => {
   const bookId = location.state.id;
   const { getDetailView, updateBookGrade, updateBookStatus } = bookApi;
   const { makeChatRoom } = messageApi;
-
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [detailView, setDetailView] = useState({
     subject: '',
@@ -151,6 +151,11 @@ const BookDetailPage = () => {
     };
   }, [handleClickOutside]);
 
+  const chattingHandler = async () => {
+    const result = await makeChatRoom(bookId, userId);
+    navigate(`/chat/${result.roomId}`);
+  };
+
   const { Wrap, BookWrap, BookInfo, TitleBox, BookSlideBox, BookCont, BookState, BookFooter, FooterBox, LeftBox, BookPrice } = style;
   return (
     <Wrap ref={modalEl}>
@@ -220,7 +225,7 @@ const BookDetailPage = () => {
               </div>
             </BookPrice>
           </LeftBox>
-          <button onClick={() => makeChatRoom(bookId, userId)}>채팅하기</button>
+          <button onClick={() => chattingHandler()}>채팅하기</button>
         </FooterBox>
       </BookFooter>
       {/* popup */}

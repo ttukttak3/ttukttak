@@ -21,7 +21,9 @@ const Author = styled.div`
   font-weight: 400;
 `;
 
-const Location = styled.div``;
+const Location = styled.div`
+  font-size: 1.6rem;
+`;
 
 const Status = styled.div``;
 

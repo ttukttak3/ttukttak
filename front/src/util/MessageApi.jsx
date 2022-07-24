@@ -2,7 +2,7 @@
 import utils from './ApiUtil';
 const { apiAuthUtil } = utils;
 
-const getChatRoomInfo = async (roomId, setChatMessages, setMembers, setBook) => {
+const getChatRoomInfo = async (roomId, setChatMessages, setMembers) => {
   console.log('getMessageList');
 
   try {
@@ -13,14 +13,12 @@ const getChatRoomInfo = async (roomId, setChatMessages, setMembers, setBook) => 
       setMembers(_memberList => [..._memberList, data]);
     });
 
-    console.log(data.book);
-    setBook(data.book);
-
     data.messages.map(data => {
       setChatMessages(_chatList => [..._chatList, data]);
     });
+    console.log(data);
 
-    return;
+    return data;
   } catch (error) {
     console.log(error);
   }
@@ -33,7 +31,6 @@ const getChatList = async (userId, setChatList) => {
     result.data.map(data => {
       setChatList(_chatList => [..._chatList, data]);
     });
-    console.log(result.data);
     return result;
   } catch (error) {
     console.log(error);
@@ -44,7 +41,7 @@ const makeChatRoom = async (bookId, userId) => {
   console.log(bookId, userId);
   try {
     const result = await apiAuthUtil.post(`api/v1/chat/rooms`, { bookId, userId });
-    console.log(result.data);
+    return result.data;
   } catch (error) {
     console.log(error);
   }

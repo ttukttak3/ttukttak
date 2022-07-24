@@ -10,23 +10,17 @@ import { useSelector } from 'react-redux';
 const ChatPage = () => {
   const [chatList, setChatList] = useState([]);
   const { userId } = useSelector(state => state.user);
-
+  const dispatch = useDispatch();
   const { getChatList } = messageApi;
 
   const ChatListShow = chatList.map((item, idx) => (
-    <ChatListItem id={item.roomId} imgUrl={item.another.imageUrl} userName={item.another.name} time={item?.lastMessage?.sendedAt} lastChat={item?.lastMessage?.message} unread={item.unread} />
+    <ChatListItem id={item.roomId} imgUrl={item.another.imageUrl} userName={item.another.nickname} time={item?.lastMessage?.sendedAt} lastChat={item?.lastMessage?.message} unread={item.unread} />
   ));
-  const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(setAllFalse());
     dispatch(setTitle('채팅'));
-    console.log(userId);
     getChatList(userId, setChatList);
-
-    return () => {
-      // second
-    };
   }, [dispatch, getChatList, userId]);
 
   return <Wrapper>{ChatListShow}</Wrapper>;

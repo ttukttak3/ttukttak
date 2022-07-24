@@ -30,8 +30,7 @@ const ChatItemPage = () => {
 
   useEffect(() => {
     connect(client, roomId, setChatMessages, setMessage);
-    getChatRoomInfo(roomId, setChatMessages, setMembers, setBook);
-
+    chatRoomInfo();
     dispatch(setAllFalse());
     dispatch(setBack(true));
     dispatch(setAlert(true));
@@ -41,9 +40,13 @@ const ChatItemPage = () => {
     };
   }, []);
 
+  const chatRoomInfo = async () => {
+    const data = await getChatRoomInfo(roomId, setChatMessages, setMembers);
+    setBook({ ...book, ...data.book });
+  };
+
   useEffect(() => {
     if (chatMessages.length > 0 && myMemberInfo.memberId) {
-      console.log(chatMessages);
       const messageId = chatMessages[chatMessages.length - 1].id;
       readMessages(messageId, myMemberInfo.memberId, roomId);
     }
@@ -51,11 +54,10 @@ const ChatItemPage = () => {
 
   useEffect(() => {
     // 상대방 골라내기
-    console.log(members);
     if (members.length > 0) {
       const myMember = members.filter(item => userId === item.user.id)[0];
       const otherMember = members.filter(item => userId !== item.user.id)[0];
-      dispatch(setTitle(otherMember.nickname));
+      dispatch(setTitle(otherMember.user.nickname));
       setOtherMemberInfo(otherMember);
       setMyMemberInfo(myMember);
     }
@@ -65,7 +67,7 @@ const ChatItemPage = () => {
     <Wrapper>
       <ChatBookInfo book={book}></ChatBookInfo>
       {chatMessages.map((item, idx) => (
-        <>{userId === item.userId ? <ChatMessage side={'right'} item={item}></ChatMessage> : <ChatMessage side={'left'} item={item}></ChatMessage>}</>
+        <>{myMemberInfo.memberId === item.memberId ? <ChatMessage side={'right'} item={item}></ChatMessage> : <ChatMessage side={'left'} item={item}></ChatMessage>}</>
       ))}
       <ChatFooter roomId={roomId} message={message} memberId={myMemberInfo.memberId} client={client} setMessage={setMessage}></ChatFooter>
     </Wrapper>

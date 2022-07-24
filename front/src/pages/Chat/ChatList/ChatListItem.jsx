@@ -5,16 +5,22 @@ import style from './ChatListItem.style';
 import noneUserIcon from '../../../assets/img/userInterFace/userNone.png';
 
 const ChatListItem = ({ id, imgUrl, userName, time, lastChat, unread }) => {
-  const { Wrapper, Img, UserName, Time, LastChat, Unread } = style;
+  const { Wrapper, Img, UserName, LastChat, InfoWrapper } = style;
   const navigate = useNavigate();
-
+  const d = new Date(time);
   return (
     <Wrapper key={id} onClick={() => navigate(`/chat/${id}`)}>
       <Img src={imgUrl} />
-      <UserName>{userName}</UserName>
-      <Time>{time}</Time>
-      <LastChat>{lastChat}</LastChat>
-      <Unread>{unread}</Unread>
+      <InfoWrapper>
+        <UserName>
+          {userName}
+          <time>{d.toLocaleTimeString('ko-kr')}</time>
+        </UserName>
+        <LastChat>
+          {lastChat}
+          <unread>{unread}</unread>
+        </LastChat>
+      </InfoWrapper>
     </Wrapper>
   );
 };
