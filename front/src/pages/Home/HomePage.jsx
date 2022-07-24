@@ -10,11 +10,20 @@ import bookApi from '../../util/BookApi';
 import Popup from '../../components/Modal/SelectPopupBottom';
 import { useNavigate } from 'react-router-dom';
 const HomePage = () => {
-  //-------------- Header --------------
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+  //--------------location ------------
+  //처음 접근한 사용자의 경우 위치 정보 페이지로 이동 후 위치 값 세팅
+  const [town, setTown] = useState(localStorage.getItem('town') !== null ? JSON.parse(localStorage.getItem('town')) : '');
+  //-------------- Header --------------
   useEffect(() => {
+    if (!town) {
+      //기본 값(세종로)물고 위치 설정 이동
+      alert('위치 정보를 설정해주세요.');
+      navigate('/location/1111011900');
+    }
     dispatch(setAllFalse());
-    dispatch(setTitle('우리집'));
+    dispatch(setTitle(town.name));
     dispatch(setLocation(true));
     dispatch(setSearch(true));
     dispatch(setFavorite(true));
@@ -42,17 +51,17 @@ const HomePage = () => {
         setKeyEvent('최신순');
       },
     },
-    {
-      message: '거리순',
-      onClick: () => {
-        setRange({
-          id: 1,
-          text: '거리순',
-          param: 'location',
-        });
-        setKeyEvent('거리순');
-      },
-    },
+    // {
+    //   message: '거리순',
+    //   onClick: () => {
+    //     setRange({
+    //       id: 1,
+    //       text: '거리순',
+    //       param: 'location',
+    //     });
+    //     setKeyEvent('거리순');
+    //   },
+    // },
     {
       message: '보증금순',
       onClick: () => {
@@ -112,7 +121,6 @@ const HomePage = () => {
       document.body.style.overflow = 'hidden';
     }
   };
-  const navigate = useNavigate();
 
   //close popup
   const modalEl = useRef(null);
@@ -143,7 +151,7 @@ const HomePage = () => {
           대여가능
         </h2>
       ),
-      tabCont: <BookRentPage range={range.param} category={category.id} key={keyEvent} />,
+      tabCont: <BookRentPage range={range.param} category={category.id} townId={town.id} key={keyEvent} />,
     },
     {
       tabTitle: (
@@ -151,7 +159,7 @@ const HomePage = () => {
           대여중/예약중
         </h2>
       ),
-      tabCont: <BookOnLoadPage range={range.param} category={category.id} key={keyEvent} />,
+      tabCont: <BookOnLoadPage range={range.param} category={category.id} townId={town.id} key={keyEvent} />,
     },
   ];
 

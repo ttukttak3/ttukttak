@@ -4,10 +4,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setBack, setBackHome, setTitle } from '../../../app/headerSlice';
 import { setNickName, setImageFile } from '../../../app/userSlice';
-import utils from '../../../util/ProfileApi';
-import style from './ProfilePage.style';
+import profileUtils from '../../../util/ProfileApi';
+import locationUtils from '../../../util/LocationApi';
+import style from './SignUpPage.style';
 import noImg from '../../../assets/img/logo/no_img.png';
-const ProfilePage = () => {
+const SignUpPage = () => {
   //Header setting
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -60,7 +61,8 @@ const ProfilePage = () => {
   // };
 
   //check
-  const { nickNameCheck, locationValue, signUp } = utils;
+  const { nickNameCheck, signUp } = profileUtils;
+  const { getLocation } = locationUtils;
   const onCheckHandler = () => {
     if (user.nickName === '') {
       setError('닉네임 입력이 필요합니다.');
@@ -71,15 +73,15 @@ const ProfilePage = () => {
         setError('중복된 닉네임입니다. 다른 닉네임을 입력해주세요.');
         return;
       }
-      getLocation();
+      getCurrentLocation();
     });
   };
 
-  const getLocation = () => {
+  const getCurrentLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         function (position) {
-          locationValue(position).then(result => {
+          getLocation(position).then(result => {
             submit(result.id);
           });
         },
@@ -110,24 +112,28 @@ const ProfilePage = () => {
     e.target.src = noImg;
   };
 
-  const { ProfileBox, ImgBox, ImgChangeBtn, InfoBox, SubmitBtn } = style;
+  const { SignUpBox, ImgBox, ImgChangeBtn, InfoBox, NickName, Email, SubmitBtn } = style;
   return (
-    <ProfileBox>
+    <SignUpBox>
       <ImgBox>
         <input type="file" accept="image/*" ref={inputRef} onChange={saveImage} style={{ display: 'none' }} />
         <img src={imgPreview === '' ? user.imageFile : imgPreview} onError={onErrorImg} alt="이미지" />
         <ImgChangeBtn onClick={onChangeImg}></ImgChangeBtn>
       </ImgBox>
       <InfoBox>
-        <h4>닉네임</h4>
-        <input type="text" value={user.nickName || ''} placeholder="닉네임을 입력하세요." onChange={onChangeNN} className={error && 'errorInput'} />
-        <span>{error !== '' ? error : ''}</span>
-        <h4>이메일</h4>
-        <h6>{user.email}</h6>
+        <NickName>
+          <h4>닉네임</h4>
+          <input type="text" value={user.nickName || ''} placeholder="닉네임을 입력하세요." onChange={onChangeNN} className={error && 'errorInput'} />
+          <span>{error !== '' ? error : ''}</span>
+        </NickName>
+        <Email>
+          <h4>이메일</h4>
+          <p>{user.email}</p>
+        </Email>
       </InfoBox>
       <SubmitBtn onClick={onCheckHandler}>회원가입 완료</SubmitBtn>
-    </ProfileBox>
+    </SignUpBox>
   );
 };
 
-export default ProfilePage;
+export default SignUpPage;

@@ -4,16 +4,18 @@ import { useDispatch } from 'react-redux';
 import style from './HomePage.style';
 import bookApi from '../../util/BookApi';
 import BookListItem from './BookListItem';
+import Loader from '../../components/common/Loader';
 
-const BookOnLoadPage = ({ range, category }) => {
+const BookOnLoadPage = ({ range, category, townId }) => {
   const { getBookList } = bookApi;
   const dispatch = useDispatch();
+  //loading spinner
+  const [loader, setLoader] = useState(false);
   const [param, setParam] = useState({
     pageNum: 1,
     order: range,
     status: 'ING',
-    townId: '1147010100',
-    //로그인 유저일 경우 유저 슬라이스 값 / 비회원일 경우 처음 위치 허용 값 / 비허용일 시 1111011900
+    townId: townId,
     categoryId: category,
   });
 
@@ -35,13 +37,39 @@ const BookOnLoadPage = ({ range, category }) => {
     />
   ));
 
+  // infinite Scroll Event
+  const handleScroll = () => {
+    const scrollHeight = document.documentElement.scrollHeight;
+    const scrollTop = document.documentElement.scrollTop;
+    const clientHeight = document.documentElement.clientHeight;
+    if (scrollTop + clientHeight >= scrollHeight) {
+      setLoader(true);
+      // 페이지 끝에 도달하면 추가 데이터를 받아온다
+      param.pageNum++;
+      getBookList(param, setBookList, setLoader);
+    }
+  };
+
   useEffect(() => {
-    getBookList(param, setBookList);
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  });
+
+  useEffect(() => {
+    setLoader(true);
+    getBookList(param, setBookList, setLoader);
     return () => {};
   }, [dispatch, param, getBookList]);
 
   const { BookWrap, NoItem } = style;
-  return <BookWrap>{BookListShow.length === 0 ? <NoItem>대여중/예약중 책이 없습니다.</NoItem> : BookListShow}</BookWrap>;
+  return (
+    <BookWrap>
+      {BookListShow.length === 0 ? <NoItem>대여중/예약중 책이 없습니다.</NoItem> : BookListShow}
+      {loader && <Loader />}
+    </BookWrap>
+  );
 };
 
 export default BookOnLoadPage;

@@ -39,9 +39,9 @@ const Auth = () => {
         //소셜 로그인 시 user 권한일 경우 history back
         if (result.role === 'USER') {
           //이전 페이지 이동
-          navigate(-3);
+          navigate(localStorage.getItem('url'));
         } else {
-          navigate('/profile');
+          navigate('/signUp');
         }
       });
     }

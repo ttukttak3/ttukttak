@@ -1,18 +1,15 @@
 import styled from 'styled-components';
-//이미지 위 아래 중간 위치하는 법
-//감싸는 부모에게 line-height 맥이고 자식 img 태그에 vertical-align:middle
-//텍스트 박스는 부모의 높이와 동일하게 맥이고 line-height를 높이 값으로 주면 중간에 위치
 const HeaderBox = styled.div`
   display: flex;
   flex-direction: row;
   position: fixed;
   top: 0;
-  right: 0;
   left: 0;
+  right: 0;
   z-index: 1;
-  transition: height 0.3s ease;
+  width: 34rem;
+  margin: 0 auto;
   height: 6.4rem;
-  padding: 0 2.5rem;
   text-align: left;
   background: ${({ theme }) => theme.colors.$black3};
 `;
@@ -83,6 +80,40 @@ const RightText = styled.a`
   color: #ffffff;
 `;
 
-const headerStyle = { HeaderBox, LeftBox, Title, BackBtn, DownBtn, RightBox, RightBtn, RightText };
+const LocationBox = styled.div`
+  position: relative;
+  width: 31.2rem;
+  height: 6.4rem;
+  padding-top: 1.2rem;
+
+  input {
+    width: 31.2rem;
+    height: 4rem;
+    line-height: 4rem;
+    background-color: #171717;
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: #fff;
+    padding-left: 1.2rem;
+  }
+  .active {
+    display: block;
+  }
+  .hide {
+    display: none;
+  }
+  button {
+    position: absolute;
+    top: 2rem;
+    right: 4.1rem;
+    width: 2.4rem;
+    height: 2.4rem;
+  }
+  button:last-child {
+    right: 1rem;
+  }
+`;
+
+const headerStyle = { HeaderBox, LeftBox, Title, BackBtn, DownBtn, RightBox, RightBtn, RightText, LocationBox };
 
 export default headerStyle;

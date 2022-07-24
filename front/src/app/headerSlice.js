@@ -16,6 +16,9 @@ export const headerSlice = createSlice({
         more: false,        //더보기
         moreBookId: 0,      //더보기 팝업 클릭 시 컨트롤할 책 ID값
         save: false,        //도서 등록 버튼
+        settings: false,    //세팅
+        locationBox: false, //주소 검색 박스
+        placeholder: '',    //주소 검색 placeholder
     },
     reducers: {
         setTitle: (state, action) => {
@@ -54,6 +57,15 @@ export const headerSlice = createSlice({
         setSave: (state, action) => {
             state.save = action.payload;
         },
+        setSettings: (state, action) => {
+            state.settings = action.payload;
+        },
+        setLocationBox: (state, action) => {
+            state.locationBox = action.payload;
+        },
+        setPlaceholder: (state, action) => {
+            state.placeholder = action.payload;
+        },
         setAllFalse: (state, action) => {
             Object.keys(state).forEach(key => {
                 if (state[key]) {
@@ -64,6 +76,23 @@ export const headerSlice = createSlice({
     },
 });
 
-export const { setTitle, setBack, setBackHome, setLocation, setSearch, setFavorite, setAlert, setTrash, setShare, setMore, setMoreBookId, setSave, setAllFalse } = headerSlice.actions;
+export const {
+    setTitle,
+    setBack,
+    setBackHome,
+    setLocation,
+    setSearch,
+    setFavorite,
+    setAlert,
+    setTrash,
+    setShare,
+    setMore,
+    setMoreBookId,
+    setSave,
+    setSettings,
+    setLocationBox,
+    setPlaceholder,
+    setAllFalse,
+  } = headerSlice.actions;
 
 export default headerSlice.reducer;

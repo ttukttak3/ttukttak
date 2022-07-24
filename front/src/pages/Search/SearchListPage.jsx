@@ -22,7 +22,7 @@ const SearchListPage = () => {
 
   useEffect(() => {
     dispatch(setAllFalse());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     console.log(selectedBook);

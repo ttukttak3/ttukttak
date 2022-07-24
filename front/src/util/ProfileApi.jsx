@@ -1,5 +1,5 @@
 import utils from './ApiUtil';
-const { baseHost, accessToken, apiUtil, apiAuthUtil, formUtil } = utils;
+const { baseHost, accessToken, apiAuthUtil, formUtil } = utils;
 const redirectUrl = process.env.REACT_APP_API_URL + 'oauth2/redirect';
 const naverUrl = baseHost + 'oauth2/authorize/naver?redirect_uri=' + redirectUrl;
 const kakaoUrl = baseHost + 'oauth2/authorize/kakao?redirect_uri=' + redirectUrl;
@@ -26,15 +26,6 @@ const nickNameCheck = async nickName => {
   }
 };
 
-const locationValue = async position => {
-  try {
-    const result = await apiUtil.get(`api/v1/address/location?latitude=${position.coords.latitude.toString()}&longitude=${position.coords.longitude.toString()}`);
-    return result.data;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 const signUp = async formData => {
   try {
     const result = await formUtil.post(`api/v1/oauth/signup`, formData);
@@ -44,6 +35,15 @@ const signUp = async formData => {
   }
 };
 
-const profileApi = { naverUrl, kakaoUrl, getCurrentUser, nickNameCheck, locationValue, signUp };
+const setProfile = async formData => {
+  try {
+    const result = await formUtil.put(`api/v1/oauth/profile`, formData);
+    return result.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const profileApi = { naverUrl, kakaoUrl, getCurrentUser, nickNameCheck, signUp, setProfile };
 
 export default profileApi;
