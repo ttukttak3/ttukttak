@@ -1,9 +1,11 @@
 import styled from 'styled-components';
-import { theme } from '../../../styles/theme';
-
 const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
+  position: fixed;
+  right: 0;
+  bottom: 8rem;
+  left: 0;
   justify-content: space-between;
   height: 3rem;
 `;
@@ -20,16 +22,16 @@ const Input = styled.input`
 
 const AddBtn = styled.img`
   display: block;
-  margin-top: 1rem;
   height: 2.4rem;
   weight: 2.4rem;
+  margin: 1rem 0.6rem 0;
 `;
 
 const SendBtn = styled.img`
   display: block;
-  margin-top: 1rem;
   height: 2.4rem;
   weight: 2.4rem;
+  margin: 1rem 0.6rem 0;
 `;
 
 const style = { Wrapper, Input, AddBtn, SendBtn };

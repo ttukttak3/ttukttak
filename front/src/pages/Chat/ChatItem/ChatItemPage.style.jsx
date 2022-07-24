@@ -4,6 +4,7 @@ const Wrapper = styled.div`
   display: block;
   flex-direction: column;
   justify-content: space-between;
+  padding: 1.5rem;
 `;
 
 const style = { Wrapper };

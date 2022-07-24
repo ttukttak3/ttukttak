@@ -4,15 +4,20 @@ import style from './ChatMessage.style';
 const ChatMessage = ({ side, item }) => {
   const { Wrapper, Left, Right } = style;
   const { message, sendedAt } = item;
+
+  const d = new Date(sendedAt);
+
   return (
     <Wrapper>
       {side === 'left' ? (
         <Left>
-          {message} <time>{sendedAt}</time>
+          <msg>{message}</msg>
+          {d.toLocaleTimeString('ko-kr')}
         </Left>
       ) : (
         <Right>
-          {message} <time>{sendedAt}</time>
+          {d.toLocaleTimeString('ko-kr')}
+          <msg>{message}</msg>
         </Right>
       )}
     </Wrapper>

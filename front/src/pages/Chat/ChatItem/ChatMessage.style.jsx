@@ -5,29 +5,36 @@ const Wrapper = styled.div`
 `;
 
 const Left = styled.div`
+  flex-direction: row;
   margin-right: auto;
-  font-size: 1.4rem;
-  height: 2.5rem;
-  width: auto;
-  background: ${({ theme }) => theme.colors.$primaryBlueP};
-  color: ${({ theme }) => theme.colors.$white1};
-  left: 0;
-  time {
-    font-size: 1.2rem;
-    background: none;
+  height: 4rem;
+  font-size: 1.2rem;
+  color: ${({ theme }) => theme.colors.$white4};
+  msg {
+    font-size: 2rem;
+    width: auto;
+    background: ${({ theme }) => theme.colors.$primaryBlueP};
+    color: ${({ theme }) => theme.colors.$white1};
+    padding: 0.3rem 0.8rem 0.3rem 0.8rem;
+    margin-right: 0.5rem;
+    border-radius: 0.5rem;
   }
 `;
+
 const Right = styled.div`
+  flex-direction: row;
   margin-left: auto;
-  font-size: 1.4rem;
-  height: 2.5rem;
-  width: auto;
-  background: ${({ theme }) => theme.colors.$black4};
-  color: ${({ theme }) => theme.colors.$white1};
-  right: 0;
-  time {
-    font-size: 1.2rem;
-    background: none;
+  height: 4rem;
+  font-size: 1.2rem;
+  color: ${({ theme }) => theme.colors.$white4};
+  msg {
+    font-size: 2rem;
+    width: auto;
+    background: ${({ theme }) => theme.colors.$black4};
+    color: ${({ theme }) => theme.colors.$white1};
+    padding: 0.3rem 0.8rem 0.3rem 0.8rem;
+    border-radius: 0.5rem;
+    margin-left: 0.5rem;
   }
 `;
 

@@ -3,11 +3,11 @@ import styled from 'styled-components';
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
+  height: 8rem;
 `;
 
 const BookImg = styled.img`
-  flex: 1;
+  // flex: 1;
 `;
 
 const Title = styled.div`
@@ -21,7 +21,9 @@ const Author = styled.div`
   font-weight: 400;
 `;
 
-const Location = styled.div``;
+const Location = styled.div`
+  font-size: 1.6rem;
+`;
 
 const Status = styled.div``;
 

@@ -13,23 +13,38 @@ const Img = styled.img`
   height: 4rem;
   margin: 0.6rem;
 `;
+
+const InfoWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 const UserName = styled.div`
   margin-top: 1rem;
   color: ${({ theme }) => theme.colors.$white1};
   font-size: 1.6rem;
   font-weight: 400;
-  text-align: left;
+  width: 100%;
+  time {
+    margin-top: 1rem;
+    text-align: right;
+    magin-left: auto;
+    color: ${({ theme }) => theme.colors.$white3};
+  }
 `;
-const Time = styled.div`
-  margin-top: 1rem;
-  text-align: right;
-  color: ${({ theme }) => theme.colors.$white3};
-`;
+
 const LastChat = styled.div`
   color: ${({ theme }) => theme.colors.$white3};
+  font-size: 1.6rem;
+  unread {
+    magin-left: auto;
+    color: ${({ theme }) => theme.colors.$white1};
+    background-color: ${({ theme }) => theme.colors.$primaryBlueP};
+    padding: 0.3rem;
+    border-radius: 1.5rem;
+  }
 `;
-const Unread = styled.div``;
 
-const style = { Wrapper, Img, UserName, Time, LastChat, Unread };
+const style = { Wrapper, Img, UserName, LastChat, InfoWrapper };
 
 export default style;
