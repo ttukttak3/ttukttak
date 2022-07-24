@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
@@ -18,10 +18,22 @@ import SearchListPage from '../../pages/Search/SearchListPage';
 const Layout = () => {
   const navi = useLocation();
   const { LayoutBox, Section } = style;
+  const [marginState, setMarginState] = useState('margin');
+
+  useEffect(() => {
+    if (navi.pathname === '/detailBook') {
+      setMarginState('noMagin');
+    } else if (navi.pathname === '/search') {
+      setMarginState('noMarginTop');
+    } else {
+      setMarginState('margin');
+    }
+  }, [navi]);
+
   return (
     <LayoutBox>
-      <Header />
-      <Section className={navi.pathname === '/detailBook' ? 'noMargin' : 'margin'}>
+      {navi.pathname !== '/search' && <Header />}
+      <Section className={marginState}>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/detailBook" element={<BookDetailPage />} />

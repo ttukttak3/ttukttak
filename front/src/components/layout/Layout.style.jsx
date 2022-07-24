@@ -29,6 +29,10 @@ const Section = styled.div`
   &.noMargin {
     margin: 6.4rem 0 0 0;
   }
+
+  &.noMarginTop {
+    margin: 0 0 0 0;
+  }
 `;
 
 const layoutStyle = { LayoutBox, Section };

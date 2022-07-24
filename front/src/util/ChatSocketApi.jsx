@@ -37,8 +37,8 @@ const subscribe = (client, roomId, setChatMessages, setMessage) => {
 };
 
 //4. client.publish 함수 : 메세지 보내기
-const publish = (roomId, userId, client, setMessage, message) => {
-  console.log('publish');
+const publish = (roomId, memberId, client, message) => {
+  console.log(`publish : ${roomId}, ${memberId}, ${client}, ${message}`);
   if (!client.current.connected) {
     return;
   }
@@ -46,7 +46,7 @@ const publish = (roomId, userId, client, setMessage, message) => {
     destination: '/api/pub/chat/message',
     body: JSON.stringify({
       roomId: roomId,
-      userId: userId,
+      memberId: memberId,
       message: message,
       messageType: 'TEXT',
     }),

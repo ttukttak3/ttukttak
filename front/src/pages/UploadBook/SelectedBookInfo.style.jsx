@@ -47,6 +47,21 @@ const InputText = styled.input`
   font-weight: 600;
 `;
 
+const Text = styled.div`
+  border-bottom: 1px solid ${({ theme }) => theme.colors.$black3Line};
+  background-color: ${({ theme }) => theme.colors.$black3};
+  color: ${({ theme }) => theme.colors.$whiteLine1};
+  display: flex;
+  padding: 1.2rem 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+
+  dt {
+    margin-left: auto;
+    font-size: 1.4rem;
+  }
+`;
+
 const OptionText = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.colors.$black3Line};
   background-color: ${({ theme }) => theme.colors.$black3};
@@ -84,6 +99,6 @@ const VerticalScrollWrapper = styled.div`
     display: none;
   }
 `;
-const style = { Wrapper, UploadImg, UplodedImg, ImageContainer, InputText, OptionText, ImgBox, SaveButton, CountImg, VerticalScrollWrapper };
+const style = { Wrapper, UploadImg, UplodedImg, ImageContainer, InputText, Text, OptionText, ImgBox, SaveButton, CountImg, VerticalScrollWrapper };
 
 export default style;

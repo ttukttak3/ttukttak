@@ -2,6 +2,7 @@ package com.ttukttak.book.dto;
 
 import com.ttukttak.book.entity.BookCategory;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,8 +14,17 @@ public class BookCategoryDto {
 	private Long id;
 	private String name;
 
-	public BookCategoryDto(BookCategory bookCategory) {
-		this.id = bookCategory.getId();
-		this.name = bookCategory.getName();
+	@Builder
+	private BookCategoryDto(Long id, String name) {
+		this.id = id;
+		this.name = name;
 	}
+
+	public static BookCategoryDto from(BookCategory bookCategory) {
+		return BookCategoryDto.builder()
+			.id(bookCategory.getId())
+			.name(bookCategory.getName())
+			.build();
+	}
+
 }
