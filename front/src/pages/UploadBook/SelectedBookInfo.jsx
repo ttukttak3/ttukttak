@@ -136,13 +136,11 @@ const SelectedBookInfo = ({ item, categoryList }) => {
             <CountImg>{imgPreview.length + 1}/3</CountImg>
           </ImgBox>
           <UplodedImg src={image} />
-          {imgPreview ? (
-            imgPreview.map((preview, index) => {
-              return <UplodedImg key={index} src={preview} />;
-            })
-          ) : (
-            <span></span>
-          )}
+          {imgPreview
+            ? imgPreview.map((preview, index) => {
+                return <UplodedImg key={index} src={preview} />;
+              })
+            : ''}
         </VerticalScrollWrapper>
       </ImageContainer>
       <Text>{name}</Text>

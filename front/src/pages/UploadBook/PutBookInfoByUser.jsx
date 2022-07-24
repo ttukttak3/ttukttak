@@ -138,13 +138,11 @@ const PutBookInfoByUser = ({ categoryList }) => {
             <UploadImg src={camera} onClick={onChangeImg}></UploadImg>
             <CountImg>{imgPreview.length}/3</CountImg>
           </ImgBox>
-          {imgPreview ? (
-            imgPreview.map((preview, index) => {
-              return <UplodedImg key={index} src={preview} />;
-            })
-          ) : (
-            <span></span>
-          )}
+          {imgPreview
+            ? imgPreview.map((preview, index) => {
+                return <UplodedImg key={index} src={preview} />;
+              })
+            : ''}
         </VerticalScrollWrapper>
       </ImageContainer>
       <InputText placeholder="도서 제목" value={bookTitle} onChange={e => setBookTitle(e.target.value)}></InputText>
