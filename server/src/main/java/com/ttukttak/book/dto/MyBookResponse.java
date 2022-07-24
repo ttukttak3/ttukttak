@@ -26,7 +26,7 @@ public class MyBookResponse {
 	public static MyBookResponse from(Book book) {
 		return MyBookResponse.builder()
 			.id(book.getId())
-			.imageUrl(book.getBookImageUrl())
+			.imageUrl(book.getTumbnailImageUrl())
 			.grade(book.getGrade())
 			.build();
 	}

@@ -121,7 +121,7 @@ public class Book extends BaseTimeEntity implements Serializable {
 		return this;
 	}
 
-	public String getBookImageUrl() {
+	public String getTumbnailImageUrl() {
 		if (this.thumbnail != null) {
 			return this.thumbnail.getImageUrl();
 		} else {
