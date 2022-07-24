@@ -117,7 +117,8 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 			throw new IllegalArgumentException();
 		}
 
-		ChatMember chatMember = chatMemberRepository.findByUserId(guest.getId()).orElse(null);
+		ChatMember chatMember = chatMemberRepository.findByUserIdAndBookId(guest.getId(), request.getBookId())
+			.orElse(null);
 
 		// 이미 존재하는 채팅방이면 채팅방 정보 return
 		if (chatMember != null) {

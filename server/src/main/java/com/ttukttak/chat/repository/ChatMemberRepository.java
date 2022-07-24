@@ -9,11 +9,11 @@ import com.ttukttak.chat.entity.ChatMember;
 
 public interface ChatMemberRepository
 	extends JpaRepository<ChatMember, Long>, ChatMemberRepositoryCustom {
-	Optional<ChatMember> findByRoomIdAndUserId(Long roomId, Long userId);
+	Optional<ChatMember> findByUserIdAndBookId(Long userId, Long bookId);
 
 	Optional<ChatMember> findByUserId(Long userId);
 
 	List<ChatMember> findAllByRoomId(Long roomId);
-	
+
 	List<ChatMember> findAllByUserId(Long userId);
 }
