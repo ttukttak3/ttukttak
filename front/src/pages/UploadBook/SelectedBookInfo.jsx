@@ -1,41 +1,104 @@
 /* eslint-disable max-lines-per-function */
-import React, { useState, useEffect, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import style from './PutBookInfoByUser.style';
+import style from './SelectedBookInfo.style';
 import camera from '../../assets/img/userInterFace/Camera_enhance.png';
 import expand_more from '../../assets/img/arrows/expand_more.png';
-import bookApi from '../../util/BookApi';
-import { setAllFalse } from '../../app/headerSlice';
 import ConfirmPopup from '../../components/Modal/ConfirmPopup';
 import SelectPopupBottom from '../../components/Modal/SelectPopupBottom';
+import bookApi from '../../util/BookApi';
+const SelectedBookInfo = ({ item, categoryList }) => {
+  const inputRef = useRef(null);
+  const navigate = useNavigate();
+  const { uploadBook } = bookApi;
+  const { Wrapper, UploadImg, ImageContainer, Text, InputText, UplodedImg, OptionText, ImgBox, SaveButton, CountImg, VerticalScrollWrapper } = style;
+  const { author, description, image, isbn, name, price, publishedDate, publisher } = item;
 
-const PutBookInfoByUser = ({ categoryList }) => {
-  const { Wrapper, UploadImg, ImageContainer, InputText, UplodedImg, OptionText, ImgBox, SaveButton, CountImg, VerticalScrollWrapper } = style;
-  const [modalTitle, setModalTitle] = useState('');
-  const [contentList, setContentList] = useState([]);
-  const [showModal, setShowModal] = useState(false);
-  const [bookGrade, setBookGrade] = useState('');
-  const [bookTitle, setBookTitle] = useState();
-  const [bookAuthor, setBookAuthor] = useState();
-  const [deposit, setDeposit] = useState();
-  const [bookImg, setBookImg] = useState('');
-  const [review, setReview] = useState();
   const [currentCategory, setCurrentCategory] = useState('');
   const [currentCategoryTitle, setCurrentCategoryTitle] = useState('');
-  const { uploadBook } = bookApi;
-  const dispatch = useDispatch();
-  const inputRef = useRef(null);
-
+  const [contentList, setContentList] = useState([]);
+  const [bookGrade, setBookGrade] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const [deposit, setDeposit] = useState();
+  const [review, setReview] = useState();
+  const [modalTitle, setModalTitle] = useState('');
   const bookGradeList = ['A', 'B', 'C'];
   const [confirmTitle, setConfirmTitle] = useState('');
-  const [isConfirm, setIsConfirm] = useState(false);
   const [confirmBtns, setConfirmBtns] = useState();
-  const navigate = useNavigate();
-  useEffect(() => {
-    dispatch(setAllFalse());
-    return () => {};
-  }, [dispatch]);
+  const [isConfirm, setIsConfirm] = useState(false);
+  const [imgFiles, setImgFiles] = useState([]);
+  const onChangeImg = e => {
+    e.preventDefault();
+    inputRef.current.click();
+  };
+
+  const onSaveHandler = () => {
+    setConfirmTitle('작성을 완료 하시겠습니까?');
+    setConfirmBtns([
+      { onClick: confirmClose, message: '취소' },
+      { onClick: saveBookInfo, message: '확인' },
+    ]);
+    setIsConfirm(true);
+  };
+
+  const confirmClose = () => {
+    setIsConfirm(false);
+  };
+
+  const saveBookInfo = async () => {
+    if (!currentCategory && !bookGrade) {
+      alert('도서 제목, 저자명, 카테고리, 도서 상태 등급은 필수 입력 항목이에요.');
+    } else {
+      const saveData = {
+        description: description,
+        image: image,
+        isbn: isbn,
+        name: name,
+        price: price,
+        publishedDate: publishedDate,
+        publisher: publisher,
+        author: author,
+        subject: name,
+        bookCategoryId: currentCategory,
+        content: review,
+        deposite: deposit,
+        grade: bookGrade,
+        thumbnail: image,
+        imageFiles: imgFiles,
+      };
+      console.log(saveData);
+
+      const bookId = await uploadBook(saveData);
+      console.log(bookId);
+      confirmClose();
+      navigate(`/detailBook`, { state: { id: bookId } });
+    }
+  };
+
+  const [firstPicPreview, setFirstPicPreview] = useState('');
+  const [secondPicPreview, setSecondPicPreview] = useState('');
+
+  const saveImage = e => {
+    e.preventDefault();
+    const files = e.target.files;
+    setImgFiles(files);
+
+    const fileReader1 = new FileReader();
+    if (files[0]) {
+      fileReader1.readAsDataURL(files[0]);
+      fileReader1.onload = () => {
+        setFirstPicPreview(fileReader1.result);
+      };
+    }
+
+    const fileReader2 = new FileReader();
+    if (files[1]) {
+      fileReader2.readAsDataURL(files[1]);
+      fileReader2.onload = () => {
+        setSecondPicPreview(fileReader2.result);
+      };
+    }
+  };
 
   const showCategoryModal = () => {
     setModalTitle('카테고리');
@@ -70,89 +133,6 @@ const PutBookInfoByUser = ({ categoryList }) => {
     setShowModal(true);
   };
 
-  const saveBookInfo = async () => {
-    if (!bookTitle && !bookAuthor && !currentCategory && !bookGrade) {
-      alert('도서 제목, 저자명, 카테고리, 도서 상태 등급은 필수 입력 항목이에요.');
-    } else {
-      const saveData = {
-        description: '',
-        image: '',
-        isbn: '',
-        name: bookTitle,
-        price: 0,
-        publishedDate: '',
-        publisher: '',
-        author: bookAuthor,
-        subject: bookTitle,
-        bookCategoryId: currentCategory,
-        content: review,
-        deposite: deposit,
-        grade: bookGrade,
-        thumbnail: imgFiles[0].name,
-        imageFiles: imgFiles,
-      };
-      console.log(saveData);
-
-      const bookId = await uploadBook(saveData);
-      console.log(bookId);
-      confirmClose();
-      navigate(`/detailBook`, { state: { id: bookId } });
-    }
-  };
-
-  const onSaveHandler = () => {
-    setConfirmTitle('작성을 완료 하시겠습니까?');
-    setConfirmBtns([
-      { onClick: confirmClose, message: '취소' },
-      { onClick: saveBookInfo, message: '확인' },
-    ]);
-    setIsConfirm(true);
-  };
-
-  const confirmClose = () => {
-    setIsConfirm(false);
-  };
-
-  const onChangeImg = e => {
-    e.preventDefault();
-    inputRef.current.click();
-  };
-
-  const [firstPicPreview, setFirstPicPreview] = useState('');
-  const [secondPicPreview, setSecondPicPreview] = useState('');
-  const [thirdPicPreview, setThirdPicPreview] = useState('');
-  const [imgFiles, setImgFiles] = useState([]);
-
-  const saveImage = e => {
-    e.preventDefault();
-    const files = e.target.files;
-    setImgFiles(files);
-
-    const fileReader1 = new FileReader();
-    if (files[0]) {
-      fileReader1.readAsDataURL(files[0]);
-      fileReader1.onload = () => {
-        setFirstPicPreview(fileReader1.result);
-      };
-    }
-
-    const fileReader2 = new FileReader();
-    if (files[1]) {
-      fileReader2.readAsDataURL(files[1]);
-      fileReader2.onload = () => {
-        setSecondPicPreview(fileReader2.result);
-      };
-    }
-
-    const fileReader3 = new FileReader();
-    if (files[2]) {
-      fileReader3.readAsDataURL(files[2]);
-      fileReader3.onload = () => {
-        setThirdPicPreview(fileReader3.result);
-      };
-    }
-  };
-
   return (
     <Wrapper>
       <ImageContainer>
@@ -162,13 +142,16 @@ const PutBookInfoByUser = ({ categoryList }) => {
             <input type="file" accept="image/*" multiple capture="camera" ref={inputRef} onChange={saveImage} style={{ display: 'none' }} />
             <CountImg>0/3</CountImg>
           </ImgBox>
+          <UplodedImg src={image} />
           {firstPicPreview !== '' && <UplodedImg src={firstPicPreview} />}
           {secondPicPreview !== '' && <UplodedImg src={secondPicPreview} />}
-          {thirdPicPreview !== '' && <UplodedImg src={thirdPicPreview} />}
         </VerticalScrollWrapper>
       </ImageContainer>
-      <InputText placeholder="도서 제목" value={bookTitle} onChange={e => setBookTitle(e.target.value)}></InputText>
-      <InputText placeholder="저자명" value={bookAuthor} onChange={e => setBookAuthor(e.target.value)}></InputText>
+      <Text>{name}</Text>
+      <Text>{author}</Text>
+      <Text>
+        도서 정가<dt>₩{price}</dt>
+      </Text>
       <OptionText onClick={() => showCategoryModal()}>
         {currentCategoryTitle.length > 0 ? currentCategoryTitle : '카테고리'}
         <img src={expand_more} alt={'카테고리 선택'}></img>
@@ -186,4 +169,4 @@ const PutBookInfoByUser = ({ categoryList }) => {
   );
 };
 
-export default PutBookInfoByUser;
+export default SelectedBookInfo;
