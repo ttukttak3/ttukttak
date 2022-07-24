@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ttukttak.book.dto.BookDto;
 import com.ttukttak.chat.dto.ChatMessageDto;
 import com.ttukttak.chat.dto.ChatRoomInfo;
 import com.ttukttak.chat.dto.LastCheckedMessageRequest;
@@ -70,7 +71,12 @@ public class ChatMessageServiceImpl implements ChatMessageService {
 
 		chatRoomService.enterChatRoom(roomId);
 
-		return ChatRoomInfo.builder().roomId(roomId).members(members).messages(messages).build();
+		return ChatRoomInfo.builder()
+			.roomId(roomId)
+			.book(BookDto.from(findChatMember.getBook()))
+			.members(members)
+			.messages(messages)
+			.build();
 	}
 
 	@Override
