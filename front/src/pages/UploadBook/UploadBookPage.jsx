@@ -12,12 +12,14 @@ const UploadBookPage = () => {
   const [radioOpt, setRadioOpt] = useState('searchToSave');
   const { getCategoryList } = bookApi;
   const [categoryList, setCategoryList] = useState([]);
+
   useEffect(() => {
+    localStorage.setItem('url', '/upload');
     dispatch(setAllFalse());
     dispatch(setTitle('도서 대여 글쓰기'));
     dispatch(setBack(true));
     getCategoryList(setCategoryList);
-  }, [dispatch, radioOpt]);
+  }, [dispatch, radioOpt, getCategoryList]);
 
   const handleRadio = e => {
     setRadioOpt(e.target.value);

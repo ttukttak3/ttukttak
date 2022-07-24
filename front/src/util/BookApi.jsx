@@ -1,6 +1,7 @@
 import utils from './ApiUtil';
 const { apiUtil, formUtil } = utils;
-const getBookList = async (param, setBookList) => {
+
+const getBookList = async (param, setBookList, setLoader) => {
   try {
     const result = await apiUtil.get(`api/v1/books?pageNum=${param.pageNum}&order=${param.order}&status=${param.status}&townId=${param.townId}&categoryId=${param.categoryId}`);
     result.data.contents.map(data => {
@@ -9,6 +10,7 @@ const getBookList = async (param, setBookList) => {
   } catch (error) {
     console.log(error);
   }
+  setLoader(false);
 };
 
 const uploadBook = async bookInfo => {
@@ -78,6 +80,17 @@ const bookDelete = async bookId => {
   }
 };
 
-const bookApi = { uploadBook, getBookList, getDetailView, interparkSearch, getCategoryList, updateBookGrade, updateBookStatus, bookDelete };
+const getMyBookList = async (param, setMyBookList) => {
+  try {
+    const result = await apiUtil.get(`api/v1/users/${param.userId}/books?pageNum=${param.pageNum}`);
+    result.data.contents.map(data => {
+      return setMyBookList(_bookList => [..._bookList, data]);
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const bookApi = { uploadBook, getBookList, getDetailView, interparkSearch, getCategoryList, updateBookGrade, updateBookStatus, bookDelete, getMyBookList };
 
 export default bookApi;

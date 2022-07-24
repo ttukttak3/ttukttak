@@ -19,6 +19,8 @@ const ChatPage = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    //로그인 back history
+    localStorage.setItem('url', '/chat');
     dispatch(setAllFalse());
     dispatch(setTitle('채팅'));
     console.log(userId);

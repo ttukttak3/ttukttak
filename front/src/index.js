@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
+import ScrollToTop from './components/common/ScrollToTop';
 import App from './App';
 import store from './app/store';
 import { Provider } from 'react-redux';
@@ -14,6 +15,7 @@ root.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
       <BrowserRouter>
+        <ScrollToTop />
         <App />
       </BrowserRouter>
     </PersistGate>

@@ -13,16 +13,18 @@ import notifications from '../../assets/img/userInterFace/Notifications.png';
 import trashCan from '../../assets/img/userInterFace/Trash_Can.png';
 import shareImg from '../../assets/img/userInterFace/share.png';
 import moreVert from '../../assets/img/userInterFace/more_vert.png';
+import settingsImg from '../../assets/img/userInterFace/Settings.png';
+import clearGray from '../../assets/img/userInterFace/Clear_gray.png';
 import SelectPopup from '../../components/Modal/SelectPopupBottom';
 import ConfirmPopup from '../../components/Modal/ConfirmPopup';
 import bookApi from '../../util/BookApi';
 const Header = () => {
   const navigate = useNavigate();
   const header = useSelector(state => state.header);
-  const { title, back, backHome, location, search, favorite, alert, trash, share, more, moreBookId } = header;
-  const { HeaderBox, LeftBox, Title, BackBtn, DownBtn, RightBox, RightBtn } = style;
+  const { title, back, backHome, location, search, favorite, alert, trash, share, more, moreBookId, settings, locationBox, placeholder } = header;
+  const { HeaderBox, LeftBox, Title, BackBtn, DownBtn, RightBox, RightBtn, LocationBox } = style;
 
-  // popup
+  // 포스트보기 더보기 클릭 popup
   const { bookDelete } = bookApi;
   const [moreShowing, setMoreShowing] = useState(false);
   const [bookDeleteShowing, setBookDeleteShowing] = useState(false);
@@ -80,6 +82,21 @@ const Header = () => {
     };
   }, [handleClickOutside]);
 
+  //나의책방 > 프로필 수정 > 위치 검색
+  const [visible, setVisible] = useState(false);
+  const handleChangeInputText = e => {
+    if (e.target.value) {
+      setVisible(true);
+    } else {
+      setVisible(false);
+    }
+  };
+
+  const handleClickClearBtn = () => {
+    document.getElementById('searchInput').value = '';
+    setVisible(false);
+  };
+
   return (
     <HeaderBox ref={modalEl}>
       <LeftBox>
@@ -96,8 +113,19 @@ const Header = () => {
         <Title>{title}</Title>
         {location && (
           <DownBtn>
-            <img src={expandMore} alt={'위치목록'} />
+            <img src={expandMore} alt={'위치목록'} onClick={() => navigate(`/location/${JSON.parse(localStorage.getItem('town')).id}`)} />
           </DownBtn>
+        )}
+        {locationBox && (
+          <LocationBox>
+            <input id="searchInput" placeholder={placeholder} onChange={handleChangeInputText} />
+            <button id="clearBtn" className={visible ? 'active' : 'hide'} onClick={handleClickClearBtn}>
+              <img src={clearGray} alt={'초기화버튼'} />
+            </button>
+            <button id="searchBtn">
+              <img src={searchImg} alt={'검색버튼'} />
+            </button>
+          </LocationBox>
         )}
       </LeftBox>
       <RightBox>
@@ -129,6 +157,11 @@ const Header = () => {
         {more && (
           <RightBtn onClick={() => openModal()}>
             <img src={moreVert} alt={'더보기버튼'} />
+          </RightBtn>
+        )}
+        {settings && (
+          <RightBtn>
+            <img src={settingsImg} alt={'설정버튼'} />
           </RightBtn>
         )}
       </RightBox>

@@ -33,6 +33,7 @@ const GlobalStyle = createGlobalStyle`
         font-family: "Pretendard";
         vertical-align: baseline;
         box-sizing: border-box;
+        letter-spacing: -0.06rem;
         word-break:keep-all; 
         word-wrap:break-word; 
         white-space:normal;

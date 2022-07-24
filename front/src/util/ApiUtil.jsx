@@ -8,7 +8,7 @@ export const ACCESS_TOKEN = 'accessToken';
 const apiUtil = axios.create({
   baseURL: baseUrl,
   changeOrigin: true,
-  timeout: 5000,
+  //timeout: 5000,
   headers: {
     'Content-Type': 'application/json',
     charset: 'UTF-8',

@@ -10,6 +10,7 @@ export const userSlice = createSlice({
         email: '',
         imageFile: '',
         homeTown: '',
+        introduction: '',
     },
     reducers: {
         setUserId: (state, action) => {
@@ -30,9 +31,12 @@ export const userSlice = createSlice({
         setHomeTown: (state, action) => {
             state.homeTown = action.payload;
         },
+        setIntroduction: (state, action) => {
+            state.introduction = action.payload;
+        },
     },
 });
 
-export const { setUserId, setRole, setNickName, setEmail, setImageFile, setHomeTown } = userSlice.actions;
+export const { setUserId, setRole, setNickName, setEmail, setImageFile, setHomeTown, setIntroduction } = userSlice.actions;
 
 export default userSlice.reducer;
