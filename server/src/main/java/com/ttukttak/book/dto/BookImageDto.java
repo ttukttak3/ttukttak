@@ -22,7 +22,7 @@ public class BookImageDto {
 
 	public static BookImageDto from(BookImage bookImage) {
 		if (bookImage == null) {
-			return new BookImageDto();
+			return null;
 		}
 		return BookImageDto.builder()
 			.id(bookImage.getId())

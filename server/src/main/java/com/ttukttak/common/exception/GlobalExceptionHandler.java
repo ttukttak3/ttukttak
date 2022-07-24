@@ -20,8 +20,18 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<StatusResponse> handleException(Exception e) {
-		log.info(e.getMessage());
+		log.error(toLogMessage(e));
 
 		return createResponse(ExceptionFactory.getInstance(e));
+	}
+
+	private String toLogMessage(Exception e) {
+		String exceptionName = e.getClass().getName();
+		String message = e.getMessage();
+
+		String className = e.getStackTrace()[0].getClassName();
+		int lineNumber = e.getStackTrace()[0].getLineNumber();
+
+		return String.format("%s: %s - at %s: line %d", exceptionName, message, className, lineNumber);
 	}
 }
