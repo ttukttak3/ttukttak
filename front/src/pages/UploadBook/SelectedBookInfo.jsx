@@ -20,7 +20,7 @@ const SelectedBookInfo = ({ item, categoryList }) => {
   const [bookGrade, setBookGrade] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [deposit, setDeposit] = useState();
-  const [review, setReview] = useState();
+  const [review, setReview] = useState('');
   const [modalTitle, setModalTitle] = useState('');
   const bookGradeList = ['A', 'B', 'C'];
   const [confirmTitle, setConfirmTitle] = useState('');
@@ -49,54 +49,47 @@ const SelectedBookInfo = ({ item, categoryList }) => {
     if (!currentCategory && !bookGrade) {
       alert('도서 제목, 저자명, 카테고리, 도서 상태 등급은 필수 입력 항목이에요.');
     } else {
-      const saveData = {
-        description: description,
-        image: image,
-        isbn: isbn,
-        name: name,
-        price: price,
-        publishedDate: publishedDate,
-        publisher: publisher,
-        author: author,
-        subject: name,
-        bookCategoryId: currentCategory,
-        content: review,
-        deposite: deposit,
-        grade: bookGrade,
-        thumbnail: image,
-        imageFiles: imgFiles,
-      };
-      console.log(saveData);
+      const formData = new FormData();
+      formData.append('description', description);
+      formData.append('image', image);
+      formData.append('isbn', isbn);
+      formData.append('name', name);
+      formData.append('price', price);
+      formData.append('publishedDate', publishedDate);
+      formData.append('publisher', publisher);
+      formData.append('subject', name);
+      formData.append('author', author);
+      formData.append('bookCategoryId', currentCategory);
+      formData.append('content', review);
+      formData.append('deposit', deposit);
+      formData.append('grade', bookGrade);
+      formData.append('thumbnail', image);
 
-      const bookId = await uploadBook(saveData);
-      console.log(bookId);
+      for (let i = 0; i < imgFiles.length; i++) {
+        formData.append('imageFiles', imgFiles[i]);
+      }
+
+      const bookId = await uploadBook(formData);
       confirmClose();
       navigate(`/detailBook`, { state: { id: bookId } });
     }
   };
 
-  const [firstPicPreview, setFirstPicPreview] = useState('');
-  const [secondPicPreview, setSecondPicPreview] = useState('');
+  const [imgPreview, setImgPreview] = useState([]);
 
   const saveImage = e => {
     e.preventDefault();
     const files = e.target.files;
-    setImgFiles(files);
 
-    const fileReader1 = new FileReader();
-    if (files[0]) {
-      fileReader1.readAsDataURL(files[0]);
-      fileReader1.onload = () => {
-        setFirstPicPreview(fileReader1.result);
-      };
-    }
-
-    const fileReader2 = new FileReader();
-    if (files[1]) {
-      fileReader2.readAsDataURL(files[1]);
-      fileReader2.onload = () => {
-        setSecondPicPreview(fileReader2.result);
-      };
+    for (let i = 0; i < 2; i++) {
+      if (files[i] && imgPreview.length < 2) {
+        setImgFiles(file => [...file, files[i]]);
+        const fileReader = new FileReader();
+        fileReader.readAsDataURL(files[i]);
+        fileReader.onload = () => {
+          setImgPreview(preview => [...preview, fileReader.result]);
+        };
+      }
     }
   };
 
@@ -140,11 +133,16 @@ const SelectedBookInfo = ({ item, categoryList }) => {
           <ImgBox>
             <UploadImg src={camera} onClick={onChangeImg}></UploadImg>
             <input type="file" accept="image/*" multiple ref={inputRef} onChange={saveImage} style={{ display: 'none' }} />
-            <CountImg>0/3</CountImg>
+            <CountImg>{imgPreview.length + 1}/3</CountImg>
           </ImgBox>
           <UplodedImg src={image} />
-          {firstPicPreview !== '' && <UplodedImg src={firstPicPreview} />}
-          {secondPicPreview !== '' && <UplodedImg src={secondPicPreview} />}
+          {imgPreview ? (
+            imgPreview.map((preview, index) => {
+              return <UplodedImg key={index} src={preview} />;
+            })
+          ) : (
+            <span></span>
+          )}
         </VerticalScrollWrapper>
       </ImageContainer>
       <Text>{name}</Text>
