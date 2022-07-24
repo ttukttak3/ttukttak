@@ -121,6 +121,14 @@ public class Book extends BaseTimeEntity implements Serializable {
 		return this;
 	}
 
+	public String getTumbnailImageUrl() {
+		if (this.thumbnail != null) {
+			return this.thumbnail.getImageUrl();
+		} else {
+			return "";
+		}
+	}
+
 	@Builder
 	public Book(Long id, String subject, String content, int deposit, User owner, BookGrade grade,
 		BookInfo bookInfo, BookCategory bookCategory, BookImage thumbnail, String author, Town town) {

@@ -44,6 +44,10 @@ public class BookImage implements Serializable {
 	}
 
 	public static BookImage from(BookImageDto bookImageDto) {
+		if (bookImageDto == null) {
+			return new BookImage();
+		}
+
 		return BookImage.builder()
 			.id(bookImageDto.getId())
 			.imageUrl(bookImageDto.getImageUrl())
