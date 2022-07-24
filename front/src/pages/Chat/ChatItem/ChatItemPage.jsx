@@ -29,7 +29,7 @@ const ChatItemPage = () => {
   const client = useRef({});
 
   useEffect(() => {
-    connect(client, roomId, setChatMessages, setMessage);
+    connect(client, roomId, setChatMessages);
     chatRoomInfo();
     dispatch(setAllFalse());
     dispatch(setBack(true));

@@ -3,11 +3,11 @@ import styled from 'styled-components';
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
+  height: 8rem;
 `;
 
 const BookImg = styled.img`
-  flex: 1;
+  // flex: 1;
 `;
 
 const Title = styled.div`
