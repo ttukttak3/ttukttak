@@ -139,7 +139,7 @@ const SelectedBookInfo = ({ item, categoryList }) => {
         <VerticalScrollWrapper>
           <ImgBox>
             <UploadImg src={camera} onClick={onChangeImg}></UploadImg>
-            <input type="file" accept="image/*" multiple capture="camera" ref={inputRef} onChange={saveImage} style={{ display: 'none' }} />
+            <input type="file" accept="image/*" multiple ref={inputRef} onChange={saveImage} style={{ display: 'none' }} />
             <CountImg>0/3</CountImg>
           </ImgBox>
           <UplodedImg src={image} />
