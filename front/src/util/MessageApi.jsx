@@ -2,7 +2,7 @@
 import utils from './ApiUtil';
 const { apiAuthUtil } = utils;
 
-const getChatRoomInfo = async (roomId, setChatMessages, setMembers) => {
+const getChatRoomInfo = async (roomId, setChatMessages, setMembers, setBook) => {
   console.log('getMessageList');
 
   try {
@@ -12,6 +12,9 @@ const getChatRoomInfo = async (roomId, setChatMessages, setMembers) => {
     data.members.map(data => {
       setMembers(_memberList => [..._memberList, data]);
     });
+
+    console.log(data.book);
+    setBook(data.book);
 
     data.messages.map(data => {
       setChatMessages(_chatList => [..._chatList, data]);
@@ -48,6 +51,7 @@ const makeChatRoom = async (bookId, userId) => {
 };
 
 const readMessages = async (messageId, memberId, roomId) => {
+  console.log(`last-checked: ${messageId}, ${memberId}, ${roomId}`);
   try {
     const result = await apiAuthUtil.patch(`api/v1/chat/members/${memberId}/last-checked`, {
       messageId: messageId,
