@@ -18,7 +18,6 @@ public class MyBookResponse {
 
 	@Builder
 	private MyBookResponse(Long id, String imageUrl, BookGrade grade) {
-		super();
 		this.id = id;
 		this.imageUrl = imageUrl;
 		this.grade = grade;
@@ -27,7 +26,7 @@ public class MyBookResponse {
 	public static MyBookResponse from(Book book) {
 		return MyBookResponse.builder()
 			.id(book.getId())
-			.imageUrl(book.getThumbnail().getImageUrl())
+			.imageUrl(book.getThumbnail() != null ? book.getThumbnail().getImageUrl() : "")
 			.grade(book.getGrade())
 			.build();
 	}

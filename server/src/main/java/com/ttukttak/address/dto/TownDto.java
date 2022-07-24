@@ -17,15 +17,17 @@ public class TownDto {
 	private String name;
 	private String etc;
 	private String address;
+	private String longAddress;
 
 	@Builder
-	public TownDto(Long id, String city, String district, String name, String etc) {
+	private TownDto(Long id, String city, String district, String name, String etc) {
 		this.id = id;
 		this.city = city;
 		this.district = district;
 		this.name = name;
 		this.etc = etc;
 		this.address = (district + " " + name).trim();
+		this.longAddress = (city + " " + district + " " + name + " " + etc).trim();
 	}
 
 	public static TownDto from(Town town) {
