@@ -3,16 +3,17 @@ package com.ttukttak.chat.dto;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import com.ttukttak.chat.entity.ChatRoom;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 
 @Getter
-@Setter
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode
@@ -30,5 +31,25 @@ public class ChatRoomInfo implements Serializable {
 		this.roomId = roomId;
 		this.members = members;
 		this.messages = messages;
+	}
+
+	public static ChatRoomInfo from(ChatRoom chatRoom) {
+		List<MemberResponse> members = chatRoom.getChatMembers()
+			.stream()
+			.map(MemberResponse::from)
+			.collect(
+				Collectors.toList());
+
+		List<ChatMessageDto> messages = chatRoom.getMessages()
+			.stream()
+			.map(ChatMessageDto::from)
+			.collect(
+				Collectors.toList());
+
+		return ChatRoomInfo.builder()
+			.roomId(chatRoom.getId())
+			.messages(messages)
+			.members(members)
+			.build();
 	}
 }

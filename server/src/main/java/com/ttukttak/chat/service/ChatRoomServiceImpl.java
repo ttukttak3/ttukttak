@@ -121,7 +121,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
 		// 이미 존재하는 채팅방이면 채팅방 정보 return
 		if (chatMember != null) {
-			return modelMapper.map(chatMember.getRoom(), ChatRoomInfo.class);
+			return ChatRoomInfo.from(chatMember.getRoom());
 		}
 
 		ChatRoom chatRoom = ChatRoom.builder()
@@ -142,7 +142,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
 		enterChatRoom(chatRoom.getId());
 
-		return modelMapper.map(chatRoom, ChatRoomInfo.class);
+		return ChatRoomInfo.from(chatRoom);
 	}
 
 	/**
