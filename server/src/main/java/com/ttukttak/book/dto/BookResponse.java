@@ -51,7 +51,7 @@ public class BookResponse {
 			.status(book.getStatus())
 			.deposit(book.getDeposit())
 			.address(TownDto.from(book.getTown()).getAddress())
-			.thumbnail(book.getThumbnail() != null ? book.getThumbnail().getImageUrl() : "")
+			.thumbnail(book.getBookImageUrl())
 			.grade(book.getGrade())
 			.rating(book.getBookReview().stream().mapToDouble(review -> review.getRating()).average().orElse(0))
 			.rentCnt(book.getRent().size())

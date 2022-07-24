@@ -323,8 +323,7 @@ public class BookServiceImpl implements BookService {
 		if (!bookImage.getImageUrl().equals(bookUploadRequest.getThumbnail())) {
 			if (bookUploadRequest.getIsbn() != null && !bookUploadRequest.getIsbn().isEmpty()) {
 				imageList
-					.add(
-						new FileUploadResponse(bookUploadRequest.getThumbnail(), bookUploadRequest.getThumbnail()));
+					.add(new FileUploadResponse(bookUploadRequest.getThumbnail(), bookUploadRequest.getThumbnail()));
 				updateBook.addImage(BookImage.builder().imageUrl(bookUploadRequest.getThumbnail()).build());
 			}
 		}
