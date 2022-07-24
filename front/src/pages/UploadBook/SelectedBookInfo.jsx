@@ -1,34 +1,83 @@
 /* eslint-disable max-lines-per-function */
 import React, { useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import style from './SelectedBookInfo.style';
 import camera from '../../assets/img/userInterFace/Camera_enhance.png';
 import expand_more from '../../assets/img/arrows/expand_more.png';
 import ConfirmPopup from '../../components/Modal/ConfirmPopup';
 import SelectPopupBottom from '../../components/Modal/SelectPopupBottom';
-
+import bookApi from '../../util/BookApi';
 const SelectedBookInfo = ({ item, categoryList }) => {
   const inputRef = useRef(null);
-  const { Wrapper, UploadImg, ImageContainer, InputText, UplodedImg, OptionText, ImgBox, SaveButton, CountImg, VerticalScrollWrapper } = style;
+  const navigate = useNavigate();
+  const { uploadBook } = bookApi;
+  const { Wrapper, UploadImg, ImageContainer, Text, InputText, UplodedImg, OptionText, ImgBox, SaveButton, CountImg, VerticalScrollWrapper } = style;
   const { author, description, image, isbn, name, price, publishedDate, publisher } = item;
+
   const [currentCategory, setCurrentCategory] = useState('');
   const [currentCategoryTitle, setCurrentCategoryTitle] = useState('');
   const [contentList, setContentList] = useState([]);
   const [bookGrade, setBookGrade] = useState('');
   const [showModal, setShowModal] = useState(false);
-  const [isConfirm, setIsConfirm] = useState(false);
   const [deposit, setDeposit] = useState();
   const [review, setReview] = useState();
   const [modalTitle, setModalTitle] = useState('');
   const bookGradeList = ['A', 'B', 'C'];
-
+  const [confirmTitle, setConfirmTitle] = useState('');
+  const [confirmBtns, setConfirmBtns] = useState();
+  const [isConfirm, setIsConfirm] = useState(false);
+  const [imgFiles, setImgFiles] = useState([]);
   const onChangeImg = e => {
     e.preventDefault();
     inputRef.current.click();
   };
 
+  const onSaveHandler = () => {
+    setConfirmTitle('작성을 완료 하시겠습니까?');
+    setConfirmBtns([
+      { onClick: confirmClose, message: '취소' },
+      { onClick: saveBookInfo, message: '확인' },
+    ]);
+    setIsConfirm(true);
+  };
+
+  const confirmClose = () => {
+    setIsConfirm(false);
+  };
+
+  const saveBookInfo = async () => {
+    if (!currentCategory && !bookGrade) {
+      alert('도서 제목, 저자명, 카테고리, 도서 상태 등급은 필수 입력 항목이에요.');
+    } else {
+      const saveData = {
+        description: description,
+        image: image,
+        isbn: isbn,
+        name: name,
+        price: price,
+        publishedDate: publishedDate,
+        publisher: publisher,
+        author: author,
+        subject: name,
+        bookCategoryId: currentCategory,
+        content: review,
+        deposite: deposit,
+        grade: bookGrade,
+        thumbnail: image,
+        imageFiles: imgFiles,
+      };
+      console.log(saveData);
+
+      const bookId = await uploadBook(saveData);
+      console.log(bookId);
+      confirmClose();
+      navigate(`/detailBook`, { state: { id: bookId } });
+    }
+  };
+
   const [firstPicPreview, setFirstPicPreview] = useState('');
   const [secondPicPreview, setSecondPicPreview] = useState('');
-  const [imgFiles, setImgFiles] = useState([]);
+
   const saveImage = e => {
     e.preventDefault();
     const files = e.target.files;
@@ -98,9 +147,11 @@ const SelectedBookInfo = ({ item, categoryList }) => {
           {secondPicPreview !== '' && <UplodedImg src={secondPicPreview} />}
         </VerticalScrollWrapper>
       </ImageContainer>
-      <InputText value={name}></InputText>
-      <InputText value={author}></InputText>
-      <InputText value={price}></InputText>
+      <Text>{name}</Text>
+      <Text>{author}</Text>
+      <Text>
+        도서 정가<dt>₩{price}</dt>
+      </Text>
       <OptionText onClick={() => showCategoryModal()}>
         {currentCategoryTitle.length > 0 ? currentCategoryTitle : '카테고리'}
         <img src={expand_more} alt={'카테고리 선택'}></img>
