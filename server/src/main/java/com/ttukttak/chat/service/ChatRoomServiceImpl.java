@@ -129,8 +129,8 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 			.book(book)
 			.build();
 
-		ChatMember chatHost = ChatMember.builder().user(host).build();
-		ChatMember chatGuest = ChatMember.builder().user(guest).build();
+		ChatMember chatHost = ChatMember.builder().user(host).book(book).build();
+		ChatMember chatGuest = ChatMember.builder().user(guest).book(book).build();
 
 		chatRoom.addChatMember(chatHost);
 		chatRoom.addChatMember(chatGuest);
