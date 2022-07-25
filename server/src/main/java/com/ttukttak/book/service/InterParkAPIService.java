@@ -81,6 +81,11 @@ public class InterParkAPIService {
 				JSONObject item = (JSONObject)jsonItems.get(i);
 				BookInfoDto book = new BookInfoDto();
 
+				//null 체크(isbn이 없는 도서의 경우 제외)
+				if (item.get("isbn") == null) {
+					continue;
+				}
+
 				book.setName(item.get("title").toString());
 				book.setDescription(item.get("description").toString());
 				try {
