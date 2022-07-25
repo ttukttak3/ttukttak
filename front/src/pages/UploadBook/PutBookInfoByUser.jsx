@@ -16,11 +16,10 @@ const PutBookInfoByUser = ({ categoryList }) => {
   const [contentList, setContentList] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [bookGrade, setBookGrade] = useState('');
-  const [bookTitle, setBookTitle] = useState();
-  const [bookAuthor, setBookAuthor] = useState();
+  const [bookTitle, setBookTitle] = useState('');
+  const [bookAuthor, setBookAuthor] = useState('');
   const [deposit, setDeposit] = useState();
-  const [bookImg, setBookImg] = useState('');
-  const [review, setReview] = useState();
+  const [review, setReview] = useState('');
   const [currentCategory, setCurrentCategory] = useState('');
   const [currentCategoryTitle, setCurrentCategoryTitle] = useState('');
   const { uploadBook } = bookApi;
@@ -31,6 +30,7 @@ const PutBookInfoByUser = ({ categoryList }) => {
   const [confirmTitle, setConfirmTitle] = useState('');
   const [isConfirm, setIsConfirm] = useState(false);
   const [confirmBtns, setConfirmBtns] = useState();
+
   const navigate = useNavigate();
   useEffect(() => {
     dispatch(setAllFalse());
@@ -74,27 +74,20 @@ const PutBookInfoByUser = ({ categoryList }) => {
     if (!bookTitle && !bookAuthor && !currentCategory && !bookGrade) {
       alert('도서 제목, 저자명, 카테고리, 도서 상태 등급은 필수 입력 항목이에요.');
     } else {
-      const saveData = {
-        description: '',
-        image: '',
-        isbn: '',
-        name: bookTitle,
-        price: 0,
-        publishedDate: '',
-        publisher: '',
-        author: bookAuthor,
-        subject: bookTitle,
-        bookCategoryId: currentCategory,
-        content: review,
-        deposite: deposit,
-        grade: bookGrade,
-        thumbnail: imgFiles[0].name,
-        imageFiles: imgFiles,
-      };
-      console.log(saveData);
+      const formData = new FormData();
+      formData.append('subject', bookTitle);
+      formData.append('author', bookAuthor);
+      formData.append('bookCategoryId', currentCategory);
+      formData.append('content', review);
+      formData.append('deposit', deposit);
+      formData.append('grade', bookGrade);
+      formData.append('thumbnail', imgFiles[0].name);
 
-      const bookId = await uploadBook(saveData);
-      console.log(bookId);
+      for (let i = 0; i < imgFiles.length; i++) {
+        formData.append('imageFiles', imgFiles[i]);
+      }
+
+      const bookId = await uploadBook(formData);
       confirmClose();
       navigate(`/detailBook`, { state: { id: bookId } });
     }
@@ -118,38 +111,21 @@ const PutBookInfoByUser = ({ categoryList }) => {
     inputRef.current.click();
   };
 
-  const [firstPicPreview, setFirstPicPreview] = useState('');
-  const [secondPicPreview, setSecondPicPreview] = useState('');
-  const [thirdPicPreview, setThirdPicPreview] = useState('');
   const [imgFiles, setImgFiles] = useState([]);
-
+  const [imgPreview, setImgPreview] = useState([]);
   const saveImage = e => {
     e.preventDefault();
     const files = e.target.files;
-    setImgFiles(files);
 
-    const fileReader1 = new FileReader();
-    if (files[0]) {
-      fileReader1.readAsDataURL(files[0]);
-      fileReader1.onload = () => {
-        setFirstPicPreview(fileReader1.result);
-      };
-    }
-
-    const fileReader2 = new FileReader();
-    if (files[1]) {
-      fileReader2.readAsDataURL(files[1]);
-      fileReader2.onload = () => {
-        setSecondPicPreview(fileReader2.result);
-      };
-    }
-
-    const fileReader3 = new FileReader();
-    if (files[2]) {
-      fileReader3.readAsDataURL(files[2]);
-      fileReader3.onload = () => {
-        setThirdPicPreview(fileReader3.result);
-      };
+    for (let i = 0; i < 3; i++) {
+      if (files[i] && imgPreview.length < 3) {
+        setImgFiles(file => [...file, files[i]]);
+        const fileReader = new FileReader();
+        fileReader.readAsDataURL(files[i]);
+        fileReader.onload = () => {
+          setImgPreview(preview => [...preview, fileReader.result]);
+        };
+      }
     }
   };
 
@@ -158,13 +134,15 @@ const PutBookInfoByUser = ({ categoryList }) => {
       <ImageContainer>
         <VerticalScrollWrapper>
           <ImgBox>
+            <input type="file" accept="image/*" multiple ref={inputRef} onChange={saveImage} style={{ display: 'none' }} />
             <UploadImg src={camera} onClick={onChangeImg}></UploadImg>
-            <input type="file" accept="image/*" multiple capture="camera" ref={inputRef} onChange={saveImage} style={{ display: 'none' }} />
-            <CountImg>0/3</CountImg>
+            <CountImg>{imgPreview.length}/3</CountImg>
           </ImgBox>
-          {firstPicPreview !== '' && <UplodedImg src={firstPicPreview} />}
-          {secondPicPreview !== '' && <UplodedImg src={secondPicPreview} />}
-          {thirdPicPreview !== '' && <UplodedImg src={thirdPicPreview} />}
+          {imgPreview
+            ? imgPreview.map((preview, index) => {
+                return <UplodedImg key={index} src={preview} />;
+              })
+            : ''}
         </VerticalScrollWrapper>
       </ImageContainer>
       <InputText placeholder="도서 제목" value={bookTitle} onChange={e => setBookTitle(e.target.value)}></InputText>
