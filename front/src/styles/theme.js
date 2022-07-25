@@ -5,6 +5,7 @@ const colors = {
     $black2: '#1C1C1C',
     $black3: '#212121',
     $black4: '#26272B',
+    $black5: '#191919',
     $white1: '#FFFFFF',
     $white2: '#bdc1c6',
     $white3: '#9aa0a6',

@@ -1,12 +1,13 @@
+/* eslint-disable max-lines-per-function */
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { setBack, setTitle, setAllFalse } from '../../../app/headerSlice';
+import { setBackHome, setTitle, setAllFalse } from '../../../app/headerSlice';
 import style from './LoginPage.style';
 import { ACCESS_TOKEN } from '../../../util/ApiUtil';
 import utils from '../../../util/ProfileApi';
-import loginLogo from '../../../assets/img/logo/Croods_The_Feedback.png';
-import naverLogo from '../../../assets/img/logo/naver_logo.png';
-import kakaoLogo from '../../../assets/img/logo/kakao_logo.png';
+import loginLogo from '../../../assets/img/logo/Croods_The_Feedback.svg';
+import naverLogo from '../../../assets/img/logo/naver_logo.svg';
+import kakaoLogo from '../../../assets/img/logo/kakao_logo.svg';
 //import Button from '../../../components/Button/Button';
 
 const LoginPage = () => {
@@ -16,7 +17,7 @@ const LoginPage = () => {
     //로그인 페이지 진입은 토큰의 문제가 있는 경우(만료 등)라 판단하여 토큰을 지우고 로그인하여 재 할당 받는다.
     localStorage.removeItem(ACCESS_TOKEN);
     dispatch(setAllFalse());
-    dispatch(setBack(true));
+    dispatch(setBackHome(true));
     dispatch(setTitle('로그인'));
     return () => {
       // second;
@@ -24,7 +25,7 @@ const LoginPage = () => {
   }, [dispatch]);
 
   const { naverUrl, kakaoUrl } = utils;
-  const { SocialBox, TitleBox, NaverBtn, KaKaoBtn } = style;
+  const { SocialBox, TitleBox, NaverBtn, KaKaoBtn, Noti } = style;
 
   return (
     <SocialBox>
@@ -47,6 +48,9 @@ const LoginPage = () => {
         <img src={kakaoLogo} alt="kakao" />
         카카오 로그인
       </KaKaoBtn>
+      <Noti>
+        회원가입 시, 저희 서비스의 <a href="/">이용약관</a>과 <a href="/">개인정보처리방침</a>에 동의한 것으로 간주합니다. 개인책방 서비스는 만 14세 이상 회원만 가입 가능합니다.
+      </Noti>
     </SocialBox>
   );
 };

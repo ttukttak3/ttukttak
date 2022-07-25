@@ -151,7 +151,7 @@ const HomePage = () => {
           대여가능
         </h2>
       ),
-      tabCont: <BookRentPage range={range.param} category={category.id} townId={town.id} key={keyEvent} />,
+      tabCont: <BookRentPage range={range.param} category={category.id} townId={town ? town.id : 1111011900} key={keyEvent} />,
     },
     {
       tabTitle: (
@@ -159,7 +159,7 @@ const HomePage = () => {
           대여중/예약중
         </h2>
       ),
-      tabCont: <BookOnLoadPage range={range.param} category={category.id} townId={town.id} key={keyEvent} />,
+      tabCont: <BookOnLoadPage range={range.param} category={category.id} townId={town ? town.id : 1111011900} key={keyEvent} />,
     },
   ];
 

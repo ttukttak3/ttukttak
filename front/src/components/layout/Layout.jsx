@@ -39,10 +39,10 @@ const Layout = () => {
       <Section className={marginState}>
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/detailBook" element={<BookDetailPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/oauth2/redirect" element={<Auth />} />
-          <Route path="/location/:townId" element={<LocationPage />} />
+          <Route path="detailBook" element={<BookDetailPage />} />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="oauth2/redirect" element={<Auth />} />
+          <Route path="location/:townId" element={<LocationPage />} />
           <Route element={<AuthCheckRouter />}>
             <Route path="signUp" element={<SignUpPage />} />
             <Route path="chat" element={<Chat />} />

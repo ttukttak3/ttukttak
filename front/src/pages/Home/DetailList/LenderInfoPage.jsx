@@ -1,6 +1,6 @@
 import React from 'react';
 import style from './BookDetailPage.style';
-import noImg from '../../../assets/img/logo/no_img.png';
+import noImg from '../../../assets/img/logo/owner_noImg.svg';
 const LenderInfoPage = ({ owner }) => {
   const onErrorImg = e => {
     e.target.src = noImg;
