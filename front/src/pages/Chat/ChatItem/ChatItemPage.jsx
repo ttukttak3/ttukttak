@@ -47,8 +47,12 @@ const ChatItemPage = () => {
 
   useEffect(() => {
     if (chatMessages.length > 0 && myMemberInfo.memberId) {
-      const messageId = chatMessages[chatMessages.length - 1].id;
-      readMessages(messageId, myMemberInfo.memberId, roomId);
+      const currentMsg = chatMessages[chatMessages.length - 1];
+      const messageId = currentMsg.id;
+      const memberId = currentMsg.memberId;
+      if (memberId === otherMemberInfo.memberId) {
+        readMessages(messageId, myMemberInfo.memberId, roomId);
+      }
     }
   }, [chatMessages, myMemberInfo]);
 
