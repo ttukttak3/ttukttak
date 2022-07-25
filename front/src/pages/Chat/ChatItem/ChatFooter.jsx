@@ -10,8 +10,10 @@ const ChatFooter = ({ roomId, memberId, message, client, setMessage }) => {
   const { publish } = chatSocketApi;
 
   const sendMessageHandler = () => {
-    publish(roomId, memberId, client, message);
-    setMessage('');
+    if (message.trim().length > 0) {
+      publish(roomId, memberId, client, message);
+      setMessage('');
+    }
   };
 
   return (
