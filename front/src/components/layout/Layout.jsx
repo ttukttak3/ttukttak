@@ -17,6 +17,7 @@ import SearchListPage from '../../pages/Search/SearchListPage';
 import AccountPage from '../../pages/Account/AccountPage';
 import ProfilePage from '../../pages/Account/Profile/ProfilePage';
 import LocationPage from '../../pages/Location/LocationPage';
+import RentMainPage from '../../pages/RentManage/RentMainPage';
 
 const Layout = () => {
   const navi = useLocation();
@@ -52,6 +53,7 @@ const Layout = () => {
             <Route path="search" element={<SearchListPage />} />
             <Route path="account" element={<AccountPage />} />
             <Route path="account/profile" element={<ProfilePage />} />
+            <Route path="rent" element={<RentMainPage />} />
           </Route>
         </Routes>
       </Section>
