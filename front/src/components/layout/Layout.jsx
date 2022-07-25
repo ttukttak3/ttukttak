@@ -18,7 +18,8 @@ import AccountPage from '../../pages/Account/AccountPage';
 import ProfilePage from '../../pages/Account/Profile/ProfilePage';
 import LocationPage from '../../pages/Location/LocationPage';
 import RentMainPage from '../../pages/RentManage/RentMainPage';
-
+import RentDetailPage from '../../pages/RentManage/Rent/RentDetailPage';
+import BorrowDetailPage from '../../pages/RentManage/Borrow/BorrowDetailPage';
 const Layout = () => {
   const navi = useLocation();
   const { LayoutBox, Section } = style;
@@ -54,6 +55,8 @@ const Layout = () => {
             <Route path="account" element={<AccountPage />} />
             <Route path="account/profile" element={<ProfilePage />} />
             <Route path="rent" element={<RentMainPage />} />
+            <Route path="rent/:rentId" element={<RentDetailPage />} />
+            <Route path="borrow/:rentId" element={<BorrowDetailPage />} />
           </Route>
         </Routes>
       </Section>

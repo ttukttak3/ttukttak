@@ -1,16 +1,25 @@
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
-  flex: 1;
-  flex-basis: 50%;
-  font-size: 1.6rem;
-  font-weight: 600;
-  width: 19.5rem;
-  height: 20rem;
-  padding: 2.8rem;
-  border: 1px solid ${({ theme }) => theme.colors.$black3Line};
+  display: flex;
+  flex-direction: column;
+  margin-left: 2rem;
+  margin-right: 2rem;
 `;
 
-const style = { Wrapper };
+const TapHeader = styled.div`
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.$black3Line};
+`;
+
+const Option = styled.div`
+  flex: 1;
+  font-size: 1.6rem;
+`;
+
+const style = { Wrapper, TapHeader, Option };
 
 export default style;
