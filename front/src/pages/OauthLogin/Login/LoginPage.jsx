@@ -32,7 +32,8 @@ const LoginPage = () => {
         <Button type="sDefault">Button</Button>
         <Button type="pIconRight">Button</Button>
         <Button type="sIconRight">Button</Button> */}
-        <img src={loginLogo} alt="" />
+        <object type="image/svg+xml" data={loginLogo} aria-label="로그인 이미지"></object>
+        {/* <img src={loginLogo} alt="" /> */}
         <p>
           개인책방에 독서가족이 되어 <br />
           인사이트를 나눠보세요
