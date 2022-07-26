@@ -14,7 +14,11 @@ const TitleBox = styled.div`
   width: 25rem;
   margin: 0 auto 11.9rem auto;
   position: relative;
-
+  img {
+    max-width: 250px;
+    width: 100%;
+    height: auto;
+  }
   p {
     width: 21rem;
     position: absolute;
@@ -34,6 +38,8 @@ const SocialBtn = styled.a`
   font-weight: 400;
   font-size: 1.7rem;
   letter-spacing: -0.2rem;
+  text-align: left;
+  padding-left: 13.8rem;
 `;
 
 const NaverBtn = styled(SocialBtn)`
