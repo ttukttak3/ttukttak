@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import naverLogo from '../../../assets/img/logo/naver_logo.svg';
+import kakaoLogo from '../../../assets/img/logo/kakao_logo.svg';
 
 const SocialBox = styled.div`
   display: flex;
@@ -32,29 +34,16 @@ const SocialBtn = styled.a`
   font-weight: 400;
   font-size: 1.7rem;
   letter-spacing: -0.2rem;
-
-  img {
-    float: left;
-    width: 1.7rem;
-    height: 1.7rem;
-    margin: 1.6rem 0 0 1.9rem;
-  }
-
-  ::after {
-    content: '';
-    display: block;
-    clear: both;
-  }
 `;
 
 const NaverBtn = styled(SocialBtn)`
-  background: ${({ theme }) => theme.colors.$Naver};
+  background: ${({ theme }) => theme.colors.$Naver} url(${naverLogo}) 2rem 1.6rem no-repeat;
   color: ${({ theme }) => theme.colors.$white1};
   margin-bottom: 2rem;
 `;
 
 const KaKaoBtn = styled(SocialBtn)`
-  background: ${({ theme }) => theme.colors.$KaKao};
+  background: ${({ theme }) => theme.colors.$KaKao} url(${kakaoLogo}) 1.8rem 1.5rem no-repeat;
   color: ${({ theme }) => theme.colors.$black5};
   margin-bottom: 3.2rem;
 `;
