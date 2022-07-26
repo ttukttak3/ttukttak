@@ -5,24 +5,25 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ttukttak.book.dto.BookInfoDto;
+import com.ttukttak.book.dto.InterparkResponse;
 import com.ttukttak.common.dto.PageResponse;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class InterParkAPIService {
+	private final ObjectMapper mapper;
+
 	@Value("${interpark.book.key}")
 	private String key;
 
@@ -32,7 +33,6 @@ public class InterParkAPIService {
 
 		PageResponse<BookInfoDto> pageResponse = new PageResponse<>();
 		StringBuffer sb = new StringBuffer();
-		List<BookInfoDto> bookList = new ArrayList<BookInfoDto>();
 
 		try {
 			URL url = new URL("https://book.interpark.com/api/"
@@ -54,64 +54,32 @@ public class InterParkAPIService {
 				sb.append(line).append("\n");
 			}
 
-			JSONParser parser = new JSONParser();
-			JSONObject jsonObject = (JSONObject)parser.parse(sb.toString());
-			JSONArray jsonItems = (JSONArray)jsonObject.get("item");
-
-			//페이지번호
-			pageResponse.setPageNumber(Integer.parseInt(jsonObject.get("startIndex").toString()));
-			//총 페이지 수 => 총 totalResult / maxResults
-			int totalResults = Integer.parseInt(jsonObject.get("totalResults").toString());
-			pageResponse.setTotalElements(Long.valueOf(totalResults));
-			try {
-				int totalPages = (int)Math.ceil((double)totalResults / (double)PAGE_SIZE);
-
-				pageResponse.setTotalPages(totalPages);
-			} catch (Exception e) {
-				pageResponse.setTotalPages(0);
-			}
-			//페이지 사이즈
-			pageResponse.setPageSize(PAGE_SIZE);
-			//검색 결과 수
-
-			//Date 포맷터
-			SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
-			//도서 리스트
-			for (int i = 0; i < jsonItems.size(); i++) {
-				JSONObject item = (JSONObject)jsonItems.get(i);
-				BookInfoDto book = new BookInfoDto();
-
-				//null 체크(isbn이 없는 도서의 경우 제외)
-				if (item.get("isbn") == null) {
-					continue;
-				}
-
-				book.setName(item.get("title").toString());
-				book.setDescription(item.get("description").toString());
-				try {
-					book.setPublishedDate(formatter.parse(item.get("pubDate").toString()));
-				} catch (Exception e) {
-					book.setPublishedDate(null);
-				}
-				book.setPrice(Integer.parseInt(item.get("priceStandard").toString()));
-				book.setImage(item.get("coverLargeUrl").toString());
-				//사용자가 직접 카테고리를 지정하기 때문에 주석처리.
-				//book.setCategoryId(item.get("categoryId").toString());
-				book.setPublisher(item.get("publisher").toString());
-				book.setAuthor(item.get("author").toString());
-				book.setIsbn(item.get("isbn").toString());
-
-				bookList.add(book);
-
-			}
-
-			pageResponse.setContents(bookList);
+			//도서 조회 반환값 DTO 변환
+			InterparkResponse response = mapper.readValue(sb.toString(), InterparkResponse.class);
 
 			br.close();
 			in.close();
 			http.disconnect();
 
-		} catch (IOException e) {} catch (ParseException e) {}
+			//페이징 변수 선언
+			pageResponse.setPageNumber(response.getPageNumber());
+			pageResponse.setPageSize(response.getPageSize());
+			pageResponse.setTotalElements(response.getTotalElements());
+			pageResponse.setTotalPages(response.getTotalPages());
+
+			//item -> dto
+			pageResponse.setContents(
+				response.getItem().stream()
+					.filter(item -> item.getIsbn() != null)
+					.map(BookInfoDto::from)
+					.collect(Collectors.toList()));
+
+		} catch (IOException e) {
+			pageResponse.setPageNumber(0);
+			pageResponse.setPageSize(PAGE_SIZE);
+			pageResponse.setTotalElements(Long.parseLong("0"));
+			pageResponse.setTotalPages(0);
+		}
 
 		return pageResponse;
 	}

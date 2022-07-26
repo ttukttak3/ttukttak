@@ -68,4 +68,23 @@ public class BookInfoDto {
 			.build();
 	}
 
+	public static BookInfoDto from(InterparkItemResponse itemResponse) {
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+		Date publishedDate = new Date();
+		try {
+			publishedDate = formatter.parse(itemResponse.getPublishedDate());
+		} catch (Exception e) {}
+
+		return BookInfoDto.builder()
+			.name(itemResponse.getName())
+			.description(itemResponse.getDescription())
+			.publishedDate(publishedDate)
+			.price(itemResponse.getPrice())
+			.image(itemResponse.getImage())
+			.publisher(itemResponse.getPublisher())
+			.author(itemResponse.getAuthor())
+			.isbn(itemResponse.getIsbn())
+			.build();
+	}
+
 }
