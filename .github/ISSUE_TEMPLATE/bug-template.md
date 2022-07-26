@@ -1,5 +1,5 @@
 ---
-name: Bug Template
+name: QA Template
 about: Create a report to help us improve
 title: ''
 labels: ''
@@ -9,7 +9,7 @@ assignees: ''
 
 ## 💁 설명
 
-버그 제보 (가능하면 버그 시나리오를 상세히 적어주세요)
+- 이슈설명을 적어주세요
 
 ## 🎬 시나리오
 1.
