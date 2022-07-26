@@ -65,16 +65,18 @@ const CountingWrap = styled.div`
 
 const Counting = styled.dl`
   display: inline-block;
-  width: 6rem;
+  width: 7rem;
   height: 4rem;
-  font-size: 1.2rem;
-  font-weight: 400;
   text-align: center;
   dt {
+    font-size: 1.2rem;
+    font-weight: 400;
     margin-top: 0.5rem;
     color: ${({ theme }) => theme.colors.$white2};
   }
   dd {
+    font-size: 1.2rem;
+    font-weight: 400;
     margin-top: 0.8rem;
     color: ${({ theme }) => theme.colors.$white1};
   }
