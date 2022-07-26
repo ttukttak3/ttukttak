@@ -15,7 +15,7 @@ const TitleBox = styled.div`
   margin: 0 auto 11.9rem auto;
   position: relative;
   img {
-    max-width: 250px;
+    max-width: 25rem;
     width: 100%;
     height: auto;
   }
