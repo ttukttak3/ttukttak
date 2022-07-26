@@ -2,8 +2,8 @@
 import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import style from './SelectedBookInfo.style';
-import camera from '../../assets/img/userInterFace/Camera_enhance.png';
-import expand_more from '../../assets/img/arrows/expand_more.png';
+import camera from '../../assets/img/userInterFace/local_see.svg';
+import expand_more from '../../assets/img/arrows/expand_more.svg';
 import ConfirmPopup from '../../components/Modal/ConfirmPopup';
 import SelectPopupBottom from '../../components/Modal/SelectPopupBottom';
 import bookApi from '../../util/BookApi';

@@ -1,7 +1,8 @@
 import styled from 'styled-components';
-import starBlue from '../../../assets/img/userInterFace/star_blue.png';
-import libraryBlue from '../../../assets/img/userInterFace/local_library_blue.png';
+import starBlue from '../../../assets/img/userInterFace/star_blue.svg';
+import libraryBlue from '../../../assets/img/userInterFace/local_library_blue.svg';
 import gradation from '../../../assets/img/userInterFace/big_gradation.png';
+import opacity from '../../../assets/img/userInterFace/opacityBg.png';
 const Wrap = styled.div``;
 const BookWrap = styled.div`
   width: 34rem;
@@ -18,16 +19,16 @@ const TitleBox = styled.div`
     width: 26rem;
     font-size: 1.8rem;
     font-weight: 600;
-    color: #fff;
+    color: ${({ theme }) => theme.colors.$white1};
     line-height: 2.5rem;
     letter-spacing: -0.02rem;
   }
   h6 {
-    border-top: 1px solid #fff;
+    border-top: 1px solid ${({ theme }) => theme.colors.$whiteLine1};
     padding-top: 0.8rem;
     font-size: 1.2rem;
     font-weight: 400;
-    color: #bdc1c6;
+    color: ${({ theme }) => theme.colors.$white2};
   }
 `;
 const BookSlideBox = styled.div`
@@ -52,7 +53,7 @@ const BookSlideBox = styled.div`
     background: url(${gradation});
     font-size: 1.6rem;
     font-weight: 700;
-    color: #fff;
+    color: ${({ theme }) => theme.colors.$white1};
 
     &.noCursor {
       cursor: default;
@@ -69,21 +70,19 @@ const BookCont = styled.div`
   h4 {
     font-size: 1.6rem;
     font-weight: 700;
-    color: #fff;
+    color: ${({ theme }) => theme.colors.$white1};
   }
   p {
     margin-top: 1rem;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     font-weight: 400;
-    color: #fff;
+    color: ${({ theme }) => theme.colors.$white1};
     line-height: 2rem;
   }
 `;
 const BookState = styled.div`
   margin-top: 2rem;
-  font-size: 1.4rem;
-  font-weight: 400;
-  color: #bdc1c6;
+  color: ${({ theme }) => theme.colors.$white2};
   height: 1.6rem;
   line-height: 1.6rem;
 
@@ -91,6 +90,8 @@ const BookState = styled.div`
     display: inline-block;
     padding-left: 2rem;
     height: 1.6rem;
+    font-size: 1.4rem;
+    font-weight: 400;
   }
   p.bookmark {
     background: url(${starBlue}) center left no-repeat;
@@ -105,8 +106,8 @@ const BookState = styled.div`
 
 const LenderWrap = styled.div``;
 const LenderInfo = styled.div`
-  border-top: 1px solid #333;
-  border-bottom: 1px solid #333;
+  border-top: 1px solid ${({ theme }) => theme.colors.$black3Line};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.$black3Line};
   padding: 2rem 0;
   display: flex;
   flex-direction: row;
@@ -122,27 +123,29 @@ const LenderInfo = styled.div`
   div > h2 {
     font-size: 1.4rem;
     font-weight: 700;
-    color: #fff;
+    color: ${({ theme }) => theme.colors.$white1};
   }
   div > p {
     margin-top: 1.2rem;
     font-size: 1.2rem;
     font-weight: 400;
-    color: #bdc1c6;
+    color: ${({ theme }) => theme.colors.$white2};
   }
 `;
-const Counting = styled.div`
-  border-bottom: 1px solid #333;
+const Counting = styled.dl`
+  border-bottom: 1px solid ${({ theme }) => theme.colors.$black3Line};
   display: flex;
   padding: 1.2rem 0;
-  font-size: 1.2rem;
-  font-weight: 400;
   dt {
-    color: #bdc1c6;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: ${({ theme }) => theme.colors.$white2};
   }
   dd {
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: ${({ theme }) => theme.colors.$white1};
     margin-left: auto;
-    color: #fff;
   }
 `;
 
@@ -156,7 +159,7 @@ const BookFooter = styled.div`
   left: 0;
   width: 100%;
   height: auto;
-  background: #1c1c1c;
+  background: url(${opacity}) repeat;
 `;
 
 const FooterBox = styled.div`
@@ -168,13 +171,13 @@ const FooterBox = styled.div`
 
   button {
     margin: 0.4rem 0 0 auto;
-    background: #26272b;
+    background: ${({ theme }) => theme.colors.$black4};
     width: 10.4rem;
     height: 3.6rem;
     line-height: 3.6rem;
     font-size: 1.4rem;
     font-weight: 600;
-    color: #fff;
+    color: ${({ theme }) => theme.colors.$white1};
   }
 `;
 const LeftBox = styled.div`
@@ -184,12 +187,12 @@ const LeftBox = styled.div`
     position: relative;
     display: inline-block;
     width: 3.8rem;
-    padding-left: 0.4rem;
     height: 1.8rem;
     line-height: 1.9rem;
-    vertical-align: middle;
     font-size: 1rem;
+    text-align: center;
     letter-spacing: -0.06rem;
+    vertical-align: middle;
     color: ${({ theme }) => theme.colors.$white1};
 
     //버튼
@@ -202,31 +205,37 @@ const LeftBox = styled.div`
     }
   }
   //대여중
-  span.orange {
+  .orange {
     background: ${({ theme }) => theme.colors.$primaryDeepOrageP};
   }
   //예약중
-  span.gray {
+  .gray {
     background: ${({ theme }) => theme.colors.$white4};
   }
   //대여가능
-  span.blue {
+  .blue {
     background: ${({ theme }) => theme.colors.$primaryBlueP};
     width: 4.7rem;
   }
   //대여중 downbtn
-  span.bigOrange {
+  .bigOrange {
     background: ${({ theme }) => theme.colors.$primaryDeepOrageP};
+    text-align: left;
+    padding-left: 0.4rem;
     width: 4.8rem;
   }
   //예약중 downbtn
-  span.bigGray {
+  .bigGray {
     background: ${({ theme }) => theme.colors.$white4};
+    text-align: left;
+    padding-left: 0.4rem;
     width: 4.8rem;
   }
   //대여가능 downbtn
-  span.bigBlue {
+  .bigBlue {
     background: ${({ theme }) => theme.colors.$primaryBlueP};
+    text-align: left;
+    padding-left: 0.4rem;
     width: 5.7rem;
   }
 `;

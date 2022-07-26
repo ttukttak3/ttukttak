@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import gradation from '../../assets/img/userInterFace/myBookGradation.png';
-import posting from '../../assets/img/btn/posting.png';
+import posting from '../../assets/img/btn/posting.svg';
 import grayBar from '../../assets/img/arrows/grayBar.png';
 const AccountBox = styled.div`
   width: 34rem;

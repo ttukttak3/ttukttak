@@ -28,9 +28,10 @@ const TitleBox = styled.div`
 const SocialBtn = styled.a`
   height: 5rem;
   line-height: 5rem;
-  font-weight: 400;
-  font-size: 1.6rem;
   border-radius: 0.4rem;
+  font-weight: 400;
+  font-size: 1.7rem;
+  letter-spacing: -0.2rem;
 
   img {
     float: left;
@@ -48,13 +49,28 @@ const SocialBtn = styled.a`
 
 const NaverBtn = styled(SocialBtn)`
   background: ${({ theme }) => theme.colors.$Naver};
+  color: ${({ theme }) => theme.colors.$white1};
   margin-bottom: 2rem;
 `;
 
 const KaKaoBtn = styled(SocialBtn)`
   background: ${({ theme }) => theme.colors.$KaKao};
+  color: ${({ theme }) => theme.colors.$black5};
+  margin-bottom: 3.2rem;
 `;
 
-const style = { SocialBox, TitleBox, NaverBtn, KaKaoBtn };
+const Noti = styled.p`
+  font-size: 1.2rem;
+  line-height: 1.8rem;
+  text-align: left;
+  color: #9aa0a6;
+  margin-bottom: 5rem;
+  a {
+    font-size: 1.2rem;
+    text-decoration: underline;
+  }
+`;
+
+const style = { SocialBox, TitleBox, NaverBtn, KaKaoBtn, Noti };
 
 export default style;

@@ -4,11 +4,11 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import style from './SearchListPage.style';
 import bookApi from '../../util/BookApi';
-import Search from '../../assets/img/userInterFace/Search.png';
+import Search from '../../assets/img/userInterFace/Search.svg';
 import BookResultItem from './BookResultItem';
 import { setAllFalse } from '../../app/headerSlice';
-import keyboardArrowLeft from '../../assets/img/arrows/Keyboard_arrow_left.png';
-import clear from '../../assets/img/arrows/Clear.png';
+import keyboardArrowLeft from '../../assets/img/arrows/Keyboard_arrow_left.svg';
+import clear from '../../assets/img/userInterFace/Clear_gray.svg';
 
 const SearchListPage = () => {
   const { Wrapper, SearchBarWrapper, SearchBar, SearchBtn, ClearBtn, BookList, SearchResult, NoResult, BackBtn } = style;

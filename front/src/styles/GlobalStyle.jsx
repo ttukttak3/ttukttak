@@ -2,6 +2,7 @@ import { createGlobalStyle } from 'styled-components';
 //reset.css 내용 추가
 const GlobalStyle = createGlobalStyle`
     * {
+        font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
         -webkit-text-size-adjust:none; 
         -moz-text-size-adjust:none; 
         -ms-text-size-adjust:none; 
@@ -30,7 +31,6 @@ const GlobalStyle = createGlobalStyle`
             font-size: 10px = 62.5%
             10px : 1rem / 12px : 1.2rem / 14px : 1.4rem / 20px : 2rem
         */
-        font-family: "Pretendard";
         vertical-align: baseline;
         box-sizing: border-box;
         letter-spacing: -0.06rem;
@@ -45,7 +45,6 @@ const GlobalStyle = createGlobalStyle`
     }
     body {
         line-height: 1;
-        font-family: "Pretendard";
     }
     ol, ul {
         list-style-type:none;

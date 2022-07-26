@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import Expand_more_gray from '../../assets/img/arrows/expand_more_gray.png';
-import posting from '../../assets/img/btn/posting.png';
-import star from '../../assets/img/userInterFace/star.png';
-import library from '../../assets/img/userInterFace/local_library.png';
+import Expand_more_gray from '../../assets/img/arrows/expand_more_gray.svg';
+import posting from '../../assets/img/btn/posting.svg';
+import star from '../../assets/img/userInterFace/star.svg';
+import library from '../../assets/img/userInterFace/local_library.svg';
 import gradation from '../../assets/img/userInterFace/gradation.png';
 
 //scroll시 titlebox가 header가 되기에 width 따로 작업.

@@ -2,16 +2,16 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import style from './Footer.style';
-import home from '../../assets/img/userInterFace/Home.png';
-import homeOff from '../../assets/img/userInterFace/Home_off.png';
+import home from '../../assets/img/userInterFace/Home.svg';
+import homeOff from '../../assets/img/userInterFace/Home_off.svg';
 // import library from '../../assets/img/userInterFace/Library_books.png';
 // import libraryOff from '../../assets/img/userInterFace/Library_books_off.png';
-import book from '../../assets/img/userInterFace/Book.png';
-import bookOff from '../../assets/img/userInterFace/Book_off.png';
-import chat from '../../assets/img/userInterFace/Chat_bubble_outline.png';
-import chatOff from '../../assets/img/userInterFace/Chat_bubble_outline_off.png';
-import account from '../../assets/img/userInterFace/Account_circle.png';
-import accountOff from '../../assets/img/userInterFace/Account_circle_off.png';
+import book from '../../assets/img/userInterFace/Book.svg';
+import bookOff from '../../assets/img/userInterFace/Book_off.svg';
+import chat from '../../assets/img/userInterFace/Chat_bubble_outline.svg';
+import chatOff from '../../assets/img/userInterFace/Chat_bubble_outline_off.svg';
+import account from '../../assets/img/userInterFace/Account_circle.svg';
+import accountOff from '../../assets/img/userInterFace/Account_circle_off.svg';
 
 const Footer = () => {
   const navigate = useNavigate();
