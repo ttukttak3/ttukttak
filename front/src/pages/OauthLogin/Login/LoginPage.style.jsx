@@ -18,6 +18,7 @@ const TitleBox = styled.div`
     max-width: 25rem;
     width: 100%;
     height: auto;
+    filter: blur(0px);
   }
   p {
     width: 21rem;
