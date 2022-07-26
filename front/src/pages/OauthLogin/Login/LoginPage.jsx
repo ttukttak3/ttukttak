@@ -6,8 +6,6 @@ import style from './LoginPage.style';
 import { ACCESS_TOKEN } from '../../../util/ApiUtil';
 import utils from '../../../util/ProfileApi';
 import loginLogo from '../../../assets/img/logo/Croods_The_Feedback.svg';
-import naverLogo from '../../../assets/img/logo/naver_logo.svg';
-import kakaoLogo from '../../../assets/img/logo/kakao_logo.svg';
 //import Button from '../../../components/Button/Button';
 
 const LoginPage = () => {
@@ -40,14 +38,8 @@ const LoginPage = () => {
           인사이트를 나눠보세요
         </p>
       </TitleBox>
-      <NaverBtn href={naverUrl}>
-        <img src={naverLogo} alt="naver" />
-        네이버 로그인
-      </NaverBtn>
-      <KaKaoBtn href={kakaoUrl}>
-        <img src={kakaoLogo} alt="kakao" />
-        카카오 로그인
-      </KaKaoBtn>
+      <NaverBtn href={naverUrl}>네이버 로그인</NaverBtn>
+      <KaKaoBtn href={kakaoUrl}>카카오 로그인</KaKaoBtn>
       <Noti>
         회원가입 시, 저희 서비스의 <a href="/">이용약관</a>과 <a href="/">개인정보처리방침</a>에 동의한 것으로 간주합니다. 개인책방 서비스는 만 14세 이상 회원만 가입 가능합니다.
       </Noti>
