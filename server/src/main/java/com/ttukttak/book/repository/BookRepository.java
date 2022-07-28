@@ -13,10 +13,12 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
 	Page<Book> findByOwnerId(Long ownerId, PageRequest pageRequest);
 
-	Page<Book> findByStatusInAndIsDeleteFalseAndSubjectContainsAndTownIdIn(List<BookStatus> bookStatus, String query,
+	Page<Book> findByStatusInAndIsDeleteFalseAndIsHideFalseAndSubjectContainsAndTownIdIn(List<BookStatus> bookStatus,
+		String query,
 		List<Long> townIdList, PageRequest pageRequest);
 
-	Page<Book> findByStatusInAndIsDeleteFalseAndSubjectContainsAndTownIdInAndBookCategoryId(List<BookStatus> bookStatus,
+	Page<Book> findByStatusInAndIsDeleteFalseAndIsHideFalseAndSubjectContainsAndTownIdInAndBookCategoryId(
+		List<BookStatus> bookStatus,
 		String query, List<Long> townIdList, Long categoryId, PageRequest pageRequest);
 
 }

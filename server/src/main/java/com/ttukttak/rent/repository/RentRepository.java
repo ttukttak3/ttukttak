@@ -19,4 +19,6 @@ public interface RentRepository extends JpaRepository<Rent, Long> {
 	Page<Rent> findAllByOwnerIdAndReturnDateIsNullOrderByBeginDateAsc(Long ownerId, Pageable pageable);
 
 	Optional<Rent> findByBookIdAndLenderId(Long bookId, Long lenderId);
+
+	Optional<Rent> findByBookId(Long bookId);
 }
