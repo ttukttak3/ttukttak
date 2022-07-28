@@ -12,10 +12,12 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class BookUploadRequest {
 	//BookInfo API 입력 정보
 	@ApiModelProperty(example = "API 도서명")
@@ -35,7 +37,6 @@ public class BookUploadRequest {
 
 	//API와 공통 영역
 	@ApiModelProperty(example = "저자명")
-	@NotNull
 	private String author;
 
 	//Book 등록정보
