@@ -11,7 +11,7 @@ import com.ttukttak.book.entity.Book.BookStatus;
 
 public interface BookRepository extends JpaRepository<Book, Long> {
 
-	Page<Book> findByOwnerId(Long ownerId, PageRequest pageRequest);
+	Page<Book> findByIsDeleteFalseAndOwnerId(Long ownerId, PageRequest pageRequest);
 
 	Page<Book> findByStatusInAndIsDeleteFalseAndIsHideFalseAndSubjectContainsAndTownIdIn(List<BookStatus> bookStatus,
 		String query,

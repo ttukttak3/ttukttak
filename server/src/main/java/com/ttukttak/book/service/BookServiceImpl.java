@@ -382,7 +382,7 @@ public class BookServiceImpl implements BookService {
 	public PageResponse<MyBookResponse> getMyBookList(Long ownerId, int pageNum) {
 		PageRequest pageRequest = PageRequest.of(pageNum - 1, PAGESIZE);
 
-		Page<MyBookResponse> myBookList = bookRepository.findByOwnerId(ownerId, pageRequest)
+		Page<MyBookResponse> myBookList = bookRepository.findByIsDeleteFalseAndOwnerId(ownerId, pageRequest)
 			.map(MyBookResponse::from);
 
 		return PageResponse.<MyBookResponse>builder()
