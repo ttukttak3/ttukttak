@@ -205,13 +205,11 @@ public class BookController {
 		Long bookId,
 		BookUploadRequest bookUploadRequest,
 		@RequestBody
-		List<MultipartFile> imageFiles,
-		@RequestParam
-		String bookImagesJson) {
+		List<MultipartFile> imageFiles) {
 
 		//json -> dto 변환
 		try {
-			bookUploadRequest.setBookImages(mapper.readValue(bookImagesJson,
+			bookUploadRequest.setBookImages(mapper.readValue(bookUploadRequest.getBookImagesJson(),
 				mapper.getTypeFactory().constructCollectionType(List.class, BookImageDto.class)));
 		} catch (Exception e) {
 			bookUploadRequest.setBookImages(new ArrayList<BookImageDto>());

@@ -66,4 +66,7 @@ public class BookUploadRequest {
 	//Book 이미지정보
 	@ApiModelProperty(example = "이미지목록")
 	private List<BookImageDto> bookImages = new ArrayList<>();
+
+	@ApiModelProperty(example = "이미지목록JSON")
+	private String bookImagesJson;
 }

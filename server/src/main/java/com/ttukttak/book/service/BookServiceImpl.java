@@ -334,12 +334,15 @@ public class BookServiceImpl implements BookService {
 		//섬네일 업데이트를 위한 리스트
 		List<FileUploadResponse> imageList = new ArrayList<>();
 
-		//API 도서 조회로 섬네일이 API 이미지 경로 인경우
-		if (!bookImage.getImageUrl().equals(bookUploadRequest.getThumbnail())) {
-			if (bookUploadRequest.getIsbn() != null && !bookUploadRequest.getIsbn().isEmpty()) {
-				imageList
-					.add(new FileUploadResponse(bookUploadRequest.getThumbnail(), bookUploadRequest.getThumbnail()));
-				updateBook.addImage(BookImage.builder().imageUrl(bookUploadRequest.getThumbnail()).build());
+		//기존에 이미지가 없는 경우 예외처리
+		if (bookImage != null) {
+			//API 도서 조회로 섬네일이 API 이미지 경로 인경우
+			if (!bookImage.getImageUrl().equals(bookUploadRequest.getThumbnail())) {
+				if (bookUploadRequest.getIsbn() != null && !bookUploadRequest.getIsbn().isEmpty()) {
+					imageList.add(
+						new FileUploadResponse(bookUploadRequest.getThumbnail(), bookUploadRequest.getThumbnail()));
+					updateBook.addImage(BookImage.builder().imageUrl(bookUploadRequest.getThumbnail()).build());
+				}
 			}
 		}
 
