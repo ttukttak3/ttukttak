@@ -110,7 +110,13 @@ const Header = () => {
             <img src={keyboardArrowLeft} alt={'홈'} />
           </BackBtn>
         )}
-        <Title>{title}</Title>
+        {location === true ? (
+          <Title className="titleLocation" onClick={() => navigate(`/location/${JSON.parse(localStorage.getItem('town')).id}`)}>
+            {title}
+          </Title>
+        ) : (
+          <Title>{title}</Title>
+        )}
         {location && (
           <DownBtn>
             <img src={expandMore} alt={'위치목록'} onClick={() => navigate(`/location/${JSON.parse(localStorage.getItem('town')).id}`)} />

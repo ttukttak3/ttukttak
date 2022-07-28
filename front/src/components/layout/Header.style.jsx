@@ -26,6 +26,10 @@ const Title = styled.h2`
   height: 6.4rem;
   line-height: 6.4rem;
   color: ${({ theme }) => theme.colors.$white1};
+
+  &.titleLocation {
+    cursor: pointer;
+  }
 `;
 
 const BackBtn = styled.a`

@@ -20,7 +20,7 @@ const Footer = () => {
   const { FooterBox, IconBox } = style;
 
   return (
-    <FooterBox className={pathname === '/detailBook' ? 'hide' : 'show'}>
+    <FooterBox className={pathname === '/detailBook' || pathname === '/login' ? 'hide' : 'show'}>
       <IconBox onClick={() => navigate(`/`)}>
         <img src={pathname !== '/' ? homeOff : home} alt="home" />홈
       </IconBox>

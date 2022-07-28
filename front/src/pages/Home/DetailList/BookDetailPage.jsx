@@ -1,8 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable max-lines-per-function */
 import React, { useEffect, useRef, useState } from 'react';
+import { Pagination } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import './slide.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { setAllFalse, setBack, setFavorite, setShare, setMore, setMoreBookId } from '../../../app/headerSlice';
 import bookApi from '../../../util/BookApi';
 import messageApi from '../../../util/MessageApi';
@@ -16,8 +21,7 @@ import SelectPopup from '../../../components/Modal/SelectPopupBottom';
 const BookDetailPage = () => {
   const location = useLocation();
   const bookId = location.state.id;
-  const { getDetailView, updateBookGrade, updateBookStatus } = bookApi;
-  const { makeChatRoom } = messageApi;
+  const userId = useSelector(state => state.user.userId);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [detailView, setDetailView] = useState({
@@ -29,17 +33,16 @@ const BookDetailPage = () => {
     rating: '',
     rentCnt: '',
   });
-
+  const [images, setImages] = useState([]);
   const [owner, setOwner] = useState({
     address: '',
     id: '',
     imageUrl: '',
     nickName: '',
   });
-
-  //userSlice userId값과 상세도서 api 등록 id 값 같을 시 이벤트
-  const userId = useSelector(state => state.user.userId);
-
+  //-------------- API ------------------------------
+  const { getDetailView, updateBookGrade, updateBookStatus } = bookApi;
+  const { makeChatRoom } = messageApi;
   //-------------- Header & Footer Off --------------
   useEffect(() => {
     getDetailView(bookId).then(result => {
@@ -49,9 +52,10 @@ const BookDetailPage = () => {
       } else {
         title = result.bookInfo.name;
       }
+      console.log(result);
       setDetailView({
         name: title,
-        author: result.bookInfo.author,
+        author: result.author,
         publisher: result.bookInfo.publisher,
         content: result.content,
         thumbnail: result.thumbnail.imageUrl,
@@ -67,13 +71,23 @@ const BookDetailPage = () => {
         imageUrl: result.owner.imageUrl,
         nickName: result.owner.nickname,
       });
+
+      if (result.bookImages.length > 0) {
+        for (let i = 0; i < result.bookImages.length; i++) {
+          setImages(image => [...image, result.bookImages[i]]);
+        }
+      }
     });
     dispatch(setAllFalse());
     dispatch(setBack(true));
     dispatch(setFavorite(true));
     dispatch(setShare(true));
-    dispatch(setMore(true));
-    dispatch(setMoreBookId(bookId));
+
+    if (userId === owner.id) {
+      //id 같을 시에만 더보기 버튼
+      dispatch(setMore(true));
+      dispatch(setMoreBookId(bookId));
+    }
     return () => {};
   }, [dispatch, getDetailView, bookId]);
 
@@ -92,7 +106,6 @@ const BookDetailPage = () => {
       document.body.style.overflow = 'hidden';
     }
   };
-
   const bookContents = [
     {
       message: 'A',
@@ -114,7 +127,6 @@ const BookDetailPage = () => {
       },
     },
   ];
-
   const rentalContents = [
     {
       message: '대여가능',
@@ -136,14 +148,12 @@ const BookDetailPage = () => {
       },
     },
   ];
-
   //close popup
   const modalEl = useRef(null);
   const handleClickOutside = ({ target }) => {
     if (bookShowing && !modalEl.current.contains(target)) setBookShowing(false);
     else if (rentalShowing && !modalEl.current.contains(target)) setRentalShowing(false);
   };
-
   useEffect(() => {
     window.addEventListener('click', handleClickOutside);
     return () => {
@@ -168,14 +178,22 @@ const BookDetailPage = () => {
             </h6>
           </TitleBox>
           <BookSlideBox>
-            <img src={detailView.thumbnail} alt="" />
-            {userId === owner.id ? (
-              <button onClick={() => openModal('book')}>
-                상태 {detailView.grade} {userId === owner.id ? <img src={expandMore} alt="버튼" /> : ''}
-              </button>
-            ) : (
-              <button className="noCursor">상태 {detailView.grade}</button>
-            )}
+            <Swiper modules={[Pagination]} slidesPerView={1} pagination={{ clickable: true }}>
+              {images.map((image, index) => {
+                return (
+                  <SwiperSlide key={index}>
+                    <img src={image.imageUrl} alt="" />
+                    {userId === owner.id ? (
+                      <button onClick={() => openModal('book')}>
+                        상태 {detailView.grade} {userId === owner.id ? <img src={expandMore} alt="버튼" /> : ''}
+                      </button>
+                    ) : (
+                      <button className="noCursor">상태 {detailView.grade}</button>
+                    )}
+                  </SwiperSlide>
+                );
+              })}
+            </Swiper>
           </BookSlideBox>
           <BookCont>
             <h4>대여자의 말</h4>

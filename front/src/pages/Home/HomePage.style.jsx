@@ -21,16 +21,22 @@ const TitleBox = styled.div`
   line-height: 4.8rem;
   border-bottom: 1px solid ${({ theme }) => theme.colors.$black3Line};
   //대여가능, 대여중/예약중 title
-  .active {
-    font-size: 1.7rem;
-    font-weight: 700;
-    color: ${({ theme }) => theme.colors.$whiteLine1};
+  h2:first-child {
+    margin-right: 1rem;
+  }
+  h2:nth-child(2) {
     margin-right: auto;
   }
-  .hide {
-    display: none;
+  .active {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: ${({ theme }) => theme.colors.$white1};
   }
-
+  .hide {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: ${({ theme }) => theme.colors.$white4};
+  }
   button {
     text-align: left;
     margin-top: 1.2rem;
