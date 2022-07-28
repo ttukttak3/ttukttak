@@ -27,7 +27,7 @@ const Layout = () => {
 
   useEffect(() => {
     if (navi.pathname === '/detailBook') {
-      setMarginState('noMagin');
+      setMarginState('noMargin');
     } else if (navi.pathname === '/search') {
       setMarginState('noMarginTop');
     } else {
