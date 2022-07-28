@@ -14,10 +14,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import org.springframework.data.annotation.CreatedDate;
 
 import com.ttukttak.book.entity.Book;
+import com.ttukttak.chat.entity.ChatRoom;
 import com.ttukttak.common.BaseTimeEntity;
 import com.ttukttak.oauth.entity.User;
 
@@ -50,6 +52,10 @@ public class Rent extends BaseTimeEntity implements Serializable {
 	@JoinColumn(name = "book_id")
 	private Book book;
 
+	@OneToOne
+	@JoinColumn(name = "room_id")
+	private ChatRoom room;
+
 	@CreatedDate
 	private LocalDate beginDate;
 
@@ -75,7 +81,7 @@ public class Rent extends BaseTimeEntity implements Serializable {
 	}
 
 	@Builder
-	public Rent(Long id, User lender, Book book, LocalDate beginDate) {
+	public Rent(Long id, User lender, Book book, ChatRoom room, LocalDate beginDate) {
 		User owner = book.getOwner();
 
 		if (!checkValid(owner, lender)) {
@@ -86,6 +92,7 @@ public class Rent extends BaseTimeEntity implements Serializable {
 		this.owner = owner;
 		this.lender = lender;
 		this.book = book;
+		this.room = room;
 		this.beginDate = beginDate;
 	}
 
