@@ -27,11 +27,7 @@ const connect = (client, roomId, setChatMessages) => {
 
 //3. client.subscribe 함수 : 메세지 받기
 const subscribe = (client, roomId, setChatMessages) => {
-  console.log('subscribe function');
-  console.log(roomId);
   client.current.subscribe(`/api/sub/chat/room/${roomId}`, ({ body }) => {
-    //여기서 메세지 읽음 처리--> readMessages 감
-    console.log('client: subscribe');
     setChatMessages(_chatMessages => [..._chatMessages, JSON.parse(body)]);
   });
 };

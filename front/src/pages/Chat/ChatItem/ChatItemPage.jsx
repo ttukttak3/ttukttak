@@ -42,6 +42,7 @@ const ChatItemPage = () => {
 
   const chatRoomInfo = async () => {
     const data = await getChatRoomInfo(roomId, setChatMessages, setMembers);
+    console.log(data);
     setBook({ ...book, ...data.book });
   };
 
@@ -69,7 +70,7 @@ const ChatItemPage = () => {
 
   return (
     <Wrapper>
-      <ChatBookInfo book={book}></ChatBookInfo>
+      {Object.keys(book).length > 0 && <ChatBookInfo book={book}></ChatBookInfo>}
       {chatMessages.map((item, idx) => (
         <>{myMemberInfo.memberId === item.memberId ? <ChatMessage side={'right'} item={item}></ChatMessage> : <ChatMessage side={'left'} item={item}></ChatMessage>}</>
       ))}

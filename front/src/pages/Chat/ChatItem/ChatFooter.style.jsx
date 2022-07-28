@@ -4,10 +4,11 @@ const Wrapper = styled.div`
   flex-direction: row;
   position: fixed;
   right: 0;
-  bottom: 8rem;
+  bottom: 4.8rem;
   left: 0;
   justify-content: space-between;
-  height: 3rem;
+  height: 5.6rem;
+  background: ${({ theme }) => theme.colors.$black2};
 `;
 
 const Input = styled.input`
@@ -16,8 +17,10 @@ const Input = styled.input`
   height: 4rem;
   font-size: 1.6rem;
   font-weight: 400;
+  margin-top: 0.5rem;
+  border-radius: 0.5rem;
   color: ${({ theme }) => theme.colors.$white1};
-  background: ${({ theme }) => theme.colors.$black3Line};
+  background: ${({ theme }) => theme.colors.$black3};
 `;
 
 const AddBtn = styled.img`
