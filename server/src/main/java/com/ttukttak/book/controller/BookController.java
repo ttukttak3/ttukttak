@@ -1,6 +1,7 @@
 package com.ttukttak.book.controller;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -18,8 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ttukttak.book.dto.BookCategoryDto;
 import com.ttukttak.book.dto.BookDetailResponse;
+import com.ttukttak.book.dto.BookImageDto;
 import com.ttukttak.book.dto.BookInfoDto;
 import com.ttukttak.book.dto.BookRequest;
 import com.ttukttak.book.dto.BookResponse;
@@ -48,6 +51,7 @@ public class BookController {
 	private static final String DEFAULT_TOWN_ID = "1111011900";
 	private final InterParkAPIService interParkAPIService;
 	private final BookService bookService;
+	private final ObjectMapper mapper;
 
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "pageNum", value = "페이지 번호", required = true, dataType = "int", paramType = "param"),
@@ -57,9 +61,9 @@ public class BookController {
 	@GetMapping("/books/interpark/search")
 	public ResponseEntity<PageResponse<BookInfoDto>> search(
 		@RequestParam
-			String query,
+		String query,
 		@RequestParam
-			int pageNum) {
+		int pageNum) {
 
 		return ResponseEntity.ok(interParkAPIService.search(query, pageNum));
 	}
@@ -84,17 +88,17 @@ public class BookController {
 	@GetMapping("/books")
 	public ResponseEntity<PageResponse<BookResponse>> getNearBookList(
 		@RequestParam(defaultValue = "1")
-			int pageNum,
+		int pageNum,
 		@RequestParam(defaultValue = "id")
-			String order,
+		String order,
 		@RequestParam
-			BookStatus status,
+		BookStatus status,
 		@RequestParam(defaultValue = DEFAULT_TOWN_ID)
-			Long townId,
+		Long townId,
 		@RequestParam(defaultValue = "0")
-			Long categoryId,
+		Long categoryId,
 		@RequestParam(defaultValue = "")
-			String query) {
+		String query) {
 
 		BookRequest bookRequest = new BookRequest(pageNum, order, status, townId, categoryId, query);
 
@@ -112,9 +116,9 @@ public class BookController {
 		BookUploadRequest bookUploadRequest,
 		@ApiIgnore
 		@CurrentUser
-			UserPrincipal userPrincipal,
+		UserPrincipal userPrincipal,
 		@RequestBody
-			List<MultipartFile> imageFiles) {
+		List<MultipartFile> imageFiles) {
 
 		Long bookId = bookService.bookSave(userPrincipal.getId(), bookUploadRequest, imageFiles);
 
@@ -132,7 +136,8 @@ public class BookController {
 	@ApiImplicitParam(name = "bookId", value = "도서 ID", required = true, dataType = "long", paramType = "path")
 	@ApiOperation(value = "도서 상세 정보")
 	@GetMapping("/books/{bookId}")
-	public ResponseEntity<BookDetailResponse> getBook(@PathVariable Long bookId) {
+	public ResponseEntity<BookDetailResponse> getBook(@PathVariable
+	Long bookId) {
 
 		return ResponseEntity.ok(bookService.findByIdDetail(bookId));
 	}
@@ -140,7 +145,8 @@ public class BookController {
 	@ApiImplicitParam(name = "bookId", value = "도서 ID", required = true, dataType = "long", paramType = "path")
 	@ApiOperation(value = "도서 삭제")
 	@DeleteMapping("/books/{bookId}")
-	public ResponseEntity<Boolean> setBookisDelete(@PathVariable Long bookId) {
+	public ResponseEntity<Boolean> setBookisDelete(@PathVariable
+	Long bookId) {
 
 		bookService.removeBook(bookId);
 
@@ -156,7 +162,9 @@ public class BookController {
 	})
 	@ApiOperation(value = "도서 상태값 수정")
 	@PatchMapping("/books/{bookId}/status")
-	public ResponseEntity<Boolean> updateBookStatus(@PathVariable Long bookId, @RequestBody BookStatus status) {
+	public ResponseEntity<Boolean> updateBookStatus(@PathVariable
+	Long bookId, @RequestBody
+	BookStatus status) {
 
 		bookService.updateStatus(bookId, status);
 
@@ -174,9 +182,9 @@ public class BookController {
 	@PatchMapping("/books/{bookId}/grade")
 	public ResponseEntity<Boolean> updateBookGrade(
 		@PathVariable
-			Long bookId,
+		Long bookId,
 		@RequestBody
-			BookGrade grade) {
+		BookGrade grade) {
 
 		bookService.updateGrade(bookId, grade);
 
@@ -194,10 +202,20 @@ public class BookController {
 	@PutMapping("/books/{bookId}")
 	public ResponseEntity<Boolean> updateBook(
 		@PathVariable
-			Long bookId,
+		Long bookId,
 		BookUploadRequest bookUploadRequest,
 		@RequestBody
-			List<MultipartFile> imageFiles) {
+		List<MultipartFile> imageFiles,
+		@RequestParam
+		String bookImagesJson) {
+
+		//json -> dto 변환
+		try {
+			bookUploadRequest.setBookImages(mapper.readValue(bookImagesJson,
+				mapper.getTypeFactory().constructCollectionType(List.class, BookImageDto.class)));
+		} catch (Exception e) {
+			bookUploadRequest.setBookImages(new ArrayList<BookImageDto>());
+		}
 
 		bookService.bookUpdate(bookId, bookUploadRequest, imageFiles);
 
@@ -211,11 +229,28 @@ public class BookController {
 	@GetMapping("/users/{userId}/books")
 	public ResponseEntity<PageResponse<MyBookResponse>> getBook(
 		@PathVariable
-			Long userId,
+		Long userId,
 		@RequestParam(defaultValue = "1")
-			int pageNum) {
+		int pageNum) {
 
 		return ResponseEntity.ok(bookService.getMyBookList(userId, pageNum));
+	}
+
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "bookId", value = "도서 ID", required = true, dataType = "long", paramType = "path")
+	})
+	@ApiOperation(value = "도서 숨기기")
+	@PatchMapping("/books/{bookId}/hide")
+	public ResponseEntity<Boolean> updateBookHide(
+		@PathVariable
+		Long bookId) {
+
+		bookService.updateHide(bookId);
+
+		return ResponseEntity
+			.status(HttpStatus.NO_CONTENT)
+			.build();
+
 	}
 
 }

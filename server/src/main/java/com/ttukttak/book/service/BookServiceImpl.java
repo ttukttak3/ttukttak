@@ -42,6 +42,8 @@ import com.ttukttak.common.dto.PageResponse;
 import com.ttukttak.oauth.dto.UserDto;
 import com.ttukttak.oauth.entity.User;
 import com.ttukttak.oauth.service.UserService;
+import com.ttukttak.rent.entity.Rent;
+import com.ttukttak.rent.repository.RentRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -53,6 +55,8 @@ public class BookServiceImpl implements BookService {
 	private final BookRepository bookRepository;
 	private final BookInfoRepository bookInfoRepository;
 	private final BookImageRepository bookImageRepository;
+
+	private final RentRepository rentRepository;
 
 	private final AddressService addressService;
 	private final HomeTownRepository homeTownRepository;
@@ -112,18 +116,20 @@ public class BookServiceImpl implements BookService {
 		 * 카테고리 ID가 0인 것은 전체 카테고리 조회로 판단한다.
 		 */
 		if (bookRequest.getCategoryId().equals(Long.parseLong("0"))) {
-			pageList = bookRepository.findByStatusInAndIsDeleteFalseAndSubjectContainsAndTownIdIn(
+			pageList = bookRepository.findByStatusInAndIsDeleteFalseAndIsHideFalseAndSubjectContainsAndTownIdIn(
 				bookStatus,
 				bookRequest.getQuery(),
 				townIdList,
 				pageRequest).map(BookResponse::from);
 		} else {
-			pageList = bookRepository.findByStatusInAndIsDeleteFalseAndSubjectContainsAndTownIdInAndBookCategoryId(
-				bookStatus,
-				bookRequest.getQuery(),
-				townIdList,
-				bookRequest.getCategoryId(),
-				pageRequest).map(BookResponse::from);
+			pageList = bookRepository
+				.findByStatusInAndIsDeleteFalseAndIsHideFalseAndSubjectContainsAndTownIdInAndBookCategoryId(
+					bookStatus,
+					bookRequest.getQuery(),
+					townIdList,
+					bookRequest.getCategoryId(),
+					pageRequest)
+				.map(BookResponse::from);
 			;
 		}
 
@@ -233,13 +239,22 @@ public class BookServiceImpl implements BookService {
 
 	/*
 	 * 도서 삭제 (update isDelete = Y)
+	 * 대여가 진행중이거나 대여가 완료된 책이 있을 경우에는 isDelete값 변경
+	 * 그것이 아니라면 데이터 삭제.
 	 */
 	@Override
 	@Transactional
 	public void removeBook(Long bookId) {
 		Book book = bookRepository.findById(bookId).orElseThrow(() -> new IllegalArgumentException());
-		book.removeBook();
-		bookRepository.save(book);
+
+		Rent rent = rentRepository.findByBookId(bookId).orElse(null);
+
+		if (rent == null) {
+			bookRepository.deleteById(bookId);
+		} else {
+			book.removeBook();
+			bookRepository.save(book);
+		}
 	}
 
 	/*
@@ -374,6 +389,18 @@ public class BookServiceImpl implements BookService {
 			.totalPages(myBookList.getTotalPages())
 			.totalElements(myBookList.getTotalElements())
 			.build();
+	}
+
+	/*
+	 * 도서 숨기기
+	 */
+	@Override
+	@Transactional
+	public void updateHide(Long bookId) {
+		Book book = bookRepository.findById(bookId).orElseThrow(() -> new IllegalArgumentException());
+
+		book.updateHide();
+		bookRepository.save(book);
 	}
 
 }

@@ -71,11 +71,14 @@ public class Book extends BaseTimeEntity implements Serializable {
 	private Town town;
 
 	@JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "book")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "book", cascade = CascadeType.ALL)
 	private List<ChatRoom> chatRooms = new ArrayList<>();
 
 	@Column(nullable = false, columnDefinition = "tinyint(1) default 0")
 	private Boolean isDelete = false;
+
+	@Column(nullable = false, columnDefinition = "tinyint(1) default 0")
+	private Boolean isHide = false;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "book", cascade = CascadeType.ALL)
 	private List<BookImage> images = new ArrayList<>();
@@ -118,6 +121,11 @@ public class Book extends BaseTimeEntity implements Serializable {
 
 	public Book updateGrade(BookGrade bookGrade) {
 		this.grade = bookGrade;
+		return this;
+	}
+
+	public Book updateHide() {
+		this.isHide = !this.isHide;
 		return this;
 	}
 
