@@ -331,18 +331,20 @@ public class BookServiceImpl implements BookService {
 			.thumbnail(bookImage)
 			.build();
 
+		//섬네일 없는 경우
+		if (bookImage == null) {
+			bookImage = new BookImage();
+		}
+
 		//섬네일 업데이트를 위한 리스트
 		List<FileUploadResponse> imageList = new ArrayList<>();
 
-		//기존에 이미지가 없는 경우 예외처리
-		if (bookImage != null) {
-			//API 도서 조회로 섬네일이 API 이미지 경로 인경우
-			if (!bookImage.getImageUrl().equals(bookUploadRequest.getThumbnail())) {
-				if (bookUploadRequest.getIsbn() != null && !bookUploadRequest.getIsbn().isEmpty()) {
-					imageList.add(
-						new FileUploadResponse(bookUploadRequest.getThumbnail(), bookUploadRequest.getThumbnail()));
-					updateBook.addImage(BookImage.builder().imageUrl(bookUploadRequest.getThumbnail()).build());
-				}
+		//API 도서 조회로 섬네일이 API 이미지 경로 인경우
+		if (!bookUploadRequest.getThumbnail().equals(bookImage.getImageUrl())) {
+			if (bookUploadRequest.getIsbn() != null && !bookUploadRequest.getIsbn().isEmpty()) {
+				imageList.add(
+					new FileUploadResponse(bookUploadRequest.getThumbnail(), bookUploadRequest.getThumbnail()));
+				updateBook.addImage(BookImage.builder().imageUrl(bookUploadRequest.getThumbnail()).build());
 			}
 		}
 
@@ -358,12 +360,18 @@ public class BookServiceImpl implements BookService {
 
 		Book resultBook = bookRepository.save(updateBook);
 
-		//대표이미지 지정
-		if (imageList.size() > 0) {
-			FileUploadResponse thumbnail = imageList.stream()
-				.filter(uploadResponse -> uploadResponse.getFileName().equals(bookUploadRequest.getThumbnail()))
-				.findFirst()
-				.orElse(imageList.get(0));
+		//대표이미지 지정(대표이미지 변경이 없는 경우)
+		if (!bookUploadRequest.getThumbnail().equals(bookImage.getImageUrl())) {
+			//사진 추가없이 대표이미지만 제거된 경우
+			FileUploadResponse thumbnail = new FileUploadResponse();
+			if (imageList.size() > 0) {
+				thumbnail = imageList.stream()
+					.filter(uploadResponse -> uploadResponse.getFileName().equals(bookUploadRequest.getThumbnail()))
+					.findFirst()
+					.orElse(imageList.get(0));
+			} else {
+				thumbnail.setUrl(bookUploadRequest.getBookImages().get(0).getImageUrl());
+			}
 
 			BookImage bookThumbnail = bookImageRepository.findByImageUrlAndBookId(thumbnail.getUrl(),
 				resultBook.getId());
