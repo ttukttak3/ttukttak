@@ -61,9 +61,11 @@ const Noti = styled.p`
   text-align: left;
   color: #9aa0a6;
   margin-bottom: 5rem;
-  a {
+  button {
     font-size: 1.2rem;
     text-decoration: underline;
+    color: #9aa0a6;
+    vertical-align: text-top;
   }
 `;
 

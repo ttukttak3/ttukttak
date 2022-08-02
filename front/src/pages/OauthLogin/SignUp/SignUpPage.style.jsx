@@ -12,13 +12,14 @@ const ImgBox = styled.div`
   position: relative;
   width: 10rem;
   height: 10rem;
-  border-radius: 100%;
+  border-radius: 5rem;
   margin: 0 auto 5.2rem auto;
-  //background: ${({ theme }) => theme.colors.$white4};
+
   img {
     width: 10rem;
     height: 10rem;
-    border-radius: 100%;
+    object-fit: cover;
+    border-radius: 5rem;
   }
 `;
 

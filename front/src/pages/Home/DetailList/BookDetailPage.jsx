@@ -1,8 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable max-lines-per-function */
 import React, { useEffect, useRef, useState } from 'react';
+import { Pagination } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import './slide.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { setAllFalse, setBack, setFavorite, setShare, setMore, setMoreBookId } from '../../../app/headerSlice';
 import bookApi from '../../../util/BookApi';
 import messageApi from '../../../util/MessageApi';
@@ -10,14 +15,14 @@ import style from './BookDetailPage.style';
 import LenderInfoPage from './LenderInfoPage';
 import expandMore from '../../../assets/img/arrows/expand_more.svg';
 import smallDown from '../../../assets/img/arrows/small_down.svg';
+import noImg from '../../../assets/img/logo/postb_default.svg';
 //import ReviewPage from './ReviewPage';
 //import OtherLendersPage from './OtherLendersPage';
 import SelectPopup from '../../../components/Modal/SelectPopupBottom';
 const BookDetailPage = () => {
   const location = useLocation();
   const bookId = location.state.id;
-  const { getDetailView, updateBookGrade, updateBookStatus } = bookApi;
-  const { makeChatRoom } = messageApi;
+  const userId = useSelector(state => state.user.userId);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [detailView, setDetailView] = useState({
@@ -29,29 +34,29 @@ const BookDetailPage = () => {
     rating: '',
     rentCnt: '',
   });
-
+  const [images, setImages] = useState([]);
   const [owner, setOwner] = useState({
     address: '',
     id: '',
     imageUrl: '',
     nickName: '',
   });
-
-  //userSlice userId값과 상세도서 api 등록 id 값 같을 시 이벤트
-  const userId = useSelector(state => state.user.userId);
-
+  //-------------- API ------------------------------
+  const { getDetailView, updateBookGrade, updateBookStatus } = bookApi;
+  const { makeChatRoom } = messageApi;
   //-------------- Header & Footer Off --------------
   useEffect(() => {
     getDetailView(bookId).then(result => {
-      let title = '';
-      if (result.bookInfo.name === null) {
-        title = result.subject;
-      } else {
-        title = result.bookInfo.name;
-      }
+      // let title = '';
+      // if (result.bookInfo.name === null) {
+      //   title = result.subject;
+      // } else {
+      //   title = result.bookInfo.name;
+      // }
+
       setDetailView({
-        name: title,
-        author: result.bookInfo.author,
+        name: result.subject,
+        author: result.author,
         publisher: result.bookInfo.publisher,
         content: result.content,
         thumbnail: result.thumbnail.imageUrl,
@@ -67,13 +72,32 @@ const BookDetailPage = () => {
         imageUrl: result.owner.imageUrl,
         nickName: result.owner.nickname,
       });
+      if (userId === result.owner.id) {
+        //id 같을 시에만 더보기 버튼
+        dispatch(setMore(true));
+        dispatch(setMoreBookId(bookId));
+      }
+      if (result.bookImages.length > 0) {
+        //대표 이미지가 있을 시
+        if (result.thumbnail.id) {
+          setImages(image => [...image, result.thumbnail]);
+        }
+        //대표 이미지가 없을 시 3장 모두 images에서 가져온다
+        for (let i = 0; i < result.bookImages.length; i++) {
+          if (result.thumbnail.id !== result.bookImages[i].id) {
+            setImages(image => [...image, result.bookImages[i]]);
+          }
+        }
+      } else {
+        //이미지 없을 때
+        setImages(image => [...image, { id: 0, imageUrl: noImg }]);
+      }
     });
     dispatch(setAllFalse());
     dispatch(setBack(true));
     dispatch(setFavorite(true));
     dispatch(setShare(true));
-    dispatch(setMore(true));
-    dispatch(setMoreBookId(bookId));
+
     return () => {};
   }, [dispatch, getDetailView, bookId]);
 
@@ -92,7 +116,6 @@ const BookDetailPage = () => {
       document.body.style.overflow = 'hidden';
     }
   };
-
   const bookContents = [
     {
       message: 'A',
@@ -114,7 +137,6 @@ const BookDetailPage = () => {
       },
     },
   ];
-
   const rentalContents = [
     {
       message: '대여가능',
@@ -136,14 +158,12 @@ const BookDetailPage = () => {
       },
     },
   ];
-
   //close popup
   const modalEl = useRef(null);
   const handleClickOutside = ({ target }) => {
     if (bookShowing && !modalEl.current.contains(target)) setBookShowing(false);
     else if (rentalShowing && !modalEl.current.contains(target)) setRentalShowing(false);
   };
-
   useEffect(() => {
     window.addEventListener('click', handleClickOutside);
     return () => {
@@ -155,7 +175,6 @@ const BookDetailPage = () => {
     const result = await makeChatRoom(bookId, userId);
     navigate(`/chat/${result.roomId}`);
   };
-
   const { Wrap, BookWrap, BookInfo, TitleBox, BookSlideBox, BookCont, BookState, BookFooter, FooterBox, LeftBox, BookPrice } = style;
   return (
     <Wrap ref={modalEl}>
@@ -168,14 +187,22 @@ const BookDetailPage = () => {
             </h6>
           </TitleBox>
           <BookSlideBox>
-            <img src={detailView.thumbnail} alt="" />
-            {userId === owner.id ? (
-              <button onClick={() => openModal('book')}>
-                상태 {detailView.grade} {userId === owner.id ? <img src={expandMore} alt="버튼" /> : ''}
-              </button>
-            ) : (
-              <button className="noCursor">상태 {detailView.grade}</button>
-            )}
+            <Swiper modules={[Pagination]} slidesPerView={1} pagination={{ clickable: true }}>
+              {images.map((image, index) => {
+                return (
+                  <SwiperSlide key={index}>
+                    <img src={image.imageUrl} alt="" />
+                    {userId === owner.id ? (
+                      <button onClick={() => openModal('book')}>
+                        상태 {detailView.grade} {userId === owner.id ? <img src={expandMore} alt="버튼" /> : ''}
+                      </button>
+                    ) : (
+                      <button className="noCursor">상태 {detailView.grade}</button>
+                    )}
+                  </SwiperSlide>
+                );
+              })}
+            </Swiper>
           </BookSlideBox>
           <BookCont>
             <h4>대여자의 말</h4>

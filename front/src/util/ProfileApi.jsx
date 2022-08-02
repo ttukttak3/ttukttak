@@ -44,6 +44,15 @@ const setProfile = async formData => {
   }
 };
 
-const profileApi = { naverUrl, kakaoUrl, getCurrentUser, nickNameCheck, signUp, setProfile };
+const deleteUser = async userId => {
+  try {
+    const result = await apiAuthUtil.delete(`api/v1/oauth/${userId}`);
+    return result.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const profileApi = { naverUrl, kakaoUrl, getCurrentUser, nickNameCheck, signUp, setProfile, deleteUser };
 
 export default profileApi;

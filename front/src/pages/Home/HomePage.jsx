@@ -147,7 +147,7 @@ const HomePage = () => {
   const tabContArr = [
     {
       tabTitle: (
-        <h2 key={0} className={activeIndex === 0 ? 'active' : 'hide'} onClick={() => tabClickHandler(1)}>
+        <h2 key={0} className={activeIndex === 0 ? 'active' : 'hide'} onClick={() => tabClickHandler(0)}>
           대여가능
         </h2>
       ),
@@ -155,8 +155,8 @@ const HomePage = () => {
     },
     {
       tabTitle: (
-        <h2 key={1} className={activeIndex === 1 ? 'active' : 'hide'} onClick={() => tabClickHandler(0)}>
-          대여중/예약중
+        <h2 key={1} className={activeIndex === 1 ? 'active' : 'hide'} onClick={() => tabClickHandler(1)}>
+          대여/예약중
         </h2>
       ),
       tabCont: <BookOnLoadPage range={range.param} category={category.id} townId={town ? town.id : 1111011900} key={keyEvent} />,

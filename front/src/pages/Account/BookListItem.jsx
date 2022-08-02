@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
-import noImg from '../../assets/img/logo/no_img.png';
+import noImg from '../../assets/img/logo/myb_default.svg';
 const BookListItem = ({ id, imageUrl, grade }) => {
   const navigate = useNavigate();
   const onDetailBookPage = () => {

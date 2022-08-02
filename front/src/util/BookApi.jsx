@@ -23,6 +23,15 @@ const uploadBook = async bookInfo => {
   }
 };
 
+const updateBook = async (bookId, bookInfo) => {
+  try {
+    const result = await formUtil.put(`api/v1/books/${bookId}`, bookInfo);
+    return result.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const interparkSearch = async (pageNum, query) => {
   const encodingQuery = encodeURIComponent(query.trim());
   try {
@@ -80,6 +89,15 @@ const bookDelete = async bookId => {
   }
 };
 
+const bookHide = async bookId => {
+  try {
+    const result = await apiUtil.patch(`api/v1/books/${bookId}/hide`);
+    return result.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const getMyBookList = async (param, setMyBookList) => {
   try {
     const result = await apiUtil.get(`api/v1/users/${param.userId}/books?pageNum=${param.pageNum}`);
@@ -91,6 +109,6 @@ const getMyBookList = async (param, setMyBookList) => {
   }
 };
 
-const bookApi = { uploadBook, getBookList, getDetailView, interparkSearch, getCategoryList, updateBookGrade, updateBookStatus, bookDelete, getMyBookList };
+const bookApi = { uploadBook, updateBook, getBookList, getDetailView, interparkSearch, getCategoryList, updateBookGrade, updateBookStatus, bookDelete, bookHide, getMyBookList };
 
 export default bookApi;

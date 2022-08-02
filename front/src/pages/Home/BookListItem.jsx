@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import style from './HomePage.style';
 import { useNavigate } from 'react-router-dom';
-
+import noImg from '../../assets/img/logo/homeb_default.svg';
 const BookListItem = ({ id, thumbnail, grade, subject, author, address, status, deposit, rating, rentCnt }) => {
   const chgDeposit = deposit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
@@ -14,7 +14,7 @@ const BookListItem = ({ id, thumbnail, grade, subject, author, address, status, 
   return (
     <BookBox key={id} onClick={onDetailBookPage}>
       <dt>
-        <img src={thumbnail} alt="썸네일" />
+        <img src={thumbnail ? thumbnail : noImg} alt="썸네일" />
         <button>{grade}</button>
       </dt>
       <dd>
