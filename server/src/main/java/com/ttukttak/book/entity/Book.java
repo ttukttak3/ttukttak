@@ -55,7 +55,7 @@ public class Book extends BaseTimeEntity implements Serializable {
 	private BookGrade grade;
 
 	@ManyToOne
-	@JoinColumn(name = "owner_id")
+	@JoinColumn(name = "owner_id", nullable = true)
 	private User owner;
 
 	@ManyToOne
@@ -71,7 +71,7 @@ public class Book extends BaseTimeEntity implements Serializable {
 	private Town town;
 
 	@JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "book", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "book")
 	private List<ChatRoom> chatRooms = new ArrayList<>();
 
 	@Column(nullable = false, columnDefinition = "tinyint(1) default 0")
@@ -83,7 +83,7 @@ public class Book extends BaseTimeEntity implements Serializable {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "book", cascade = CascadeType.ALL)
 	private List<BookImage> images = new ArrayList<>();
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "book")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "book", cascade = CascadeType.ALL)
 	private List<BookReview> bookReview = new ArrayList<>();
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "book")
