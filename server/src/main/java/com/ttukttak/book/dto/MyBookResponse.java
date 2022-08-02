@@ -15,12 +15,14 @@ public class MyBookResponse {
 	private Long id;
 	private String imageUrl;
 	private BookGrade grade;
+	private Boolean isHide;
 
 	@Builder
-	private MyBookResponse(Long id, String imageUrl, BookGrade grade) {
+	private MyBookResponse(Long id, String imageUrl, BookGrade grade, Boolean isHide) {
 		this.id = id;
 		this.imageUrl = imageUrl;
 		this.grade = grade;
+		this.isHide = isHide;
 	}
 
 	public static MyBookResponse from(Book book) {
@@ -28,6 +30,7 @@ public class MyBookResponse {
 			.id(book.getId())
 			.imageUrl(book.getTumbnailImageUrl())
 			.grade(book.getGrade())
+			.isHide(book.getIsHide())
 			.build();
 	}
 

@@ -21,6 +21,7 @@ public class BookDto {
 	private Long id;
 	private String subject;
 	private String content;
+	private String author;
 	private BookGrade grade;
 	private int deposit;
 	private UserDto owner;
@@ -33,13 +34,14 @@ public class BookDto {
 	private List<BookImageDto> imageUrls;
 
 	@Builder
-	private BookDto(Long id, String subject, String content, BookGrade grade, int deposit, UserDto owner,
+	private BookDto(Long id, String subject, String content, String author, BookGrade grade, int deposit, UserDto owner,
 		BookInfoDto bookInfo, BookCategory bookCategory, TownDto bookTown, List<BookReviewDto> review,
 		BookImageDto thumbnail,
 		List<BookImageDto> imageUrls) {
 		this.id = id;
 		this.subject = subject;
 		this.content = content;
+		this.author = author;
 		this.grade = grade;
 		this.deposit = deposit;
 		this.owner = owner;
@@ -56,6 +58,7 @@ public class BookDto {
 			.id(book.getId())
 			.subject(book.getSubject())
 			.content(book.getContent())
+			.author(book.getAuthor())
 			.deposit(book.getDeposit())
 			.grade(book.getGrade())
 			.owner(UserDto.from(book.getOwner()))

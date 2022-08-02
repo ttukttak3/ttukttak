@@ -39,11 +39,11 @@ public class Rent extends BaseTimeEntity implements Serializable {
 	private Long id;
 
 	@ManyToOne
-	@JoinColumn(name = "owner_id")
+	@JoinColumn(name = "owner_id", nullable = true)
 	private User owner;
 
 	@ManyToOne
-	@JoinColumn(name = "lender_id")
+	@JoinColumn(name = "lender_id", nullable = true)
 	private User lender;
 
 	@ManyToOne
