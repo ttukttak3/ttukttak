@@ -1,22 +1,28 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import style from './ChatMessage.style';
 
 const ChatMessage = ({ side, item }) => {
   const { Wrapper, Left, Right } = style;
   const { message, sendedAt } = item;
+  const [koreanTime, setKoreanTime] = useState();
 
-  const d = new Date(sendedAt);
+  useEffect(() => {
+    if (sendedAt) {
+      const d = new Date(sendedAt);
+      setKoreanTime(d.toLocaleTimeString('ko-kr', { hour: '2-digit', minute: '2-digit' }));
+    }
+  }, [sendedAt]);
 
   return (
     <Wrapper>
       {side === 'left' ? (
         <Left>
           <msg>{message}</msg>
-          {d.toLocaleTimeString('ko-kr')}
+          {sendedAt && koreanTime}
         </Left>
       ) : (
         <Right>
-          {d.toLocaleTimeString('ko-kr')}
+          {sendedAt && koreanTime}
           <msg>{message}</msg>
         </Right>
       )}

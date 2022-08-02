@@ -2,7 +2,6 @@ import React from 'react';
 import style from './ChatFooter.style';
 import send from '../../../assets/img/userInterFace/send.png';
 import add from '../../../assets/img/arrows/Add.png';
-import { useSelector } from 'react-redux';
 import chatSocketApi from '../../../util/ChatSocketApi';
 
 const ChatFooter = ({ roomId, memberId, message, client, setMessage }) => {
@@ -16,10 +15,16 @@ const ChatFooter = ({ roomId, memberId, message, client, setMessage }) => {
     }
   };
 
+  const handleKeyPress = e => {
+    if (e.key === 'Enter') {
+      sendMessageHandler();
+    }
+  };
+
   return (
     <Wrapper>
       <AddBtn src={add}></AddBtn>
-      <Input type={'text'} placeholder={'메시지를 입력해 주세요.'} value={message} onChange={e => setMessage(e.target.value)}></Input>
+      <Input type={'text'} placeholder={'메시지를 입력해 주세요.'} value={message} onChange={e => setMessage(e.target.value)} onKeyPress={e => handleKeyPress(e)}></Input>
       <SendBtn src={send} onClick={() => sendMessageHandler()}></SendBtn>
     </Wrapper>
   );
