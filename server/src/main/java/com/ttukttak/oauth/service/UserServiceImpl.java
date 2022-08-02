@@ -155,7 +155,7 @@ public class UserServiceImpl implements UserService {
 		/*
 		 * 유저 삭제시 연관 테이블
 		 * HomeTown => cascade
-		 * Book => Rent에 데이터 없으면 cascade, Rent에 데이터 있으면 isDelete true 및 owner_id set null
+		 * Book => isDelete true 및 owner_id set null
 		 * Review => reviewer_id set null (리뷰 작성 내역을 남긴다)
 		 * Rent => owner_id , lender_id set null (대여 내역을 남긴다)
 		 * ChatMember => user_id set null (채팅 맴버 내역을 남긴다)
