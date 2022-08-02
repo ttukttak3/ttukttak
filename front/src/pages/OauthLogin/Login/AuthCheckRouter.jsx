@@ -17,10 +17,7 @@ const AuthCheckRouter = () => {
         navigate('/login');
       }
     } catch (error) {
-      console.log('로그인 상태가 아닙니다.');
-      if (error === 'No access token set.') {
-        navigate('/login');
-      }
+      navigate('/login');
     }
   };
 

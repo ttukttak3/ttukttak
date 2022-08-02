@@ -6,7 +6,7 @@ const HeaderBox = styled.div`
   top: 0;
   left: 0;
   right: 0;
-  z-index: 1;
+  z-index: 2;
   width: 34rem;
   margin: 0 auto;
   height: 6.4rem;

@@ -7,7 +7,7 @@ import { setNickName, setImageFile } from '../../../app/userSlice';
 import profileUtils from '../../../util/ProfileApi';
 import locationUtils from '../../../util/LocationApi';
 import style from './SignUpPage.style';
-import noImg from '../../../assets/img/logo/no_img.png';
+import noImg from '../../../assets/img/logo/myb_default.svg';
 const SignUpPage = () => {
   //Header setting
   const dispatch = useDispatch();
@@ -101,6 +101,7 @@ const SignUpPage = () => {
     signUp(formData)
       .then(result => {
         dispatch(setImageFile(result.imageUrl));
+        dispatch(setHomeTown(result.homeTown));
         navigate(`/`);
       })
       .catch(error => {

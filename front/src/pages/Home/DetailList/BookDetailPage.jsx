@@ -15,6 +15,7 @@ import style from './BookDetailPage.style';
 import LenderInfoPage from './LenderInfoPage';
 import expandMore from '../../../assets/img/arrows/expand_more.svg';
 import smallDown from '../../../assets/img/arrows/small_down.svg';
+import noImg from '../../../assets/img/logo/postb_default.svg';
 //import ReviewPage from './ReviewPage';
 //import OtherLendersPage from './OtherLendersPage';
 import SelectPopup from '../../../components/Modal/SelectPopupBottom';
@@ -46,15 +47,15 @@ const BookDetailPage = () => {
   //-------------- Header & Footer Off --------------
   useEffect(() => {
     getDetailView(bookId).then(result => {
-      let title = '';
-      if (result.bookInfo.name === null) {
-        title = result.subject;
-      } else {
-        title = result.bookInfo.name;
-      }
-      console.log(result);
+      // let title = '';
+      // if (result.bookInfo.name === null) {
+      //   title = result.subject;
+      // } else {
+      //   title = result.bookInfo.name;
+      // }
+
       setDetailView({
-        name: title,
+        name: result.subject,
         author: result.author,
         publisher: result.bookInfo.publisher,
         content: result.content,
@@ -71,11 +72,25 @@ const BookDetailPage = () => {
         imageUrl: result.owner.imageUrl,
         nickName: result.owner.nickname,
       });
-
+      if (userId === result.owner.id) {
+        //id 같을 시에만 더보기 버튼
+        dispatch(setMore(true));
+        dispatch(setMoreBookId(bookId));
+      }
       if (result.bookImages.length > 0) {
-        for (let i = 0; i < result.bookImages.length; i++) {
-          setImages(image => [...image, result.bookImages[i]]);
+        //대표 이미지가 있을 시
+        if (result.thumbnail.id) {
+          setImages(image => [...image, result.thumbnail]);
         }
+        //대표 이미지가 없을 시 3장 모두 images에서 가져온다
+        for (let i = 0; i < result.bookImages.length; i++) {
+          if (result.thumbnail.id !== result.bookImages[i].id) {
+            setImages(image => [...image, result.bookImages[i]]);
+          }
+        }
+      } else {
+        //이미지 없을 때
+        setImages(image => [...image, { id: 0, imageUrl: noImg }]);
       }
     });
     dispatch(setAllFalse());
@@ -83,11 +98,6 @@ const BookDetailPage = () => {
     dispatch(setFavorite(true));
     dispatch(setShare(true));
 
-    if (userId === owner.id) {
-      //id 같을 시에만 더보기 버튼
-      dispatch(setMore(true));
-      dispatch(setMoreBookId(bookId));
-    }
     return () => {};
   }, [dispatch, getDetailView, bookId]);
 
@@ -165,7 +175,6 @@ const BookDetailPage = () => {
     const result = await makeChatRoom(bookId, userId);
     navigate(`/chat/${result.roomId}`);
   };
-
   const { Wrap, BookWrap, BookInfo, TitleBox, BookSlideBox, BookCont, BookState, BookFooter, FooterBox, LeftBox, BookPrice } = style;
   return (
     <Wrap ref={modalEl}>

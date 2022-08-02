@@ -17,9 +17,13 @@ import SearchListPage from '../../pages/Search/SearchListPage';
 import AccountPage from '../../pages/Account/AccountPage';
 import ProfilePage from '../../pages/Account/Profile/ProfilePage';
 import LocationPage from '../../pages/Location/LocationPage';
+import SettingPage from '../../pages/Account/Setting/SettingPage';
+import ContentsPage from '../../pages/Account/Setting/ContentsPage';
+import UpdateBookPage from '../../pages/UpdateBook/UpdateBookPage';
 import RentMainPage from '../../pages/RentManage/RentMainPage';
 import RentDetailPage from '../../pages/RentManage/Rent/RentDetailPage';
 import BorrowDetailPage from '../../pages/RentManage/Borrow/BorrowDetailPage';
+
 const Layout = () => {
   const navi = useLocation();
   const { LayoutBox, Section } = style;
@@ -45,6 +49,7 @@ const Layout = () => {
           <Route path="login" element={<LoginPage />} />
           <Route path="oauth2/redirect" element={<Auth />} />
           <Route path="location/:townId" element={<LocationPage />} />
+          <Route path="account/setting/:contents" element={<ContentsPage />} />
           <Route element={<AuthCheckRouter />}>
             <Route path="signUp" element={<SignUpPage />} />
             <Route path="chat" element={<Chat />} />
@@ -54,6 +59,8 @@ const Layout = () => {
             <Route path="search" element={<SearchListPage />} />
             <Route path="account" element={<AccountPage />} />
             <Route path="account/profile" element={<ProfilePage />} />
+            <Route path="account/setting" element={<SettingPage />} />
+            <Route path="update" element={<UpdateBookPage />} />
             <Route path="rent" element={<RentMainPage />} />
             <Route path="rent/:rentId" element={<RentDetailPage />} />
             <Route path="borrow/:rentId" element={<BorrowDetailPage />} />

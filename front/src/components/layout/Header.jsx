@@ -13,7 +13,7 @@ import notifications from '../../assets/img/userInterFace/Notifications.svg';
 import trashCan from '../../assets/img/userInterFace/Trash_Can.svg';
 import shareImg from '../../assets/img/userInterFace/share.svg';
 import moreVert from '../../assets/img/userInterFace/more_vert.svg';
-import settingsImg from '../../assets/img/userInterFace/Settings.png';
+import settingsImg from '../../assets/img/userInterFace/Settings.svg';
 import clearGray from '../../assets/img/userInterFace/Clear_gray.svg';
 import SelectPopup from '../../components/Modal/SelectPopupBottom';
 import ConfirmPopup from '../../components/Modal/ConfirmPopup';
@@ -25,9 +25,10 @@ const Header = () => {
   const { HeaderBox, LeftBox, Title, BackBtn, DownBtn, RightBox, RightBtn, LocationBox } = style;
 
   // 포스트보기 더보기 클릭 popup
-  const { bookDelete } = bookApi;
+  const { bookDelete, bookHide } = bookApi;
   const [moreShowing, setMoreShowing] = useState(false);
   const [bookDeleteShowing, setBookDeleteShowing] = useState(false);
+  const [bookHideShowing, setBookHideShowing] = useState(false);
 
   const openModal = () => {
     setMoreShowing(true);
@@ -36,13 +37,13 @@ const Header = () => {
     {
       message: '포스트 수정하기',
       onClick: () => {
-        //도서 등록으로 이동
+        navigate('/update', { state: { id: moreBookId } });
       },
     },
     {
       message: '포스트 숨기기',
       onClick: () => {
-        //
+        setBookHideShowing(true);
       },
     },
     {
@@ -64,7 +65,22 @@ const Header = () => {
       message: '확인',
       onClick: () => {
         //문구는 toast 팝업으로 바꿀 예정
-        bookDelete(moreBookId).then(console.log('삭제했습니다.'));
+        bookDelete(moreBookId).then(navigate(-1));
+      },
+    },
+  ];
+
+  const hideContents = [
+    {
+      message: '취소',
+      onClick: () => {
+        setBookHideShowing(false);
+      },
+    },
+    {
+      message: '확인',
+      onClick: () => {
+        bookHide(moreBookId).then(navigate(-1));
       },
     },
   ];
@@ -74,6 +90,7 @@ const Header = () => {
   const handleClickOutside = ({ target }) => {
     if (moreShowing && !modalEl.current.contains(target)) setMoreShowing(false);
     else if (bookDeleteShowing && !modalEl.current.contains(target)) setBookDeleteShowing(false);
+    else if (bookHideShowing && !modalEl.current.contains(target)) setBookHideShowing(false);
   };
   useEffect(() => {
     window.addEventListener('click', handleClickOutside);
@@ -166,7 +183,7 @@ const Header = () => {
           </RightBtn>
         )}
         {settings && (
-          <RightBtn>
+          <RightBtn onClick={() => navigate(`/account/setting`)}>
             <img src={settingsImg} alt={'설정버튼'} />
           </RightBtn>
         )}
@@ -174,6 +191,7 @@ const Header = () => {
       {/* popup */}
       {moreShowing && <SelectPopup title={'더보기'} contents={moreContents} />}
       {bookDeleteShowing && <ConfirmPopup title={'포스트를 삭제하시겠습니까?'} contents={deleteContents} />}
+      {bookHideShowing && <ConfirmPopup title={'포스트를 숨기시겠습니까?'} contents={hideContents} />}
     </HeaderBox>
   );
 };
