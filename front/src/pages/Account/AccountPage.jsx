@@ -8,7 +8,7 @@ import BookOwnerPage from './BookOwnerPage';
 import BookRentPage from './BookRentPage';
 import rentApi from '../../util/RentApi';
 import style from './AccountPage.style';
-import noImg from '../../assets/img/logo/no_img.png';
+import noImg from '../../assets/img/logo/postp_default.svg';
 const AccountPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
