@@ -31,6 +31,10 @@ public class UserResponse {
 	}
 
 	public static UserResponse from(User user) {
+		if (user == null) {
+			return new UserResponse();
+		}
+
 		return UserResponse.builder()
 			.id(user.getId())
 			.nickname(user.getNickname())
