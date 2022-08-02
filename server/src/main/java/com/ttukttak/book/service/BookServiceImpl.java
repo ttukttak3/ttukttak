@@ -42,7 +42,6 @@ import com.ttukttak.common.dto.PageResponse;
 import com.ttukttak.oauth.dto.UserDto;
 import com.ttukttak.oauth.entity.User;
 import com.ttukttak.oauth.service.UserService;
-import com.ttukttak.rent.entity.Rent;
 import com.ttukttak.rent.repository.RentRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -239,22 +238,14 @@ public class BookServiceImpl implements BookService {
 
 	/*
 	 * 도서 삭제 (update isDelete = Y)
-	 * 대여가 진행중이거나 대여가 완료된 책이 있을 경우에는 isDelete값 변경
-	 * 그것이 아니라면 데이터 삭제.
 	 */
 	@Override
 	@Transactional
 	public void removeBook(Long bookId) {
 		Book book = bookRepository.findById(bookId).orElseThrow(() -> new IllegalArgumentException());
 
-		Rent rent = rentRepository.findByBookId(bookId).orElse(null);
-
-		if (rent == null) {
-			bookRepository.deleteById(bookId);
-		} else {
-			book.removeBook();
-			bookRepository.save(book);
-		}
+		book.removeBook();
+		bookRepository.save(book);
 	}
 
 	/*
