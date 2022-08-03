@@ -7,7 +7,7 @@ const { LoaderWrap } = style;
 const Loading = () => {
   return (
     <LoaderWrap>
-      <ClipLoader color="#2948FF" size={80} speedMultiplier={0.5} />
+      <ClipLoader color="#2948FF" size={40} speedMultiplier={0.8} />
     </LoaderWrap>
   );
 };

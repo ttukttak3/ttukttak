@@ -24,6 +24,9 @@ public class RentResponse {
 	private Rent.RentStatus status;
 
 	public static RentResponse from(Rent rent) {
+		if (rent == null) {
+			return null;
+		}
 
 		return RentResponse.builder()
 			.id(rent.getId())

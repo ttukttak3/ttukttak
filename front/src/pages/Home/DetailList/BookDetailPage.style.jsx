@@ -3,6 +3,7 @@ import starBlue from '../../../assets/img/userInterFace/star_blue.svg';
 import libraryBlue from '../../../assets/img/userInterFace/local_library_blue.svg';
 import gradation from '../../../assets/img/userInterFace/big_gradation.png';
 import opacity from '../../../assets/img/userInterFace/opacityBg.png';
+
 const Wrap = styled.div``;
 const BookWrap = styled.div`
   width: 34rem;
@@ -32,25 +33,26 @@ const TitleBox = styled.div`
   }
 `;
 const BookSlideBox = styled.div`
-  margin: 5.2rem auto;
+  margin: 5.2rem auto 4rem auto;
   width: 19.3rem;
-  height: 28rem;
-  background: gray;
+  //이미지 280 + 페이지네이션까지 12 + 페이지 네이션 2
+  height: 29.4rem;
   position: relative;
 
   img {
     width: 19.3rem;
     height: 28rem;
   }
+
   //book state
   button {
     display: block;
-    width: 19.3rem;
+    width: 100%;
     height: 5.3rem;
     position: absolute;
-    bottom: 0;
+    bottom: 1.4rem;
     right: 0;
-    background: url(${gradation});
+    background: url(${gradation}) repeat;
     font-size: 1.6rem;
     font-weight: 700;
     color: ${({ theme }) => theme.colors.$white1};
@@ -261,5 +263,23 @@ const BookPrice = styled.div`
     font-weight: 700;
   }
 `;
-const BookDetailStyle = { Wrap, BookWrap, BookInfo, TitleBox, BookSlideBox, BookCont, BookState, LenderWrap, LenderInfo, Counting, ReviewWrap, OtherWrap, BookFooter, FooterBox, LeftBox, BookPrice };
+
+const BookDetailStyle = {
+  Wrap,
+  BookWrap,
+  BookInfo,
+  TitleBox,
+  BookSlideBox,
+  BookCont,
+  BookState,
+  LenderWrap,
+  LenderInfo,
+  Counting,
+  ReviewWrap,
+  OtherWrap,
+  BookFooter,
+  FooterBox,
+  LeftBox,
+  BookPrice,
+};
 export default BookDetailStyle;

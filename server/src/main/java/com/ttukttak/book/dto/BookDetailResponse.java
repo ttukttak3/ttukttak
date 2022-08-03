@@ -23,8 +23,10 @@ public class BookDetailResponse {
 	private Long id;
 	private String subject;
 	private String content;
+	private String author;
 	private BookGrade grade;
 	private BookStatus status;
+	private Boolean isHide;
 	private int deposit;
 	private UserResponse owner;
 	private BookInfoDto bookInfo;
@@ -38,15 +40,17 @@ public class BookDetailResponse {
 	private List<BookImageDto> bookImages;
 
 	@Builder
-	private BookDetailResponse(Long id, String subject, String content, BookStatus status, BookGrade grade, int deposit,
-		UserResponse owner,
-		BookInfoDto bookInfo, BookCategory bookCategory, TownDto bookTown, double rating, int rentCnt,
+	private BookDetailResponse(Long id, String subject, String content, String author, BookStatus status,
+		BookGrade grade, Boolean isHide, int deposit, UserResponse owner, BookInfoDto bookInfo,
+		BookCategory bookCategory, TownDto bookTown, double rating, int rentCnt,
 		List<BookReviewResponse> review, BookImageDto thumbnail, List<BookImageDto> bookImages) {
 		this.id = id;
 		this.subject = subject;
 		this.content = content;
+		this.author = author;
 		this.status = status;
 		this.grade = grade;
+		this.isHide = isHide;
 		this.deposit = deposit;
 		this.owner = owner;
 		this.bookInfo = bookInfo;
@@ -64,8 +68,10 @@ public class BookDetailResponse {
 			.id(book.getId())
 			.subject(book.getSubject())
 			.content(book.getContent())
+			.author(book.getAuthor())
 			.status(book.getStatus())
 			.grade(book.getGrade())
+			.isHide(book.getIsHide())
 			.deposit(book.getDeposit())
 			.owner(UserResponse.from(book.getOwner()))
 			.bookInfo(BookInfoDto.from(book.getBookInfo()))

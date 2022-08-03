@@ -1,6 +1,8 @@
 package com.ttukttak.oauth.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,6 +11,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ttukttak.address.entity.Town;
 import com.ttukttak.address.service.AddressService;
 import com.ttukttak.address.service.HomeTownService;
+import com.ttukttak.book.entity.Book;
+import com.ttukttak.book.repository.BookRepository;
+import com.ttukttak.book.repository.BookReviewRepository;
+import com.ttukttak.chat.repository.ChatMemberRepository;
 import com.ttukttak.common.StorageUploader;
 import com.ttukttak.common.dto.FileUploadResponse;
 import com.ttukttak.common.exception.ResourceNotFoundException;
@@ -18,6 +24,8 @@ import com.ttukttak.oauth.dto.UserDto;
 import com.ttukttak.oauth.entity.Role;
 import com.ttukttak.oauth.entity.User;
 import com.ttukttak.oauth.repository.UserRepository;
+import com.ttukttak.rent.entity.Rent;
+import com.ttukttak.rent.repository.RentRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,6 +38,11 @@ public class UserServiceImpl implements UserService {
 	private final AddressService addressService;
 	private final HomeTownService homeTownService;
 	private final StorageUploader storageUploader;
+
+	private final RentRepository rentRepository;
+	private final BookRepository bookRepository;
+	private final BookReviewRepository bookReviewRepository;
+	private final ChatMemberRepository chatMemberRepository;
 
 	@Override
 	public UserDto getById(Long id) {
@@ -122,6 +135,53 @@ public class UserServiceImpl implements UserService {
 			return userDto;
 		}
 		return userDto;
+	}
+
+	@Override
+	@Transactional
+	public Boolean deleteUser(User user) {
+		Long userId = user.getId();
+		/*
+		 * 대여가 진행중이면 삭제 불가
+		 * return_date != null << 대여중
+		 */
+		List<Rent> rent = rentRepository.findAllByLenderIdAndReturnDateIsNotNull(userId).orElse(new ArrayList<>());
+
+		//rent 데이터가 조회되면 false 리턴
+		if (rent.size() > 0) {
+			return false;
+		}
+
+		/*
+		 * 유저 삭제시 연관 테이블
+		 * HomeTown => cascade
+		 * Book => isDelete true 및 owner_id set null
+		 * Review => reviewer_id set null (리뷰 작성 내역을 남긴다)
+		 * Rent => owner_id , lender_id set null (대여 내역을 남긴다)
+		 * ChatMember => user_id set null (채팅 맴버 내역을 남긴다)
+		 * Book, Review, Rent, ChatMember, HomeTown
+		 */
+
+		//book 조회
+		List<Book> bookList = bookRepository.findAllByOwnerId(userId).orElse(new ArrayList<>());
+
+		bookList.stream()
+			.forEach(
+				book -> {
+					book.removeBook();
+					bookRepository.save(book);
+				});
+
+		//book, review, rent, ChatMember set NULL
+		bookRepository.setNullOwner(user);
+		bookReviewRepository.setNullReviewer(user);
+		rentRepository.setNullLender(user);
+		rentRepository.setNullOwner(user);
+		chatMemberRepository.setNullUser(user);
+
+		userRepository.delete(user);
+
+		return true;
 	}
 
 }

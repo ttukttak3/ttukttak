@@ -7,7 +7,7 @@ import { setBack, setSettings, setTitle, setAllFalse } from '../../../app/header
 import { setUserId, setRole, setNickName, setEmail, setImageFile, setIntroduction, setHomeTown } from '../../../app/userSlice';
 import utils from '../../../util/ProfileApi';
 import style from './ProfilePage.style';
-import noImg from '../../../assets/img/logo/no_img.png';
+import noImg from '../../../assets/img/logo/myb_default.svg';
 const ProfilePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();

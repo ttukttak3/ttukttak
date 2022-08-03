@@ -12,13 +12,13 @@ const ImgBox = styled.div`
   position: relative;
   width: 10rem;
   height: 10rem;
-  border-radius: 5rem;
   margin: 0 auto 2.2rem auto;
 
   img {
     width: 10rem;
     height: 10rem;
-    border-radius: 100%;
+    object-fit: cover;
+    border-radius: 5rem;
   }
 `;
 

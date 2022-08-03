@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -68,7 +69,7 @@ public class User extends BaseTimeEntity implements Serializable {
 	@Column(columnDefinition = "TEXT")
 	private String introduction;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
 	private List<HomeTown> homeTown = new ArrayList<>();
 
 	@Builder

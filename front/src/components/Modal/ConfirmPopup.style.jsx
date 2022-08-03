@@ -23,11 +23,22 @@ const PopupBox = styled.div`
   cursor: pointer;
 `;
 const ContBox = styled.div`
-  font-size: 1.6rem;
-  font-weight: 400;
-  color: ${({ theme }) => theme.colors.$black1};
   height: 14.4rem;
-  line-height: 14.4rem;
+  h2 {
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: ${({ theme }) => theme.colors.$black1};
+    line-height: 14.4rem;
+    &.subTitleOn {
+      padding: 5.4rem 0 0.3rem 0;
+      line-height: 2.2rem;
+    }
+  }
+  h4 {
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: ${({ theme }) => theme.colors.$white4};
+  }
 `;
 const ButtonBox = styled.div`
   height: 5.6rem;

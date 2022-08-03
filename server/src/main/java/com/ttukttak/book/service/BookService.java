@@ -37,4 +37,6 @@ public interface BookService {
 
 	PageResponse<MyBookResponse> getMyBookList(Long id, int pageNum);
 
+	void updateHide(Long bookId);
+
 }

@@ -17,10 +17,7 @@ const AuthCheckRouter = () => {
         navigate('/login');
       }
     } catch (error) {
-      console.log(error);
-      if (error === 'No access token set.') {
-        navigate('/login');
-      }
+      navigate('/login');
     }
   };
 

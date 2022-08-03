@@ -6,7 +6,11 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
+import com.ttukttak.oauth.entity.User;
 import com.ttukttak.rent.entity.Rent;
 
 public interface RentRepository extends JpaRepository<Rent, Long> {
@@ -19,4 +23,20 @@ public interface RentRepository extends JpaRepository<Rent, Long> {
 	Page<Rent> findAllByOwnerIdAndReturnDateIsNullOrderByBeginDateAsc(Long ownerId, Pageable pageable);
 
 	Optional<Rent> findByBookIdAndLenderId(Long bookId, Long lenderId);
+
+	Optional<List<Rent>> findAllByBookId(Long bookId);
+
+	Optional<List<Rent>> findAllByLenderIdAndReturnDateIsNotNull(Long userId);
+
+	@Modifying
+	@Query("update Rent m set m.lender = null where m.lender = :lender")
+	void setNullLender(
+		@Param("lender")
+		User lender);
+
+	@Modifying
+	@Query("update Rent m set m.owner = null where m.owner = :owner")
+	void setNullOwner(
+		@Param("owner")
+		User owner);
 }

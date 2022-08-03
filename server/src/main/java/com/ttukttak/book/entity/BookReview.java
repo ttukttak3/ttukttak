@@ -40,7 +40,7 @@ public class BookReview extends BaseTimeEntity implements Serializable {
 	private Book book;
 
 	@ManyToOne
-	@JoinColumn(name = "reviewer_id")
+	@JoinColumn(name = "reviewer_id", nullable = true)
 	private User reviewer;
 
 	@Builder

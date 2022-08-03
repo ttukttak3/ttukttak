@@ -42,6 +42,7 @@ import com.ttukttak.common.dto.PageResponse;
 import com.ttukttak.oauth.dto.UserDto;
 import com.ttukttak.oauth.entity.User;
 import com.ttukttak.oauth.service.UserService;
+import com.ttukttak.rent.repository.RentRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -53,6 +54,8 @@ public class BookServiceImpl implements BookService {
 	private final BookRepository bookRepository;
 	private final BookInfoRepository bookInfoRepository;
 	private final BookImageRepository bookImageRepository;
+
+	private final RentRepository rentRepository;
 
 	private final AddressService addressService;
 	private final HomeTownRepository homeTownRepository;
@@ -112,18 +115,20 @@ public class BookServiceImpl implements BookService {
 		 * 카테고리 ID가 0인 것은 전체 카테고리 조회로 판단한다.
 		 */
 		if (bookRequest.getCategoryId().equals(Long.parseLong("0"))) {
-			pageList = bookRepository.findByStatusInAndIsDeleteFalseAndSubjectContainsAndTownIdIn(
+			pageList = bookRepository.findByStatusInAndIsDeleteFalseAndIsHideFalseAndSubjectContainsAndTownIdIn(
 				bookStatus,
 				bookRequest.getQuery(),
 				townIdList,
 				pageRequest).map(BookResponse::from);
 		} else {
-			pageList = bookRepository.findByStatusInAndIsDeleteFalseAndSubjectContainsAndTownIdInAndBookCategoryId(
-				bookStatus,
-				bookRequest.getQuery(),
-				townIdList,
-				bookRequest.getCategoryId(),
-				pageRequest).map(BookResponse::from);
+			pageList = bookRepository
+				.findByStatusInAndIsDeleteFalseAndIsHideFalseAndSubjectContainsAndTownIdInAndBookCategoryId(
+					bookStatus,
+					bookRequest.getQuery(),
+					townIdList,
+					bookRequest.getCategoryId(),
+					pageRequest)
+				.map(BookResponse::from);
 			;
 		}
 
@@ -238,6 +243,7 @@ public class BookServiceImpl implements BookService {
 	@Transactional
 	public void removeBook(Long bookId) {
 		Book book = bookRepository.findById(bookId).orElseThrow(() -> new IllegalArgumentException());
+
 		book.removeBook();
 		bookRepository.save(book);
 	}
@@ -316,14 +322,19 @@ public class BookServiceImpl implements BookService {
 			.thumbnail(bookImage)
 			.build();
 
+		//섬네일 없는 경우
+		if (bookImage == null) {
+			bookImage = new BookImage();
+		}
+
 		//섬네일 업데이트를 위한 리스트
 		List<FileUploadResponse> imageList = new ArrayList<>();
 
 		//API 도서 조회로 섬네일이 API 이미지 경로 인경우
-		if (!bookImage.getImageUrl().equals(bookUploadRequest.getThumbnail())) {
+		if (!bookUploadRequest.getThumbnail().equals(bookImage.getImageUrl())) {
 			if (bookUploadRequest.getIsbn() != null && !bookUploadRequest.getIsbn().isEmpty()) {
-				imageList
-					.add(new FileUploadResponse(bookUploadRequest.getThumbnail(), bookUploadRequest.getThumbnail()));
+				imageList.add(
+					new FileUploadResponse(bookUploadRequest.getThumbnail(), bookUploadRequest.getThumbnail()));
 				updateBook.addImage(BookImage.builder().imageUrl(bookUploadRequest.getThumbnail()).build());
 			}
 		}
@@ -340,12 +351,18 @@ public class BookServiceImpl implements BookService {
 
 		Book resultBook = bookRepository.save(updateBook);
 
-		//대표이미지 지정
-		if (imageList.size() > 0) {
-			FileUploadResponse thumbnail = imageList.stream()
-				.filter(uploadResponse -> uploadResponse.getFileName().equals(bookUploadRequest.getThumbnail()))
-				.findFirst()
-				.orElse(imageList.get(0));
+		//대표이미지 지정(대표이미지 변경이 없는 경우)
+		if (!bookUploadRequest.getThumbnail().equals(bookImage.getImageUrl())) {
+			//사진 추가없이 대표이미지만 제거된 경우
+			FileUploadResponse thumbnail = new FileUploadResponse();
+			if (imageList.size() > 0) {
+				thumbnail = imageList.stream()
+					.filter(uploadResponse -> uploadResponse.getFileName().equals(bookUploadRequest.getThumbnail()))
+					.findFirst()
+					.orElse(imageList.get(0));
+			} else {
+				thumbnail.setUrl(bookUploadRequest.getBookImages().get(0).getImageUrl());
+			}
 
 			BookImage bookThumbnail = bookImageRepository.findByImageUrlAndBookId(thumbnail.getUrl(),
 				resultBook.getId());
@@ -364,7 +381,7 @@ public class BookServiceImpl implements BookService {
 	public PageResponse<MyBookResponse> getMyBookList(Long ownerId, int pageNum) {
 		PageRequest pageRequest = PageRequest.of(pageNum - 1, PAGESIZE);
 
-		Page<MyBookResponse> myBookList = bookRepository.findByOwnerId(ownerId, pageRequest)
+		Page<MyBookResponse> myBookList = bookRepository.findByIsDeleteFalseAndOwnerId(ownerId, pageRequest)
 			.map(MyBookResponse::from);
 
 		return PageResponse.<MyBookResponse>builder()
@@ -374,6 +391,18 @@ public class BookServiceImpl implements BookService {
 			.totalPages(myBookList.getTotalPages())
 			.totalElements(myBookList.getTotalElements())
 			.build();
+	}
+
+	/*
+	 * 도서 숨기기
+	 */
+	@Override
+	@Transactional
+	public void updateHide(Long bookId) {
+		Book book = bookRepository.findById(bookId).orElseThrow(() -> new IllegalArgumentException());
+
+		book.updateHide();
+		bookRepository.save(book);
 	}
 
 }
