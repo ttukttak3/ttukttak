@@ -98,15 +98,16 @@ const bookHide = async bookId => {
   }
 };
 
-const getMyBookList = async (param, setMyBookList) => {
+const getMyBookList = async (param, setMyBookList, setLoader) => {
   try {
-    const result = await apiAuthUtil.get(`api/v1/users/${param.userId}/books?pageNum=${param.pageNum}`);
+    const result = await apiUtil.get(`api/v1/users/${param.userId}/books?pageNum=${param.pageNum}`);
     result.data.contents.map(data => {
       return setMyBookList(_bookList => [..._bookList, data]);
     });
   } catch (error) {
     console.log(error);
   }
+  setLoader(false);
 };
 
 const bookApi = { uploadBook, updateBook, getBookList, getDetailView, interparkSearch, getCategoryList, updateBookGrade, updateBookStatus, bookDelete, bookHide, getMyBookList };

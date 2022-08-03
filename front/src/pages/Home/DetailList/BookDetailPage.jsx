@@ -213,7 +213,7 @@ const BookDetailPage = () => {
             <p className="loanCount">{detailView.rentCnt}명 빌림</p>
           </BookState>
         </BookInfo>
-        <LenderInfoPage owner={owner} />
+        <LenderInfoPage owner={owner} userId={userId} />
         {/* <ReviewPage />
         <OtherLendersPage /> */}
       </BookWrap>

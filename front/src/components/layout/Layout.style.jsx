@@ -22,16 +22,20 @@ const Section = styled.div`
   height: auto;
   background: ${({ theme }) => theme.colors.$black3};
   /* 섹션 내부에 푸터나 헤더가 있는 경우가 있어 클래스로 제어한다. */
-  &.margin {
-    margin: 6.4rem 0 5.6rem 0;
+  &.marginTB {
+    padding: 6.4rem 0 5.6rem 0;
+  }
+
+  &.marginT {
+    padding: 6.4rem 0 0 0;
+  }
+
+  &.marginB {
+    padding: 0 0 5.6rem 0;
   }
 
   &.noMargin {
-    margin: 6.4rem 0 0 0;
-  }
-
-  &.noMarginTop {
-    margin: 0 0 0 0;
+    padding: 0;
   }
 `;
 

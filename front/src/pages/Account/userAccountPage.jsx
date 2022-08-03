@@ -1,39 +1,37 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable max-lines-per-function */
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { setSettings, setAllFalse, setTitle } from '../../app/headerSlice';
+import { useDispatch } from 'react-redux';
+import { useLocation } from 'react-router-dom';
+import { setAllFalse, setTitle, setBack } from '../../app/headerSlice';
 import BookOwnerPage from './BookOwnerPage';
 import BookRentPage from './BookRentPage';
 import rentApi from '../../util/RentApi';
+import profileApi from '../../util/ProfileApi';
 import style from './AccountPage.style';
 import noImg from '../../assets/img/logo/postp_default.svg';
-const AccountPage = () => {
+const UserAccountPage = () => {
+  const location = useLocation();
+  const userId = location.state.id;
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const { getUser } = profileApi;
+  const [user, setUser] = useState([]);
+
   //--------------header START--------------
-  const user = useSelector(state => state.user);
   useEffect(() => {
-    dispatch(setAllFalse());
-    dispatch(setTitle('나의 책방'));
-    dispatch(setSettings(true));
-    //로그인 back history
-    localStorage.setItem('url', '/account');
-    //프로필 수정 history reset
-    localStorage.removeItem('backNickName');
-    localStorage.removeItem('backIntroduction');
-    localStorage.removeItem('backTownId');
-    localStorage.removeItem('backAddress');
-    localStorage.removeItem('backImgPreview');
-    localStorage.removeItem('backImgFile');
+    getUser(userId).then(result => {
+      setUser(result);
+      dispatch(setAllFalse());
+      dispatch(setBack(true));
+      dispatch(setTitle(`${result.nickname}님의 책방`));
+    });
     return () => {};
-  }, [dispatch]);
+  }, [dispatch, getUser]);
 
   //빌려준 횟수, 빌린 횟수
   const [param, setParam] = useState({
     pageNum: 1,
-    userId: user.userId,
+    userId: userId,
   });
 
   const [rentList, setRentList] = useState([]);
@@ -57,7 +55,7 @@ const AccountPage = () => {
           빌려줄 책
         </h2>
       ),
-      tabCont: user.userId && <BookOwnerPage userId={user.userId}></BookOwnerPage>,
+      tabCont: <BookOwnerPage userId={userId}></BookOwnerPage>,
     },
     {
       tabTitle: (
@@ -65,7 +63,7 @@ const AccountPage = () => {
           빌린 책
         </h2>
       ),
-      tabCont: user.userId && <BookRentPage userId={user.userId}></BookRentPage>,
+      tabCont: <BookRentPage userId={userId}></BookRentPage>,
     },
   ];
 
@@ -92,12 +90,12 @@ const AccountPage = () => {
     };
   }, [scrolled]);
 
-  const { AccountBox, UserInfo, Counting, Top, CountingWrap, TabBox, PlusBtn } = style;
+  const { AccountBox, UserInfo, Counting, Top, CountingWrap, TabBox } = style;
   return (
     <AccountBox>
       <UserInfo>
         <Top>
-          <img onError={onErrorImg} src={user.imageFile} alt="이미지" />
+          <img onError={onErrorImg} src={user && user.imageUrl} alt="이미지" />
           <CountingWrap>
             <Counting>
               <dt>빌려준 횟수</dt>
@@ -109,10 +107,9 @@ const AccountPage = () => {
             </Counting>
           </CountingWrap>
         </Top>
-        <h2>{user.nickName}</h2>
-        <h4>{user.homeTown.town ? user.homeTown.town.address : ''}</h4>
-        <h6>{user.introduction}</h6>
-        <button onClick={() => navigate('/account/profile')}>프로필 편집</button>
+        <h2>{user && user.nickname}</h2>
+        <h4>{user && user.homeTown ? user.homeTown.town.address : ''}</h4>
+        <h6>{user && user.introduction}</h6>
       </UserInfo>
       <TabBox className={scrolled ? 'active' : 'activeN'}>
         {tabContArr.map(section => {
@@ -120,9 +117,8 @@ const AccountPage = () => {
         })}
       </TabBox>
       {tabContArr[activeIndex].tabCont}
-      <PlusBtn onClick={() => navigate('/upload')} />
     </AccountBox>
   );
 };
 
-export default AccountPage;
+export default UserAccountPage;
