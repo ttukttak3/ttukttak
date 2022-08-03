@@ -11,7 +11,7 @@ const RentListItem = ({ book, mode, onClick }) => {
     } else if (mode === 'borrow') {
       setComment('열심히 독서를 진행중이에요.');
     }
-  }, []);
+  }, [mode]);
 
   return (
     <Wrapper>

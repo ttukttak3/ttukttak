@@ -3,41 +3,52 @@ import styled from 'styled-components';
 const Wrapper = styled.li`
   display: flex;
   list-style: none;
-  border-bottom: 0.3px solid ${({ theme }) => theme.colors.$whiteLine4};
-  margin: 1rem;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.$black3Line};
+  margin-bottom: 2.4rem;
   font-size: 2rem;
+
+  :first-child {
+    margin-top: 0.8rem;
+  }
 `;
 const Img = styled.img`
-  text-align: left;
-  width: 4rem;
-  height: 4rem;
-  margin: 0.6rem;
+  width: 4.8rem;
+  height: 4.8rem;
+  border-radius: 2.4rem;
 `;
 
 const InfoWrapper = styled.div`
+  width: 100%;
+  margin-left: 0.8rem;
+  height: 6rem;
   display: flex;
   flex-direction: column;
 `;
 
 const UserName = styled.div`
-  margin-top: 1rem;
-  color: ${({ theme }) => theme.colors.$white1};
-  font-size: 1.6rem;
-  font-weight: 400;
-  width: 100%;
-  time {
-    margin-top: 1rem;
-    text-align: right;
-    magin-left: auto;
+  display: flex;
+  p {
+    color: ${({ theme }) => theme.colors.$white1};
+    font-size: 1.6rem;
+    font-weight: 400;
+  }
+  span {
+    margin-left: auto;
+    font-size: 1.2rem;
+    font-weight: 400;
     color: ${({ theme }) => theme.colors.$white3};
   }
 `;
 
 const LastChat = styled.div`
-  color: ${({ theme }) => theme.colors.$white3};
-  font-size: 1.6rem;
-  unread {
-    magin-left: auto;
+  display: flex;
+  margin-top: 1rem;
+  p {
+    color: ${({ theme }) => theme.colors.$white3};
+    font-size: 1.4rem;
+  }
+  span {
+    margin-left: auto;
     color: ${({ theme }) => theme.colors.$white1};
     background-color: ${({ theme }) => theme.colors.$primaryBlueP};
     padding: 0.3rem;

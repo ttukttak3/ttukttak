@@ -31,13 +31,13 @@ import springfox.documentation.annotations.ApiIgnore;
 @Api(value = "/api/v1/oauth", description = "유저 API")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/oauth")
+@RequestMapping("/api/v1")
 public class OauthController {
 
 	private final UserService userService;
 
 	@ApiOperation(value = "로그인한 유저정보 조회")
-	@GetMapping("/profile")
+	@GetMapping("/oauth/profile")
 	public ResponseEntity<UserDto> getCurrentUser(
 		@ApiIgnore
 		@CurrentUser
@@ -48,7 +48,7 @@ public class OauthController {
 
 	@ApiImplicitParam(name = "nickname", value = "닉네임", required = true, dataType = "String", paramType = "Param")
 	@ApiOperation(value = "닉네임 중복 체크")
-	@GetMapping("/check-nickname")
+	@GetMapping("/oauth/check-nickname")
 	public ResponseEntity<Boolean> getNickName(
 		@ApiIgnore
 		@CurrentUser
@@ -64,7 +64,7 @@ public class OauthController {
 		@ApiImplicitParam(name = "imageFile", value = "이지미 파일", required = false, dataType = "MultipartFile", paramType = "body")
 	})
 	@ApiOperation(value = "회원가입")
-	@PostMapping("/signup")
+	@PostMapping("/oauth/signup")
 	public ResponseEntity<UserDto> setSignUp(
 		@ApiIgnore
 		@CurrentUser
@@ -84,7 +84,7 @@ public class OauthController {
 		@ApiImplicitParam(name = "imageFile", value = "이지미 파일", required = false, dataType = "MultipartFile", paramType = "body")
 	})
 	@ApiOperation(value = "프로필 수정")
-	@PutMapping("/profile")
+	@PutMapping("/oauth/profile")
 	public ResponseEntity<UserDto> setProfile(
 		@ApiIgnore
 		@CurrentUser
@@ -99,7 +99,7 @@ public class OauthController {
 
 	@ApiImplicitParam(name = "userId", value = "유저 ID", required = true, dataType = "long", paramType = "path")
 	@ApiOperation(value = "유저 삭제")
-	@DeleteMapping("/{userId}")
+	@DeleteMapping("/oauth/{userId}")
 	public ResponseEntity<Boolean> deleteUser(
 		@ApiIgnore
 		@CurrentUser
@@ -113,5 +113,15 @@ public class OauthController {
 		}
 
 		return ResponseEntity.ok(userService.deleteUser(userPrincipal.getUser()));
+	}
+
+	@ApiImplicitParam(name = "userId", value = "유저 ID", required = true, dataType = "long", paramType = "path")
+	@ApiOperation(value = "유저 조회")
+	@GetMapping("/users/{userId}")
+	public ResponseEntity<UserDto> getUsers(
+		@PathVariable
+		Long userId) {
+
+		return ResponseEntity.ok(userService.getById(userId));
 	}
 }

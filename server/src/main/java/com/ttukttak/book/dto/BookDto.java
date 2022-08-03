@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import com.ttukttak.address.dto.TownDto;
 import com.ttukttak.book.entity.Book;
 import com.ttukttak.book.entity.Book.BookGrade;
+import com.ttukttak.book.entity.Book.BookStatus;
 import com.ttukttak.book.entity.BookCategory;
 import com.ttukttak.oauth.dto.UserDto;
 
@@ -24,6 +25,7 @@ public class BookDto {
 	private String author;
 	private BookGrade grade;
 	private int deposit;
+
 	private UserDto owner;
 	private BookInfoDto bookInfo;
 	private BookCategory bookCategory;
@@ -33,11 +35,13 @@ public class BookDto {
 	private BookImageDto thumbnail;
 	private List<BookImageDto> imageUrls;
 
+	private BookStatus status;
+
 	@Builder
-	private BookDto(Long id, String subject, String content, String author, BookGrade grade, int deposit, UserDto owner,
-		BookInfoDto bookInfo, BookCategory bookCategory, TownDto bookTown, List<BookReviewDto> review,
-		BookImageDto thumbnail,
-		List<BookImageDto> imageUrls) {
+	private BookDto(Long id, String subject, String content, String author, BookGrade grade, int deposit,
+		UserDto owner, BookInfoDto bookInfo, BookCategory bookCategory, TownDto bookTown,
+		List<BookReviewDto> review, BookImageDto thumbnail, List<BookImageDto> imageUrls,
+		BookStatus status) {
 		this.id = id;
 		this.subject = subject;
 		this.content = content;
@@ -51,6 +55,7 @@ public class BookDto {
 		this.review = review;
 		this.thumbnail = thumbnail;
 		this.imageUrls = imageUrls;
+		this.status = status;
 	}
 
 	public static BookDto from(Book book) {
@@ -68,6 +73,7 @@ public class BookDto {
 			.review(book.getBookReview().stream().map(BookReviewDto::from).collect(Collectors.toList()))
 			.thumbnail(BookImageDto.from(book.getThumbnail()))
 			.imageUrls(book.getImages().stream().map(BookImageDto::from).collect(Collectors.toList()))
+			.status(book.getStatus())
 			.build();
 	}
 

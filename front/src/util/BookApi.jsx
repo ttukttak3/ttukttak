@@ -1,5 +1,5 @@
 import utils from './ApiUtil';
-const { apiUtil, formUtil } = utils;
+const { apiUtil, formUtil, apiAuthUtil } = utils;
 
 const getBookList = async (param, setBookList, setLoader) => {
   try {
@@ -64,7 +64,7 @@ const getDetailView = async bookId => {
 
 const updateBookGrade = async (bookId, grade) => {
   try {
-    const result = await apiUtil.patch(`api/v1/books/${bookId}/grade`, grade);
+    const result = await apiAuthUtil.patch(`api/v1/books/${bookId}/grade`, grade);
     return result.data;
   } catch (error) {
     console.log(error);
@@ -73,7 +73,7 @@ const updateBookGrade = async (bookId, grade) => {
 
 const updateBookStatus = async (bookId, status) => {
   try {
-    const result = await apiUtil.patch(`api/v1/books/${bookId}/status`, status);
+    const result = await apiAuthUtil.patch(`api/v1/books/${bookId}/status`, status);
     return result.data;
   } catch (error) {
     console.log(error);
@@ -82,7 +82,7 @@ const updateBookStatus = async (bookId, status) => {
 
 const bookDelete = async bookId => {
   try {
-    const result = await apiUtil.delete(`api/v1/books/${bookId}`);
+    const result = await apiAuthUtil.delete(`api/v1/books/${bookId}`);
     return result.data;
   } catch (error) {
     console.log(error);
@@ -91,14 +91,14 @@ const bookDelete = async bookId => {
 
 const bookHide = async bookId => {
   try {
-    const result = await apiUtil.patch(`api/v1/books/${bookId}/hide`);
+    const result = await apiAuthUtil.patch(`api/v1/books/${bookId}/hide`);
     return result.data;
   } catch (error) {
     console.log(error);
   }
 };
 
-const getMyBookList = async (param, setMyBookList) => {
+const getMyBookList = async (param, setMyBookList, setLoader) => {
   try {
     const result = await apiUtil.get(`api/v1/users/${param.userId}/books?pageNum=${param.pageNum}`);
     result.data.contents.map(data => {
@@ -107,6 +107,7 @@ const getMyBookList = async (param, setMyBookList) => {
   } catch (error) {
     console.log(error);
   }
+  setLoader(false);
 };
 
 const bookApi = { uploadBook, updateBook, getBookList, getDetailView, interparkSearch, getCategoryList, updateBookGrade, updateBookStatus, bookDelete, bookHide, getMyBookList };
