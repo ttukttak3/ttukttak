@@ -23,6 +23,7 @@ import UpdateBookPage from '../../pages/UpdateBook/UpdateBookPage';
 import RentMainPage from '../../pages/RentManage/RentMainPage';
 import RentDetailPage from '../../pages/RentManage/Rent/RentDetailPage';
 import BorrowDetailPage from '../../pages/RentManage/Borrow/BorrowDetailPage';
+import UserAccountPage from '../../pages/Account/UserAccountPage';
 
 const Layout = () => {
   const navi = useLocation();
@@ -31,11 +32,13 @@ const Layout = () => {
 
   useEffect(() => {
     if (navi.pathname === '/detailBook') {
-      setMarginState('noMargin');
+      setMarginState('marginT');
     } else if (navi.pathname === '/search') {
-      setMarginState('noMarginTop');
+      setMarginState('noMargin');
+    } else if (navi.pathname === '/rent') {
+      setMarginState('marginB');
     } else {
-      setMarginState('margin');
+      setMarginState('marginTB');
     }
   }, [navi]);
 
@@ -50,6 +53,7 @@ const Layout = () => {
           <Route path="oauth2/redirect" element={<Auth />} />
           <Route path="location/:townId" element={<LocationPage />} />
           <Route path="account/setting/:contents" element={<ContentsPage />} />
+          <Route path="userAccount" element={<UserAccountPage />} />
           <Route element={<AuthCheckRouter />}>
             <Route path="signUp" element={<SignUpPage />} />
             <Route path="chat" element={<Chat />} />

@@ -139,7 +139,7 @@ const ServiceBox = styled.div`
     margin: 1.5rem 0;
     list-style-position: inside;
     list-style-type: decimal;
-    text-indent: -2rem;
+    text-indent: -1.7rem;
     padding-left: 2rem;
     font-size: 1.4rem;
     font-weight: 400;

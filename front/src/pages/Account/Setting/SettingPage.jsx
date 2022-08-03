@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setBack, setAllFalse, setTitle } from '../../../app/headerSlice';
+import { setClear } from '../../../app/userSlice';
 import ConfirmPopup from '../../../components/Modal/ConfirmPopup';
 import { ACCESS_TOKEN } from '../../../util/ApiUtil';
 import utils from '../../../util/ProfileApi';
@@ -12,8 +13,9 @@ import style from './SettingPage.style';
 const SettingPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { deleteUser } = utils;
   const user = useSelector(state => state.user);
+
+  const { deleteUser } = utils;
 
   useEffect(() => {
     dispatch(setAllFalse());
@@ -34,8 +36,9 @@ const SettingPage = () => {
     {
       message: '확인',
       onClick: () => {
+        dispatch(setClear());
         localStorage.removeItem(ACCESS_TOKEN);
-        navigate('/');
+        window.location.replace('/');
       },
     },
   ];
@@ -54,6 +57,7 @@ const SettingPage = () => {
           if (result === false) {
             alert('대여중인 도서가 있습니다. 반납해주세요!');
           } else {
+            dispatch(setClear());
             localStorage.removeItem(ACCESS_TOKEN);
             window.location.replace('/');
           }

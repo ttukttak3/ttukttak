@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
 const Wrapper = styled.ul`
-  display: list;
-  align: center;
+  width: 34rem;
+  margin: 0 auto;
 `;
 
 export default Wrapper;
