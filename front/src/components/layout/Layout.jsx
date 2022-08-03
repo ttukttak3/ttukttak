@@ -23,7 +23,7 @@ import UpdateBookPage from '../../pages/UpdateBook/UpdateBookPage';
 import RentMainPage from '../../pages/RentManage/RentMainPage';
 import RentDetailPage from '../../pages/RentManage/Rent/RentDetailPage';
 import BorrowDetailPage from '../../pages/RentManage/Borrow/BorrowDetailPage';
-import UserAccountPage from '../../pages/Account/UserAccountPage';
+import UserAccountPage from '../../pages/Account/userAccountPage';
 
 const Layout = () => {
   const navi = useLocation();

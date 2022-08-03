@@ -52,6 +52,7 @@ const LastChat = styled.div`
     color: ${({ theme }) => theme.colors.$white1};
     background-color: ${({ theme }) => theme.colors.$primaryBlueP};
     padding: 0.3rem;
+    font-size: 1.2rem;
     border-radius: 1.5rem;
   }
 `;
