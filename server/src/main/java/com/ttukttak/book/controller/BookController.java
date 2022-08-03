@@ -145,8 +145,12 @@ public class BookController {
 	@ApiImplicitParam(name = "bookId", value = "도서 ID", required = true, dataType = "long", paramType = "path")
 	@ApiOperation(value = "도서 삭제")
 	@DeleteMapping("/books/{bookId}")
-	public ResponseEntity<Boolean> setBookisDelete(@PathVariable
-	Long bookId) {
+	public ResponseEntity<Boolean> setBookisDelete(
+		@ApiIgnore
+		@CurrentUser
+		UserPrincipal userPrincipal,
+		@PathVariable
+		Long bookId) {
 
 		bookService.removeBook(bookId);
 
@@ -162,9 +166,14 @@ public class BookController {
 	})
 	@ApiOperation(value = "도서 상태값 수정")
 	@PatchMapping("/books/{bookId}/status")
-	public ResponseEntity<Boolean> updateBookStatus(@PathVariable
-	Long bookId, @RequestBody
-	BookStatus status) {
+	public ResponseEntity<Boolean> updateBookStatus(
+		@ApiIgnore
+		@CurrentUser
+		UserPrincipal userPrincipal,
+		@PathVariable
+		Long bookId,
+		@RequestBody
+		BookStatus status) {
 
 		bookService.updateStatus(bookId, status);
 
@@ -181,6 +190,9 @@ public class BookController {
 	@ApiOperation(value = "도서 등급 수정")
 	@PatchMapping("/books/{bookId}/grade")
 	public ResponseEntity<Boolean> updateBookGrade(
+		@ApiIgnore
+		@CurrentUser
+		UserPrincipal userPrincipal,
 		@PathVariable
 		Long bookId,
 		@RequestBody
@@ -201,6 +213,9 @@ public class BookController {
 	@ApiOperation(value = "도서 수정")
 	@PutMapping("/books/{bookId}")
 	public ResponseEntity<Boolean> updateBook(
+		@ApiIgnore
+		@CurrentUser
+		UserPrincipal userPrincipal,
 		@PathVariable
 		Long bookId,
 		BookUploadRequest bookUploadRequest,
@@ -240,6 +255,9 @@ public class BookController {
 	@ApiOperation(value = "도서 숨기기")
 	@PatchMapping("/books/{bookId}/hide")
 	public ResponseEntity<Boolean> updateBookHide(
+		@ApiIgnore
+		@CurrentUser
+		UserPrincipal userPrincipal,
 		@PathVariable
 		Long bookId) {
 
