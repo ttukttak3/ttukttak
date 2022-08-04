@@ -26,7 +26,7 @@ const ChatBookInfo = ({ book, lenderId, roomId }) => {
           {bookTown?.longAddress}
         </Location>
         <Status>
-          <RentBtn userStatus={owner.id === userId} status={status} bookId={id} lenderId={lenderId}></RentBtn>,
+          <RentBtn userStatus={owner.id === userId} status={status} bookId={id} lenderId={lenderId} roomId={roomId}></RentBtn>,
           <div>
             <p>대여료</p>
             <p>2,000원</p>
