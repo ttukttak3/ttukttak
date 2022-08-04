@@ -35,8 +35,7 @@ public class RentServiceImpl implements RentService {
 	@Override
 	@Transactional(readOnly = true)
 	public PageResponse<RentResponse> getRentedList(Long ownerId, int pageNum) {
-		Pageable pageable = PageRequest.of(pageNum, PAGE_SIZE);
-
+		Pageable pageable = PageRequest.of(pageNum - 1, PAGE_SIZE);
 		Page<RentResponse> pageInfo = rentRepository
 			.findAllByOwnerIdAndReturnDateIsNullOrderByBeginDateAsc(ownerId, pageable)
 			.map(RentResponse::from);
