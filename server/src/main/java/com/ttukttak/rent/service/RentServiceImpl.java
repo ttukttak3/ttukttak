@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ttukttak.book.entity.Book;
 import com.ttukttak.book.repository.BookRepository;
+import com.ttukttak.chat.entity.ChatRoom;
+import com.ttukttak.chat.repository.ChatRoomRepository;
 import com.ttukttak.common.dto.PageResponse;
 import com.ttukttak.common.exception.DuplicatedException;
 import com.ttukttak.common.exception.UnauthChangeException;
@@ -31,6 +33,7 @@ public class RentServiceImpl implements RentService {
 	private final ExtendRepository extendRepository;
 	private final BookRepository bookRepository;
 	private final UserRepository userRepository;
+	private final ChatRoomRepository chatRoomRepository;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -79,6 +82,8 @@ public class RentServiceImpl implements RentService {
 	public RentResponse addRent(CreateRentRequest request, Long userId) {
 		Book book = bookRepository.findById(request.getBookId()).orElseThrow(() -> new IllegalArgumentException());
 		User lender = userRepository.findById(request.getLenderId()).orElseThrow(() -> new IllegalArgumentException());
+		ChatRoom room = chatRoomRepository.findById(request.getRoomId())
+			.orElseThrow(() -> new IllegalArgumentException());
 
 		if (checkUnauthRequest(book, userId)) {
 			throw new UnauthChangeException();
@@ -90,7 +95,7 @@ public class RentServiceImpl implements RentService {
 			throw new DuplicatedException();
 		}
 
-		Rent rent = rentRepository.save(Rent.builder().book(book).lender(lender).build());
+		Rent rent = rentRepository.save(Rent.builder().book(book).lender(lender).room(room).build());
 
 		return RentResponse.from(rent);
 	}
