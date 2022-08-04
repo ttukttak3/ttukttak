@@ -6,7 +6,7 @@ import pin_drop from '../../../assets/img/userInterFace/pin_drop.png';
 
 import { useSelector } from 'react-redux';
 
-const ChatBookInfo = ({ book }) => {
+const ChatBookInfo = ({ book, lenderId, roomId }) => {
   const { Wrapper, BookImg, Title, Author, Location, Status, InfoWrapper, LeftBox } = style;
   const { id, subject, author, deposit, bookTown, bookInfo, status, imageUrls, owner } = book;
   const { userId } = useSelector(state => state.user);
@@ -26,7 +26,7 @@ const ChatBookInfo = ({ book }) => {
           {bookTown?.longAddress}
         </Location>
         <Status>
-          <RentBtn userStatus={owner.id === userId} status={status} bookId={id}></RentBtn>,
+          <RentBtn userStatus={owner.id === userId} status={status} bookId={id} lenderId={lenderId}></RentBtn>,
           <div>
             <p>대여료</p>
             <p>2,000원</p>

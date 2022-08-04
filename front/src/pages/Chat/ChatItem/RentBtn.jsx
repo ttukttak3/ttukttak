@@ -4,11 +4,11 @@ import style from './RentBtn.style';
 import vector from '../../../assets/img/btn/Vector.png';
 import SelectPopupBottom from '../../../components/Modal/SelectPopupBottom';
 import bookApi from '../../../util/BookApi';
-
-const RentBtn = ({ userStatus, status, bookId }) => {
+import RentApi from '../../../util/RentApi';
+const RentBtn = ({ userStatus, status, bookId, lenderId, roomId }) => {
   const { LeftBox } = style;
   const { updateBookStatus } = bookApi;
-
+  const { postRent } = RentApi;
   const [statusMsg, setStatusMsg] = useState('대여가능');
   const [color, setColor] = useState('blue');
   const [showModal, setShowModal] = useState(false);
@@ -27,6 +27,9 @@ const RentBtn = ({ userStatus, status, bookId }) => {
           await updateBookStatus(bookId, item.eng);
           setStatusMsg(item.msg);
           setColor(item.color);
+          if (item.msg === '대여중') {
+            await postRent(bookId, lenderId, roomId);
+          }
           setShowModal(false);
         },
         message: item.msg,
@@ -36,7 +39,7 @@ const RentBtn = ({ userStatus, status, bookId }) => {
   };
 
   useEffect(() => {
-    console.log(userStatus);
+    console.log(lenderId);
     if (status === 'ABLE') {
       setStatusMsg('대여가능');
       if (!userStatus) {

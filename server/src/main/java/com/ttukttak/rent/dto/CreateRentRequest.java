@@ -14,4 +14,6 @@ public class CreateRentRequest {
 	private Long bookId;
 	@NotNull
 	private Long lenderId;
+	@NotNull
+	private Long roomId;
 }
