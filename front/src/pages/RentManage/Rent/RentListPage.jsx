@@ -1,5 +1,6 @@
 /* eslint-disable max-lines-per-function */
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import RentListItem from '../RentListItem';
 import style from '../RentListItem.style';
 import api from '../../../util/RentApi';
@@ -14,6 +15,7 @@ const RentListPage = () => {
   const { RentListWrap, NoItem, RentIngBox, BookBox, BookInfo, BookPrice, ReturnBox, PaddingBox, BookingBox } = style;
   const { getRentList } = api;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { userId } = useSelector(state => state.user);
   const [rentList, setRentList] = useState([]);
   const [loader, setLoader] = useState(false);
@@ -61,13 +63,13 @@ const RentListPage = () => {
         <ul>
           <li>
             <h2>대여가 진행중이에요.</h2>
-            <BookBox>
+            <BookBox onClick={() => navigate('/rent/detail')}>
               <div>
                 <img src={noImg} alt="도서 이미지" />
               </div>
               <BookInfo>
                 <h3>
-                  불편한 편의점ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ
+                  불편한 편의점
                   <span>베르나르 베르베르</span>
                 </h3>
                 <img src={arrowRight} alt=">" />
@@ -84,46 +86,10 @@ const RentListPage = () => {
                 </BookPrice>
               </BookInfo>
             </BookBox>
-            <button>대여현황</button>
+            <button onClick={() => navigate('/rent/state')}>대여현황</button>
           </li>
         </ul>
       </RentIngBox>
-      <ReturnBox>
-        <ul>
-          <li>
-            <PaddingBox>
-              <h2>
-                2022.06.17 · 반납 완료
-                <img src={moreGray} alt="더보기" />
-              </h2>
-              <BookBox>
-                <div>
-                  <img src={noImg} alt="도서 이미지" />
-                </div>
-                <BookInfo>
-                  <h3>
-                    반납 완료 베르
-                    <span>베르나르 베르베르</span>
-                  </h3>
-                  <img src={arrowRight} alt=">" />
-                  <h6>대여일자 2022.06.03</h6>
-                  <BookPrice>
-                    <div>
-                      <p>대여료</p>
-                      <p>2,000원</p>
-                    </div>
-                    <div>
-                      <p>보증금</p>
-                      <p>15,000원</p>
-                    </div>
-                  </BookPrice>
-                </BookInfo>
-              </BookBox>
-            </PaddingBox>
-            <button>리뷰보기</button>
-          </li>
-        </ul>
-      </ReturnBox>
       <BookingBox>
         <ul>
           <li>
@@ -134,7 +100,7 @@ const RentListPage = () => {
               대여 예정인 도서
               <img className="booking" src={moreGray} alt="더보기" />
             </h2>
-            <BookBox>
+            <BookBox onClick={() => navigate('/rent/detail')}>
               <div>
                 <img src={noImg} alt="도서 이미지" />
               </div>
@@ -159,6 +125,42 @@ const RentListPage = () => {
           </li>
         </ul>
       </BookingBox>
+      <ReturnBox>
+        <ul>
+          <li>
+            <PaddingBox>
+              <h2>
+                2022.06.17 · 반납 완료
+                <img src={moreGray} alt="더보기" />
+              </h2>
+              <BookBox onClick={() => navigate('/rent/detail')}>
+                <div>
+                  <img src={noImg} alt="도서 이미지" />
+                </div>
+                <BookInfo>
+                  <h3>
+                    반납 완료 베르
+                    <span>베르나르 베르베르</span>
+                  </h3>
+                  <img className="return" src={arrowRight} alt=">" />
+                  <h6>대여일자 2022.06.03</h6>
+                  <BookPrice>
+                    <div>
+                      <p>대여료</p>
+                      <p>2,000원</p>
+                    </div>
+                    <div>
+                      <p>보증금</p>
+                      <p>15,000원</p>
+                    </div>
+                  </BookPrice>
+                </BookInfo>
+              </BookBox>
+            </PaddingBox>
+            <button>리뷰보기</button>
+          </li>
+        </ul>
+      </ReturnBox>
     </RentListWrap>
   );
 };

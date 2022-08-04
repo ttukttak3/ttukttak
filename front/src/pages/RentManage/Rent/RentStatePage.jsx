@@ -1,35 +1,35 @@
 /* eslint-disable max-lines-per-function */
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { setAllFalse, setBack, setTitle, setMore } from '../../../app/headerSlice';
-import style from './RentDetailPage.style';
-import noImg from '../../../assets/img/logo/homeb_default.svg';
+import { setAllFalse, setBack } from '../../../app/headerSlice';
+import style from './RentStatePage.style';
 
-const RentDetailPage = () => {
+const RentStatePage = () => {
   const dispatch = useDispatch();
   //-------------- Header & Footer Off --------------
   useEffect(() => {
     dispatch(setAllFalse());
     dispatch(setBack(true));
-    dispatch(setTitle('대여 내역'));
-    dispatch(setMore(true));
   }, [dispatch]);
-  const { Wrapper, BookBox, Book, Info, Price, GoPage } = style;
+  const { Wrapper, Progress, State, Price, GoPage } = style;
   return (
     <Wrapper>
-      <BookBox>
-        <h2>2022.06.28 반납완료</h2>
-        <Book>
-          <img src={noImg} alt="도서 이미지" />
-          <Info>
-            <h4>불편한 편의점 방구 열심히</h4>
-            <h6>김호중</h6>
-            <p>
-              <span>차입자</span> 하얀 마음은 아이유 노래, 서초구 방배동
-            </p>
-          </Info>
-        </Book>
-      </BookBox>
+      <Progress>
+        <div>
+          <h2>대여가 진행중이에요</h2>
+          <p>대여자님이 원하는 책 한 권의 우연한 만남으로 이웃과 시작한 소통을 나눠보세요.</p>
+        </div>
+        <div>progress bar 구현 예정</div>
+      </Progress>
+      <State>
+        <h3>
+          대여 상태 변경하기 <button>대여 중</button>
+        </h3>
+        <div>
+          <button>연장 1회차 적용하기</button>
+          <button>연장 2회차 적용하기</button>
+        </div>
+      </State>
       <Price>
         <ul>
           <li>
@@ -58,4 +58,4 @@ const RentDetailPage = () => {
   );
 };
 
-export default RentDetailPage;
+export default RentStatePage;

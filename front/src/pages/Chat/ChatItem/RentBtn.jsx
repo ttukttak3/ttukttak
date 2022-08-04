@@ -64,7 +64,7 @@ const RentBtn = ({ userStatus, status, bookId, lenderId, roomId }) => {
         setColor('bigOrange');
       }
     }
-  }, [status]);
+  }, [lenderId, status, userStatus]);
 
   const handleModal = () => {
     showRentState();
