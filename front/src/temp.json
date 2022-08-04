@@ -1,0 +1,163 @@
+{
+  "contents": [
+    {
+      "beginDate": "string",
+      "book": {
+        "author": "string",
+        "bookCategory": {
+          "id": 0,
+          "name": "string"
+        },
+        "bookInfo": {
+          "author": "string",
+          "description": "string",
+          "image": "string",
+          "isbn": "string",
+          "name": "string",
+          "price": 0,
+          "publishedDate": "2022-08-04T04:34:32.786Z",
+          "publisher": "string"
+        },
+        "bookTown": {
+          "address": "string",
+          "city": "string",
+          "district": "string",
+          "etc": "string",
+          "id": 0,
+          "longAddress": "string",
+          "name": "string"
+        },
+        "content": "string",
+        "deposit": 0,
+        "grade": "A",
+        "id": 0,
+        "imageUrls": [
+          {
+            "id": 0,
+            "imageUrl": "string"
+          }
+        ],
+        "owner": {
+          "email": "string",
+          "homeTown": {
+            "id": 0,
+            "ranged": 0,
+            "town": {
+              "address": "string",
+              "city": "string",
+              "district": "string",
+              "etc": "string",
+              "id": 0,
+              "longAddress": "string",
+              "name": "string"
+            },
+            "useStatus": "Y",
+            "userId": 0
+          },
+          "id": 0,
+          "imageUrl": "string",
+          "introduction": "string",
+          "nickname": "string",
+          "role": "GUEST"
+        },
+        "review": [
+          {
+            "content": "string",
+            "id": 0,
+            "rating": 0,
+            "reviewer": {
+              "email": "string",
+              "homeTown": {
+                "id": 0,
+                "ranged": 0,
+                "town": {
+                  "address": "string",
+                  "city": "string",
+                  "district": "string",
+                  "etc": "string",
+                  "id": 0,
+                  "longAddress": "string",
+                  "name": "string"
+                },
+                "useStatus": "Y",
+                "userId": 0
+              },
+              "id": 0,
+              "imageUrl": "string",
+              "introduction": "string",
+              "nickname": "string",
+              "role": "GUEST"
+            }
+          }
+        ],
+        "status": "ABLE",
+        "subject": "string",
+        "thumbnail": {
+          "id": 0,
+          "imageUrl": "string"
+        }
+      },
+      "endDate": "string",
+      "extendList": [
+        {
+          "extendDate": "string",
+          "extendDays": 0,
+          "id": 0
+        }
+      ],
+      "id": 0,
+      "lender": {
+        "email": "string",
+        "homeTown": {
+          "id": 0,
+          "ranged": 0,
+          "town": {
+            "address": "string",
+            "city": "string",
+            "district": "string",
+            "etc": "string",
+            "id": 0,
+            "longAddress": "string",
+            "name": "string"
+          },
+          "useStatus": "Y",
+          "userId": 0
+        },
+        "id": 0,
+        "imageUrl": "string",
+        "introduction": "string",
+        "nickname": "string",
+        "role": "GUEST"
+      },
+      "owner": {
+        "email": "string",
+        "homeTown": {
+          "id": 0,
+          "ranged": 0,
+          "town": {
+            "address": "string",
+            "city": "string",
+            "district": "string",
+            "etc": "string",
+            "id": 0,
+            "longAddress": "string",
+            "name": "string"
+          },
+          "useStatus": "Y",
+          "userId": 0
+        },
+        "id": 0,
+        "imageUrl": "string",
+        "introduction": "string",
+        "nickname": "string",
+        "role": "GUEST"
+      },
+      "returnDate": "string",
+      "status": "RENTED"
+    }
+  ],
+  "pageNumber": 0,
+  "pageSize": 0,
+  "totalElements": 0,
+  "totalPages": 0
+}

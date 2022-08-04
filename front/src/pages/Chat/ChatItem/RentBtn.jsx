@@ -12,23 +12,21 @@ const RentBtn = ({ userStatus, status, bookId }) => {
   const [statusMsg, setStatusMsg] = useState('대여가능');
   const [color, setColor] = useState('blue');
   const [showModal, setShowModal] = useState(false);
-
-  const statusList = [
-    { msg: '대여가능', eng: 'ABLE' },
-    { msg: '대여중', eng: 'ING' },
-    { msg: '예약중', eng: 'ON' },
-  ];
   const [contentList, setContentList] = useState();
-  const [currentState, setCurrentState] = useState();
+  const statusList = [
+    { msg: '대여가능', eng: 'ABLE', color: 'bigBlue' },
+    { msg: '대여중', eng: 'ING', color: 'bigGray' },
+    { msg: '예약중', eng: 'ON', color: 'bigOrange' },
+  ];
 
   const showRentState = () => {
     const gradeList = [];
     statusList.map(item =>
       gradeList.push({
         onClick: async () => {
-          setCurrentState(item.msg);
-          const result = await updateBookStatus(bookId, item.eng);
-          console.log(result);
+          await updateBookStatus(bookId, item.eng);
+          setStatusMsg(item.msg);
+          setColor(item.color);
           setShowModal(false);
         },
         message: item.msg,
@@ -38,36 +36,39 @@ const RentBtn = ({ userStatus, status, bookId }) => {
   };
 
   useEffect(() => {
+    console.log(userStatus);
     if (status === 'ABLE') {
       setStatusMsg('대여가능');
-      if (userStatus) {
+      if (!userStatus) {
         setColor('blue');
       } else {
         setColor('bigBlue');
       }
     } else if (status === 'ON') {
       setStatusMsg('예약중');
-      if (userStatus) {
+
+      if (!userStatus) {
         setColor('gray');
       } else {
         setColor('bigGray');
       }
     } else if (status === 'ING') {
       setStatusMsg('대여중');
-      if (userStatus) {
+
+      if (!userStatus) {
         setColor('orange');
       } else {
         setColor('bigOrange');
       }
     }
-  }, []);
+  }, [status]);
 
   const handleModal = () => {
     showRentState();
     setShowModal(true);
   };
 
-  if (!userStatus) {
+  if (userStatus) {
     //대여자
     return (
       <>
