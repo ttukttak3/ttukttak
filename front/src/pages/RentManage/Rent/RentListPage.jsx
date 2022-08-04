@@ -1,24 +1,61 @@
 /* eslint-disable max-lines-per-function */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import RentListItem from '../RentListItem';
-import style from '../RentMainPage.style';
+import style from '../RentListItem.style';
+import api from '../../../util/RentApi';
 import errorImg from '../../../assets/img/logo/Error_outline.svg';
 import noImg from '../../../assets/img/logo/homeb_default.svg';
 import moreGray from '../../../assets/img/userInterFace/more_gray.svg';
 import arrowRight from '../../../assets/img/arrows/Keyboard_arrow_right.svg';
 import smallDown from '../../../assets/img/arrows/small_down.svg';
+import { useSelector, useDispatch } from 'react-redux';
+
 const RentListPage = () => {
-  const [bookList, setBookList] = useState([]);
   const { RentListWrap, NoItem, RentIngBox, BookBox, BookInfo, BookPrice, ReturnBox, PaddingBox, BookingBox } = style;
+  const { getRentList } = api;
+  const dispatch = useDispatch();
+  const { userId } = useSelector(state => state.user);
+  const [rentList, setRentList] = useState([]);
+  const [loader, setLoader] = useState(false);
+  const [param, setParam] = useState({
+    pageNum: 1,
+    userId: userId,
+  });
+
+  // infinite Scroll Event
+  const handleScroll = () => {
+    const scrollHeight = document.documentElement.scrollHeight;
+    const scrollTop = document.documentElement.scrollTop;
+    const clientHeight = document.documentElement.clientHeight;
+    if (scrollTop + clientHeight >= scrollHeight) {
+      setLoader(true);
+      // 페이지 끝에 도달하면 추가 데이터를 받아온다
+      param.pageNum++;
+      getRentList(param, setRentList, setLoader);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  });
+
+  useEffect(() => {
+    getRentList(param, setRentList, setLoader);
+    return () => {};
+  }, [dispatch, param, getRentList]);
+
   return (
     <RentListWrap>
-      {/* {bookList.length === 0 ? (
+      {/* {rentList.length === 0 ? (
         <NoItem>
           <img src={errorImg} alt="느낌표" />
           아직 대여해준 도서가 없어요
         </NoItem>
       ) : (
-        bookList.map(item => <RentListItem mode={'rent'} onClick={() => navigate(`/rent/${rentId}`)}></RentListItem>)
+        rentList.map(item => <RentListItem mode={item.status} onClick={() => navigate(`/rent/${rentId}`)}></RentListItem>)
       )} */}
       <RentIngBox>
         <ul>

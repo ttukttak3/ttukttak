@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import style from './ChatListItem.style';
 import noneUserIcon from '../../../assets/img/userInterFace/userNone.png';
+import noImg from '../../../assets/img/logo/homeb_default.svg';
 
 const ChatListItem = ({ id, imgUrl, userName, time, lastChat, unread }) => {
   const { Wrapper, Img, UserName, LastChat, InfoWrapper } = style;
@@ -10,7 +11,7 @@ const ChatListItem = ({ id, imgUrl, userName, time, lastChat, unread }) => {
   const d = new Date(time);
   return (
     <Wrapper key={id} onClick={() => navigate(`/chat/${id}`)}>
-      <Img src={imgUrl} />
+      <Img src={imgUrl} onError={noImg} />
       <InfoWrapper>
         <UserName>
           <p>{userName}</p>
@@ -30,7 +31,7 @@ ChatListItem.defaultProps = {
   imgUrl: noneUserIcon,
   userName: 'name',
   time: '2020.05.31',
-  lastChat: '안녕하세요, 구매 문의할 수 있을까요?',
+  lastChat: '',
   unread: 32,
 };
 
