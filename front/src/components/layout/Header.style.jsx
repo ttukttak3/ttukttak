@@ -1,19 +1,26 @@
 import styled from 'styled-components';
-const HeaderBox = styled.div`
-  display: flex;
-  flex-direction: row;
+const HeaderWrap = styled.div`
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 2;
+  width: 100%;
+  height: 6.4rem;
+  background: ${({ theme }) => theme.colors.$black3};
+  &.hide {
+    display: none;
+  }
+  &.show {
+    display: flex;
+  }
+`;
+const HeaderBox = styled.div`
   width: 34rem;
   margin: 0 auto;
-  height: 6.4rem;
-  text-align: left;
-  background: ${({ theme }) => theme.colors.$black3};
+  display: flex;
+  flex-direction: row;
 `;
-
 //왼쪽에 위치
 const LeftBox = styled.div`
   margin-right: auto;
@@ -118,6 +125,6 @@ const LocationBox = styled.div`
   }
 `;
 
-const headerStyle = { HeaderBox, LeftBox, Title, BackBtn, DownBtn, RightBox, RightBtn, RightText, LocationBox };
+const headerStyle = { HeaderWrap, HeaderBox, LeftBox, Title, BackBtn, DownBtn, RightBox, RightBtn, RightText, LocationBox };
 
 export default headerStyle;

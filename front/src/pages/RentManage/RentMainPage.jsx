@@ -1,19 +1,45 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable max-lines-per-function */
 import React, { useState } from 'react';
 import style from './RentMainPage.style';
 import RentListPage from './Rent/RentListPage';
 import BorrowListPage from './Borrow/BorrowListPage';
 const RentMainPage = () => {
-  const { Wrapper, TapHeader, Option } = style;
-  const [page, setPage] = useState(1);
+  //-------------- tab --------------
+  const [activeIndex, setActiveIndex] = useState(0);
+  const tabClickHandler = index => {
+    setActiveIndex(index);
+  };
+  const tabContArr = [
+    {
+      tabTitle: (
+        <h2 key={0} className={activeIndex === 0 ? 'on' : ''} onClick={() => tabClickHandler(0)}>
+          대여 내역
+        </h2>
+      ),
+      tabCont: <RentListPage></RentListPage>,
+    },
+    {
+      tabTitle: (
+        <h2 key={1} className={activeIndex === 1 ? 'on' : ''} onClick={() => tabClickHandler(1)}>
+          차입내역
+        </h2>
+      ),
+      tabCont: <BorrowListPage></BorrowListPage>,
+    },
+  ];
+
+  const { RentMainBox, TabBox } = style;
 
   return (
-    <Wrapper>
-      <TapHeader>
-        <Option onClick={() => setPage(1)}>대여 내역</Option>
-        <Option onClick={() => setPage(2)}>차입내역</Option>
-      </TapHeader>
-      {page === 1 ? <RentListPage></RentListPage> : <BorrowListPage></BorrowListPage>}
-    </Wrapper>
+    <RentMainBox>
+      <TabBox>
+        {tabContArr.map(section => {
+          return section.tabTitle;
+        })}
+      </TabBox>
+      {tabContArr[activeIndex].tabCont}
+    </RentMainBox>
   );
 };
 

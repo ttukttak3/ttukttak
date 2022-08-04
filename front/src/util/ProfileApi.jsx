@@ -1,5 +1,5 @@
 import utils from './ApiUtil';
-const { baseHost, accessToken, apiAuthUtil, formUtil } = utils;
+const { baseHost, accessToken, apiUtil, apiAuthUtil, formUtil } = utils;
 const redirectUrl = process.env.REACT_APP_API_URL + 'oauth2/redirect';
 const naverUrl = baseHost + 'oauth2/authorize/naver?redirect_uri=' + redirectUrl;
 const kakaoUrl = baseHost + 'oauth2/authorize/kakao?redirect_uri=' + redirectUrl;
@@ -53,6 +53,15 @@ const deleteUser = async userId => {
   }
 };
 
-const profileApi = { naverUrl, kakaoUrl, getCurrentUser, nickNameCheck, signUp, setProfile, deleteUser };
+const getUser = async userId => {
+  try {
+    const result = await apiUtil.get(`api/v1/users/${userId}`);
+    return result.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const profileApi = { naverUrl, kakaoUrl, getCurrentUser, nickNameCheck, signUp, setProfile, deleteUser, getUser };
 
 export default profileApi;

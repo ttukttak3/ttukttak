@@ -13,12 +13,12 @@ const ChatListItem = ({ id, imgUrl, userName, time, lastChat, unread }) => {
       <Img src={imgUrl} />
       <InfoWrapper>
         <UserName>
-          {userName}
-          <time>{d.toLocaleTimeString('ko-kr')}</time>
+          <p>{userName}</p>
+          <span>{d.toLocaleTimeString('ko-kr', { hour: '2-digit', minute: '2-digit' })}</span>
         </UserName>
         <LastChat>
-          {lastChat}
-          <unread>{unread}</unread>
+          <p>{lastChat}</p>
+          <span>{unread}</span>
         </LastChat>
       </InfoWrapper>
     </Wrapper>
