@@ -24,11 +24,17 @@ const Footer = () => {
       className={
         pathname === '/detailBook' ||
         pathname === '/login' ||
+        pathname === '/signup' ||
         pathname === '/update' ||
-        pathname === '/account/setting/terms' ||
-        pathname === '/account/setting/infomation' ||
         pathname === '/rent/detail' ||
-        pathname === '/rent/state'
+        pathname === '/rent/state' ||
+        pathname === '/userAccount' ||
+        pathname === '/account/setting' ||
+        pathname === '/account/profile' ||
+        pathname === '/account/setting/notice' ||
+        pathname === '/account/setting/faq' ||
+        pathname === '/account/setting/terms' ||
+        pathname === '/account/setting/infomation'
           ? 'hide'
           : 'show'
       }

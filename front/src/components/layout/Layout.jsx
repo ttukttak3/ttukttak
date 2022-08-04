@@ -55,7 +55,7 @@ const Layout = () => {
           <Route path="oauth2/redirect" element={<Auth />} />
           <Route path="location/:townId" element={<LocationPage />} />
           {/* 가입하기 전 상태임으로 AuthCheckRouter 체크 제외 */}
-          <Route path="signUp" element={<SignUpPage />} />
+          <Route path="signup" element={<SignUpPage />} />
           <Route path="account/setting/:contents" element={<ContentsPage />} />
           <Route path="userAccount" element={<UserAccountPage />} />
           <Route element={<AuthCheckRouter />}>
