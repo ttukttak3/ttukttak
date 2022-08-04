@@ -41,7 +41,7 @@ const Auth = () => {
           //이전 페이지 이동
           navigate(localStorage.getItem('url'));
         } else {
-          navigate('/signUp');
+          navigate('/signup');
         }
       });
     }

@@ -1,10 +1,10 @@
 import utils from './ApiUtil';
-const { apiAuthUtil } = utils;
+const { apiUtil, apiAuthUtil } = utils;
 
 const getRentList = async (param, setRentList, setLoader) => {
   try {
     console.log(param);
-    const result = await apiAuthUtil.get(`api/v1/users/${param.userId}/rent?pageNum=${param.pageNum}`);
+    const result = await apiUtil.get(`api/v1/users/${param.userId}/rent?pageNum=${param.pageNum}`);
     console.log(result.data);
     return setRentList(result.data);
   } catch (error) {
@@ -15,7 +15,7 @@ const getRentList = async (param, setRentList, setLoader) => {
 
 const getBorrowList = async (param, setBorrowList) => {
   try {
-    const result = await apiAuthUtil.get(`api/v1/users/${param.userId}/rent/borrow?pageNum=${param.pageNum}`);
+    const result = await apiUtil.get(`api/v1/users/${param.userId}/rent/borrow?pageNum=${param.pageNum}`);
     console.log(result.data);
     return setBorrowList(result.data);
   } catch (error) {

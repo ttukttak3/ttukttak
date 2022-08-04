@@ -25,9 +25,9 @@ const HomePage = () => {
     dispatch(setAllFalse());
     dispatch(setTitle(town.name));
     dispatch(setLocation(true));
-    dispatch(setSearch(true));
-    dispatch(setFavorite(true));
-    dispatch(setAlert(true));
+    // dispatch(setSearch(true));
+    // dispatch(setFavorite(true));
+    // dispatch(setAlert(true));
     return () => {};
   }, [dispatch]);
 

@@ -14,7 +14,7 @@ import { useSelector } from 'react-redux';
 
 const ChatItemPage = () => {
   const { roomId } = useParams();
-  const { Wrapper } = style;
+  const { Wrapper, MessageBox, DateMessage } = style;
   const dispatch = useDispatch();
   const { userId } = useSelector(state => state.user);
   const { connect } = chatSocketApi;
@@ -27,6 +27,8 @@ const ChatItemPage = () => {
   const [otherMemberInfo, setOtherMemberInfo] = useState({});
 
   const client = useRef({});
+
+  let date = '';
 
   useEffect(() => {
     connect(client, roomId, setChatMessages);
@@ -71,9 +73,21 @@ const ChatItemPage = () => {
   return (
     <Wrapper>
       {Object.keys(book).length > 0 && otherMemberInfo?.user?.id && <ChatBookInfo book={book} lenderId={otherMemberInfo?.user?.id} roomId={roomId}></ChatBookInfo>}
-      {chatMessages.map((item, idx) => (
-        <>{myMemberInfo.memberId === item.memberId ? <ChatMessage side={'right'} item={item}></ChatMessage> : <ChatMessage side={'left'} item={item}></ChatMessage>}</>
-      ))}
+      <MessageBox>
+        {chatMessages.map((item, idx) => {
+          //대화 첫 시작시 이것만 찍혀서 변경해야함.
+          // if (item.sendedAt.substring(0, 10) !== date) {
+          //   date = item.sendedAt.substring(0, 10);
+          //   return <DateMessage>{new Date(item.sendedAt).toLocaleDateString('ko-kr', { month: 'long', day: 'numeric' })}</DateMessage>;
+          // }
+
+          if (myMemberInfo.memberId === item.memberId) {
+            return <ChatMessage side={'right'} item={item}></ChatMessage>;
+          } else {
+            return <ChatMessage side={'left'} item={item}></ChatMessage>;
+          }
+        })}
+      </MessageBox>
       <ChatFooter roomId={roomId} message={message} memberId={myMemberInfo.memberId} client={client} setMessage={setMessage}></ChatFooter>
     </Wrapper>
   );

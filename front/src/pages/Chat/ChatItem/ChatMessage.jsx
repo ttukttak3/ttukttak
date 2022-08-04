@@ -17,13 +17,13 @@ const ChatMessage = ({ side, item }) => {
     <Wrapper>
       {side === 'left' ? (
         <Left>
-          <msg>{message}</msg>
-          {sendedAt && koreanTime}
+          <p>{message}</p>
+          <span>{sendedAt && koreanTime}</span>
         </Left>
       ) : (
         <Right>
-          {sendedAt && koreanTime}
-          <msg>{message}</msg>
+          <span>{sendedAt && koreanTime}</span>
+          <p>{message}</p>
         </Right>
       )}
     </Wrapper>

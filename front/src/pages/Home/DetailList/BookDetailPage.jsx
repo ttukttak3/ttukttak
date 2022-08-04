@@ -95,8 +95,8 @@ const BookDetailPage = () => {
     });
     dispatch(setAllFalse());
     dispatch(setBack(true));
-    dispatch(setFavorite(true));
-    dispatch(setShare(true));
+    // dispatch(setFavorite(true));
+    // dispatch(setShare(true));
 
     return () => {};
   }, [dispatch, getDetailView, bookId]);

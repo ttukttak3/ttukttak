@@ -18,15 +18,15 @@ const ChatBookInfo = ({ book, lenderId, roomId }) => {
       </BookImg>
       <InfoWrapper>
         <Title>
-          {subject}
-          <author>{bookInfo.author}</author>
+          <p>{subject}</p>
+          <span>{bookInfo.author}</span>
         </Title>
         <Location>
           <img src={pin_drop} alt={'위치 아이콘'}></img>
-          {bookTown?.longAddress}
+          <p>{bookTown?.longAddress}</p>
         </Location>
         <Status>
-          <RentBtn userStatus={owner.id === userId} status={status} bookId={id} lenderId={lenderId} roomId={roomId}></RentBtn>,
+          <RentBtn userStatus={owner.id === userId} status={status} bookId={id} lenderId={lenderId} roomId={roomId}></RentBtn>
           <div>
             <p>대여료</p>
             <p>2,000원</p>

@@ -21,7 +21,23 @@ const Footer = () => {
 
   return (
     <FooterBox
-      className={pathname === '/detailBook' || pathname === '/login' || pathname === '/update' || pathname === '/account/setting/terms' || pathname === '/account/setting/infomation' ? 'hide' : 'show'}
+      className={
+        pathname === '/detailBook' ||
+        pathname === '/login' ||
+        pathname === '/signup' ||
+        pathname === '/update' ||
+        pathname === '/rent/detail' ||
+        pathname === '/rent/state' ||
+        pathname === '/userAccount' ||
+        pathname === '/account/setting' ||
+        pathname === '/account/profile' ||
+        pathname === '/account/setting/notice' ||
+        pathname === '/account/setting/faq' ||
+        pathname === '/account/setting/terms' ||
+        pathname === '/account/setting/infomation'
+          ? 'hide'
+          : 'show'
+      }
     >
       <IconBox onClick={() => navigate(`/`)}>
         <img src={pathname !== '/' ? homeOff : home} alt="home" />홈

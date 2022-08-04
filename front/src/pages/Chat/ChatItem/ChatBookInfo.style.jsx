@@ -3,63 +3,81 @@ import styled from 'styled-components';
 const Wrapper = styled.div`
   display: flex;
   list-style: none;
-  height: 8rem;
+  width: 100%;
+  height: 9.2rem;
+  border-top: 1px solid ${({ theme }) => theme.colors.$black3Line};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.$black3Line};
 `;
 
 const BookImg = styled.div`
   text-align: left;
   img {
-    width: 4rem;
+    width: 4.8rem;
     height: 6.8rem;
-    margin: 0.6rem;
+    margin: 1.2rem 0;
   }
 `;
 
 const InfoWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
+  margin: 1.2rem 0 1.2rem 1.2rem;
 `;
 
 const Title = styled.div`
-  font-size: 1.6rem;
-  font-weight: 400;
-  margin-right: auto;
-  author {
+  display: flex;
+  align-items: center;
+  p {
+    width: 23rem;
+    font-size: 1.6rem;
+    font-weight: 700;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  span {
     color: ${({ theme }) => theme.colors.$white2};
     margin-left: auto;
-    font-size: 1.6rem;
+    font-size: 1.2rem;
     font-weight: 400;
   }
 `;
 
 const Status = styled.div`
   display: flex;
-  flex-direction: column;
-  height: auto;
-  margin-bottom: 0.8rem;
-  div {
-    height: 1.4rem;
-    line-height: 1.4rem;
-  }
-  div > p:first-child {
-    font-size: 1.2rem;
-    font-weight: 400;
-    color: ${({ theme }) => theme.colors.$white2};
-    margin-right: 0.4rem;
-  }
-  div > p {
+  height: 1.8rem;
+  margin-top: 0.6rem;
+
+  p {
     display: inline-block;
     font-size: 1.4rem;
     font-weight: 700;
+
+    :first-child {
+      font-size: 1.2rem;
+      font-weight: 400;
+      color: ${({ theme }) => theme.colors.$white2};
+      margin-right: 0.4rem;
+    }
+  }
+
+  div:nth-child(2) {
+    margin-right: 1.2rem;
   }
 `;
 
 const Location = styled.div`
-  font-size: 1.6rem;
-  text-align: left;
-  color: ${({ theme }) => theme.colors.$white2};
+  display: flex;
+  margin-top: 1.3rem;
+  p {
+    font-size: 1.4rem;
+    color: ${({ theme }) => theme.colors.$white2};
+  }
   img {
-    width: 2.5rem;
+    width: 1.6rem;
+    height: 1.6rem;
     color: ${({ theme }) => theme.colors.$white2};
   }
 `;

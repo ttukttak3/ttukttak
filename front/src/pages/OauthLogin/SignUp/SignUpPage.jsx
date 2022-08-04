@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setBack, setBackHome, setTitle } from '../../../app/headerSlice';
-import { setNickName, setImageFile } from '../../../app/userSlice';
+import { setNickName, setImageFile, setHomeTown } from '../../../app/userSlice';
 import profileUtils from '../../../util/ProfileApi';
 import locationUtils from '../../../util/LocationApi';
 import style from './SignUpPage.style';

@@ -24,10 +24,12 @@ const NoItem = styled.div`
 const RentIngBox = styled.div`
   text-align: left;
   ul li {
+    width: 34rem;
+    margin: 0 auto;
     margin-top: 2rem;
     border: 1px solid #5f6368;
     background: #26272b;
-    padding: 2rem 2.5rem;
+    padding: 1.9rem 1.8rem;
   }
   h2 {
     font-size: 1.6rem;
@@ -36,8 +38,8 @@ const RentIngBox = styled.div`
   }
   //대여현황 버튼
   button {
-    margin-top: 1.4rem;
-    width: 34rem;
+    margin-top: 1.2rem;
+    width: 30rem;
     height: 4rem;
     line-height: 4rem;
     background: #2948ff;
@@ -51,7 +53,7 @@ const RentIngBox = styled.div`
 const BookBox = styled.div`
   display: flex;
   flex-direction: row;
-  margin-top: 1.4rem;
+  margin-top: 1.3rem;
   //도서 이미지
   div:first-child {
     img {
@@ -63,8 +65,8 @@ const BookBox = styled.div`
 //도서 정보
 const BookInfo = styled.div`
   position: relative;
-  width: 24.3rem;
-  margin: 1.5rem 0 0 1.6rem;
+  width: 100%;
+  margin: 1.3rem 0 0 1.4rem;
 
   &.booking {
     margin: 2.6rem 0 0 1.6rem;
@@ -74,11 +76,15 @@ const BookInfo = styled.div`
     position: absolute;
     right: 0rem;
     top: -0.4rem;
+
+    &.return {
+      right: -0.7rem;
+    }
   }
   //도서 제목
   h3 {
     width: auto;
-    max-width: 23rem;
+    max-width: 19rem;
     font-size: 1.6rem;
     font-weight: 400;
     color: #fff;
@@ -130,6 +136,60 @@ const BookPrice = styled.div`
     font-weight: 700;
   }
 `;
+
+//예약 중
+const BookingBox = styled.div`
+  text-align: left;
+  ul li {
+    width: 34rem;
+    margin: 0 auto;
+    margin-top: 2rem;
+    border: 1px solid #5f6368;
+    background: #26272b;
+    padding: 1.9rem 1.8rem;
+  }
+  h2 {
+    position: relative;
+    padding-left: 5rem;
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: #fff;
+    height: 1.8rem;
+    //예약중 downbtn
+    .bigGray {
+      position: absolute;
+      top: -0.3rem;
+      left: 0;
+      display: inline-block;
+      width: 4.8rem;
+      height: 1.8rem;
+      line-height: 1.8rem;
+      padding-left: 0.5rem;
+      font-size: 1rem;
+      text-align: left;
+      letter-spacing: -0.06rem;
+      vertical-align: middle;
+
+      background: ${({ theme }) => theme.colors.$white4};
+      color: ${({ theme }) => theme.colors.$white1};
+
+      //버튼
+      img {
+        position: absolute;
+        top: 0.75rem;
+        right: 0.4rem;
+        width: 0.8rem;
+        height: 0.49rem;
+      }
+    }
+    .booking {
+      position: absolute;
+      top: -0.5rem;
+      right: 0;
+    }
+  }
+`;
+
 //반납 대여
 const ReturnBox = styled.div`
   text-align: left;
@@ -145,13 +205,13 @@ const ReturnBox = styled.div`
     img {
       position: absolute;
       top: -0.5rem;
-      right: 0;
+      right: -0.7rem;
     }
   }
   //리뷰보기 버튼
   button {
     margin-top: 1.4rem;
-    width: 39rem;
+    width: 34rem;
     height: 4rem;
     line-height: 4rem;
     border-top: 1px solid #333;
@@ -162,46 +222,7 @@ const ReturnBox = styled.div`
   }
 `;
 const PaddingBox = styled.div`
-  padding: 2rem 2.5rem;
-`;
-
-//예약 중
-const BookingBox = styled.div`
-  text-align: left;
-  ul li {
-    margin-top: 2rem;
-    border: 1px solid #333;
-    background: #1c1c1c;
-    padding: 2.2rem 3.1rem;
-  }
-  h2 {
-    position: relative;
-    padding-left: 5.8rem;
-    font-size: 1.4rem;
-    font-weight: 400;
-    color: #fff;
-    height: 1.8rem;
-    //예약중 downbtn
-    .bigGray {
-      position: absolute;
-      top: -0.2rem;
-      left: 0;
-      background: ${({ theme }) => theme.colors.$white4};
-      padding-left: 0.4rem;
-      width: 4.8rem;
-      height: 1.8rem;
-      line-height: 1.8rem;
-      font-size: 1rem;
-      font-weight: 400;
-      color: #fff;
-      text-align: left;
-    }
-    .booking {
-      position: absolute;
-      top: -0.5rem;
-      right: 0;
-    }
-  }
+  padding: 2rem 1.9rem 2rem 3.2rem;
 `;
 
 const style = { RentListWrap, RentIngBox, BookBox, BookInfo, BookPrice, ReturnBox, PaddingBox, BookingBox };
