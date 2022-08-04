@@ -70,7 +70,7 @@ const ChatItemPage = () => {
 
   return (
     <Wrapper>
-      {Object.keys(book).length > 0 && <ChatBookInfo book={book}></ChatBookInfo>}
+      {Object.keys(book).length > 0 && otherMemberInfo?.user?.id && <ChatBookInfo book={book} lenderId={otherMemberInfo?.user?.id} roomId={roomId}></ChatBookInfo>}
       {chatMessages.map((item, idx) => (
         <>{myMemberInfo.memberId === item.memberId ? <ChatMessage side={'right'} item={item}></ChatMessage> : <ChatMessage side={'left'} item={item}></ChatMessage>}</>
       ))}

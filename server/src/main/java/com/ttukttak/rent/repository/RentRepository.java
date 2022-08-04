@@ -26,17 +26,19 @@ public interface RentRepository extends JpaRepository<Rent, Long> {
 
 	Optional<List<Rent>> findAllByBookId(Long bookId);
 
+	Page<Rent> findAll(Pageable pageable);
+
 	Optional<List<Rent>> findAllByLenderIdAndReturnDateIsNotNull(Long userId);
 
 	@Modifying
 	@Query("update Rent m set m.lender = null where m.lender = :lender")
 	void setNullLender(
 		@Param("lender")
-		User lender);
+			User lender);
 
 	@Modifying
 	@Query("update Rent m set m.owner = null where m.owner = :owner")
 	void setNullOwner(
 		@Param("owner")
-		User owner);
+			User owner);
 }

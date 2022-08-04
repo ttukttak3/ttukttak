@@ -4,31 +4,32 @@ import style from './RentBtn.style';
 import vector from '../../../assets/img/btn/Vector.png';
 import SelectPopupBottom from '../../../components/Modal/SelectPopupBottom';
 import bookApi from '../../../util/BookApi';
-
-const RentBtn = ({ userStatus, status, bookId }) => {
+import RentApi from '../../../util/RentApi';
+const RentBtn = ({ userStatus, status, bookId, lenderId, roomId }) => {
   const { LeftBox } = style;
   const { updateBookStatus } = bookApi;
-
+  const { postRent } = RentApi;
   const [statusMsg, setStatusMsg] = useState('대여가능');
   const [color, setColor] = useState('blue');
   const [showModal, setShowModal] = useState(false);
-
-  const statusList = [
-    { msg: '대여가능', eng: 'ABLE' },
-    { msg: '대여중', eng: 'ING' },
-    { msg: '예약중', eng: 'ON' },
-  ];
   const [contentList, setContentList] = useState();
-  const [currentState, setCurrentState] = useState();
+  const statusList = [
+    { msg: '대여가능', eng: 'ABLE', color: 'bigBlue' },
+    { msg: '대여중', eng: 'ING', color: 'bigGray' },
+    { msg: '예약중', eng: 'ON', color: 'bigOrange' },
+  ];
 
   const showRentState = () => {
     const gradeList = [];
     statusList.map(item =>
       gradeList.push({
         onClick: async () => {
-          setCurrentState(item.msg);
-          const result = await updateBookStatus(bookId, item.eng);
-          console.log(result);
+          await updateBookStatus(bookId, item.eng);
+          setStatusMsg(item.msg);
+          setColor(item.color);
+          if (item.msg === '대여중') {
+            await postRent(bookId, lenderId, roomId);
+          }
           setShowModal(false);
         },
         message: item.msg,
@@ -38,36 +39,39 @@ const RentBtn = ({ userStatus, status, bookId }) => {
   };
 
   useEffect(() => {
+    console.log(lenderId);
     if (status === 'ABLE') {
       setStatusMsg('대여가능');
-      if (userStatus) {
+      if (!userStatus) {
         setColor('blue');
       } else {
         setColor('bigBlue');
       }
     } else if (status === 'ON') {
       setStatusMsg('예약중');
-      if (userStatus) {
+
+      if (!userStatus) {
         setColor('gray');
       } else {
         setColor('bigGray');
       }
     } else if (status === 'ING') {
       setStatusMsg('대여중');
-      if (userStatus) {
+
+      if (!userStatus) {
         setColor('orange');
       } else {
         setColor('bigOrange');
       }
     }
-  }, []);
+  }, [status]);
 
   const handleModal = () => {
     showRentState();
     setShowModal(true);
   };
 
-  if (!userStatus) {
+  if (userStatus) {
     //대여자
     return (
       <>

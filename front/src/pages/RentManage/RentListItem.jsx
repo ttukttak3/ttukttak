@@ -5,6 +5,8 @@ import style from './RentListItem.style';
 const RentListItem = ({ book, mode, onClick }) => {
   const { Wrapper, Comment } = style;
   const [comment, setComment] = useState('');
+  const { RentListWrap, RentIngBox, BookBox, BookInfo, BookPrice, ReturnBox, PaddingBox, BookingBox } = style;
+
   useEffect(() => {
     if (mode === 'rent') {
       setComment('대여가 진행중이에요.');
@@ -14,11 +16,11 @@ const RentListItem = ({ book, mode, onClick }) => {
   }, [mode]);
 
   return (
-    <Wrapper>
+    <RentListWrap>
       <Comment>{comment}</Comment>
       {/* 책 정보 보여주기 */}
       <button onClick={() => onClick()}></button>
-    </Wrapper>
+    </RentListWrap>
   );
 };
 
