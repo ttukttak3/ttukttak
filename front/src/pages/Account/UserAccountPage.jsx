@@ -10,6 +10,7 @@ import rentApi from '../../util/RentApi';
 import profileApi from '../../util/ProfileApi';
 import style from './AccountPage.style';
 import noImg from '../../assets/img/logo/postp_default.svg';
+
 const UserAccountPage = () => {
   const location = useLocation();
   const userId = location.state.id;
@@ -43,7 +44,7 @@ const UserAccountPage = () => {
     param.userId && getBorrowList(param, setBorrowList);
   }, [dispatch, getRentList, getBorrowList]);
 
-  //-------------- tab --------------
+  //-------------- tab ----------------
   const [activeIndex, setActiveIndex] = useState(0);
   const tabClickHandler = index => {
     setActiveIndex(index);
