@@ -14,7 +14,7 @@ const RentMainPage = () => {
     {
       tabTitle: (
         <h2 key={0} className={activeIndex === 0 ? 'on' : ''} onClick={() => tabClickHandler(0)}>
-          대여 내역
+          빌려준 내역
         </h2>
       ),
       tabCont: <RentListPage></RentListPage>,
@@ -22,7 +22,7 @@ const RentMainPage = () => {
     {
       tabTitle: (
         <h2 key={1} className={activeIndex === 1 ? 'on' : ''} onClick={() => tabClickHandler(1)}>
-          차입내역
+          빌린 내역
         </h2>
       ),
       tabCont: <BorrowListPage></BorrowListPage>,

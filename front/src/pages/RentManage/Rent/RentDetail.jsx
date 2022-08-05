@@ -11,7 +11,7 @@ import vector from '../../../assets/img/btn/Vector.png';
 const RentedDetail = () => {
   const dispatch = useDispatch();
   const { rentId } = useParams();
-  const { getRentDetail, returnRent } = api;
+  const { getRentDetail, returnRent, extendRent } = api;
   const [info, setInfo] = useState({});
   const [showModal, setShowModal] = useState(false);
   const [modalTitle, setModalTitle] = useState('대여 상태');
@@ -38,6 +38,7 @@ const RentedDetail = () => {
 
   const fetchingData = async () => {
     const returnData = await getRentDetail(rentId);
+    console.log(returnData);
     setInfo({ ...info, ...returnData });
   };
   const choseRentState = () => {
@@ -62,6 +63,7 @@ const RentedDetail = () => {
               <img src={vector} alt={'대여 상태 선택'} />
             </h3>
             <div>
+              {/* <button onClick={() => extendRent(rentId)}>연장 1회차 적용하기</button> */}
               <button>연장 1회차 적용하기</button>
               <button>연장 2회차 적용하기</button>
             </div>

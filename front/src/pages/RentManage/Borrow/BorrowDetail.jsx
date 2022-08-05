@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { setAllFalse, setBack, setTitle, setMore } from '../../../app/headerSlice';
 import api from '../../../util/RentApi';
-import style from './RentDetail.style';
+import style from './BorrowDetail.style';
 import noImg from '../../../assets/img/logo/homeb_default.svg';
 
 const BorrowDetail = () => {
@@ -13,6 +13,7 @@ const BorrowDetail = () => {
   const { rentId } = useParams();
   const { getRentDetail } = api;
   const [info, setInfo] = useState({});
+  const [book, setBook] = useState({});
   //-------------- Header & Footer Off --------------
   useEffect(() => {
     dispatch(setAllFalse());
@@ -22,6 +23,8 @@ const BorrowDetail = () => {
 
   const fetchingData = async () => {
     const returnData = await getRentDetail(rentId);
+    console.log(returnData);
+    setBook({ ...book, ...returnData.book });
     setInfo({ ...info, ...returnData });
   };
 

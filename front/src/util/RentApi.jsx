@@ -41,7 +41,7 @@ const postRent = async (bookId, lenderId, roomId) => {
   }
 };
 
-const extendRent = async (extendDate, extendDays, id) => {
+const extendRent = async (extendDate, extendDays, rentId) => {
   try {
     const result = await apiAuthUtil.post(`api/v1/rent/${rentId}/extend`, { extendDate: extendDate, extendDays: extendDays, id: id });
     return result.data;

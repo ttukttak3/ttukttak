@@ -19,7 +19,7 @@ const ChatListItem = ({ id, imgUrl, userName, time, lastChat, unread }) => {
         </UserName>
         <LastChat>
           <p>{lastChat}</p>
-          <span>{unread}</span>
+          {unread > 0 && <span>{unread}</span>}
         </LastChat>
       </InfoWrapper>
     </Wrapper>
