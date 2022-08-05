@@ -2,22 +2,20 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import RentListItem from '../RentListItem';
-import style from '../RentListItem.style';
+import style from './RentListPage.style';
 import api from '../../../util/RentApi';
 import errorImg from '../../../assets/img/logo/Error_outline.svg';
-import noImg from '../../../assets/img/logo/homeb_default.svg';
-import moreGray from '../../../assets/img/userInterFace/more_gray.svg';
-import arrowRight from '../../../assets/img/arrows/Keyboard_arrow_right.svg';
-import smallDown from '../../../assets/img/arrows/small_down.svg';
+
 import { useSelector, useDispatch } from 'react-redux';
 
 const RentListPage = () => {
-  const { RentListWrap, NoItem, RentIngBox, BookBox, BookInfo, BookPrice, ReturnBox, PaddingBox, BookingBox } = style;
+  const { RentListWrap, NoItem } = style;
   const { getRentList } = api;
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { userId } = useSelector(state => state.user);
   const [rentList, setRentList] = useState([]);
+  const [rentListShow, setRentListShow] = useState([]);
   const [loader, setLoader] = useState(false);
   const [param, setParam] = useState({
     pageNum: 1,
@@ -34,6 +32,7 @@ const RentListPage = () => {
       // 페이지 끝에 도달하면 추가 데이터를 받아온다
       param.pageNum++;
       getRentList(param, setRentList, setLoader);
+      // fetchingData();
     }
   };
 
@@ -45,51 +44,27 @@ const RentListPage = () => {
   });
 
   useEffect(() => {
-    getRentList(param, setRentList, setLoader);
+    fetchingData();
     return () => {};
   }, [dispatch, param, getRentList]);
 
+  const fetchingData = async () => {
+    const data = await getRentList(param, setRentList, setLoader);
+    setRentListShow(data.contents);
+  };
+
   return (
     <RentListWrap>
-      {/* {rentList.length === 0 ? (
+      {rentListShow?.length === 0 ? (
         <NoItem>
           <img src={errorImg} alt="느낌표" />
           아직 대여해준 도서가 없어요
         </NoItem>
       ) : (
-        rentList.map(item => <RentListItem mode={item.status} onClick={() => navigate(`/rent/${rentId}`)}></RentListItem>)
-      )} */}
-      <RentIngBox>
-        <ul>
-          <li>
-            <h2>대여가 진행중이에요.</h2>
-            <BookBox onClick={() => navigate('/rent/detail')}>
-              <div>
-                <img src={noImg} alt="도서 이미지" />
-              </div>
-              <BookInfo>
-                <h3>
-                  불편한 편의점
-                  <span>베르나르 베르베르</span>
-                </h3>
-                <img src={arrowRight} alt=">" />
-                <h6>대여일자 2022.06.03</h6>
-                <BookPrice>
-                  <div>
-                    <p>대여료</p>
-                    <p>2,000원</p>
-                  </div>
-                  <div>
-                    <p>보증금</p>
-                    <p>15,000원</p>
-                  </div>
-                </BookPrice>
-              </BookInfo>
-            </BookBox>
-            <button onClick={() => navigate('/rent/state')}>대여현황</button>
-          </li>
-        </ul>
-      </RentIngBox>
+        rentListShow.map(item => <RentListItem mode={'rent'} item={item} key={item.id} onClick={() => navigate(`/rent/${item.id}`)}></RentListItem>)
+      )}
+
+      {/*  예약 중 컴포넌트 대여내역에 안 보여줄 예정 
       <BookingBox>
         <ul>
           <li>
@@ -124,43 +99,7 @@ const RentListPage = () => {
             </BookBox>
           </li>
         </ul>
-      </BookingBox>
-      <ReturnBox>
-        <ul>
-          <li>
-            <PaddingBox>
-              <h2>
-                2022.06.17 · 반납 완료
-                <img src={moreGray} alt="더보기" />
-              </h2>
-              <BookBox onClick={() => navigate('/rent/detail')}>
-                <div>
-                  <img src={noImg} alt="도서 이미지" />
-                </div>
-                <BookInfo>
-                  <h3>
-                    반납 완료 베르
-                    <span>베르나르 베르베르</span>
-                  </h3>
-                  <img className="return" src={arrowRight} alt=">" />
-                  <h6>대여일자 2022.06.03</h6>
-                  <BookPrice>
-                    <div>
-                      <p>대여료</p>
-                      <p>2,000원</p>
-                    </div>
-                    <div>
-                      <p>보증금</p>
-                      <p>15,000원</p>
-                    </div>
-                  </BookPrice>
-                </BookInfo>
-              </BookBox>
-            </PaddingBox>
-            <button>리뷰보기</button>
-          </li>
-        </ul>
-      </ReturnBox>
+      </BookingBox> */}
     </RentListWrap>
   );
 };

@@ -225,6 +225,6 @@ const PaddingBox = styled.div`
   padding: 2rem 1.9rem 2rem 3.2rem;
 `;
 
-const style = { RentListWrap, RentIngBox, BookBox, BookInfo, BookPrice, ReturnBox, PaddingBox, BookingBox };
+const style = { RentListWrap, NoItem, RentIngBox, BookBox, BookInfo, BookPrice, ReturnBox, PaddingBox, BookingBox };
 
 export default style;

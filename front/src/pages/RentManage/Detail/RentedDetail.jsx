@@ -1,19 +1,34 @@
 /* eslint-disable max-lines-per-function */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setAllFalse, setBack } from '../../../app/headerSlice';
-import style from './RentStatePage.style';
+import style from './RentedDetail.style';
+import api from '../../../util/RentApi';
 
-const RentStatePage = () => {
+const RentedDetail = ({ rentId }) => {
   const dispatch = useDispatch();
+  const { getRentDetail } = api;
+  const [info, setInfo] = useState({});
   //-------------- Header & Footer Off --------------
   useEffect(() => {
     dispatch(setAllFalse());
     dispatch(setBack(true));
   }, [dispatch]);
+
+  useEffect(() => {
+    fetchingData();
+  }, []);
+
+  const fetchingData = async () => {
+    const returnData = await getRentDetail(rentId);
+    console.log(returnData);
+    setInfo({ ...info, ...returnData });
+  };
+
   const { Wrapper, Progress, State, Price, GoPage } = style;
   return (
     <Wrapper>
+      {/* 대여 중 도서 상세  */}
       <Progress>
         <div>
           <h2>대여가 진행중이에요</h2>
@@ -58,4 +73,4 @@ const RentStatePage = () => {
   );
 };
 
-export default RentStatePage;
+export default RentedDetail;

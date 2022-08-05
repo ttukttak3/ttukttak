@@ -2,10 +2,10 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setAllFalse, setBack, setTitle, setMore } from '../../../app/headerSlice';
-import style from './RentDetailPage.style';
+import style from './ReturnDetail.style';
 import noImg from '../../../assets/img/logo/homeb_default.svg';
 
-const RentDetailPage = () => {
+const ReturnDetail = () => {
   const dispatch = useDispatch();
   //-------------- Header & Footer Off --------------
   useEffect(() => {
@@ -17,6 +17,7 @@ const RentDetailPage = () => {
   const { Wrapper, BookBox, Book, Info, Price, GoPage } = style;
   return (
     <Wrapper>
+      {/* 반납 완료 도서 상세 */}
       <BookBox>
         <h2>2022.06.28 반납완료</h2>
         <Book>
@@ -58,4 +59,4 @@ const RentDetailPage = () => {
   );
 };
 
-export default RentDetailPage;
+export default ReturnDetail;
