@@ -143,9 +143,9 @@ public class UserServiceImpl implements UserService {
 		Long userId = user.getId();
 		/*
 		 * 대여가 진행중이면 삭제 불가
-		 * return_date != null << 대여중
+		 * return_date == null << 대여중
 		 */
-		List<Rent> rent = rentRepository.findAllByLenderIdAndReturnDateIsNotNull(userId).orElse(new ArrayList<>());
+		List<Rent> rent = rentRepository.findAllByLenderIdAndReturnDateIsNull(userId).orElse(new ArrayList<>());
 
 		//rent 데이터가 조회되면 false 리턴
 		if (rent.size() > 0) {
