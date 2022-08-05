@@ -129,7 +129,7 @@ const NoItem = styled.p`
 `;
 
 const BookBox = styled.ul`
-  margin-top: 2.8rem;
+  margin: 2.8rem 0;
 
   //3장씩
   li {

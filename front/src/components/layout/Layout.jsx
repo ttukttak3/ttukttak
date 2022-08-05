@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 import React, { useEffect, useState } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import Header from './Header';
@@ -21,9 +22,10 @@ import SettingPage from '../../pages/Account/Setting/SettingPage';
 import ContentsPage from '../../pages/Account/Setting/ContentsPage';
 import UpdateBookPage from '../../pages/UpdateBook/UpdateBookPage';
 import RentMainPage from '../../pages/RentManage/RentMainPage';
-import RentDetailPage from '../../pages/RentManage/Rent/RentDetailPage';
-import BorrowDetailPage from '../../pages/RentManage/Borrow/BorrowDetailPage';
-import UserAccountPage from '../../pages/Account/userAccountPage';
+import RentStatePage from '../../pages/RentManage/Detail/RentedDetail';
+import RentDetailPage from '../../pages/RentManage/Detail/ReturnDetail';
+import UserAccountPage from '../../pages/Account/UserAccountPage';
+import BorrowListPage from '../../pages/RentManage/Borrow/BorrowListPage';
 
 const Layout = () => {
   const navi = useLocation();
@@ -52,10 +54,11 @@ const Layout = () => {
           <Route path="login" element={<LoginPage />} />
           <Route path="oauth2/redirect" element={<Auth />} />
           <Route path="location/:townId" element={<LocationPage />} />
+          {/* 가입하기 전 상태임으로 AuthCheckRouter 체크 제외 */}
+          <Route path="signup" element={<SignUpPage />} />
           <Route path="account/setting/:contents" element={<ContentsPage />} />
           <Route path="userAccount" element={<UserAccountPage />} />
           <Route element={<AuthCheckRouter />}>
-            <Route path="signUp" element={<SignUpPage />} />
             <Route path="chat" element={<Chat />} />
             <Route path="chat/:roomId" element={<ChatItem />} />
             <Route path="chat/alert" element={<ChatAlertPage />} />
@@ -66,8 +69,11 @@ const Layout = () => {
             <Route path="account/setting" element={<SettingPage />} />
             <Route path="update" element={<UpdateBookPage />} />
             <Route path="rent" element={<RentMainPage />} />
+            <Route path="borrow" element={<BorrowListPage />} />
+            {/* <Route path="rent/state" element={<RentStatePage />} /> */}
+            {/* <Route path="rent/detail" element={<RentDetailPage />} /> */}
             <Route path="rent/:rentId" element={<RentDetailPage />} />
-            <Route path="borrow/:rentId" element={<BorrowDetailPage />} />
+            <Route path="borrow/:rentId" element={<RentDetailPage />} />
           </Route>
         </Routes>
       </Section>

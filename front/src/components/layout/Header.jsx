@@ -15,6 +15,7 @@ import shareImg from '../../assets/img/userInterFace/share.svg';
 import moreVert from '../../assets/img/userInterFace/more_vert.svg';
 import settingsImg from '../../assets/img/userInterFace/Settings.svg';
 import clearGray from '../../assets/img/userInterFace/Clear_gray.svg';
+import x from '../../assets/img/userInterFace/X.svg';
 import SelectPopup from '../../components/Modal/SelectPopupBottom';
 import ConfirmPopup from '../../components/Modal/ConfirmPopup';
 import bookApi from '../../util/BookApi';
@@ -33,7 +34,11 @@ const Header = () => {
   const [bookHideShowing, setBookHideShowing] = useState(false);
 
   const openModal = () => {
-    setMoreShowing(true);
+    if (pathname === '/detailBook') {
+      setMoreShowing(true);
+    } else {
+      console.log('뽀옹');
+    }
   };
   const moreContents = [
     {
@@ -120,11 +125,7 @@ const Header = () => {
     <HeaderWrap ref={modalEl} className={pathname === '/rent' ? 'hide' : 'show'}>
       <HeaderBox>
         <LeftBox>
-          {back && (
-            <BackBtn onClick={() => navigate(-1)}>
-              <img src={keyboardArrowLeft} alt={'뒤로가기'} />
-            </BackBtn>
-          )}
+          {back && <BackBtn onClick={() => navigate(-1)}>{pathname === '/rent/state' ? <img src={x} alt={'x'} /> : <img src={keyboardArrowLeft} alt={'뒤로가기'} />}</BackBtn>}
           {backHome && (
             <BackBtn onClick={() => navigate(`/`)}>
               <img src={keyboardArrowLeft} alt={'홈'} />

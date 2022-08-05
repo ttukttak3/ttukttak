@@ -1,26 +1,108 @@
+/* eslint-disable max-lines-per-function */
 import React, { useEffect, useState } from 'react';
 import style from './RentListItem.style';
-
+import noImg from '../../assets/img/logo/homeb_default.svg';
+import moreGray from '../../assets/img/userInterFace/more_gray.svg';
+import arrowRight from '../../assets/img/arrows/Keyboard_arrow_right.svg';
+import smallDown from '../../assets/img/arrows/small_down.svg';
 //차입과 대여에 reuse 할 아이템 하나
-const RentListItem = ({ book, mode, onClick }) => {
-  const { Wrapper, Comment } = style;
+const RentListItem = ({ mode, item, onClick }) => {
   const [comment, setComment] = useState('');
-  const { RentListWrap, RentIngBox, BookBox, BookInfo, BookPrice, ReturnBox, PaddingBox, BookingBox } = style;
+  const { status, book, beginDate, endDate, returnDate } = item;
+  const { author, subject, deposit } = book;
+  const { RentListWrap, NoItem, RentIngBox, BookBox, BookInfo, BookPrice, ReturnBox, PaddingBox, BookingBox } = style;
 
   useEffect(() => {
+    console.log(status);
     if (mode === 'rent') {
-      setComment('대여가 진행중이에요.');
+      if (status === 'RENTED') {
+        setComment('대여가 진행중이에요.');
+      } else if (status === 'RETURN') {
+        setComment('');
+      }
     } else if (mode === 'borrow') {
-      setComment('열심히 독서를 진행중이에요.');
+      if (status === 'RENTED') {
+        setComment('열심히 독서를 진행중이에요.');
+      } else if (status === 'RETURN') {
+        setComment('');
+      }
     }
   }, [mode]);
 
   return (
-    <RentListWrap>
-      <Comment>{comment}</Comment>
-      {/* 책 정보 보여주기 */}
+    <>
+      {status === 'RENTED' ? (
+        <RentIngBox>
+          <ul>
+            <li>
+              <h2>대여가 진행중이에요.</h2>
+              <BookBox onClick={() => navigate('/rent/detail')}>
+                <div>
+                  <img src={noImg} alt="도서 이미지" />
+                </div>
+                <BookInfo>
+                  <h3>
+                    {subject}
+                    <span>{author}</span>
+                  </h3>
+                  <img src={arrowRight} alt=">" />
+                  <h6>대여일자 {beginDate}</h6>
+                  <BookPrice>
+                    <div>
+                      <p>대여료</p>
+                      <p>2,000원</p>
+                    </div>
+                    <div>
+                      <p>보증금</p>
+                      <p>{deposit}원</p>
+                    </div>
+                  </BookPrice>
+                </BookInfo>
+              </BookBox>
+              <button onClick={() => navigate('/rent/state')}>대여현황</button>
+            </li>
+          </ul>
+        </RentIngBox>
+      ) : (
+        <ReturnBox>
+          <ul>
+            <li>
+              <PaddingBox>
+                <h2>
+                  {returnDate}· 반납 완료
+                  <img src={moreGray} alt="더보기" />
+                </h2>
+                <BookBox onClick={() => navigate('/rent/detail')}>
+                  <div>
+                    <img src={noImg} alt="도서 이미지" />
+                  </div>
+                  <BookInfo>
+                    <h3>
+                      {subject}
+                      <span>{author}</span>
+                    </h3>
+                    <img className="return" src={arrowRight} alt=">" />
+                    <h6>대여일자 {beginDate}</h6>
+                    <BookPrice>
+                      <div>
+                        <p>대여료</p>
+                        <p>2,000원</p>
+                      </div>
+                      <div>
+                        <p>보증금</p>
+                        <p>{deposit}원</p>
+                      </div>
+                    </BookPrice>
+                  </BookInfo>
+                </BookBox>
+              </PaddingBox>
+              {/* <button>리뷰보기</button> */}
+            </li>
+          </ul>
+        </ReturnBox>
+      )}
       <button onClick={() => onClick()}></button>
-    </RentListWrap>
+    </>
   );
 };
 

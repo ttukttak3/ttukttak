@@ -76,11 +76,11 @@ const AccountPage = () => {
   //처음 스크롤 값은 0으로 false 초기 값 세팅
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
-    //scrollY > 50을 기준으로 state 변경
+    //scrollY > 130을 기준으로 state 변경
     const handleScroll = () => {
-      if (!scrolled && window.scrollY > 50) {
+      if (!scrolled && window.scrollY > 130) {
         setScrolled(true);
-      } else if (scrolled && window.scrollY <= 50) {
+      } else if (scrolled && window.scrollY <= 130) {
         setScrolled(false);
       }
     };
@@ -110,7 +110,7 @@ const AccountPage = () => {
           </CountingWrap>
         </Top>
         <h2>{user.nickName}</h2>
-        <h4>{user.homeTown.town ? user.homeTown.town.address : ''}</h4>
+        <h4>{user.homeTown ? user.homeTown.town.address : ''}</h4>
         <h6>{user.introduction}</h6>
         <button onClick={() => navigate('/account/profile')}>프로필 편집</button>
       </UserInfo>
