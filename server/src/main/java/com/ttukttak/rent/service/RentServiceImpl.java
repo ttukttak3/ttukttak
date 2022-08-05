@@ -40,7 +40,7 @@ public class RentServiceImpl implements RentService {
 	public PageResponse<RentResponse> getRentedList(Long ownerId, int pageNum) {
 		Pageable pageable = PageRequest.of(pageNum - 1, PAGE_SIZE);
 		Page<RentResponse> pageInfo = rentRepository
-			.findAllByOwnerIdAndReturnDateIsNullOrderByBeginDateAsc(ownerId, pageable)
+			.findAllByOwnerIdOrderByBeginDateDesc(ownerId, pageable)
 			.map(RentResponse::from);
 
 		return PageResponse.<RentResponse>builder()
@@ -58,7 +58,7 @@ public class RentServiceImpl implements RentService {
 		Pageable pageable = PageRequest.of(pageNum - 1, PAGE_SIZE);
 
 		Page<RentResponse> pageInfo = rentRepository
-			.findAllByLenderIdAndReturnDateIsNullOrderByBeginDateAsc(lenderId, pageable)
+			.findAllByLenderIdOrderByBeginDateDesc(lenderId, pageable)
 			.map(RentResponse::from);
 
 		return PageResponse.<RentResponse>builder()

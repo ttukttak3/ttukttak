@@ -16,15 +16,13 @@ import com.ttukttak.rent.entity.Rent;
 public interface RentRepository extends JpaRepository<Rent, Long> {
 	List<Rent> findAllByLenderIdAndReturnDateIsNullOrderByBeginDateAsc(Long lenderId);
 
-	Page<Rent> findAllByLenderIdAndReturnDateIsNullOrderByBeginDateAsc(Long lenderId, Pageable pageable);
+	Page<Rent> findAllByLenderIdOrderByBeginDateDesc(Long lenderId, Pageable pageable);
 
 	List<Rent> findAllByOwnerIdAndReturnDateIsNullOrderByBeginDateAsc(Long ownerId);
 
-	Page<Rent> findAllByOwnerIdAndReturnDateIsNullOrderByBeginDateAsc(Long ownerId, Pageable pageable);
+	Page<Rent> findAllByOwnerIdOrderByBeginDateDesc(Long ownerId, Pageable pageable);
 
 	Optional<Rent> findByBookIdAndLenderId(Long bookId, Long lenderId);
-
-	Optional<List<Rent>> findAllByBookId(Long bookId);
 
 	Page<Rent> findAll(Pageable pageable);
 
