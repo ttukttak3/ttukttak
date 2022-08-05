@@ -49,6 +49,7 @@ const State = styled.div`
   div {
     button {
       font-size: 1.4rem;
+      color: ${({ theme }) => theme.colors.$white1};
       font-color: ${({ theme }) => theme.colors.$white1}
       border: 1px solid ${({ theme }) => theme.colors.$white1};
     }

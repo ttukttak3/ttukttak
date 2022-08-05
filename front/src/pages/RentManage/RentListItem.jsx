@@ -37,7 +37,7 @@ const RentListItem = ({ mode, item, onClick }) => {
         <RentIngBox>
           <ul>
             <li>
-              <h2>대여가 진행중이에요.</h2>
+              <h2>{comment}</h2>
               <BookBox onClick={onClick}>
                 <div>
                   <img src={noImg} alt="도서 이미지" />
