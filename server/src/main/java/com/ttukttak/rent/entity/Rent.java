@@ -66,10 +66,10 @@ public class Rent extends BaseTimeEntity implements Serializable {
 
 	public RentStatus getStatus() {
 		if (returnDate != null) {
-			return RentStatus.RENTED;
+			return RentStatus.RETURN;
 		}
 
-		return RentStatus.RETURN;
+		return RentStatus.RENTED;
 	}
 
 	public enum RentStatus {
