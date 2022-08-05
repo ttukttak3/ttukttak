@@ -3,10 +3,10 @@ const { apiUtil, apiAuthUtil } = utils;
 
 const getRentList = async (param, setRentList, setLoader) => {
   try {
-    console.log(param);
     const result = await apiUtil.get(`api/v1/users/${param.userId}/rent?pageNum=${param.pageNum}`);
     console.log(result.data);
-    return setRentList(result.data);
+    setRentList(result.data);
+    return result.data;
   } catch (error) {
     console.log(error);
   }
@@ -17,7 +17,8 @@ const getBorrowList = async (param, setBorrowList) => {
   try {
     const result = await apiUtil.get(`api/v1/users/${param.userId}/rent/borrow?pageNum=${param.pageNum}`);
     console.log(result.data);
-    return setBorrowList(result.data);
+    setBorrowList(result.data);
+    return result.data;
   } catch (error) {
     console.log(error);
   }
@@ -33,9 +34,9 @@ const getRentDetail = async rentId => {
   }
 };
 
-const postRent = async (bookId, lenderId) => {
+const postRent = async (bookId, lenderId, roomId) => {
   try {
-    const result = await apiAuthUtil.post(`api/v1/rent`, { bookId: bookId, lenderId: lenderId });
+    const result = await apiAuthUtil.post(`api/v1/rent`, { bookId: bookId, lenderId: lenderId, roomId: roomId });
     console.log(result.data);
     return result.data;
   } catch (error) {
