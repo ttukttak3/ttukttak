@@ -379,7 +379,7 @@ public class BookServiceImpl implements BookService {
 
 	@Override
 	public PageResponse<MyBookResponse> getMyBookList(Long ownerId, int pageNum) {
-		PageRequest pageRequest = PageRequest.of(pageNum - 1, PAGESIZE);
+		PageRequest pageRequest = PageRequest.of(pageNum - 1, PAGESIZE, Sort.by("id").descending());
 
 		Page<MyBookResponse> myBookList = bookRepository.findByIsDeleteFalseAndOwnerId(ownerId, pageRequest)
 			.map(MyBookResponse::from);
