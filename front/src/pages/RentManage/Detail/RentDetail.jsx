@@ -37,9 +37,7 @@ const RentedDetail = () => {
   }, []);
 
   const fetchingData = async () => {
-    console.log(rentId);
     const returnData = await getRentDetail(rentId);
-    console.log(returnData.status);
     setInfo({ ...info, ...returnData });
   };
   const choseRentState = () => {

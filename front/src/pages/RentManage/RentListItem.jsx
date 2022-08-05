@@ -14,7 +14,6 @@ const RentListItem = ({ mode, item, onClick }) => {
   const { RentListWrap, NoItem, RentIngBox, BookBox, BookInfo, BookPrice, ReturnBox, PaddingBox, BookingBox } = style;
 
   useEffect(() => {
-    console.log(status);
     if (mode === 'rent') {
       setButtonMsg('대여 현황');
       if (status === 'RENTED') {
