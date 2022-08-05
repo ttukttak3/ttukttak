@@ -8,19 +8,22 @@ import smallDown from '../../assets/img/arrows/small_down.svg';
 //차입과 대여에 reuse 할 아이템 하나
 const RentListItem = ({ mode, item, onClick }) => {
   const [comment, setComment] = useState('');
-  const { status, book, beginDate, endDate, returnDate } = item;
+  const [buttonMsg, setButtonMsg] = useState('대여 현황');
+  const { id, status, book, beginDate, endDate, returnDate } = item;
   const { author, subject, deposit } = book;
   const { RentListWrap, NoItem, RentIngBox, BookBox, BookInfo, BookPrice, ReturnBox, PaddingBox, BookingBox } = style;
 
   useEffect(() => {
     console.log(status);
     if (mode === 'rent') {
+      setButtonMsg('대여 현황');
       if (status === 'RENTED') {
         setComment('대여가 진행중이에요.');
       } else if (status === 'RETURN') {
         setComment('');
       }
     } else if (mode === 'borrow') {
+      setButtonMsg('차입 현황');
       if (status === 'RENTED') {
         setComment('열심히 독서를 진행중이에요.');
       } else if (status === 'RETURN') {
@@ -36,7 +39,7 @@ const RentListItem = ({ mode, item, onClick }) => {
           <ul>
             <li>
               <h2>대여가 진행중이에요.</h2>
-              <BookBox onClick={() => navigate('/rent/detail')}>
+              <BookBox onClick={onClick}>
                 <div>
                   <img src={noImg} alt="도서 이미지" />
                 </div>
@@ -59,7 +62,7 @@ const RentListItem = ({ mode, item, onClick }) => {
                   </BookPrice>
                 </BookInfo>
               </BookBox>
-              <button onClick={() => navigate('/rent/state')}>대여현황</button>
+              <button onClick={onClick}>{buttonMsg}</button>
             </li>
           </ul>
         </RentIngBox>
@@ -72,7 +75,7 @@ const RentListItem = ({ mode, item, onClick }) => {
                   {returnDate}· 반납 완료
                   <img src={moreGray} alt="더보기" />
                 </h2>
-                <BookBox onClick={() => navigate('/rent/detail')}>
+                <BookBox onClick={onClick}>
                   <div>
                     <img src={noImg} alt="도서 이미지" />
                   </div>
@@ -81,7 +84,7 @@ const RentListItem = ({ mode, item, onClick }) => {
                       {subject}
                       <span>{author}</span>
                     </h3>
-                    <img className="return" src={arrowRight} alt=">" />
+                    <img className="return" src={arrowRight} alt=">" onClick={onClick} />
                     <h6>대여일자 {beginDate}</h6>
                     <BookPrice>
                       <div>

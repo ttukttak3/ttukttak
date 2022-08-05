@@ -25,6 +25,7 @@ const getBorrowList = async (param, setBorrowList) => {
 };
 
 const getRentDetail = async rentId => {
+  console.log(rentId);
   try {
     const result = await apiAuthUtil.get(`api/v1/rent/${rentId}`);
     console.log(result.data);
@@ -54,7 +55,7 @@ const extendRent = async (extendDate, extendDays, id) => {
   }
 };
 
-const returnRent = async () => {
+const returnRent = async rentId => {
   try {
     const result = await apiAuthUtil.patch(`api/v1/rent/${rentId}/return`);
     console.log(result.data);

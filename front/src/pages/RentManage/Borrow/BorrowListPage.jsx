@@ -59,7 +59,7 @@ const BorrowListPage = () => {
           아직 대여해준 도서가 없어요
         </NoItem>
       ) : (
-        borrowListShow.map(item => <RentListItem mode={'borrow'} item={item} key={item.id} onClick={() => navigate(`/rent/${item.id}`)}></RentListItem>)
+        borrowListShow.map(item => <RentListItem mode={'borrow'} item={item} key={item.id} onClick={() => navigate(`/borrow/${item.id}`)}></RentListItem>)
       )}
     </RentListWrap>
   );
