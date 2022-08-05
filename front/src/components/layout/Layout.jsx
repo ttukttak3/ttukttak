@@ -22,10 +22,10 @@ import SettingPage from '../../pages/Account/Setting/SettingPage';
 import ContentsPage from '../../pages/Account/Setting/ContentsPage';
 import UpdateBookPage from '../../pages/UpdateBook/UpdateBookPage';
 import RentMainPage from '../../pages/RentManage/RentMainPage';
-import RentStatePage from '../../pages/RentManage/Detail/RentedDetail';
-import RentDetailPage from '../../pages/RentManage/Detail/ReturnDetail';
 import UserAccountPage from '../../pages/Account/UserAccountPage';
 import BorrowListPage from '../../pages/RentManage/Borrow/BorrowListPage';
+import RentDetail from '../../pages/RentManage/Detail/RentDetail';
+import BorrowDetail from '../../pages/RentManage/Detail/BorrowDetail';
 
 const Layout = () => {
   const navi = useLocation();
@@ -72,8 +72,8 @@ const Layout = () => {
             <Route path="borrow" element={<BorrowListPage />} />
             {/* <Route path="rent/state" element={<RentStatePage />} /> */}
             {/* <Route path="rent/detail" element={<RentDetailPage />} /> */}
-            <Route path="rent/:rentId" element={<RentDetailPage />} />
-            <Route path="borrow/:rentId" element={<RentDetailPage />} />
+            <Route path="rent/:rentId" element={<RentDetail />} />
+            <Route path="borrow/:rentId" element={<BorrowDetail />} />
           </Route>
         </Routes>
       </Section>

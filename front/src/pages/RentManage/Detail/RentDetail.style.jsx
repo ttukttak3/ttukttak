@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import arrowRight from '../../../assets/img/arrows/Keyboard_arrow_right.svg';
+
 const Wrapper = styled.div`
   width: 39rem;
   margin: 0 auto;
@@ -34,6 +35,24 @@ const Progress = styled.div`
 const State = styled.div`
   width: 34rem;
   margin: 0 auto;
+  h3 {
+    font-size: 1.4rem;
+    button {
+      font-size: 1.2rem;
+      color: ${({ theme }) => theme.colors.$white3}
+    }
+    img {
+      width : 1.2rem;
+      color: ${({ theme }) => theme.colors.$white3}
+    }
+  }
+  div {
+    button {
+      font-size: 1.4rem;
+      font-color: ${({ theme }) => theme.colors.$white1}
+      border: 1px solid ${({ theme }) => theme.colors.$white1};
+    }
+  }
 `;
 const Price = styled.div`
   width: 34rem;
@@ -98,6 +117,57 @@ const GoPage = styled.div`
     text-align: left;
   }
 `;
-const style = { Wrapper, Progress, State, Price, GoPage };
+
+const BookBox = styled.div`
+  text-align: left;
+  //반납일
+  h2 {
+    display: inline-block;
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: #fff;
+    border-bottom: 1px solid #fff;
+    padding-bottom: 0.2rem;
+  }
+`;
+const Book = styled.div`
+  margin-top: 2.8rem;
+  display: flex;
+  flex-direction: row;
+  img {
+    width: 6rem;
+    height: 8.7rem;
+  }
+`;
+const Info = styled.div`
+  margin-left: 2rem;
+  //도서제목
+  h4 {
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: #fff;
+  }
+  //저자
+  h6 {
+    margin: 0.6rem 0 4.1rem 0;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: #9aa0a6;
+  }
+  //차입자
+  p {
+    span {
+      display: inline-block;
+      margin-right: 0.8rem;
+      font-size: 1.2rem;
+      font-weight: 400;
+      color: #bdc1c6;
+    }
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: #fff;
+  }
+`;
+const style = { Wrapper, Progress, BookBox, Book, Info, State, Price, GoPage };
 
 export default style;
