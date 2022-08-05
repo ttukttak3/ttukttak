@@ -36,22 +36,33 @@ const State = styled.div`
   width: 34rem;
   margin: 0 auto;
   h3 {
+    text-align: left;
     font-size: 1.4rem;
+    margin: 1rem;
+
     button {
+      margin-left: auto;
       font-size: 1.2rem;
-      color: ${({ theme }) => theme.colors.$white3}
+      color: ${({ theme }) => theme.colors.$white3};
     }
     img {
-      width : 1.2rem;
-      color: ${({ theme }) => theme.colors.$white3}
+      margin-left: auto;
+      width: 1.2rem;
+      color: ${({ theme }) => theme.colors.$white3};
     }
   }
   div {
     button {
       font-size: 1.4rem;
+      font-color: ${({ theme }) => theme.colors.$white1};
       color: ${({ theme }) => theme.colors.$white1};
-      font-color: ${({ theme }) => theme.colors.$white1}
       border: 1px solid ${({ theme }) => theme.colors.$white1};
+      margin: 0.5rem;
+      padding: 0.6rem 2.3rem;
+    }
+    .gray {
+      color: ${({ theme }) => theme.colors.$white4};
+      border: 1px solid ${({ theme }) => theme.colors.$white4};
     }
   }
 `;
