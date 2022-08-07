@@ -1,10 +1,8 @@
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-left: 2rem;
-  margin-right: 2rem;
+  width: 34rem;
+  margin: 0 auto;
 `;
 
 const RadioOptBox = styled.div`

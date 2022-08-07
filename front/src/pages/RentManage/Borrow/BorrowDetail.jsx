@@ -2,35 +2,50 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { setAllFalse, setBack, setTitle, setMore } from '../../../app/headerSlice';
+import { setAllFalse, setBack, setBackX, setTitle, setMore } from '../../../app/headerSlice';
 import api from '../../../util/RentApi';
 import style from './BorrowDetail.style';
 import noImg from '../../../assets/img/logo/homeb_default.svg';
-
+import bar1 from '../../../assets/img/userInterFace/bar1.svg';
 const BorrowDetail = () => {
-  const { Wrapper, Progress, BookBox, Book, Info, State, Price, GoPage } = style;
+  const { Wrapper, Progress, BookBox, Book, Info, Price, GoPage } = style;
   const dispatch = useDispatch();
   const { rentId } = useParams();
   const { getRentDetail } = api;
   const [info, setInfo] = useState({});
   const [book, setBook] = useState({});
+  const [extendCnt, setExtendCnt] = useState(0);
   //-------------- Header & Footer Off --------------
   useEffect(() => {
-    dispatch(setAllFalse());
-    dispatch(setBack(true));
-    dispatch(setMore(true));
-  }, [dispatch]);
+    fetchingData();
+    if (info.status !== 'RENTED') {
+      dispatch(setTitle('대여내역'));
+      dispatch(setBack(true));
+      dispatch(setMore(true));
+    } else {
+      dispatch(setAllFalse());
+      dispatch(setBackX(true));
+      //새로고침인가 그것도 달아야 함!
+    }
+  }, [dispatch, info.status]);
 
   const fetchingData = async () => {
     const returnData = await getRentDetail(rentId);
     console.log(returnData);
+    if (returnData.returnDate) {
+      returnData.returnDate = returnData.returnDate.replaceAll('-', '.');
+    }
+    if (returnData.book.deposit) {
+      returnData.book.deposit = returnData.book.deposit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
     setBook({ ...book, ...returnData.book });
     setInfo({ ...info, ...returnData });
+    //연장 여부 체크 이걸로 바 걸 것임.
+    if (returnData.extendList.length === 0) {
+      setExtendCnt(0);
+      console.log('0회');
+    }
   };
-
-  useEffect(() => {
-    fetchingData();
-  }, []);
 
   return (
     <Wrapper>
@@ -41,7 +56,7 @@ const BorrowDetail = () => {
               <h2>대여가 진행중이에요</h2>
               <p>대여자님이 원하는 책 한 권의 우연한 만남으로 이웃과 시작한 소통을 나눠보세요.</p>
             </div>
-            <div>progress bar 구현 예정</div>
+            <div>{extendCnt === 0 ? <img src={bar1} alt="" /> : ''}</div>
           </Progress>
         </>
       ) : (
@@ -53,7 +68,7 @@ const BorrowDetail = () => {
               <h4>{info.book?.subject}</h4>
               <h6>{info.book?.author}</h6>
               <p>
-                <span>차입자</span> {info.lender?.nickname}, {info.homeTown?.town?.longAddress}
+                <span>차입자</span> {info.lender?.nickname}, {info.lender?.homeTown?.town?.longAddress}
               </p>
             </Info>
           </Book>

@@ -9,9 +9,12 @@ const ChatListItem = ({ id, imgUrl, userName, time, lastChat, unread }) => {
   const { Wrapper, Img, UserName, LastChat, InfoWrapper } = style;
   const navigate = useNavigate();
   const d = new Date(time);
+  const onErrorImg = e => {
+    e.target.src = noImg;
+  };
   return (
     <Wrapper key={id} onClick={() => navigate(`/chat/${id}`)}>
-      <Img src={imgUrl} onError={noImg} />
+      <Img src={imgUrl} onError={onErrorImg} />
       <InfoWrapper>
         <UserName>
           <p>{userName}</p>
@@ -36,7 +39,7 @@ ChatListItem.defaultProps = {
 };
 
 ChatListItem.propTypes = {
-  id: PropTypes.bigint,
+  id: PropTypes.number,
   imgUrl: PropTypes.string,
   userName: PropTypes.string,
   time: PropTypes.string,

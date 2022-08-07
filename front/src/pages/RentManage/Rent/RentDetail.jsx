@@ -2,11 +2,11 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { setAllFalse, setBack } from '../../../app/headerSlice';
+import { setAllFalse, setBack, setBackX, setTitle, setMore } from '../../../app/headerSlice';
 import SelectPopupBottom from '../../../components/Modal/SelectPopupBottom';
+import downBtn from '../../../assets/img/arrows/white_down.svg';
 import style from './RentDetail.style';
 import api from '../../../util/RentApi';
-import vector from '../../../assets/img/btn/Vector.png';
 
 const RentedDetail = () => {
   const dispatch = useDispatch();
@@ -43,7 +43,15 @@ const RentedDetail = () => {
 
   useEffect(() => {
     fetchingData();
-  }, []);
+    if (info.status !== 'RENTED') {
+      dispatch(setTitle('대여내역'));
+      dispatch(setBack(true));
+      dispatch(setMore(true));
+    } else {
+      dispatch(setBackX());
+      //새로고침인가 그것도 달아야 함!
+    }
+  }, [dispatch, info.status]);
 
   const fetchingData = async () => {
     const returnData = await getRentDetail(rentId);
@@ -92,7 +100,7 @@ const RentedDetail = () => {
           <State>
             <h3>
               대여 상태 변경하기 <button onClick={() => choseRentState()}>대여 중</button>
-              <img src={vector} alt={'대여 상태 선택'} />
+              <img src={downBtn} alt={'대여 상태 선택'} />
             </h3>
             <div>
               <button onClick={() => extendRentResult(1)} className={firstExtend}>

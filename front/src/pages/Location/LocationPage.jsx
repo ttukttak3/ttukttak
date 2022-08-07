@@ -11,6 +11,9 @@ const LocationPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { getNearTown, getLocation, getSearchTownList } = locationUtils;
+  const [eventListener, setEventListener] = useState(false);
+  const [isAction, setIsAction] = useState(false);
+  const [searchTownList, setSearchTownList] = useState([]);
   //layout param
   const { townId } = useParams();
 
@@ -24,42 +27,53 @@ const LocationPage = () => {
     getNearTown(townId).then(result => {
       setNearTownList(result);
     });
+    setEventListener(true);
     return () => {};
   }, [dispatch, getNearTown]);
 
   //header event
-  const [isAction, setIsAction] = useState(false);
-  const [searchTownList, setSearchTownList] = useState([]);
-  //header search input
-  if (document.getElementById('searchInput')) {
-    document.getElementById('searchInput').addEventListener('keyup', e => {
-      if (!e.target.value) {
-        tabClickHandler(0);
-      }
-    });
-  }
-  //header search
-  if (document.getElementById('searchBtn')) {
-    document.getElementById('searchBtn').addEventListener('click', () => {
-      //eventListner 재 실행 막기
-      if (isAction) {
-        return;
-      }
-      setIsAction(true);
-      if (document.getElementById('searchInput').value === '') {
-        alert('검색어를 입력하세요');
-      } else {
-        getSearchTownList(document.getElementById('searchInput').value).then(result => setSearchTownList(result));
-        tabClickHandler(1);
-      }
-    });
-  }
-  //header clear
-  if (document.getElementById('clearBtn')) {
-    document.getElementById('clearBtn').addEventListener('click', () => {
+  const searchInputKeyUp = e => {
+    if (e.key === 'Enter') {
+      searchBtnClick();
+    }
+
+    if (!e.target.value) {
       tabClickHandler(0);
-    });
-  }
+    }
+  };
+
+  const searchBtnClick = () => {
+    //eventListner 재 실행 막기
+    if (isAction) {
+      return;
+    }
+    setIsAction(true);
+    if (document.getElementById('searchInput').value === '') {
+      alert('검색어를 입력하세요');
+    } else {
+      getSearchTownList(document.getElementById('searchInput').value).then(result => setSearchTownList(result));
+      tabClickHandler(1);
+    }
+  };
+
+  const clearBtnClick = () => {
+    tabClickHandler(0);
+  };
+
+  useEffect(() => {
+    //header search input
+    if (eventListener) {
+      document.getElementById('searchInput').addEventListener('keyup', searchInputKeyUp);
+      document.getElementById('searchBtn').addEventListener('click', searchBtnClick);
+      document.getElementById('clearBtn').addEventListener('click', clearBtnClick);
+    }
+    return () => {
+      document.getElementById('searchInput').removeEventListener('keyup', searchInputKeyUp);
+      document.getElementById('searchBtn').removeEventListener('click', searchBtnClick);
+      document.getElementById('clearBtn').removeEventListener('click', clearBtnClick);
+    };
+  }, [eventListener]);
+
   //---------------header END---------------
   const [nearTownList, setNearTownList] = useState([]);
   //현재 위치로 찾기
@@ -80,10 +94,14 @@ const LocationPage = () => {
           });
         },
         function (error) {
-          console.error(error);
+          alert('위치를 허용하지 않아 기본값인 세종로 기준으로 조회합니다.');
+          getNearTown('1111011900').then(result => {
+            setNearTownList(result);
+          });
         },
       );
     } else {
+      alert('위치를 허용하지 않아 기본값인 세종로 기준으로 조회합니다.');
       getNearTown('1111011900').then(result => {
         setNearTownList(result);
       });

@@ -34,8 +34,6 @@ const Layout = () => {
   useEffect(() => {
     if (navi.pathname === '/detailBook') {
       setMarginState('marginT');
-    } else if (navi.pathname === '/search') {
-      setMarginState('noMargin');
     } else if (navi.pathname === '/rent') {
       setMarginState('marginB');
     } else {
@@ -45,7 +43,7 @@ const Layout = () => {
 
   return (
     <LayoutBox>
-      {navi.pathname !== '/search' && <Header />}
+      <Header />
       <Section className={marginState}>
         <Routes>
           <Route path="/" element={<HomePage />} />

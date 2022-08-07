@@ -24,7 +24,7 @@ const Header = () => {
   const { pathname } = url;
   const navigate = useNavigate();
   const header = useSelector(state => state.header);
-  const { title, back, backHome, location, search, favorite, alert, trash, share, more, moreBookId, settings, locationBox, placeholder } = header;
+  const { title, back, backX, backHome, location, search, favorite, alert, trash, share, more, moreBookId, settings, locationBox, placeholder } = header;
   const { HeaderWrap, HeaderBox, LeftBox, Title, BackBtn, DownBtn, RightBox, RightBtn, LocationBox } = style;
 
   // 포스트보기 더보기 클릭 popup
@@ -125,7 +125,16 @@ const Header = () => {
     <HeaderWrap ref={modalEl} className={pathname === '/rent' ? 'hide' : 'show'}>
       <HeaderBox>
         <LeftBox>
-          {back && <BackBtn onClick={() => navigate(-1)}>{pathname === '/rent/state' ? <img src={x} alt={'x'} /> : <img src={keyboardArrowLeft} alt={'뒤로가기'} />}</BackBtn>}
+          {back && (
+            <BackBtn onClick={() => navigate(-1)}>
+              <img src={keyboardArrowLeft} alt={'뒤로가기'} />
+            </BackBtn>
+          )}
+          {backX && (
+            <BackBtn onClick={() => navigate(-1)}>
+              <img src={x} alt={'x'} />
+            </BackBtn>
+          )}
           {backHome && (
             <BackBtn onClick={() => navigate(`/`)}>
               <img src={keyboardArrowLeft} alt={'홈'} />
