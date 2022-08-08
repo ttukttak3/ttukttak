@@ -84,13 +84,13 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 			LocalDateTime lastCheckedTime;
 
 			if (anotherMember.getLastCheckedMessage() != null) {
-				lastCheckedTime = anotherMember.getLastCheckedMessage().getSendedAt();
+				lastCheckedTime = member.getLastCheckedMessage().getSendedAt();
 			} else {
 				lastCheckedTime = room.getCreatedDate();
 			}
 
-			int unReadCount = chatMessageRepository.countByChatRoomIdAndSendedAtAfterAndMemberIdNot(
-				room.getId(), lastCheckedTime, member.getId());
+			int unReadCount = chatMessageRepository.countByChatRoomIdAndMemberIdNotAndSendedAtAfter(
+				room.getId(), member.getId(), lastCheckedTime);
 
 			return ChatRoomCard.builder().roomId(room.getId())
 				.another(UserDto.from(anotherMember.getUser()))
