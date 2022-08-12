@@ -6,15 +6,15 @@ import BookListItem from './BookListItem';
 import Loader from '../../components/common/Loader';
 
 const BookRentPage = ({ userId }) => {
-  const { getRentList } = rentApi;
+  const { getBorrowList } = rentApi;
   const dispatch = useDispatch();
   const [loader, setLoader] = useState(false);
   const [param, setParam] = useState({
     pageNum: 1,
     userId: userId,
   });
-  const [rentList, setRentList] = useState({ contents: [] });
-  const RentListShow = rentList.contents.map((item, idx) => <BookListItem key={item.book.id} id={item.book.id} imageUrl={item.book.thumbnail.imageUrl} grade={item.book.grade} />);
+  const [borrowList, setBorrowList] = useState({ contents: [] });
+  const BorrowListShow = borrowList.contents.map((item, idx) => <BookListItem key={item.book.id} id={item.book.id} imageUrl={item.book.thumbnail.imageUrl} grade={item.book.grade} />);
 
   // infinite Scroll Event
   const handleScroll = () => {
@@ -25,7 +25,7 @@ const BookRentPage = ({ userId }) => {
       setLoader(true);
       // 페이지 끝에 도달하면 추가 데이터를 받아온다
       param.pageNum++;
-      getRentList(param, setRentList, setLoader);
+      getBorrowList(param, setBorrowList, setLoader);
     }
   };
 
@@ -37,12 +37,17 @@ const BookRentPage = ({ userId }) => {
   });
 
   useEffect(() => {
-    getRentList(param, setRentList, setLoader);
+    getBorrowList(param, setBorrowList, setLoader);
     return () => {};
-  }, [dispatch, param, getRentList]);
+  }, [dispatch, param, getBorrowList]);
 
   const { BookWrap, NoItem, BookBox } = style;
-  return <BookWrap>{RentListShow.length === 0 ? <NoItem>책을 빌려보세요!</NoItem> : <BookBox>{RentListShow}</BookBox>}</BookWrap>;
+  return (
+    <BookWrap>
+      {BorrowListShow.length === 0 ? <NoItem>책을 빌려보세요!</NoItem> : <BookBox>{BorrowListShow}</BookBox>}
+      {loader && <Loader />}
+    </BookWrap>
+  );
 };
 
 export default BookRentPage;

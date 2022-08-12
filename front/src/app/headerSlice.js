@@ -6,6 +6,7 @@ export const headerSlice = createSlice({
     initialState: {
         title: '',
         back: false,        //뒤로가기
+        backX: false,       //대여현황 뒤로가기
         backHome: false,    //소셜 로그인 후 프로필 창에서 Back시 홈으로 이동
         location: false,    //위치(아래모양)
         search: false,      //검색
@@ -26,6 +27,9 @@ export const headerSlice = createSlice({
         },
         setBack: (state, action) => {
             state.back = action.payload;
+        },
+        setBackX: (state, action) => {
+            state.backX = action.payload;
         },
         setBackHome: (state, action) => {
             state.backHome = action.payload;
@@ -79,6 +83,7 @@ export const headerSlice = createSlice({
 export const {
     setTitle,
     setBack,
+    setBackX,
     setBackHome,
     setLocation,
     setSearch,

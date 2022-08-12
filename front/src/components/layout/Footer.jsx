@@ -22,6 +22,7 @@ const Footer = () => {
   return (
     <FooterBox
       className={
+        pathname === '/search' ||
         pathname === '/detailBook' ||
         pathname === '/login' ||
         pathname === '/signup' ||

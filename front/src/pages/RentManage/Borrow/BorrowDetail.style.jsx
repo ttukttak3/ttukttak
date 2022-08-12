@@ -32,28 +32,62 @@ const Progress = styled.div`
     }
   }
 `;
-const State = styled.div`
+
+const BookBox = styled.div`
   width: 34rem;
-  margin: 0 auto;
-  h3 {
-    font-size: 1.4rem;
-    button {
-      font-size: 1.2rem;
-      color: ${({ theme }) => theme.colors.$white3}
-    }
-    img {
-      width : 1.2rem;
-      color: ${({ theme }) => theme.colors.$white3}
-    }
-  }
-  div {
-    button {
-      font-size: 1.4rem;
-      font-color: ${({ theme }) => theme.colors.$white1}
-      border: 1px solid ${({ theme }) => theme.colors.$white1};
-    }
+  margin: 2rem auto 0 auto;
+  text-align: left;
+  //반납일
+  h2 {
+    display: inline-block;
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: #fff;
+    border-bottom: 1px solid #fff;
+    padding-bottom: 0.2rem;
   }
 `;
+
+const Book = styled.div`
+  margin-top: 2.8rem;
+  display: flex;
+  flex-direction: row;
+  img {
+    width: 6rem;
+    height: 8.7rem;
+  }
+`;
+
+const Info = styled.div`
+  margin-left: 2rem;
+  //도서제목
+  h4 {
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: #fff;
+  }
+  //저자
+  h6 {
+    margin: 0.6rem 0 4.1rem 0;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: #9aa0a6;
+  }
+  //차입자
+  p {
+    span {
+      display: inline-block;
+      margin-right: 0.8rem;
+      font-size: 1.2rem;
+      font-weight: 400;
+      color: #bdc1c6;
+    }
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: #fff;
+  }
+`;
+
 const Price = styled.div`
   width: 34rem;
   margin: 2rem auto;
@@ -118,56 +152,6 @@ const GoPage = styled.div`
   }
 `;
 
-const BookBox = styled.div`
-  text-align: left;
-  //반납일
-  h2 {
-    display: inline-block;
-    font-size: 1.6rem;
-    font-weight: 400;
-    color: #fff;
-    border-bottom: 1px solid #fff;
-    padding-bottom: 0.2rem;
-  }
-`;
-const Book = styled.div`
-  margin-top: 2.8rem;
-  display: flex;
-  flex-direction: row;
-  img {
-    width: 6rem;
-    height: 8.7rem;
-  }
-`;
-const Info = styled.div`
-  margin-left: 2rem;
-  //도서제목
-  h4 {
-    font-size: 1.6rem;
-    font-weight: 400;
-    color: #fff;
-  }
-  //저자
-  h6 {
-    margin: 0.6rem 0 4.1rem 0;
-    font-size: 1.2rem;
-    font-weight: 400;
-    color: #9aa0a6;
-  }
-  //차입자
-  p {
-    span {
-      display: inline-block;
-      margin-right: 0.8rem;
-      font-size: 1.2rem;
-      font-weight: 400;
-      color: #bdc1c6;
-    }
-    font-size: 1.2rem;
-    font-weight: 400;
-    color: #fff;
-  }
-`;
-const style = { Wrapper, Progress, BookBox, Book, Info, State, Price, GoPage };
+const style = { Wrapper, Progress, BookBox, Book, Info, Price, GoPage };
 
 export default style;

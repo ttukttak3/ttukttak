@@ -14,7 +14,15 @@ const ChatPage = () => {
   const { getChatList } = messageApi;
 
   const ChatListShow = chatList.map((item, idx) => (
-    <ChatListItem id={item.roomId} imgUrl={item?.another?.imageUrl} userName={item.another.nickname} time={item?.lastMessage?.sendedAt} lastChat={item?.lastMessage?.message} unread={item.unread} />
+    <ChatListItem
+      key={idx}
+      id={item.roomId}
+      imgUrl={item?.another?.imageUrl}
+      userName={item.another.nickname}
+      time={item?.lastMessage?.sendedAt}
+      lastChat={item?.lastMessage?.message}
+      unread={item.unread}
+    />
   ));
 
   useEffect(() => {

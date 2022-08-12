@@ -4,7 +4,7 @@ import style from './RentListItem.style';
 import noImg from '../../assets/img/logo/homeb_default.svg';
 import moreGray from '../../assets/img/userInterFace/more_gray.svg';
 import arrowRight from '../../assets/img/arrows/Keyboard_arrow_right.svg';
-import smallDown from '../../assets/img/arrows/small_down.svg';
+
 //차입과 대여에 reuse 할 아이템 하나
 const RentListItem = ({ mode, item, onClick }) => {
   const [comment, setComment] = useState('');
@@ -12,6 +12,8 @@ const RentListItem = ({ mode, item, onClick }) => {
   const { id, status, book, beginDate, endDate, returnDate } = item;
   const { author, subject, deposit } = book;
   const { RentListWrap, NoItem, RentIngBox, BookBox, BookInfo, BookPrice, ReturnBox, PaddingBox, BookingBox } = style;
+  // 콤마
+  const chgDeposit = deposit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
   useEffect(() => {
     if (mode === 'rent') {
@@ -29,7 +31,7 @@ const RentListItem = ({ mode, item, onClick }) => {
         setComment('');
       }
     }
-  }, [mode]);
+  }, [mode, status]);
 
   return (
     <>
@@ -56,7 +58,7 @@ const RentListItem = ({ mode, item, onClick }) => {
                     </div>
                     <div>
                       <p>보증금</p>
-                      <p>{deposit}원</p>
+                      <p>{chgDeposit}원</p>
                     </div>
                   </BookPrice>
                 </BookInfo>
@@ -71,7 +73,7 @@ const RentListItem = ({ mode, item, onClick }) => {
             <li>
               <PaddingBox>
                 <h2>
-                  {returnDate}· 반납 완료
+                  {returnDate.replaceAll('-', '.')} · 반납 완료
                   <img src={moreGray} alt="더보기" />
                 </h2>
                 <BookBox onClick={onClick}>
@@ -84,7 +86,7 @@ const RentListItem = ({ mode, item, onClick }) => {
                       <span>{author}</span>
                     </h3>
                     <img className="return" src={arrowRight} alt=">" onClick={onClick} />
-                    <h6>대여일자 {beginDate}</h6>
+                    <h6>대여일자 {beginDate.replaceAll('-', '.')}</h6>
                     <BookPrice>
                       <div>
                         <p>대여료</p>
@@ -92,7 +94,7 @@ const RentListItem = ({ mode, item, onClick }) => {
                       </div>
                       <div>
                         <p>보증금</p>
-                        <p>{deposit}원</p>
+                        <p>{chgDeposit}원</p>
                       </div>
                     </BookPrice>
                   </BookInfo>

@@ -5,7 +5,7 @@ import RentListItem from '../RentListItem';
 import style from './RentListPage.style';
 import api from '../../../util/RentApi';
 import errorImg from '../../../assets/img/logo/Error_outline.svg';
-
+//import smallDown from '../../assets/img/arrows/small_down.svg';
 import { useSelector, useDispatch } from 'react-redux';
 
 const RentListPage = () => {
