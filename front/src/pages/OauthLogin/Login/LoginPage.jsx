@@ -2,6 +2,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
 import { setBackHome, setTitle, setAllFalse } from '../../../app/headerSlice';
 import style from './LoginPage.style';
 import { ACCESS_TOKEN } from '../../../util/ApiUtil';
@@ -12,6 +13,7 @@ const LoginPage = () => {
   //Header
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const history = createBrowserHistory();
   useEffect(() => {
     //로그인 페이지 진입은 토큰의 문제가 있는 경우(만료 등)라 판단하여 토큰을 지우고 로그인하여 재 할당 받는다.
     localStorage.removeItem(ACCESS_TOKEN);
@@ -19,9 +21,17 @@ const LoginPage = () => {
     dispatch(setBackHome(true));
     dispatch(setTitle('로그인'));
     return () => {
-      // second;
+      history.listen(() => {
+        if (history.action === 'POP') {
+          if (localStorage.getItem('town')) {
+            navigate('/');
+          } else {
+            navigate('/location/1111011900');
+          }
+        }
+      });
     };
-  }, [dispatch]);
+  }, [dispatch, navigate, history]);
 
   const { naverUrl, kakaoUrl } = utils;
   const { SocialBox, TitleBox, NaverBtn, KaKaoBtn, Noti } = style;
@@ -42,9 +52,10 @@ const LoginPage = () => {
       </TitleBox>
       <NaverBtn href={naverUrl}>네이버 로그인</NaverBtn>
       <KaKaoBtn href={kakaoUrl}>카카오 로그인</KaKaoBtn>
-      <Noti>
+      <Noti>&nbsp;&nbsp;* 카카오 로그인 시, 카카오계정(이메일)을 필수로 체크해주세요.</Noti>
+      <Noti className="bottom">
         회원가입 시, 저희 서비스의 <button onClick={() => navigate('/account/setting/terms')}>이용약관</button>과&nbsp;
-        <button onClick={() => navigate('/account/setting/infomation')}>개인정보처리방침</button>에 동의한 것으로 간주합니다. 개인책방 서비스는 만 14세 이상 회원만 가입 가능합니다.
+        <button onClick={() => navigate('/account/setting/information')}>개인정보처리방침</button>에 동의한 것으로 간주합니다. 개인책방 서비스는 만 14세 이상 회원만 가입 가능합니다.
       </Noti>
     </SocialBox>
   );

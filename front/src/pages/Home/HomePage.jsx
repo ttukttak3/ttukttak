@@ -20,7 +20,7 @@ const HomePage = () => {
     if (!town) {
       //기본 값(세종로)물고 위치 설정 이동
       alert('위치 정보를 설정해주세요.');
-      navigate('/location/1111011900');
+      navigate('/location', { state: { id: 1111011900 } });
     }
     dispatch(setAllFalse());
     dispatch(setTitle(town.name));

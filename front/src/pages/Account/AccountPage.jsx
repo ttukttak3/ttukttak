@@ -97,7 +97,7 @@ const AccountPage = () => {
     <AccountBox>
       <UserInfo>
         <Top>
-          <img onError={onErrorImg} src={user.imageFile} alt="이미지" />
+          <img onError={onErrorImg} src={user.imageFile ? user.imageFile : ''} alt="이미지" />
           <CountingWrap>
             <Counting>
               <dt>빌려준 횟수</dt>

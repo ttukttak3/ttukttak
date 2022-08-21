@@ -73,7 +73,7 @@ const ProfilePage = () => {
   };
   //check
   const onCheckHandler = () => {
-    if (userInfo.nickName === '') {
+    if (!userInfo.nickName) {
       setError('닉네임 입력이 필요합니다.');
       return;
     }
@@ -93,7 +93,7 @@ const ProfilePage = () => {
     localStorage.setItem('backTownId', userInfo.townId);
     localStorage.setItem('backAddress', userInfo.longAddress);
     localStorage.setItem('backImgPreview', imgPreview);
-    navigate(`/location/${userInfo.townId}`);
+    navigate('/location', { state: { id: userInfo.townId } });
   };
 
   const submit = () => {
@@ -142,7 +142,7 @@ const ProfilePage = () => {
     <ProfileBox>
       <ImgBox>
         <input type="file" accept="image/*" ref={inputRef} onChange={saveImage} style={{ display: 'none' }} />
-        <img src={imgPreview === '' ? user.imageFile : imgPreview} onError={onErrorImg} alt="이미지" />
+        <img src={imgPreview ? user.imageFile : imgPreview} onError={onErrorImg} alt="이미지" />
         <ImgChangeBtn onClick={onChangeImg}></ImgChangeBtn>
       </ImgBox>
       <InfoBox>
