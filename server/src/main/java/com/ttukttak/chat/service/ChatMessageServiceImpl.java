@@ -51,9 +51,13 @@ public class ChatMessageServiceImpl implements ChatMessageService {
 		List<ChatMessage> chatMessages = chatMessageRepository.findAllByChatRoomIdOrderBySendedAtAsc(roomId);
 
 		// 마지막 읽은 메시지 갱신
-		if (chatMessages.size() > 0) {
-			ChatMessage lastChatMessage = chatMessages.get(chatMessages.size() - 1);
+		ChatMessage lastChatMessage = chatMessages.stream()
+			.filter(message ->
+				message.getMember().getId() != findChatMember.getId())
+			.findFirst()
+			.orElse(null);
 
+		if (lastChatMessage != null) {
 			findChatMember.setLastCheckedMessage(lastChatMessage);
 			chatMemberRepository.save(findChatMember);
 		}
