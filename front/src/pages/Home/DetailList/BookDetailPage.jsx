@@ -97,8 +97,6 @@ const BookDetailPage = () => {
     dispatch(setBack(true));
     // dispatch(setFavorite(true));
     // dispatch(setShare(true));
-
-    return () => {};
   }, [dispatch, getDetailView, bookId]);
 
   // 콤마
@@ -252,7 +250,7 @@ const BookDetailPage = () => {
               </div>
             </BookPrice>
           </LeftBox>
-          <button onClick={() => chattingHandler()}>채팅하기</button>
+          {userId === owner.id ? <button onClick={() => navigate(`/chat`)}>채팅 목록</button> : <button onClick={() => chattingHandler()}>채팅하기</button>}
         </FooterBox>
       </BookFooter>
       {/* popup */}
