@@ -154,7 +154,7 @@ const Header = () => {
           )}
           {locationBox && (
             <LocationBox>
-              <input id="searchInput" placeholder={placeholder} onChange={handleChangeInputText} />
+              <input type="search" id="searchInput" placeholder={placeholder} onChange={handleChangeInputText} />
               <button id="clearBtn" className={visible ? 'active' : 'hide'} onClick={handleClickClearBtn}>
                 <img src={clearGray} alt={'초기화버튼'} />
               </button>
