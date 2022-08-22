@@ -95,6 +95,11 @@ const RentedDetail = () => {
       console.log(returnData);
     }
   };
+  const dateFormatter = date => {
+    //08-05
+    const list = date.split('-');
+    return String(Number(list[0])) + '월 ' + String(Number(list[1])) + '일';
+  };
 
   const { Wrapper, Title, Progress, BookBox, Book, Info, State, Price, GoPage } = style;
   return (
@@ -108,6 +113,15 @@ const RentedDetail = () => {
             </div>
             <Progress>
               <progress id="progress" value="50" min="0" max="100"></progress>
+              <date>{dateFormatter(info.beginDate.substring(5))}</date>
+              <start>대여시작</start>
+              {/* 일정한 간격으로 벌어지게는 어떻게 해야할까요,,  */}
+              {info.extendList.map(extend => (
+                <>
+                  <date>{dateFormatter(info.beginDate.substring(5))}</date>
+                  <start>대여시작</start>
+                </>
+              ))}
             </Progress>
           </Title>
           <State>

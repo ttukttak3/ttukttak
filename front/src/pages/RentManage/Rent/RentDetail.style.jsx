@@ -6,7 +6,7 @@ const Wrapper = styled.div`
   margin: 0 auto;
 `;
 
-const Progress = styled.div`
+const Title = styled.div`
   div {
     text-align: left;
     width: 34rem;
@@ -32,6 +32,41 @@ const Progress = styled.div`
     }
   }
 `;
+
+const Progress = styled.div`
+  position: relative;
+  progress {
+    appearance: none;
+    width: 100%;
+    margin: 0.8rem 0;
+  }
+
+  date {
+    position: absolute;
+    left: 1.5rem;
+    top: 0.5rem;
+    font-size: 1.4rem;
+    color: ${({ theme }) => theme.colors.$white3};
+  }
+
+  start {
+    position: absolute;
+    left: 1.5rem;
+    bottom: 0.5rem;
+    font-size: 1.4rem;
+    color: ${({ theme }) => theme.colors.$white1};
+  }
+
+  progress::-webkit-progress-bar {
+    border-radius: 10px;
+    background: ${({ theme }) => theme.colors.$white4};
+  }
+  progress::-webkit-progress-value {
+    border-radius: 10px;
+    background: ${({ theme }) => theme.colors.$primaryBlueP};
+  }
+`;
+
 const State = styled.div`
   width: 34rem;
   margin: 0 auto;
@@ -66,6 +101,7 @@ const State = styled.div`
     }
   }
 `;
+
 const Price = styled.div`
   width: 34rem;
   margin: 2rem auto;
@@ -180,6 +216,6 @@ const Info = styled.div`
     color: #fff;
   }
 `;
-const style = { Wrapper, Progress, BookBox, Book, Info, State, Price, GoPage };
+const style = { Title, Wrapper, Progress, BookBox, Book, Info, State, Price, GoPage };
 
 export default style;
