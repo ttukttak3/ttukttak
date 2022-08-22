@@ -64,7 +64,7 @@ const SignUpPage = () => {
   const { nickNameCheck, signUp } = profileUtils;
   const { getLocation } = locationUtils;
   const onCheckHandler = () => {
-    if (user.nickName === '') {
+    if (!user.nickName) {
       setError('닉네임 입력이 필요합니다.');
       return;
     }
@@ -118,7 +118,7 @@ const SignUpPage = () => {
     <SignUpBox>
       <ImgBox>
         <input type="file" accept="image/*" ref={inputRef} onChange={saveImage} style={{ display: 'none' }} />
-        <img src={imgPreview === '' ? user.imageFile : imgPreview} onError={onErrorImg} alt="이미지" />
+        <img src={imgPreview ? user.imageFile : imgPreview} onError={onErrorImg} alt="이미지" />
         <ImgChangeBtn onClick={onChangeImg}></ImgChangeBtn>
       </ImgBox>
       <InfoBox>

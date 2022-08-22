@@ -2,7 +2,7 @@
 /* eslint-disable max-lines-per-function */
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { setBack, setAllFalse, setLocationBox, setPlaceholder } from '../../app/headerSlice';
 import style from './LocationPage.style';
 import locationUtils from '../../util/LocationApi';
@@ -15,7 +15,8 @@ const LocationPage = () => {
   const [isAction, setIsAction] = useState(false);
   const [searchTownList, setSearchTownList] = useState([]);
   //layout param
-  const { townId } = useParams();
+  const location = useLocation();
+  const townId = location.state.id;
 
   //---------------header START---------------
   useEffect(() => {

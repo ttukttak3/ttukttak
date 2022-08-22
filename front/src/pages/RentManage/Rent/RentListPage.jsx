@@ -58,7 +58,7 @@ const RentListPage = () => {
       {rentListShow?.length === 0 ? (
         <NoItem>
           <img src={errorImg} alt="느낌표" />
-          아직 대여해준 도서가 없어요
+          아직 빌려 본 도서가 없어요
         </NoItem>
       ) : (
         rentListShow.map(item => <RentListItem mode={'rent'} item={item} key={item.id} onClick={() => navigate(`/rent/${item.id}`)}></RentListItem>)

@@ -12,13 +12,12 @@ const SocialBox = styled.div`
 `;
 const TitleBox = styled.div`
   width: 25rem;
-  margin: 0 auto 11.9rem auto;
+  margin: 0 auto 10.3rem auto;
   position: relative;
   img {
     max-width: 25rem;
     width: 100%;
     height: auto;
-    filter: blur(0px);
   }
   p {
     width: 21rem;
@@ -52,15 +51,21 @@ const NaverBtn = styled(SocialBtn)`
 const KaKaoBtn = styled(SocialBtn)`
   background: ${({ theme }) => theme.colors.$KaKao} url(${kakaoLogo}) 1.8rem 1.5rem no-repeat;
   color: ${({ theme }) => theme.colors.$black5};
-  margin-bottom: 3.2rem;
+  margin-bottom: 1.4rem;
 `;
 
 const Noti = styled.p`
+  margin-bottom: 10.7rem;
+  width: 34rem;
   font-size: 1.2rem;
   line-height: 1.8rem;
   text-align: left;
   color: #9aa0a6;
-  margin-bottom: 5rem;
+  &.bottom {
+    margin-bottom: 0;
+    position: absolute;
+    bottom: 2rem;
+  }
   button {
     font-size: 1.2rem;
     text-decoration: underline;

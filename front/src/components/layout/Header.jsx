@@ -141,7 +141,7 @@ const Header = () => {
             </BackBtn>
           )}
           {location === true ? (
-            <Title className="titleLocation" onClick={() => navigate(`/location/${JSON.parse(localStorage.getItem('town')).id}`)}>
+            <Title className="titleLocation" onClick={() => navigate('/location', { state: { id: JSON.parse(localStorage.getItem('town')).id } })}>
               {title}
             </Title>
           ) : (
@@ -149,7 +149,7 @@ const Header = () => {
           )}
           {location && (
             <DownBtn>
-              <img src={expandMore} alt={'위치목록'} onClick={() => navigate(`/location/${JSON.parse(localStorage.getItem('town')).id}`)} />
+              <img src={expandMore} alt={'위치목록'} onClick={() => navigate('/location', { state: { id: JSON.parse(localStorage.getItem('town')).id } })} />
             </DownBtn>
           )}
           {locationBox && (

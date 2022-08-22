@@ -119,7 +119,10 @@ const Location = styled.div`
 `;
 
 const SubmitBtn = styled.button`
-  margin: 5.2rem auto 3rem auto;
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  margin-left: -17rem;
   width: 34rem;
   height: 5rem;
   line-height: 5rem;

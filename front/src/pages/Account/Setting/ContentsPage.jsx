@@ -6,21 +6,23 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { setBack, setAllFalse, setTitle } from '../../../app/headerSlice';
 import style from './SettingPage.style';
 import NoticePage from './NoticePage';
+import { useState } from 'react';
 
 const ContentsPage = () => {
   const { contents } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const title = contents === 'faq' ? 'FAQ' : contents === 'notice' ? '공지사항' : contents === 'terms' ? '서비스 이용약관' : '개인 정보 처리 방침';
+  const [navTitle, setNavTitle] = useState('');
 
   useEffect(() => {
+    setNavTitle(contents === 'faq' ? 'FAQ' : contents === 'notice' ? '공지사항' : contents === 'terms' ? '서비스 이용약관' : contents === 'information' ? '개인 정보 처리 방침' : '');
     dispatch(setAllFalse());
     dispatch(setBack(true));
-    dispatch(setTitle(title));
+    dispatch(setTitle(navTitle));
     //로그인 back history
     //localStorage.setItem('url', `/account/setting/${contents}`);
     return () => {};
-  }, [dispatch]);
+  }, [dispatch, contents, navTitle]);
 
   const handleAccordionFAQ = e => {
     if (e.target.classList.contains('active')) {
@@ -70,7 +72,7 @@ const ContentsPage = () => {
             2개의 계정을 생성하는 경우, 2개의 계정은 연동되지 않습니다. 그러므로 각각의 계정은 동일인이 아닌 타인으로 인지합니다.
           </p>
           <p>
-            개인정보는 네이버와 카카오로부터 수급받습니다. 자세한 사항은 <span onClick={() => navigate('/account/setting/infomation')}>개인정보 처리방침</span>을 통해 확인하실 수 있습니다.
+            개인정보는 네이버와 카카오로부터 수급받습니다. 자세한 사항은 <span onClick={() => navigate('/account/setting/information')}>개인정보 처리방침</span>을 통해 확인하실 수 있습니다.
           </p>
           <p>제재원칙 또는 법률 위반 등의 정당한 사유로 관리자가 계정을 삭제할 수 있습니다. 계정 삭제 시에는 이메일을 통해 고지 후 진행합니다.</p>
           <h2>제재원칙</h2>

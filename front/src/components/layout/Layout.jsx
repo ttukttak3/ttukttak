@@ -32,7 +32,7 @@ const Layout = () => {
   const [marginState, setMarginState] = useState('margin');
 
   useEffect(() => {
-    if (navi.pathname === '/detailBook') {
+    if (navi.pathname === '/login' || navi.pathname === '/signup' || navi.pathname === '/detailBook') {
       setMarginState('marginT');
     } else if (navi.pathname === '/rent') {
       setMarginState('marginB');
@@ -50,7 +50,7 @@ const Layout = () => {
           <Route path="detailBook" element={<BookDetailPage />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="oauth2/redirect" element={<Auth />} />
-          <Route path="location/:townId" element={<LocationPage />} />
+          <Route path="location" element={<LocationPage />} />
           {/* 가입하기 전 상태임으로 AuthCheckRouter 체크 제외 */}
           <Route path="signup" element={<SignUpPage />} />
           <Route path="account/setting/:contents" element={<ContentsPage />} />

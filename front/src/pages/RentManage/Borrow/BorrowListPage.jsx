@@ -56,7 +56,7 @@ const BorrowListPage = () => {
       {borrowListShow?.length === 0 ? (
         <NoItem>
           <img src={errorImg} alt="느낌표" />
-          아직 대여해준 도서가 없어요
+          아직 빌려준 도서가 없어요
         </NoItem>
       ) : (
         borrowListShow.map(item => <RentListItem mode={'borrow'} item={item} key={item.id} onClick={() => navigate(`/borrow/${item.id}`)}></RentListItem>)

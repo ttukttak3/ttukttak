@@ -91,7 +91,7 @@ const SettingPage = () => {
       <h2>이용약관</h2>
       <ul>
         <li onClick={() => navigate('/account/setting/terms')}>서비스 이용약관</li>
-        <li onClick={() => navigate('/account/setting/infomation')}>고객 정보 처리 방침</li>
+        <li onClick={() => navigate('/account/setting/information')}>고객 정보 처리 방침</li>
       </ul>
       <h2>계정 설정</h2>
       <ul>

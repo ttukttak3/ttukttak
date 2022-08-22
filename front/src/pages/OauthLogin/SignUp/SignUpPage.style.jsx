@@ -79,7 +79,10 @@ const Email = styled.div`
 `;
 
 const SubmitBtn = styled.button`
-  margin: 19.1rem auto 0 auto;
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  margin-left: -17rem;
   width: 34rem;
   height: 5rem;
   line-height: 5rem;
