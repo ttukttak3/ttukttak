@@ -144,7 +144,7 @@ const SelectedBookInfo = ({ item, categoryList }) => {
         </VerticalScrollWrapper>
       </ImageContainer>
       <Text>{name}</Text>
-      <Text>{author}</Text>
+      {author.length > 0 && <Text>{author}</Text>}
       <Text>
         도서 정가<dt>₩{price}</dt>
       </Text>
