@@ -1,7 +1,7 @@
 /* eslint-disable max-lines-per-function */
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { setAllFalse, setBack, setBackX, setTitle, setMore } from '../../../app/headerSlice';
 import api from '../../../util/RentApi';
 import style from './BorrowDetail.style';
@@ -11,6 +11,7 @@ const BorrowDetail = () => {
   const { Wrapper, Progress, BookBox, Book, Info, Price, GoPage } = style;
   const dispatch = useDispatch();
   const { rentId } = useParams();
+  const navigate = useNavigate();
   const { getRentDetail } = api;
   const [info, setInfo] = useState({});
   const [book, setBook] = useState({});
@@ -93,9 +94,9 @@ const BorrowDetail = () => {
       </Price>
       <GoPage>
         <ul>
-          <li>도서 포스트 바로가기</li>
+          <li onClick={() => navigate(`/detailBook`, { replace: true, state: { id: info.book.id } })}>도서 포스트 바로가기</li>
           <li>대여자와의 채팅</li>
-          <li>대여자 프로필</li>
+          <li onClick={() => navigate('/userAccount', { state: { id: info.owner.id } })}>대여자 프로필</li>
         </ul>
       </GoPage>
     </Wrapper>
