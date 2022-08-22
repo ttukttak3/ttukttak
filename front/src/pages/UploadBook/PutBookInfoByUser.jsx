@@ -11,7 +11,7 @@ import ConfirmPopup from '../../components/Modal/ConfirmPopup';
 import SelectPopupBottom from '../../components/Modal/SelectPopupBottom';
 
 const PutBookInfoByUser = ({ categoryList }) => {
-  const { Wrapper, UploadImg, ImageContainer, InputText, UplodedImg, OptionText, ImgBox, SaveButton, CountImg, VerticalScrollWrapper } = style;
+  const { Wrapper, UploadImg, ImageContainer, InputText, UplodedImg, OptionText, ImgBox, SaveButton, CountImg, VerticalScrollWrapper, TextArea } = style;
   const [modalTitle, setModalTitle] = useState('');
   const [contentList, setContentList] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -30,6 +30,7 @@ const PutBookInfoByUser = ({ categoryList }) => {
   const [confirmTitle, setConfirmTitle] = useState('');
   const [isConfirm, setIsConfirm] = useState(false);
   const [confirmBtns, setConfirmBtns] = useState();
+  const [textCount, setTextCount] = useState(review.length);
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -129,6 +130,11 @@ const PutBookInfoByUser = ({ categoryList }) => {
     }
   };
 
+  const reviewHandler = review => {
+    setReview(review);
+    setTextCount(review.length);
+  };
+
   return (
     <Wrapper>
       <ImageContainer>
@@ -156,7 +162,10 @@ const PutBookInfoByUser = ({ categoryList }) => {
         <img src={expand_more} alt={'책 상태 등급 선택'}></img>
       </OptionText>
       <InputText placeholder="보증금" value={deposit} onChange={e => setDeposit(e.target.value)}></InputText>
-      <InputText placeholder="책에 대한 설명이나 느낀점을 소개해주세요." value={review} onChange={e => setReview(e.target.value)}></InputText>
+      <TextArea>
+        <textarea placeholder="책에 대한 설명이나 느낀점을 소개해주세요." value={review} onChange={e => reviewHandler(e.target.value)}></textarea>
+        <span>{textCount}/500</span>
+      </TextArea>
       {showModal && <SelectPopupBottom title={modalTitle} contents={contentList} />}
       <SaveButton onClick={() => onSaveHandler()}>완료</SaveButton>
       {isConfirm && <ConfirmPopup title={confirmTitle} contents={confirmBtns} />}
