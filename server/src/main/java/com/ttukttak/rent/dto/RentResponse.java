@@ -14,6 +14,7 @@ import lombok.Data;
 @Data
 public class RentResponse {
 	private Long id;
+	private Long roomId;
 	private UserDto owner;
 	private UserDto lender;
 	private BookDto book;
@@ -30,6 +31,7 @@ public class RentResponse {
 
 		return RentResponse.builder()
 			.id(rent.getId())
+			.roomId(rent.getRoom().getId())
 			.owner(UserDto.from(rent.getOwner()))
 			.lender(UserDto.from(rent.getLender()))
 			.book(BookDto.from(rent.getBook()))
@@ -42,9 +44,10 @@ public class RentResponse {
 	}
 
 	@Builder
-	public RentResponse(Long id, UserDto owner, UserDto lender, BookDto book, LocalDate beginDate,
+	public RentResponse(Long id, Long roomId, UserDto owner, UserDto lender, BookDto book, LocalDate beginDate,
 		LocalDate endDate, LocalDate returnDate, List<ExtendResponse> extendList, Rent.RentStatus status) {
 		this.id = id;
+		this.roomId = roomId;
 		this.owner = owner;
 		this.lender = lender;
 		this.book = book;
