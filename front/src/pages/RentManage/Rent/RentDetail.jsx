@@ -1,7 +1,8 @@
 /* eslint-disable max-lines-per-function */
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams, useNavigate } from 'react-router-dom';
+import messageApi from '../../../util/MessageApi';
 import { setAllFalse, setBack, setBackX, setTitle, setMore } from '../../../app/headerSlice';
 import SelectPopupBottom from '../../../components/Modal/SelectPopupBottom';
 import downBtn from '../../../assets/img/arrows/white_down.svg';
@@ -11,6 +12,9 @@ import api from '../../../util/RentApi';
 const RentedDetail = () => {
   const dispatch = useDispatch();
   const { rentId } = useParams();
+  const { makeChatRoom } = messageApi;
+  const navigate = useNavigate();
+  const userId = useSelector(state => state.user.userId);
   const { getRentDetail, returnRent, extendRent } = api;
   const [info, setInfo] = useState({});
   const [showModal, setShowModal] = useState(false);
@@ -78,25 +82,48 @@ const RentedDetail = () => {
     setShowModal(true);
   };
 
+  const chatWithUser = async () => {
+    console.log(info.book?.id, userId);
+    const result = await makeChatRoom(info.book?.id, userId);
+    console.log(result);
+    navigate(`/chat/${result.roomId}`);
+  };
+
   const extendRentResult = async times => {
     if ((firstExtend === '' && times === 1) || (secondExtend === '' && times === 2)) {
       const returnData = await extendRent(rentId);
       console.log(returnData);
     }
   };
+  const dateFormatter = date => {
+    //08-05
+    const list = date.split('-');
+    return String(Number(list[0])) + '월 ' + String(Number(list[1])) + '일';
+  };
 
-  const { Wrapper, Progress, BookBox, Book, Info, State, Price, GoPage } = style;
+  const { Wrapper, Title, Progress, BookBox, Book, Info, State, Price, GoPage } = style;
   return (
     <Wrapper>
       {info.status === 'RENTED' ? (
         <>
-          <Progress>
+          <Title>
             <div>
               <h2>대여가 진행중이에요</h2>
               <p>대여자님이 원하는 책 한 권의 우연한 만남으로 이웃과 시작한 소통을 나눠보세요.</p>
             </div>
-            <div>progress bar 구현 예정</div>
-          </Progress>
+            <Progress>
+              <progress id="progress" value="50" min="0" max="100"></progress>
+              <date>{dateFormatter(info.beginDate.substring(5))}</date>
+              <start>대여시작</start>
+              {/* 일정한 간격으로 벌어지게는 어떻게 해야할까요,,  */}
+              {info.extendList.map(extend => (
+                <>
+                  <date>{dateFormatter(info.beginDate.substring(5))}</date>
+                  <start>대여시작</start>
+                </>
+              ))}
+            </Progress>
+          </Title>
           <State>
             <h3>
               대여 상태 변경하기 <button onClick={() => choseRentState()}>대여 중</button>
@@ -147,9 +174,9 @@ const RentedDetail = () => {
       </Price>
       <GoPage>
         <ul>
-          <li>도서 포스트 바로가기</li>
+          <li onClick={() => navigate(`/detailBook`, { replace: true, state: { id: info.book.id } })}>도서 포스트 바로가기</li>
           <li>차입자와의 채팅</li>
-          <li>차입자 프로필</li>
+          <li onClick={() => navigate('/userAccount', { state: { id: info.owner.id } })}>차입자 프로필</li>
         </ul>
       </GoPage>
     </Wrapper>

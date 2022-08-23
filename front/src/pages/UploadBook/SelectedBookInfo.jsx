@@ -11,7 +11,7 @@ const SelectedBookInfo = ({ item, categoryList }) => {
   const inputRef = useRef(null);
   const navigate = useNavigate();
   const { uploadBook } = bookApi;
-  const { Wrapper, UploadImg, ImageContainer, Text, InputText, UplodedImg, OptionText, ImgBox, SaveButton, CountImg, VerticalScrollWrapper } = style;
+  const { Wrapper, UploadImg, ImageContainer, Text, InputText, UplodedImg, OptionText, ImgBox, SaveButton, CountImg, VerticalScrollWrapper, TextArea } = style;
   const { author, description, image, isbn, name, price, publishedDate, publisher } = item;
 
   const [currentCategory, setCurrentCategory] = useState('');
@@ -27,6 +27,8 @@ const SelectedBookInfo = ({ item, categoryList }) => {
   const [confirmBtns, setConfirmBtns] = useState();
   const [isConfirm, setIsConfirm] = useState(false);
   const [imgFiles, setImgFiles] = useState([]);
+  const [textCount, setTextCount] = useState(description ? review.length : 0);
+
   const onChangeImg = e => {
     e.preventDefault();
     inputRef.current.click();
@@ -126,6 +128,11 @@ const SelectedBookInfo = ({ item, categoryList }) => {
     setShowModal(true);
   };
 
+  const reviewHandler = review => {
+    setReview(review);
+    setTextCount(review.length);
+  };
+
   return (
     <Wrapper>
       <ImageContainer>
@@ -144,7 +151,7 @@ const SelectedBookInfo = ({ item, categoryList }) => {
         </VerticalScrollWrapper>
       </ImageContainer>
       <Text>{name}</Text>
-      <Text>{author}</Text>
+      {author.length > 0 && <Text>{author}</Text>}
       <Text>
         도서 정가<dt>₩{price}</dt>
       </Text>
@@ -157,7 +164,10 @@ const SelectedBookInfo = ({ item, categoryList }) => {
         <img src={expand_more} alt={'책 상태 등급 선택'}></img>
       </OptionText>
       <InputText placeholder="보증금" value={deposit} onChange={e => setDeposit(e.target.value)}></InputText>
-      <InputText placeholder="책에 대한 설명이나 느낀점을 소개해주세요." value={review} onChange={e => setReview(e.target.value)}></InputText>
+      <TextArea>
+        <textarea placeholder="책에 대한 설명이나 느낀점을 소개해주세요." value={review} onChange={e => reviewHandler(e.target.value)}></textarea>
+        <span>{textCount}/500</span>
+      </TextArea>
       {showModal && <SelectPopupBottom title={modalTitle} contents={contentList} />}
       <SaveButton onClick={() => onSaveHandler()}>완료</SaveButton>
       {isConfirm && <ConfirmPopup title={confirmTitle} contents={confirmBtns} />}

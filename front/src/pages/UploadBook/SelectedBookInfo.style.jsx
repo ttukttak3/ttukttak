@@ -99,6 +99,28 @@ const VerticalScrollWrapper = styled.div`
     display: none;
   }
 `;
-const style = { Wrapper, UploadImg, UplodedImg, ImageContainer, InputText, Text, OptionText, ImgBox, SaveButton, CountImg, VerticalScrollWrapper };
+
+const TextArea = styled.div`
+  textarea {
+    margin-top: 2rem;
+    resize: none;
+    width: 34rem;
+    height: 9rem;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: ${({ theme }) => theme.colors.$white1};
+    background-color: ${({ theme }) => theme.colors.$black3};
+  }
+  span {
+    display: block;
+    height: 1.2rem;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: ${({ theme }) => theme.colors.$white3};
+    text-align: right;
+    margin: 0.8rem 0 1.7rem 0;
+  }
+`;
+const style = { Wrapper, UploadImg, UplodedImg, ImageContainer, InputText, Text, OptionText, ImgBox, SaveButton, CountImg, VerticalScrollWrapper, TextArea };
 
 export default style;
