@@ -2,7 +2,7 @@
 /* eslint-disable max-lines-per-function */
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { setTitle, setBack, setAlert, setAllFalse } from '../../../app/headerSlice';
 import ChatBookInfo from './ChatBookInfo';
 import ChatFooter from './ChatFooter';
@@ -13,7 +13,8 @@ import style from './ChatItemPage.style';
 import { useSelector } from 'react-redux';
 
 const ChatItemPage = () => {
-  const { roomId } = useParams();
+  const location = useLocation();
+  const roomId = location.state.id;
   const { Wrapper, MessageBox, DateMessage } = style;
   const dispatch = useDispatch();
   const { userId } = useSelector(state => state.user);
@@ -64,28 +65,35 @@ const ChatItemPage = () => {
     if (members.length > 0) {
       const myMember = members.filter(item => userId === item.user.id)[0];
       const otherMember = members.filter(item => userId !== item.user.id)[0];
-      dispatch(setTitle(otherMember.user.nickname));
+      dispatch(setTitle(otherMember.user.nickname === null ? '탈퇴한 회원' : otherMember.user.nickname));
       setOtherMemberInfo(otherMember);
       setMyMemberInfo(myMember);
     }
   }, [members]);
 
+  //메시지 스크롤 바텀으로 보내기
+  const scrollToBottom = () => {
+    document.body.scrollIntoView({ behavior: 'smooth', block: 'end' });
+  };
+
+  useEffect(scrollToBottom, [chatMessages]);
+
   return (
     <Wrapper>
       {Object.keys(book).length > 0 && otherMemberInfo?.user?.id && <ChatBookInfo book={book} lenderId={otherMemberInfo?.user?.id} roomId={roomId}></ChatBookInfo>}
-      <MessageBox>
+      <MessageBox className={Object.keys(book).length > 0 && otherMemberInfo?.user?.id ? '' : 'hide'}>
         {chatMessages.map((item, idx) => {
-          //대화 첫 시작시 이것만 찍혀서 변경해야함.
-          // if (item.sendedAt.substring(0, 10) !== date) {
-          //   date = item.sendedAt.substring(0, 10);
-          //   return <DateMessage>{new Date(item.sendedAt).toLocaleDateString('ko-kr', { month: 'long', day: 'numeric' })}</DateMessage>;
-          // }
-
-          if (myMemberInfo.memberId === item.memberId) {
-            return <ChatMessage side={'right'} item={item}></ChatMessage>;
-          } else {
-            return <ChatMessage side={'left'} item={item}></ChatMessage>;
+          let dateMessage = '';
+          if (item.sendedAt.substring(0, 10) !== date) {
+            date = item.sendedAt.substring(0, 10);
+            dateMessage = new Date(item.sendedAt).toLocaleDateString('ko-kr', { month: 'long', day: 'numeric' });
           }
+          return (
+            <div key={idx} className="messageBox">
+              <DateMessage className={dateMessage ? '' : 'hide'}>{dateMessage}</DateMessage>
+              <ChatMessage item={item} side={item.memberId === myMemberInfo.memberId ? 'another' : ''}></ChatMessage>
+            </div>
+          );
         })}
       </MessageBox>
       <ChatFooter roomId={roomId} message={message} memberId={myMemberInfo.memberId} client={client} setMessage={setMessage}></ChatFooter>

@@ -2,11 +2,14 @@ import styled from 'styled-components';
 
 const Wrapper = styled.div`
   display: flex;
+  position: fixed;
+  width: 34rem;
+  top: 6.4rem;
   list-style: none;
-  width: 100%;
   height: 9.2rem;
   border-top: 1px solid ${({ theme }) => theme.colors.$black3Line};
   border-bottom: 1px solid ${({ theme }) => theme.colors.$black3Line};
+  background: ${({ theme }) => theme.colors.$black3};
 `;
 
 const BookImg = styled.div`

@@ -12,12 +12,13 @@ const ChatListItem = ({ id, imgUrl, userName, time, lastChat, unread }) => {
   const onErrorImg = e => {
     e.target.src = noImg;
   };
+
   return (
-    <Wrapper key={id} onClick={() => navigate(`/chat/${id}`)}>
-      <Img src={imgUrl} onError={onErrorImg} />
+    <Wrapper key={id} onClick={() => navigate(`/chat/room`, { state: { id: id } })}>
+      <Img src={imgUrl === null ? '' : imgUrl} onError={onErrorImg} />
       <InfoWrapper>
         <UserName>
-          <p>{userName}</p>
+          <p className={userName === null ? 'unknown' : ''}>{userName === null ? '(탈퇴한 회원)' : userName}</p>
           <span>{d.toLocaleTimeString('ko-kr', { hour: '2-digit', minute: '2-digit' })}</span>
         </UserName>
         <LastChat>

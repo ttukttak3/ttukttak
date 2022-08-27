@@ -5,4 +5,15 @@ const Wrapper = styled.ul`
   margin: 0 auto;
 `;
 
-export default Wrapper;
+const NoItem = styled.p`
+  height: 40rem;
+  line-height: 40rem;
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: ${({ theme }) => theme.colors.$white3};
+`;
+
+const style = { NoItem, Wrapper };
+
+export default style;

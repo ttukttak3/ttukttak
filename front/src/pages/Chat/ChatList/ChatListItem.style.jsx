@@ -31,6 +31,10 @@ const UserName = styled.div`
     color: ${({ theme }) => theme.colors.$white1};
     font-size: 1.6rem;
     font-weight: 400;
+
+    &.unknown {
+      color: ${({ theme }) => theme.colors.$white2};
+    }
   }
   span {
     margin-left: auto;

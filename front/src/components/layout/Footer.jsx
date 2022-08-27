@@ -28,6 +28,7 @@ const Footer = () => {
         pathname === '/signup' ||
         pathname === '/update' ||
         pathname === '/location' ||
+        pathname === '/chat/room' ||
         pathname === '/rent/detail' ||
         pathname === '/rent/state' ||
         pathname === '/userAccount' ||

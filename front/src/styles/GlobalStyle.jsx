@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
+
 //reset.css 내용 추가
 const GlobalStyle = createGlobalStyle`
     * {
@@ -79,18 +80,38 @@ const GlobalStyle = createGlobalStyle`
         vertical-align:middle;
         border: none;
     }
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active {
+	 transition: background-color 5000s ease-in-out 0s;
+	 -webkit-transition: background-color 9999s ease-out;
+     -webkit-text-fill-color: #fff !important;
+   }
     input:focus::-webkit-input-placeholder,
     input:focus::-moz-input-placeholder,
     textarea:focus::-webkit-input-placeholder,
     textarea:focus::-webkit-moz-placeholder { 
         color:#bbb !important;
+        background:none;
     }
     input[type="number"]::-webkit-outer-spin-button,
     input[type="number"]::-webkit-inner-spin-button {
         -webkit-appearance: none;
         margin: 0;
     }
-
+    input::-ms-clear,
+    input::-ms-reveal{
+        display:none;
+        width:0;
+        height:0;
+    }
+    input::-webkit-search-decoration,
+    input::-webkit-search-cancel-button,
+    input::-webkit-search-results-button,
+    input::-webkit-search-results-decoration{
+        display:none;
+    }
 `;
 
 export default GlobalStyle;

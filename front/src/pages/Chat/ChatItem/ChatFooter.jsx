@@ -5,7 +5,7 @@ import add from '../../../assets/img/arrows/Add.png';
 import chatSocketApi from '../../../util/ChatSocketApi';
 
 const ChatFooter = ({ roomId, memberId, message, client, setMessage }) => {
-  const { Input, Wrapper, AddBtn, SendBtn } = style;
+  const { Wrapper, AddBtn, SendBtn } = style;
   const { publish } = chatSocketApi;
 
   const sendMessageHandler = () => {
@@ -15,17 +15,21 @@ const ChatFooter = ({ roomId, memberId, message, client, setMessage }) => {
     }
   };
 
-  const handleKeyPress = e => {
-    if (e.key === 'Enter') {
-      sendMessageHandler();
+  const handleKeyUp = e => {
+    if (e.keyCode === 13) {
+      if (!e.shiftKey) {
+        sendMessageHandler();
+      }
     }
   };
 
   return (
     <Wrapper>
       <AddBtn src={add}></AddBtn>
-      <Input type={'text'} placeholder={'메시지를 입력해 주세요.'} value={message} onChange={e => setMessage(e.target.value)} onKeyPress={e => handleKeyPress(e)}></Input>
-      <SendBtn src={send} onClick={() => sendMessageHandler()}></SendBtn>
+      <textarea placeholder={'메시지를 입력해 주세요.'} onChange={e => setMessage(e.target.value)} onKeyUp={handleKeyUp} value={message} />
+      <SendBtn onClick={() => sendMessageHandler()}>
+        <img src={send} alt="이미지" />
+      </SendBtn>
     </Wrapper>
   );
 };

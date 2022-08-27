@@ -8,7 +8,7 @@ import 'swiper/css/pagination';
 import './slide.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { setAllFalse, setBack, setFavorite, setShare, setMore, setMoreBookId } from '../../../app/headerSlice';
+import { setAllFalse, setBackHome, setFavorite, setShare, setMore, setMoreBookId } from '../../../app/headerSlice';
 import bookApi from '../../../util/BookApi';
 import messageApi from '../../../util/MessageApi';
 import style from './BookDetailPage.style';
@@ -94,7 +94,7 @@ const BookDetailPage = () => {
       }
     });
     dispatch(setAllFalse());
-    dispatch(setBack(true));
+    dispatch(setBackHome(true));
     // dispatch(setFavorite(true));
     // dispatch(setShare(true));
   }, [dispatch, getDetailView, bookId]);
@@ -171,7 +171,7 @@ const BookDetailPage = () => {
 
   const chattingHandler = async () => {
     const result = await makeChatRoom(bookId, userId);
-    navigate(`/chat/${result.roomId}`);
+    navigate(`/chat/room`, { state: { id: result.roomId } });
   };
   const { Wrap, BookWrap, BookInfo, TitleBox, BookSlideBox, BookCont, BookState, BookFooter, FooterBox, LeftBox, BookPrice } = style;
   return (

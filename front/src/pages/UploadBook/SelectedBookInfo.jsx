@@ -1,11 +1,12 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable max-lines-per-function */
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import style from './SelectedBookInfo.style';
 import camera from '../../assets/img/userInterFace/local_see.svg';
-import expand_more from '../../assets/img/arrows/expand_more.svg';
 import ConfirmPopup from '../../components/Modal/ConfirmPopup';
 import SelectPopupBottom from '../../components/Modal/SelectPopupBottom';
+import noImg from '../../assets/img/logo/postb_default.svg';
 import bookApi from '../../util/BookApi';
 const SelectedBookInfo = ({ item, categoryList }) => {
   const inputRef = useRef(null);
@@ -132,9 +133,29 @@ const SelectedBookInfo = ({ item, categoryList }) => {
     setReview(review);
     setTextCount(review.length);
   };
+  // 콤마
+  const chgDeposit = item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+  //close popup
+  const modalEl = useRef(null);
+  const handleClickOutside = ({ target }) => {
+    if (showModal && !modalEl.current.contains(target)) setShowModal(false);
+    if (isConfirm && !modalEl.current.contains(target)) setShowModal(false);
+  };
+
+  useEffect(() => {
+    window.addEventListener('click', handleClickOutside);
+    return () => {
+      window.removeEventListener('click', handleClickOutside);
+    };
+  }, [handleClickOutside]);
+
+  const onErrorImg = e => {
+    e.target.src = noImg;
+  };
 
   return (
-    <Wrapper>
+    <Wrapper ref={modalEl}>
       <ImageContainer>
         <VerticalScrollWrapper>
           <ImgBox>
@@ -142,10 +163,10 @@ const SelectedBookInfo = ({ item, categoryList }) => {
             <input type="file" accept="image/*" multiple ref={inputRef} onChange={saveImage} style={{ display: 'none' }} />
             <CountImg>{imgPreview.length + 1}/3</CountImg>
           </ImgBox>
-          <UplodedImg src={image} />
+          <UplodedImg src={image ? image : ''} onError={onErrorImg} />
           {imgPreview
             ? imgPreview.map((preview, index) => {
-                return <UplodedImg key={index} src={preview} />;
+                return <UplodedImg key={index} src={preview ? preview : ''} onError={onErrorImg} />;
               })
             : ''}
         </VerticalScrollWrapper>
@@ -153,16 +174,10 @@ const SelectedBookInfo = ({ item, categoryList }) => {
       <Text>{name}</Text>
       {author.length > 0 && <Text>{author}</Text>}
       <Text>
-        도서 정가<dt>₩{price}</dt>
+        도서 정가<dt>₩{chgDeposit}</dt>
       </Text>
-      <OptionText onClick={() => showCategoryModal()}>
-        {currentCategoryTitle.length > 0 ? currentCategoryTitle : '카테고리'}
-        <img src={expand_more} alt={'카테고리 선택'}></img>
-      </OptionText>
-      <OptionText onClick={() => showBookGrade()}>
-        {bookGrade.length > 0 ? bookGrade : '책 상태 등급'}
-        <img src={expand_more} alt={'책 상태 등급 선택'}></img>
-      </OptionText>
+      <OptionText onClick={() => showCategoryModal()}>{currentCategoryTitle.length > 0 ? currentCategoryTitle : '카테고리'}</OptionText>
+      <OptionText onClick={() => showBookGrade()}>{bookGrade.length > 0 ? bookGrade : '책 상태 등급'}</OptionText>
       <InputText placeholder="보증금" value={deposit} onChange={e => setDeposit(e.target.value)}></InputText>
       <TextArea>
         <textarea placeholder="책에 대한 설명이나 느낀점을 소개해주세요." value={review} onChange={e => reviewHandler(e.target.value)}></textarea>

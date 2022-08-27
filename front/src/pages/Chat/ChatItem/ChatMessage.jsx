@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import style from './ChatMessage.style';
 
 const ChatMessage = ({ side, item }) => {
-  const { Wrapper, Left, Right } = style;
+  const { Message } = style;
   const { message, sendedAt } = item;
   const [koreanTime, setKoreanTime] = useState();
 
@@ -14,19 +14,10 @@ const ChatMessage = ({ side, item }) => {
   }, [sendedAt]);
 
   return (
-    <Wrapper>
-      {side === 'left' ? (
-        <Left>
-          <p>{message}</p>
-          <span>{sendedAt && koreanTime}</span>
-        </Left>
-      ) : (
-        <Right>
-          <span>{sendedAt && koreanTime}</span>
-          <p>{message}</p>
-        </Right>
-      )}
-    </Wrapper>
+    <Message className={side}>
+      <p>{message}</p>
+      <span>{sendedAt && koreanTime}</span>
+    </Message>
   );
 };
 
