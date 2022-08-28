@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const RentListWrap = styled.div`
-  width: 39rem;
+  width: 34rem;
 `;
 const NoItem = styled.div`
   min-height: 50rem;

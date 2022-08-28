@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const RentListWrap = styled.div`
-  width: 39rem;
+  width: 34rem;
 `;
 const NoItem = styled.div`
   min-height: 50rem;
@@ -57,8 +57,8 @@ const BookBox = styled.div`
   //도서 이미지
   div:first-child {
     img {
-      width: 8rem;
-      height: 11.6rem;
+      width: 7.1rem;
+      height: 10.4rem;
     }
   }
 `;
@@ -95,10 +95,14 @@ const BookInfo = styled.div`
     //저자
     span {
       display: block;
+      height: 1.8rem;
       margin-top: 0.4rem;
       font-size: 1.2rem;
       font-weight: 400;
       color: #9aa0a6;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
   //대여일자
@@ -193,6 +197,8 @@ const BookingBox = styled.div`
 //반납 대여
 const ReturnBox = styled.div`
   text-align: left;
+  width: 39rem;
+  margin: 0 -2.6rem;
   ul li {
     margin-top: 2rem;
     border: 1px solid #333;

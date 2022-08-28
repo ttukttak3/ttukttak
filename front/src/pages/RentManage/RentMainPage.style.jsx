@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const RentMainBox = styled.div`
-  width: 39rem;
+  width: 34rem;
   margin: 0 auto;
 `;
 

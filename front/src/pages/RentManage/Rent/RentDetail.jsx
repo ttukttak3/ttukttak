@@ -5,7 +5,9 @@ import { useParams, useNavigate } from 'react-router-dom';
 import messageApi from '../../../util/MessageApi';
 import { setAllFalse, setBack, setBackX, setTitle, setMore } from '../../../app/headerSlice';
 import SelectPopupBottom from '../../../components/Modal/SelectPopupBottom';
-import downBtn from '../../../assets/img/arrows/white_down.svg';
+import bar1 from '../../../assets/img/userInterFace/bar1.svg';
+import bar2 from '../../../assets/img/userInterFace/bar2.svg';
+//연체바 import bar3 from '../../../assets/img/userInterFace/bar3.svg';
 import style from './RentDetail.style';
 import api from '../../../util/RentApi';
 
@@ -41,25 +43,22 @@ const RentedDetail = () => {
 
   //-------------- Header & Footer Off --------------
   useEffect(() => {
-    dispatch(setAllFalse());
-    dispatch(setBack(true));
-  }, [dispatch]);
-
-  useEffect(() => {
     fetchingData();
     if (info.status !== 'RENTED') {
+      dispatch(setAllFalse());
       dispatch(setTitle('대여내역'));
       dispatch(setBack(true));
       dispatch(setMore(true));
     } else {
-      dispatch(setBackX());
-      //새로고침인가 그것도 달아야 함!
+      dispatch(setAllFalse());
+      dispatch(setBackX(true));
+      //새로고침버튼 그것도 달아야 함!
     }
   }, [dispatch, info.status]);
 
   const fetchingData = async () => {
     const returnData = await getRentDetail(rentId);
-    console.log(returnData);
+    //console.log(returnData);
     setExtendList([...extendList, ...returnData.extendList]);
     setInfo({ ...info, ...returnData });
     //연장 여부 체크
@@ -101,33 +100,106 @@ const RentedDetail = () => {
     return String(Number(list[0])) + '월 ' + String(Number(list[1])) + '일';
   };
 
-  const { Wrapper, Title, Progress, BookBox, Book, Info, State, Price, GoPage } = style;
+  const { Wrapper, Title, Progress, BarBox, BarDate, BarState, BookBox, Book, Info, State, Price, GoPage } = style;
   return (
     <Wrapper>
       {info.status === 'RENTED' ? (
         <>
-          <Title>
-            <div>
-              <h2>대여가 진행중이에요</h2>
-              <p>대여자님이 원하는 책 한 권의 우연한 만남으로 이웃과 시작한 소통을 나눠보세요.</p>
-            </div>
-            <Progress>
-              <progress id="progress" value="50" min="0" max="100"></progress>
+          {extendCnt === 0 ? (
+            <>
+              <Title>
+                <div>
+                  <h2>대여가 진행중이에요</h2>
+                  <p>대여자님이 원하는 책 한 권의 우연한 만남으로 이웃과 시작한 소통을 나눠보세요.</p>
+                </div>
+              </Title>
+              <Progress>
+                <BarBox>
+                  <BarDate>
+                    <p>{dateFormatter(info.beginDate.substring(5))}</p>
+                    <p>
+                      {dateFormatter(info.endDate.substring(5))}
+                      <span>반납 예정</span>
+                    </p>
+                  </BarDate>
+                  <img src={bar1} alt="진행바" />
+                  <BarState>
+                    <p>대여시작</p>
+                    <p>반납완료</p>
+                  </BarState>
+                </BarBox>
+              </Progress>
+            </>
+          ) : extendCnt === 1 ? (
+            <>
+              <Title>
+                <div>
+                  <h2>대여 연장이 1회 적용되었어요</h2>
+                  <p>차입자는 반납 예정일 이전에 연장을 최대 2회까지 요청할 수 있으며, 대여자는 1,000원의 연장료를 요구 가능합니다.</p>
+                </div>
+              </Title>
+              <Progress>
+                <BarBox>
+                  <BarDate>
+                    <p>{dateFormatter(info.beginDate.substring(5))}</p>
+                    <p className="center">{dateFormatter(info.beginDate.substring(5))}</p>
+                    <p>
+                      {dateFormatter(info.endDate.substring(5))}
+                      <span>반납 예정</span>
+                    </p>
+                  </BarDate>
+                  <img src={bar2} alt="연장바" />
+                  <BarState>
+                    <p>대여시작</p>
+                    <p className="center">연장 1회차</p>
+                    <p>반납완료</p>
+                  </BarState>
+                </BarBox>
+              </Progress>
+            </>
+          ) : extendCnt === 2 ? (
+            <>
+              <Title>
+                <div>
+                  <h2>대여 연장이 2회 적용되었어요</h2>
+                  <p>차입자는 반납 예정일 이전에 연장을 최대 2회까지 요청할 수 있으며, 대여자는 1,000원의 연장료를 요구 가능합니다.</p>
+                </div>
+              </Title>
+              <Progress>
+                <BarBox>
+                  <BarDate>
+                    <p>{dateFormatter(info.beginDate.substring(5))}</p>
+                    <p className="center">{dateFormatter(info.beginDate.substring(5))}</p>
+                    <p>
+                      {dateFormatter(info.endDate.substring(5))}
+                      <span>반납 예정</span>
+                    </p>
+                  </BarDate>
+                  <img src={bar2} alt="연장바" />
+                  <BarState>
+                    <p>대여시작</p>
+                    <p className="center">연장 2회차</p>
+                    <p>반납완료</p>
+                  </BarState>
+                </BarBox>
+              </Progress>
+            </>
+          ) : (
+            ''
+          )}
+          {/* <progress id="progress" value="50" min="0" max="100"></progress>
               <date>{dateFormatter(info.beginDate.substring(5))}</date>
-              <start>대여시작</start>
-              {/* 일정한 간격으로 벌어지게는 어떻게 해야할까요,,  */}
-              {info.extendList.map(extend => (
+              <start>대여시작</start> */}
+          {/* 일정한 간격으로 벌어지게는 어떻게 해야할까요,,  */}
+          {/* {info.extendList.map(extend => (
                 <>
                   <date>{dateFormatter(info.beginDate.substring(5))}</date>
                   <start>대여시작</start>
                 </>
-              ))}
-            </Progress>
-          </Title>
+              ))} */}
           <State>
             <h3>
               대여 상태 변경하기 <button onClick={() => choseRentState()}>대여 중</button>
-              <img src={downBtn} alt={'대여 상태 선택'} />
             </h3>
             <div>
               <button onClick={() => extendRentResult(1)} className={firstExtend}>
