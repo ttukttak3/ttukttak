@@ -11,9 +11,9 @@ const Message = styled.div`
     font-weight: 400;
     background: ${({ theme }) => theme.colors.$primaryBlueP};
     color: ${({ theme }) => theme.colors.$white1};
-    line-height: 2.2rem;
-    padding: 0.7rem;
-    border-radius: 0.5rem;
+    line-height: 1.6rem;
+    padding: 1rem;
+    border-radius: 0px 4px 4px 4px;
     white-space: pre-wrap;
     word-break: break-all;
   }
@@ -33,6 +33,7 @@ const Message = styled.div`
     p {
       background: ${({ theme }) => theme.colors.$black4};
       color: ${({ theme }) => theme.colors.$white1};
+      border-radius: 4px 4px 0 4px;
     }
   }
 `;

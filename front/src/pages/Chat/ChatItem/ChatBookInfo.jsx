@@ -12,6 +12,9 @@ const ChatBookInfo = ({ book, lenderId, roomId }) => {
   const { id, subject, author, deposit, bookTown, bookInfo, status, imageUrls, owner } = book;
   const { userId } = useSelector(state => state.user);
 
+  // 콤마
+  const chgDeposit = book.deposit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
   const onErrorImg = e => {
     e.target.src = noImg;
   };
@@ -38,7 +41,7 @@ const ChatBookInfo = ({ book, lenderId, roomId }) => {
           </div>
           <div>
             <p>보증금</p>
-            <p>{deposit}원</p>
+            <p>{chgDeposit}원</p>
           </div>
         </Status>
       </InfoWrapper>

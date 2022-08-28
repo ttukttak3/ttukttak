@@ -6,16 +6,18 @@ import noneUserIcon from '../../../assets/img/userInterFace/userNone.png';
 import noImg from '../../../assets/img/logo/homeb_default.svg';
 
 const ChatListItem = ({ id, imgUrl, userName, time, lastChat, unread }) => {
-  const { Wrapper, Img, UserName, LastChat, InfoWrapper } = style;
+  const { Wrapper, ImgBox, UserName, LastChat, InfoWrapper } = style;
   const navigate = useNavigate();
   const d = new Date(time);
   const onErrorImg = e => {
     e.target.src = noImg;
   };
-
+  //unread = 100;
   return (
     <Wrapper key={id} onClick={() => navigate(`/chat/room`, { state: { id: id } })}>
-      <Img src={imgUrl === null ? '' : imgUrl} onError={onErrorImg} />
+      <ImgBox>
+        <img src={imgUrl === null ? '' : imgUrl} onError={onErrorImg} alt="프로필이미지" />
+      </ImgBox>
       <InfoWrapper>
         <UserName>
           <p className={userName === null ? 'unknown' : ''}>{userName === null ? '(탈퇴한 회원)' : userName}</p>
@@ -23,7 +25,7 @@ const ChatListItem = ({ id, imgUrl, userName, time, lastChat, unread }) => {
         </UserName>
         <LastChat>
           <p>{lastChat}</p>
-          {unread > 0 && <span>{unread}</span>}
+          {unread > 0 && <span className={unread > 99 ? 'highest' : unread > 9 ? 'higher' : ''}>{unread}</span>}
         </LastChat>
       </InfoWrapper>
     </Wrapper>

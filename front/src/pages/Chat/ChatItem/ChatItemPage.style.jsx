@@ -6,7 +6,7 @@ const Wrapper = styled.div`
 `;
 
 const MessageBox = styled.div`
-  padding-top: 6.4rem;
+  padding-top: 9.2rem;
   .messageBox {
     margin: 0;
   }
