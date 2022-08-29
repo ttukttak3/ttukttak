@@ -6,11 +6,15 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ttukttak.book.dto.BookReviewRequest;
 import com.ttukttak.book.dto.BookReviewResponse;
 import com.ttukttak.book.entity.Book;
+import com.ttukttak.book.entity.BookReview;
 import com.ttukttak.book.repository.BookRepository;
 import com.ttukttak.book.repository.BookReviewRepository;
 import com.ttukttak.common.dto.PageResponse;
+import com.ttukttak.oauth.entity.User;
+import com.ttukttak.oauth.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class BookReviewServiceImpl implements BookReviewService {
 	private final BookReviewRepository bookReviewRepository;
 	private final BookRepository bookRepository;
+	private final UserRepository userRepository;
 
 	private static int PAGESIZE = 20;
 
@@ -41,5 +46,21 @@ public class BookReviewServiceImpl implements BookReviewService {
 			.totalPages(pageInfo.getTotalPages())
 			.totalElements(pageInfo.getTotalElements())
 			.build();
+	}
+
+	@Override
+	@Transactional
+	public BookReviewResponse setReviews(Long bookId, Long userId, BookReviewRequest bookReviewRequest) {
+		Book book = bookRepository.findById(bookId).orElseThrow(() -> new IllegalArgumentException());
+		User reviewer = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException());
+
+		BookReview bookReview = BookReview.builder()
+			.book(book)
+			.reviewer(reviewer)
+			.content(bookReviewRequest.getContent())
+			.rating(bookReviewRequest.getRating())
+			.build();
+
+		return BookReviewResponse.from(bookReviewRepository.save(bookReview));
 	}
 }
