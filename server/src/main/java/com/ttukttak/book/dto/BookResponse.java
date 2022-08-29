@@ -4,6 +4,7 @@ import com.ttukttak.address.dto.TownDto;
 import com.ttukttak.book.entity.Book;
 import com.ttukttak.book.entity.Book.BookGrade;
 import com.ttukttak.book.entity.Book.BookStatus;
+import com.ttukttak.book.entity.BookReview;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -53,7 +54,8 @@ public class BookResponse {
 			.address(TownDto.from(book.getTown()).getAddress())
 			.thumbnail(book.getTumbnailImageUrl())
 			.grade(book.getGrade())
-			.rating(book.getBookReview().stream().mapToDouble(review -> review.getRating()).average().orElse(0))
+			.rating(Math.ceil(book.getBookReview().stream()
+				.mapToDouble(BookReview::getRating).average().orElse(0) * 10) / 10)
 			.rentCnt(book.getRent().size())
 			.build();
 
