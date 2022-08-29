@@ -2,6 +2,8 @@ package com.ttukttak.book.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -22,5 +24,7 @@ public interface BookReviewRepository extends JpaRepository<BookReview, Long> {
 	List<BookReview> findAllByBookId(Long id);
 
 	List<BookReview> findAllByBook(Book book);
+
+	Page<BookReview> findAllByBook(Book book, PageRequest pageRequest);
 
 }
