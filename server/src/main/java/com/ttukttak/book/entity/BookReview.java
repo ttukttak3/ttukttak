@@ -18,10 +18,12 @@ import com.ttukttak.oauth.entity.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Getter
 @NoArgsConstructor
+@ToString
 public class BookReview extends BaseTimeEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
