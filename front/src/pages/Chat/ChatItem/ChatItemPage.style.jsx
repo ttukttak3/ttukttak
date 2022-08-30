@@ -6,7 +6,14 @@ const Wrapper = styled.div`
 `;
 
 const MessageBox = styled.div`
-  padding-bottom: 5.6rem;
+  padding-top: 9.2rem;
+  .messageBox {
+    margin: 0;
+  }
+
+  &.hide {
+    padding-top: 0;
+  }
 `;
 
 const DateMessage = styled.p`
@@ -14,6 +21,10 @@ const DateMessage = styled.p`
   font-size: 1.4rem;
   font-weight: 400;
   color: ${({ theme }) => theme.colors.$white3};
+
+  &.hide {
+    display: none;
+  }
 `;
 
 const style = { Wrapper, MessageBox, DateMessage };

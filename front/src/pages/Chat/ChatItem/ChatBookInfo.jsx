@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import RentBtn from './RentBtn';
 import style from './ChatBookInfo.style';
 import pin_drop from '../../../assets/img/userInterFace/pin_drop.png';
+import noImg from '../../../assets/img/logo/postp_default.svg';
 
 import { useSelector } from 'react-redux';
 
@@ -11,15 +12,22 @@ const ChatBookInfo = ({ book, lenderId, roomId }) => {
   const { id, subject, author, deposit, bookTown, bookInfo, status, imageUrls, owner } = book;
   const { userId } = useSelector(state => state.user);
 
+  // 콤마
+  const chgDeposit = book.deposit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+  const onErrorImg = e => {
+    e.target.src = noImg;
+  };
+
   return (
     <Wrapper>
       <BookImg>
-        <img src={imageUrls[0].imageUrl} alt="도서이미지" />
+        <img onError={onErrorImg} src={imageUrls[0] ? imageUrls[0].imageUrl : ''} alt="도서이미지" />
       </BookImg>
       <InfoWrapper>
         <Title>
           <p>{subject}</p>
-          <span>{bookInfo.author}</span>
+          <span>{author}</span>
         </Title>
         <Location>
           <img src={pin_drop} alt={'위치 아이콘'}></img>
@@ -33,7 +41,7 @@ const ChatBookInfo = ({ book, lenderId, roomId }) => {
           </div>
           <div>
             <p>보증금</p>
-            <p>{deposit}원</p>
+            <p>{chgDeposit}원</p>
           </div>
         </Status>
       </InfoWrapper>

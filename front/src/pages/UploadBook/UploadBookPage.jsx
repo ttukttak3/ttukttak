@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { setTitle, setAllFalse, setBack } from '../../app/headerSlice';
+import { setTitle, setAllFalse, setBackX } from '../../app/headerSlice';
 import style from './UploadBookPage.style';
 import PutBookInfoByUser from './PutBookInfoByUser';
 import SearchBookPage from './SearchBookPage';
 import bookApi from '../../util/BookApi';
 
 const UploadBookPage = () => {
-  const { Wrapper, RadioBtn, OptionLabel, RadioOptBox, Option } = style;
+  const { Wrapper, RadioOptBox, Option } = style;
   const dispatch = useDispatch();
   const [radioOpt, setRadioOpt] = useState('searchToSave');
   const { getCategoryList } = bookApi;
@@ -17,7 +17,7 @@ const UploadBookPage = () => {
     localStorage.setItem('url', '/upload');
     dispatch(setAllFalse());
     dispatch(setTitle('도서 대여 글쓰기'));
-    dispatch(setBack(true));
+    dispatch(setBackX(true));
     getCategoryList(setCategoryList);
   }, [dispatch, radioOpt, getCategoryList]);
 
@@ -29,12 +29,12 @@ const UploadBookPage = () => {
     <Wrapper>
       <RadioOptBox>
         <Option>
-          <RadioBtn value={'searchToSave'} type={'radio'} name={'submitMethod'} checked={radioOpt === 'searchToSave'} onChange={handleRadio} />
-          <OptionLabel>도서를 검색하여 등록</OptionLabel>
+          <input type="radio" id="searchBtn" name="submitMethod" value={'searchToSave'} checked={radioOpt === 'searchToSave'} onChange={handleRadio} />
+          <label htmlFor="searchBtn">도서를 검색하여 등록</label>
         </Option>
         <Option>
-          <RadioBtn value={'saveByPut'} type={'radio'} name={'submitMethod'} checked={radioOpt === 'saveByPut'} onChange={handleRadio} />
-          <OptionLabel>직접 도서 정보 입력</OptionLabel>
+          <input type="radio" id="putBtn" name="submitMethod" value={'saveByPut'} checked={radioOpt === 'saveByPut'} onChange={handleRadio} />
+          <label htmlFor="putBtn">직접 도서 정보 입력</label>
         </Option>
       </RadioOptBox>
       {radioOpt === 'searchToSave' ? <SearchBookPage categoryList={categoryList}></SearchBookPage> : <PutBookInfoByUser categoryList={categoryList}></PutBookInfoByUser>}

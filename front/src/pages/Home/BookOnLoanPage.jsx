@@ -61,7 +61,7 @@ const BookOnLoadPage = ({ range, category, townId }) => {
     setLoader(true);
     getBookList(param, setBookList, setLoader);
     return () => {};
-  }, [dispatch, param, getBookList]);
+  }, [dispatch, param, getBookList, range]);
 
   const { BookWrap, NoItem } = style;
   return (

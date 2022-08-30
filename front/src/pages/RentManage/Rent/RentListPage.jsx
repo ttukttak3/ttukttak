@@ -7,6 +7,11 @@ import api from '../../../util/RentApi';
 import errorImg from '../../../assets/img/logo/Error_outline.svg';
 //import smallDown from '../../assets/img/arrows/small_down.svg';
 import { useSelector, useDispatch } from 'react-redux';
+import { Pagination } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import '../../Home/DetailList/slide.css';
 
 const RentListPage = () => {
   const { RentListWrap, NoItem } = style;
@@ -16,6 +21,7 @@ const RentListPage = () => {
   const { userId } = useSelector(state => state.user);
   const [rentList, setRentList] = useState([]);
   const [rentListShow, setRentListShow] = useState([]);
+  const [returnListShow, setReturnListShow] = useState([]);
   const [loader, setLoader] = useState(false);
   const [param, setParam] = useState({
     pageNum: 1,
@@ -44,24 +50,35 @@ const RentListPage = () => {
   });
 
   useEffect(() => {
-    fetchingData();
+    getRentList(param, setRentList, setLoader).then(result => {
+      setRentListShow(result.contents.filter(content => content.status === 'RENTED'));
+      setReturnListShow(result.contents.filter(content => content.status !== 'RENTED'));
+    });
     return () => {};
-  }, [dispatch, param, getRentList]);
-
-  const fetchingData = async () => {
-    const data = await getRentList(param, setRentList, setLoader);
-    setRentListShow(data.contents);
-  };
+  }, [param, getRentList]);
 
   return (
-    <RentListWrap>
-      {rentListShow?.length === 0 ? (
+    <RentListWrap className="rent">
+      {rentListShow?.length === 0 && returnListShow?.length === 0 ? (
         <NoItem>
           <img src={errorImg} alt="느낌표" />
-          아직 빌려 본 도서가 없어요
+          아직 빌려준 도서가 없어요
         </NoItem>
       ) : (
-        rentListShow.map(item => <RentListItem mode={'rent'} item={item} key={item.id} onClick={() => navigate(`/rent/${item.id}`)}></RentListItem>)
+        <>
+          <Swiper modules={[Pagination]} slidesPerView={1} pagination={{ clickable: true }}>
+            {rentListShow.map((item, index) => {
+              return (
+                <SwiperSlide key={index}>
+                  <RentListItem mode={'rent'} item={item} key={item.id} onClick={() => navigate(`/rent/${item.id}`)}></RentListItem>
+                </SwiperSlide>
+              );
+            })}
+          </Swiper>
+          {returnListShow.map(item => (
+            <RentListItem mode={'rent'} item={item} key={item.id} onClick={() => navigate(`/rent/${item.id}`)}></RentListItem>
+          ))}
+        </>
       )}
 
       {/*  예약 중 컴포넌트 대여내역에 안 보여줄 예정 

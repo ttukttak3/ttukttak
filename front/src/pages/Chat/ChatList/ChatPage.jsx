@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setTitle, setAllFalse } from '../../../app/headerSlice';
 import ChatListItem from '../ChatList/ChatListItem';
-import Wrapper from '../ChatList/ChatPage.style';
+import style from '../ChatList/ChatPage.style';
 import messageApi from '../../../util/MessageApi';
 import { useSelector } from 'react-redux';
 
@@ -12,6 +12,7 @@ const ChatPage = () => {
   const { userId } = useSelector(state => state.user);
   const dispatch = useDispatch();
   const { getChatList } = messageApi;
+  const { Wrapper, NoItem } = style;
 
   const ChatListShow = chatList.map((item, idx) => (
     <ChatListItem
@@ -33,7 +34,7 @@ const ChatPage = () => {
     getChatList(userId, setChatList);
   }, [dispatch, getChatList, userId]);
 
-  return <Wrapper>{ChatListShow}</Wrapper>;
+  return <Wrapper>{ChatListShow.length > 0 ? ChatListShow : <NoItem>우리 주변 이웃의 책을 대여해보세요.</NoItem>}</Wrapper>;
 };
 
 export default ChatPage;

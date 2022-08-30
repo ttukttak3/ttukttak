@@ -57,7 +57,7 @@ const Layout = () => {
           <Route path="userAccount" element={<UserAccountPage />} />
           <Route element={<AuthCheckRouter />}>
             <Route path="chat" element={<Chat />} />
-            <Route path="chat/:roomId" element={<ChatItem />} />
+            <Route path="chat/room" element={<ChatItem />} />
             <Route path="chat/alert" element={<ChatAlertPage />} />
             <Route path="upload" element={<UploadBookPage />} />
             <Route path="search" element={<SearchListPage />} />

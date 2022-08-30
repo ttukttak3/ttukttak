@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 const Wrapper = styled.li`
   display: flex;
+  flex-direction: row;
   list-style: none;
   border-bottom: 1px solid ${({ theme }) => theme.colors.$black3Line};
   margin-bottom: 2.4rem;
@@ -11,15 +12,19 @@ const Wrapper = styled.li`
     margin-top: 0.8rem;
   }
 `;
-const Img = styled.img`
+const ImgBox = styled.div`
+  margin-right: auto;
   width: 4.8rem;
-  height: 4.8rem;
-  border-radius: 2.4rem;
+  img {
+    width: 4.8rem;
+    height: 4.8rem;
+    border-radius: 2.4rem;
+  }
 `;
 
 const InfoWrapper = styled.div`
-  width: 100%;
-  margin-left: 0.8rem;
+  margin-left: auto;
+  width: 28.3rem;
   height: 6rem;
   display: flex;
   flex-direction: column;
@@ -30,7 +35,11 @@ const UserName = styled.div`
   p {
     color: ${({ theme }) => theme.colors.$white1};
     font-size: 1.6rem;
-    font-weight: 400;
+    font-weight: 700;
+
+    &.unknown {
+      color: ${({ theme }) => theme.colors.$white2};
+    }
   }
   span {
     margin-left: auto;
@@ -43,20 +52,39 @@ const UserName = styled.div`
 const LastChat = styled.div`
   display: flex;
   margin-top: 1rem;
+  //날짜
   p {
     color: ${({ theme }) => theme.colors.$white3};
     font-size: 1.4rem;
+    font-weight: 400;
   }
+  //알림
   span {
     margin-left: auto;
+    display: inline-block;
+    width: 1.6rem;
+    height: 1.6rem;
+    line-height: 1.6rem;
+    font-size: 1rem;
+    font-weight: 400;
+    text-align: center;
+    border-radius: 0.8rem;
     color: ${({ theme }) => theme.colors.$white1};
     background-color: ${({ theme }) => theme.colors.$primaryBlueP};
-    padding: 0.3rem;
-    font-size: 1.2rem;
-    border-radius: 1.5rem;
+    &.higher {
+      width: 2.1rem;
+      border-radius: 1rem;
+    }
+    &.highest {
+      width: 2.7rem;
+      border-radius: 1rem;
+      :after {
+        content: '+';
+      }
+    }
   }
 `;
 
-const style = { Wrapper, Img, UserName, LastChat, InfoWrapper };
+const style = { Wrapper, ImgBox, UserName, LastChat, InfoWrapper };
 
 export default style;

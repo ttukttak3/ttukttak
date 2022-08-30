@@ -118,7 +118,7 @@ const SignUpPage = () => {
     <SignUpBox>
       <ImgBox>
         <input type="file" accept="image/*" ref={inputRef} onChange={saveImage} style={{ display: 'none' }} />
-        <img src={imgPreview ? user.imageFile : imgPreview} onError={onErrorImg} alt="이미지" />
+        <img src={imgPreview ? imgPreview : user.imageFile ? user.imageFile : ''} onError={onErrorImg} alt="이미지" />
         <ImgChangeBtn onClick={onChangeImg}></ImgChangeBtn>
       </ImgBox>
       <InfoBox>

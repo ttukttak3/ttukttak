@@ -10,10 +10,14 @@ const RentListItem = ({ mode, item, onClick }) => {
   const [comment, setComment] = useState('');
   const [buttonMsg, setButtonMsg] = useState('대여 현황');
   const { id, status, book, beginDate, endDate, returnDate } = item;
-  const { author, subject, deposit } = book;
+  const { author, subject, deposit, thumbnail } = book;
   const { RentListWrap, NoItem, RentIngBox, BookBox, BookInfo, BookPrice, ReturnBox, PaddingBox, BookingBox } = style;
   // 콤마
   const chgDeposit = deposit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+  const onErrorImg = e => {
+    e.target.src = noImg;
+  };
 
   useEffect(() => {
     if (mode === 'rent') {
@@ -42,7 +46,7 @@ const RentListItem = ({ mode, item, onClick }) => {
               <h2>{comment}</h2>
               <BookBox onClick={onClick}>
                 <div>
-                  <img src={noImg} alt="도서 이미지" />
+                  <img onError={onErrorImg} src={thumbnail === null ? '' : thumbnail.imageUrl} alt="도서 이미지" />
                 </div>
                 <BookInfo>
                   <h3>
@@ -78,7 +82,7 @@ const RentListItem = ({ mode, item, onClick }) => {
                 </h2>
                 <BookBox onClick={onClick}>
                   <div>
-                    <img src={noImg} alt="도서 이미지" />
+                    <img onError={onErrorImg} src={thumbnail === null ? '' : thumbnail.imageUrl} alt="도서 이미지" />
                   </div>
                   <BookInfo>
                     <h3>

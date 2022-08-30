@@ -2,27 +2,31 @@ import styled from 'styled-components';
 
 const Wrapper = styled.div`
   display: flex;
-  list-style: none;
-  width: 100%;
+  position: fixed;
+  width: 34rem;
   height: 9.2rem;
+  padding: 1.2rem 0;
+  background: ${({ theme }) => theme.colors.$black3};
   border-top: 1px solid ${({ theme }) => theme.colors.$black3Line};
   border-bottom: 1px solid ${({ theme }) => theme.colors.$black3Line};
 `;
 
 const BookImg = styled.div`
   text-align: left;
+  width: 4.8rem;
+  height: 6.8rem;
   img {
     width: 4.8rem;
     height: 6.8rem;
-    margin: 1.2rem 0;
   }
 `;
 
 const InfoWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
-  margin: 1.2rem 0 1.2rem 1.2rem;
+  width: 28rem;
+  height: 6.8rem;
+  margin-left: 1.2rem;
 `;
 
 const Title = styled.div`
@@ -42,17 +46,22 @@ const Title = styled.div`
     margin-left: auto;
     font-size: 1.2rem;
     font-weight: 400;
+    text-align: right;
+    width: 8.6rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 `;
 
 const Status = styled.div`
   display: flex;
   height: 1.8rem;
-  margin-top: 0.6rem;
+  margin-top: 0.7rem;
 
   p {
     display: inline-block;
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     font-weight: 700;
 
     :first-child {
@@ -70,9 +79,10 @@ const Status = styled.div`
 
 const Location = styled.div`
   display: flex;
-  margin-top: 1.3rem;
+  margin-top: 1.1rem;
   p {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
+    font-weight: 400;
     color: ${({ theme }) => theme.colors.$white2};
   }
   img {

@@ -35,7 +35,7 @@ const ImgChangeBtn = styled.button`
 const InfoBox = styled.div`
   text-align: left;
   width: 30rem;
-  margin: 0 auto;
+  margin: 0 auto 5rem auto;
   //닉네임/이메일
   h4 {
     font-size: 1.6rem;

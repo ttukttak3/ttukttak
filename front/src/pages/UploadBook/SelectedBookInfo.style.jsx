@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import expand_more from '../../assets/img/arrows/expand_more.svg';
 
 const Wrapper = styled.div`
   display: flex;
@@ -8,8 +9,9 @@ const Wrapper = styled.div`
 const ImageContainer = styled.div`
   display: flex;
   flex-direction: row;
-  height: 12rem;
+  height: 16rem;
   width: 100%;
+  padding-top: 3.8rem;
 `;
 
 const ImgBox = styled.button`
@@ -17,14 +19,13 @@ const ImgBox = styled.button`
   width: 8.4rem;
   border: 1px solid ${({ theme }) => theme.colors.$black4Line};
   border-radius: 0.5rem;
-  margin: 0.7rem;
 `;
 
 const UplodedImg = styled.img`
   height: 8.4rem;
   width: 8.4rem;
   border-radius: 0.5rem;
-  margin: 0.7rem;
+  margin-left: 1.6rem;
 `;
 
 const UploadImg = styled.img`
@@ -42,7 +43,7 @@ const InputText = styled.input`
   background-color: ${({ theme }) => theme.colors.$black3};
   color: ${({ theme }) => theme.colors.$whiteLine1};
   display: flex;
-  padding: 1.2rem 0;
+  padding: 1.6rem 0;
   font-size: 1.4rem;
   font-weight: 600;
 `;
@@ -52,7 +53,7 @@ const Text = styled.div`
   background-color: ${({ theme }) => theme.colors.$black3};
   color: ${({ theme }) => theme.colors.$whiteLine1};
   display: flex;
-  padding: 1.2rem 0;
+  padding: 1.6rem 0;
   font-size: 1.4rem;
   font-weight: 600;
 
@@ -64,18 +65,12 @@ const Text = styled.div`
 
 const OptionText = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.colors.$black3Line};
-  background-color: ${({ theme }) => theme.colors.$black3};
   display: flex;
-  padding: 1.2rem 0;
+  padding: 1.6rem 0;
   font-size: 1.4rem;
   font-weight: 600;
   color: ${({ theme }) => theme.colors.$whiteLine1};
-
-  img {
-    margin-left: auto;
-    color: #fff;
-    height: 1.8rem;
-  }
+  background: url(${expand_more}) right center no-repeat;
 `;
 
 const SaveButton = styled.div`

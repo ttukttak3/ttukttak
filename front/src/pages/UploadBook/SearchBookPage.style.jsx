@@ -15,7 +15,6 @@ const SearchBtn = styled.button`
   line-height: 3.6rem;
   font-size: 1.6rem;
   font-weight: 600;
-  letter-spacing: 0.1px;
   background: ${({ theme }) => theme.colors.$primaryBlueP};
   color: ${({ theme }) => theme.colors.$whiteLine1};
 `;
