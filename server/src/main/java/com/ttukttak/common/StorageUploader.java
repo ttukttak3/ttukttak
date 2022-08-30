@@ -42,10 +42,11 @@ public class StorageUploader {
 	public void removeOldFile(String imageUrl) {
 		try {
 			String storageUrl = "https://" + bucket + ".kr.object.ncloudstorage.com/";
-			if (imageUrl.indexOf(storageUrl) > -1) {
+			if (imageUrl == null) {
+				log.info("기존 이미지가 없습니다.");
+			} else if (imageUrl.indexOf(storageUrl) > -1) {
 				String objectName = imageUrl.replace(storageUrl, "");
 				amazonS3Client.deleteObject(bucket, objectName);
-				System.out.format("bucket %s Object %s has been deleted.\n", bucket, objectName);
 			} else {
 				log.info("ncloudsotrage에 있는 파일이 아닙니다.");
 			}
