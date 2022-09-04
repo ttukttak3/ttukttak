@@ -64,13 +64,32 @@ const Text = styled.div`
 `;
 
 const OptionText = styled.div`
-  border-bottom: 1px solid ${({ theme }) => theme.colors.$black3Line};
   display: flex;
   padding: 1.6rem 0;
   font-size: 1.4rem;
   font-weight: 600;
   color: ${({ theme }) => theme.colors.$whiteLine1};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.$black3Line};
   background: url(${expand_more}) right center no-repeat;
+`;
+
+const DepositText = styled.div`
+  display: flex;
+  font-size: 1.4rem;
+  padding-top: 1.6rem;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.$whiteLine1};
+  background: url(${expand_more}) right center no-repeat;
+`;
+
+const Caption = styled.div`
+  display: flex;
+  padding: 1rem 0;
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: ${({ theme }) => theme.colors.$white4};
+  background-color: ${({ theme }) => theme.colors.$black3};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.$black3Line};
 `;
 
 const SaveButton = styled.div`
@@ -116,6 +135,6 @@ const TextArea = styled.div`
     margin: 0.8rem 0 1.7rem 0;
   }
 `;
-const style = { Wrapper, UploadImg, UplodedImg, ImageContainer, InputText, Text, OptionText, ImgBox, SaveButton, CountImg, VerticalScrollWrapper, TextArea };
+const style = { Wrapper, UploadImg, UplodedImg, ImageContainer, InputText, Text, OptionText, ImgBox, SaveButton, CountImg, VerticalScrollWrapper, TextArea, DepositText, Caption };
 
 export default style;

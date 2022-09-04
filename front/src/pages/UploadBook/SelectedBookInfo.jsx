@@ -12,7 +12,7 @@ const SelectedBookInfo = ({ item, categoryList }) => {
   const inputRef = useRef(null);
   const navigate = useNavigate();
   const { uploadBook } = bookApi;
-  const { Wrapper, UploadImg, ImageContainer, Text, InputText, UplodedImg, OptionText, ImgBox, SaveButton, CountImg, VerticalScrollWrapper, TextArea } = style;
+  const { Wrapper, UploadImg, ImageContainer, Text, InputText, UplodedImg, OptionText, DepositText, ImgBox, SaveButton, CountImg, VerticalScrollWrapper, TextArea, Caption } = style;
   const { author, description, image, isbn, name, price, publishedDate, publisher } = item;
 
   const [currentCategory, setCurrentCategory] = useState('');
@@ -20,7 +20,7 @@ const SelectedBookInfo = ({ item, categoryList }) => {
   const [contentList, setContentList] = useState([]);
   const [bookGrade, setBookGrade] = useState('');
   const [showModal, setShowModal] = useState(false);
-  const [deposit, setDeposit] = useState();
+  const [deposit, setDeposit] = useState('');
   const [review, setReview] = useState('');
   const [modalTitle, setModalTitle] = useState('');
   const bookGradeList = ['A', 'B', 'C'];
@@ -129,6 +129,22 @@ const SelectedBookInfo = ({ item, categoryList }) => {
     setShowModal(true);
   };
 
+  const showDepositList = () => {
+    setModalTitle('보증금 비율');
+    let depositList = [];
+    for (let i = 100; i > -10; i -= 10) {
+      depositList.push({
+        onClick: () => {
+          setDeposit(`${i}%`);
+          setShowModal(false);
+        },
+        message: `${i}%`,
+      });
+      setContentList([...depositList]);
+      setShowModal(true);
+    }
+  };
+
   const reviewHandler = review => {
     setReview(review);
     setTextCount(review.length);
@@ -178,7 +194,8 @@ const SelectedBookInfo = ({ item, categoryList }) => {
       </Text>
       <OptionText onClick={() => showCategoryModal()}>{currentCategoryTitle.length > 0 ? currentCategoryTitle : '카테고리'}</OptionText>
       <OptionText onClick={() => showBookGrade()}>{bookGrade.length > 0 ? bookGrade : '책 상태 등급'}</OptionText>
-      <InputText placeholder="보증금" value={deposit} onChange={e => setDeposit(e.target.value)}></InputText>
+      <DepositText onClick={() => showDepositList()}>{deposit.length > 0 ? deposit : '보증금 비율'}</DepositText>
+      <Caption>*상태 A : 70% | 상태 B : 50% | 상태 C : 30%를 추천해요</Caption>
       <TextArea>
         <textarea placeholder="책에 대한 설명이나 느낀점을 소개해주세요." value={review} onChange={e => reviewHandler(e.target.value)}></textarea>
         <span>{textCount}/500</span>
