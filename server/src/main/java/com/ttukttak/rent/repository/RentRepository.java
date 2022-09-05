@@ -22,7 +22,7 @@ public interface RentRepository extends JpaRepository<Rent, Long> {
 
 	Page<Rent> findAllByOwnerIdOrderByBeginDateDesc(Long ownerId, Pageable pageable);
 
-	Optional<Rent> findByBookIdAndLenderId(Long bookId, Long lenderId);
+	Optional<Rent> findByBookIdAndLenderIdAndReturnDateIsNull(Long bookId, Long lenderId);
 
 	@Override
 	Page<Rent> findAll(Pageable pageable);
@@ -33,11 +33,11 @@ public interface RentRepository extends JpaRepository<Rent, Long> {
 	@Query("update Rent m set m.lender = null where m.lender = :lender")
 	void setNullLender(
 		@Param("lender")
-		User lender);
+			User lender);
 
 	@Modifying
 	@Query("update Rent m set m.owner = null where m.owner = :owner")
 	void setNullOwner(
 		@Param("owner")
-		User owner);
+			User owner);
 }

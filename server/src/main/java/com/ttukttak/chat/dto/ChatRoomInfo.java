@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import com.ttukttak.book.dto.BookDto;
 import com.ttukttak.chat.entity.ChatRoom;
 import com.ttukttak.rent.dto.RentResponse;
+import com.ttukttak.rent.entity.Rent;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -42,6 +43,10 @@ public class ChatRoomInfo implements Serializable {
 		this.messages = messages;
 	}
 
+	public void updateRent(Rent rent) {
+		this.rent = RentResponse.from(rent);
+	}
+
 	public static ChatRoomInfo from(ChatRoom chatRoom) {
 		List<MemberResponse> members = chatRoom.getChatMembers()
 			.stream()
@@ -58,7 +63,6 @@ public class ChatRoomInfo implements Serializable {
 		return ChatRoomInfo.builder()
 			.roomId(chatRoom.getId())
 			.book(BookDto.from(chatRoom.getBook()))
-			.rent(RentResponse.from(chatRoom.getRent()))
 			.messages(messages)
 			.members(members)
 			.build();

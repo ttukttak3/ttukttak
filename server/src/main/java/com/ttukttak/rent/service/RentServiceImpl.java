@@ -89,9 +89,10 @@ public class RentServiceImpl implements RentService {
 			throw new UnauthChangeException();
 		}
 
-		Rent findRent = rentRepository.findByBookIdAndLenderId(request.getBookId(), request.getLenderId()).orElse(null);
+		Rent findRent = rentRepository.findByBookIdAndLenderIdAndReturnDateIsNull(request.getBookId(),
+			request.getLenderId()).orElse(null);
 
-		if (findRent != null && findRent.getReturnDate() != null) {
+		if (findRent != null) {
 			throw new DuplicatedException();
 		}
 
