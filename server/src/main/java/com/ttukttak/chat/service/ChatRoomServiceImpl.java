@@ -30,6 +30,8 @@ import com.ttukttak.chat.repository.ChatRoomRepository;
 import com.ttukttak.oauth.dto.UserDto;
 import com.ttukttak.oauth.entity.User;
 import com.ttukttak.oauth.repository.UserRepository;
+import com.ttukttak.rent.entity.Rent;
+import com.ttukttak.rent.repository.RentRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +44,8 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 	private final ChatRoomRepository chatRoomRepository;
 	private final ChatMessageRepository chatMessageRepository;
 	private final ChatMemberRepository chatMemberRepository;
+
+	private final RentRepository rentRepository;
 
 	private final BookRepository bookRepository;
 	private final UserRepository userRepository;
@@ -83,7 +87,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
 			LocalDateTime lastCheckedTime;
 
-			if (anotherMember.getLastCheckedMessage() != null) {
+			if (anotherMember != null && anotherMember.getLastCheckedMessage() != null) {
 				lastCheckedTime = member.getLastCheckedMessage().getSendedAt();
 			} else {
 				lastCheckedTime = room.getCreatedDate();
@@ -122,7 +126,12 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
 		// 이미 존재하는 채팅방이면 채팅방 정보 return
 		if (chatMember != null) {
-			return ChatRoomInfo.from(chatMember.getRoom());
+			ChatRoomInfo chatRoomInfo = ChatRoomInfo.from(chatMember.getRoom());
+			Rent rent = rentRepository.findByBookIdAndLenderIdAndReturnDateIsNull(request.getBookId(),
+				request.getUserId()).orElse(null);
+			chatRoomInfo.updateRent(rent);
+
+			return chatRoomInfo;
 		}
 
 		ChatRoom chatRoom = ChatRoom.builder()

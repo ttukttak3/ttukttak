@@ -14,7 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 import org.springframework.data.annotation.CreatedDate;
 
@@ -52,7 +51,7 @@ public class Rent extends BaseTimeEntity implements Serializable {
 	@JoinColumn(name = "book_id")
 	private Book book;
 
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "room_id")
 	private ChatRoom room;
 

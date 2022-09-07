@@ -13,12 +13,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ttukttak.book.entity.Book;
 import com.ttukttak.common.BaseTimeEntity;
-import com.ttukttak.rent.entity.Rent;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -37,10 +35,6 @@ public class ChatRoom extends BaseTimeEntity implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "book_id")
 	private Book book;
-
-	@JsonIgnore
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "room")
-	private Rent rent = null;
 
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "chatRoom", cascade = CascadeType.ALL)
