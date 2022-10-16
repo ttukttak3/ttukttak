@@ -280,7 +280,21 @@ public class RentServiceTest {
 				assertThrows(UnauthChangeException.class, () -> rentService.changeRentStatus(rent.getId(), UNDEFINED_USER_ID));
 			}
 
+			@Test
+			@DisplayName("이미 반납된 대여 데이터를 다시 반납하는 경우")
+			void returnFail3() {
+				// given
+				when(rentRepository.findById(rent.getId())).thenReturn(Optional.ofNullable(rent));
+				when(userRepository.findById(owner.getId())).thenReturn(Optional.ofNullable(owner));
+
+				// when
+				rent.returnBook();
+
+				// then
+				assertThrows(IllegalArgumentException.class, () -> rentService.changeRentStatus(rent.getId(), owner.getId()));
+			}
 		}
+
 
 	}
 
