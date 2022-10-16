@@ -169,6 +169,54 @@ public class RentServiceTest {
 				// when, then
 				assertThrows(UnauthChangeException.class, () -> rentService.addRent(request, UNDEFINED_USER_ID));
 			}
+
+			@Test
+			@DisplayName("도서 ID가 없는 경우")
+			void createRentFail3() {
+				//given
+				when(bookRepository.findById(book.getId())).thenReturn(Optional.ofNullable(null));
+
+				CreateRentRequest request = new CreateRentRequest();
+				request.setBookId(book.getId());
+				request.setLenderId(lender.getId());
+				request.setRoomId(room.getId());
+
+				// when, then
+				assertThrows(IllegalArgumentException.class, () -> rentService.addRent(request, owner.getId()));
+			}
+
+			@Test
+			@DisplayName("빌리는 사람 ID가 없는 경우")
+			void createRentFail4() {
+				//given
+				when(bookRepository.findById(book.getId())).thenReturn(Optional.ofNullable(book));
+				when(userRepository.findById(lender.getId())).thenReturn(Optional.ofNullable(null));
+
+				CreateRentRequest request = new CreateRentRequest();
+				request.setBookId(book.getId());
+				request.setLenderId(lender.getId());
+				request.setRoomId(room.getId());
+
+				// when, then
+				assertThrows(IllegalArgumentException.class, () -> rentService.addRent(request, owner.getId()));
+			}
+
+			@Test
+			@DisplayName("채팅방 ID가 없는 경우")
+			void createRentFail5() {
+				//given
+				when(bookRepository.findById(book.getId())).thenReturn(Optional.ofNullable(book));
+				when(userRepository.findById(lender.getId())).thenReturn(Optional.ofNullable(lender));
+				when(chatRoomRepository.findById(room.getId())).thenReturn(Optional.ofNullable(null));
+
+				CreateRentRequest request = new CreateRentRequest();
+				request.setBookId(book.getId());
+				request.setLenderId(lender.getId());
+				request.setRoomId(room.getId());
+
+				// when, then
+				assertThrows(IllegalArgumentException.class, () -> rentService.addRent(request, owner.getId()));
+			}
 		}
 	}
 
