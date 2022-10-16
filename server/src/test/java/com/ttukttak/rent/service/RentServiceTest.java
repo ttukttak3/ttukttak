@@ -351,6 +351,26 @@ public class RentServiceTest {
 			}
 		}
 
+		@Nested
+		@DisplayName("실패 케이스")
+		class FailCase {
+			@Test
+			@DisplayName("연장하기 2회 초과한 경우")
+			void addExtendFail1() {
+				// given
+				Extend extend1 = Extend.builder().rent(rent).extendDays(EXTEND_DAYS).build();
+				Extend extend2 = Extend.builder().rent(rent).extendDays(EXTEND_DAYS).build();
+				rent.getExtendList().add(extend1);
+				rent.getExtendList().add(extend2);
+
+				when(rentRepository.findById(rent.getId())).thenReturn(Optional.ofNullable(rent));
+
+				// when, then
+				assertThrows(IllegalArgumentException.class, () -> rentService.addExtend(rent.getId(), owner.getId()));
+			}
+
+		}
+
 	}
 
 }
