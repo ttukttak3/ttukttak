@@ -220,4 +220,68 @@ public class RentServiceTest {
 		}
 	}
 
+	@Nested
+	@DisplayName("반납하기")
+	class ChangeRentStatus {
+		@Nested
+		@DisplayName("성공 케이스")
+		class SuccessCase {
+			@Test
+			@DisplayName("반납 성공")
+			void returnSuccess() {
+				// given
+				when(rentRepository.findById(rent.getId())).thenReturn(Optional.ofNullable(rent));
+				when(userRepository.findById(owner.getId())).thenReturn(Optional.ofNullable(owner));
+				when(rentRepository.save(any(Rent.class))).thenReturn(rent);
+
+				// when
+				RentResponse rentResponse = rentService.changeRentStatus(rent.getId(), owner.getId());
+
+				// then
+				assertThat(rentResponse.getId()).isEqualTo(rent.getId());
+				assertThat(rentResponse.getRoomId()).isEqualTo(room.getId());
+				assertThat(rentResponse.getBook()).usingRecursiveComparison().isEqualTo(BookDto.from(book));
+				assertThat(rentResponse.getOwner()).usingRecursiveComparison().isEqualTo(UserDto.from(owner));
+				assertThat(rentResponse.getLender()).usingRecursiveComparison().isEqualTo(UserDto.from(lender));
+				assertThat(rentResponse.getStatus()).isEqualTo(Rent.RentStatus.RETURN);
+				assertThat(rentResponse.getReturnDate()).isNotNull();
+			}
+		}
+
+		@Nested
+		@DisplayName("실패 케이스")
+		class FailCase {
+			@Test
+			@DisplayName("대여 ID가 없는 경우")
+			void returnFail1() {
+				// given
+				when(rentRepository.findById(rent.getId())).thenReturn(Optional.ofNullable(null));
+
+				// when, then
+				assertThrows(IllegalArgumentException.class, () -> rentService.changeRentStatus(rent.getId(), owner.getId()));
+			}
+
+			@Test
+			@DisplayName("반납하는 대상이 도서 owner가 아닌 경우")
+			void returnFail2() {
+				// given
+				final Long UNDEFINED_USER_ID = 3L;
+
+				User other = User.builder().id(UNDEFINED_USER_ID).age("21")
+					.email("test3@naver.com")
+					.gender("FEMALE")
+					.nickname("tester3")
+					.build();
+
+				when(rentRepository.findById(rent.getId())).thenReturn(Optional.ofNullable(rent));
+				when(userRepository.findById(UNDEFINED_USER_ID)).thenReturn(Optional.ofNullable(other));
+
+				// when, then
+				assertThrows(UnauthChangeException.class, () -> rentService.changeRentStatus(rent.getId(), UNDEFINED_USER_ID));
+			}
+
+		}
+
+	}
+
 }
