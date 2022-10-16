@@ -108,6 +108,11 @@ public class RentServiceImpl implements RentService {
 		if (checkUnauthRequest(rent.getBook(), userId)) {
 			throw new UnauthChangeException();
 		}
+
+		if(rent.getReturnDate() != null) {
+			throw new IllegalArgumentException();
+		}
+
 		rent.returnBook();
 
 		rentRepository.save(rent);
