@@ -51,43 +51,40 @@ public class RentServiceTest {
 
 	@InjectMocks
 	private RentServiceImpl rentService;
+	private Rent rent;
+	private User owner;
+	private User lender;
+	private Book book;
+	private ChatRoom room;
+
+	@BeforeEach
+	void setup() {
+		owner = User.builder()
+			.id(1L)
+			.age("20")
+			.email("test1@naver.com")
+			.gender("MALE")
+			.nickname("tester1")
+			.build();
+		lender = User.builder()
+			.id(2L)
+			.age("21")
+			.email("test2@naver.com")
+			.gender("FEMALE")
+			.nickname("tester2")
+			.build();
+		book = Book.builder().id(1L).owner(owner).town(Town.builder().id(1L).build()).build();
+		room = ChatRoom.builder().id(1L).book(book).build();
+		ChatMember memberOwner = ChatMember.builder().id(1L).book(book).room(room).user(owner).build();
+		ChatMember memberLender = ChatMember.builder().id(2L).book(book).room(room).user(lender).build();
+		room.addChatMember(memberOwner);
+		room.addChatMember(memberLender);
+		rent = Rent.builder().id(1L).book(book).lender(lender).room(room).beginDate(LocalDate.now()).build();
+	}
 
 	@Nested
 	@DisplayName("대여 생성하기")
 	class AddRent {
-		private Rent rent;
-		private User owner;
-		private User lender;
-		private Book book;
-		private ChatRoom room;
-		private ChatMember memberOwner;
-		private ChatMember memberLender;
-
-		@BeforeEach
-		void setup() {
-			owner = User.builder()
-				.id(1L)
-				.age("20")
-				.email("test1@naver.com")
-				.gender("MALE")
-				.nickname("tester1")
-				.build();
-			lender = User.builder()
-				.id(2L)
-				.age("21")
-				.email("test2@naver.com")
-				.gender("FEMALE")
-				.nickname("tester2")
-				.build();
-			book = Book.builder().id(1L).owner(owner).town(Town.builder().id(1L).build()).build();
-			room = ChatRoom.builder().id(1L).book(book).build();
-			memberOwner = ChatMember.builder().id(1L).book(book).room(room).user(owner).build();
-			memberLender = ChatMember.builder().id(2L).book(book).room(room).user(lender).build();
-			room.addChatMember(memberOwner);
-			room.addChatMember(memberLender);
-			rent = Rent.builder().id(1L).book(book).lender(lender).room(room).beginDate(LocalDate.now()).build();
-		}
-
 		@Nested
 		@DisplayName("성공 케이스")
 		class SuccessCase {
