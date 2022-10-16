@@ -54,8 +54,11 @@ public class RentServiceTest {
 	private Rent rent;
 	private User owner;
 	private User lender;
+	private User unknown;
 	private Book book;
 	private ChatRoom room;
+
+
 
 	@BeforeEach
 	void setup() {
@@ -80,6 +83,12 @@ public class RentServiceTest {
 		room.addChatMember(memberOwner);
 		room.addChatMember(memberLender);
 		rent = Rent.builder().id(1L).book(book).lender(lender).room(room).beginDate(LocalDate.now()).build();
+
+		unknown = User.builder().id(3L).age("21")
+			.email("test3@naver.com")
+			.gender("FEMALE")
+			.nickname("tester3")
+			.build();
 	}
 
 	@Nested
@@ -148,18 +157,10 @@ public class RentServiceTest {
 			@DisplayName("대여 생성 호출자가 도서 owner가 아닌 경우")
 			void createRentFail2() {
 				//given
-				final Long UNDEFINED_USER_ID = 3L;
-
-				User other = User.builder().id(UNDEFINED_USER_ID).age("21")
-					.email("test3@naver.com")
-					.gender("FEMALE")
-					.nickname("tester3")
-					.build();
-
 				when(bookRepository.findById(book.getId())).thenReturn(Optional.ofNullable(book));
 				when(userRepository.findById(lender.getId())).thenReturn(Optional.ofNullable(lender));
 				when(chatRoomRepository.findById(room.getId())).thenReturn(Optional.ofNullable(room));
-				when(userRepository.findById(UNDEFINED_USER_ID)).thenReturn(Optional.ofNullable(other));
+				when(userRepository.findById(unknown.getId())).thenReturn(Optional.ofNullable(unknown));
 
 				CreateRentRequest request = new CreateRentRequest();
 				request.setBookId(book.getId());
@@ -167,7 +168,7 @@ public class RentServiceTest {
 				request.setRoomId(room.getId());
 
 				// when, then
-				assertThrows(UnauthChangeException.class, () -> rentService.addRent(request, UNDEFINED_USER_ID));
+				assertThrows(UnauthChangeException.class, () -> rentService.addRent(request, unknown.getId()));
 			}
 
 			@Test
@@ -266,20 +267,12 @@ public class RentServiceTest {
 			@DisplayName("반납하는 대상이 도서 owner가 아닌 경우")
 			void returnFail2() {
 				// given
-				final Long UNDEFINED_USER_ID = 3L;
-
-				User other = User.builder().id(UNDEFINED_USER_ID).age("21")
-					.email("test3@naver.com")
-					.gender("FEMALE")
-					.nickname("tester3")
-					.build();
-
 				when(rentRepository.findById(rent.getId())).thenReturn(Optional.ofNullable(rent));
-				when(userRepository.findById(UNDEFINED_USER_ID)).thenReturn(Optional.ofNullable(other));
+				when(userRepository.findById(unknown.getId())).thenReturn(Optional.ofNullable(unknown));
 
 				// when, then
 				assertThrows(UnauthChangeException.class,
-					() -> rentService.changeRentStatus(rent.getId(), UNDEFINED_USER_ID));
+					() -> rentService.changeRentStatus(rent.getId(), unknown.getId()));
 			}
 
 			@Test
