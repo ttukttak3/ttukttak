@@ -122,7 +122,7 @@ public class RentServiceImpl implements RentService {
 
 	@Override
 	public ExtendResponse addExtend(Long rentId, Long userId) {
-		Rent rent = rentRepository.findById(rentId).orElseThrow(() -> new IllegalArgumentException());
+		Rent rent = rentRepository.findByIdAndReturnDateIsNull(rentId).orElseThrow(() -> new IllegalArgumentException());
 
 		// TODO: 커스텀예외
 		if (rent.getExtendList().size() >= 2) {

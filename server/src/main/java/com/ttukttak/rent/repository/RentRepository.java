@@ -24,6 +24,8 @@ public interface RentRepository extends JpaRepository<Rent, Long> {
 
 	Optional<Rent> findByBookIdAndLenderIdAndReturnDateIsNull(Long bookId, Long lenderId);
 
+	Optional<Rent> findByIdAndReturnDateIsNull(Long rentId);
+
 	@Override
 	Page<Rent> findAll(Pageable pageable);
 

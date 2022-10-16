@@ -307,7 +307,7 @@ public class RentServiceTest {
 				// given
 				LocalDate beforExtend = rent.getEndDate();
 
-				when(rentRepository.findById(rent.getId())).thenReturn(Optional.ofNullable(rent));
+				when(rentRepository.findByIdAndReturnDateIsNull(rent.getId())).thenReturn(Optional.ofNullable(rent));
 				when(userRepository.findById(owner.getId())).thenReturn(Optional.ofNullable(owner));
 				when(extendRepository.save(any(Extend.class))).thenReturn(any(Extend.class));
 
@@ -329,7 +329,7 @@ public class RentServiceTest {
 				Extend extend1 = Extend.builder().rent(rent).extendDays(EXTEND_DAYS).build();
 				rent.getExtendList().add(extend1);
 
-				when(rentRepository.findById(rent.getId())).thenReturn(Optional.ofNullable(rent));
+				when(rentRepository.findByIdAndReturnDateIsNull(rent.getId())).thenReturn(Optional.ofNullable(rent));
 				when(userRepository.findById(owner.getId())).thenReturn(Optional.ofNullable(owner));
 				when(extendRepository.save(any(Extend.class))).thenReturn(any(Extend.class));
 
@@ -356,17 +356,17 @@ public class RentServiceTest {
 				rent.getExtendList().add(extend1);
 				rent.getExtendList().add(extend2);
 
-				when(rentRepository.findById(rent.getId())).thenReturn(Optional.ofNullable(rent));
+				when(rentRepository.findByIdAndReturnDateIsNull(rent.getId())).thenReturn(Optional.ofNullable(rent));
 
 				// when, then
 				assertThrows(IllegalArgumentException.class, () -> rentService.addExtend(rent.getId(), owner.getId()));
 			}
 
 			@Test
-			@DisplayName("대여 ID가 없는 경우")
+			@DisplayName("대여 ID가 없거나 이미 반납한 경우")
 			void addExtendFail2() {
 				// given
-				when(rentRepository.findById(rent.getId())).thenReturn(Optional.ofNullable(null));
+				when(rentRepository.findByIdAndReturnDateIsNull(rent.getId())).thenReturn(Optional.ofNullable(null));
 
 				// when, then
 				assertThrows(IllegalArgumentException.class, () -> rentService.addExtend(rent.getId(), owner.getId()));
@@ -376,7 +376,7 @@ public class RentServiceTest {
 			@DisplayName("연장하는 대상이 도서 owner가 아닌 경우")
 			void addExtendFail3() {
 				// given
-				when(rentRepository.findById(rent.getId())).thenReturn(Optional.ofNullable(rent));
+				when(rentRepository.findByIdAndReturnDateIsNull(rent.getId())).thenReturn(Optional.ofNullable(rent));
 				when(userRepository.findById(unknown.getId())).thenReturn(Optional.ofNullable(unknown));
 
 
