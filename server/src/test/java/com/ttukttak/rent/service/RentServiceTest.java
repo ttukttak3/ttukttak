@@ -1,6 +1,6 @@
 package com.ttukttak.rent.service;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -29,12 +29,12 @@ import com.ttukttak.oauth.dto.UserDto;
 import com.ttukttak.oauth.entity.User;
 import com.ttukttak.oauth.repository.UserRepository;
 import com.ttukttak.rent.dto.CreateRentRequest;
+import com.ttukttak.rent.dto.ExtendResponse;
 import com.ttukttak.rent.dto.RentResponse;
+import com.ttukttak.rent.entity.Extend;
 import com.ttukttak.rent.entity.Rent;
 import com.ttukttak.rent.repository.ExtendRepository;
 import com.ttukttak.rent.repository.RentRepository;
-import com.ttukttak.rent.service.RentService;
-import com.ttukttak.rent.service.RentServiceImpl;
 
 @ExtendWith(MockitoExtension.class)
 public class RentServiceTest {
@@ -84,7 +84,7 @@ public class RentServiceTest {
 
 	@Nested
 	@DisplayName("대여 생성하기")
-	class AddRent {
+	class AddRentTest {
 		@Nested
 		@DisplayName("성공 케이스")
 		class SuccessCase {
@@ -222,7 +222,7 @@ public class RentServiceTest {
 
 	@Nested
 	@DisplayName("반납하기")
-	class ChangeRentStatus {
+	class ChangeRentStatusTest {
 		@Nested
 		@DisplayName("성공 케이스")
 		class SuccessCase {
@@ -258,7 +258,8 @@ public class RentServiceTest {
 				when(rentRepository.findById(rent.getId())).thenReturn(Optional.ofNullable(null));
 
 				// when, then
-				assertThrows(IllegalArgumentException.class, () -> rentService.changeRentStatus(rent.getId(), owner.getId()));
+				assertThrows(IllegalArgumentException.class,
+					() -> rentService.changeRentStatus(rent.getId(), owner.getId()));
 			}
 
 			@Test
@@ -277,7 +278,8 @@ public class RentServiceTest {
 				when(userRepository.findById(UNDEFINED_USER_ID)).thenReturn(Optional.ofNullable(other));
 
 				// when, then
-				assertThrows(UnauthChangeException.class, () -> rentService.changeRentStatus(rent.getId(), UNDEFINED_USER_ID));
+				assertThrows(UnauthChangeException.class,
+					() -> rentService.changeRentStatus(rent.getId(), UNDEFINED_USER_ID));
 			}
 
 			@Test
@@ -291,10 +293,63 @@ public class RentServiceTest {
 				rent.returnBook();
 
 				// then
-				assertThrows(IllegalArgumentException.class, () -> rentService.changeRentStatus(rent.getId(), owner.getId()));
+				assertThrows(IllegalArgumentException.class,
+					() -> rentService.changeRentStatus(rent.getId(), owner.getId()));
 			}
 		}
 
+	}
+
+	@Nested
+	@DisplayName("대여기간 연장하기")
+	class AddExtendTest {
+		final int EXTEND_DAYS = 7;
+
+		@Nested
+		@DisplayName("성공 케이스")
+		class SuccessCase {
+			@Test
+			@DisplayName("연장 1회 성공")
+			void addExtendSuccess() {
+				// given
+				LocalDate beforExtend = rent.getEndDate();
+
+				when(rentRepository.findById(rent.getId())).thenReturn(Optional.ofNullable(rent));
+				when(userRepository.findById(owner.getId())).thenReturn(Optional.ofNullable(owner));
+				when(extendRepository.save(any(Extend.class))).thenReturn(any(Extend.class));
+
+				// when
+				ExtendResponse extendResponse = rentService.addExtend(rent.getId(), owner.getId());
+				Extend extend = Extend.builder().rent(rent).extendDays(EXTEND_DAYS).build();
+				rent.getExtendList().add(extend);
+
+				// then
+				assertThat(extendResponse.getExtendDate()).isEqualTo(beforExtend);
+				assertThat(rent.getEndDate()).isEqualTo(beforExtend.plusDays(EXTEND_DAYS));
+			}
+
+			@Test
+			@DisplayName("연장 2회 성공")
+			void addExtendSuccess2() {
+				// given
+				LocalDate beforExtend = rent.getEndDate();
+				Extend extend1 = Extend.builder().rent(rent).extendDays(EXTEND_DAYS).build();
+				rent.getExtendList().add(extend1);
+
+				when(rentRepository.findById(rent.getId())).thenReturn(Optional.ofNullable(rent));
+				when(userRepository.findById(owner.getId())).thenReturn(Optional.ofNullable(owner));
+				when(extendRepository.save(any(Extend.class))).thenReturn(any(Extend.class));
+
+				// when
+				ExtendResponse extendResponse = rentService.addExtend(rent.getId(), owner.getId());
+				Extend extend2 = Extend.builder().rent(rent).extendDays(EXTEND_DAYS).build();
+				rent.getExtendList().add(extend2);
+
+				// then
+				assertThat(extendResponse.getExtendDate()).isEqualTo(beforExtend.plusDays(EXTEND_DAYS));
+				assertThat(rent.getEndDate()).isEqualTo(beforExtend.plusDays((EXTEND_DAYS * 2)));
+			}
+		}
 
 	}
 
