@@ -1,6 +1,7 @@
 package com.ttukttak.rent;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 import java.time.LocalDate;
@@ -22,6 +23,7 @@ import com.ttukttak.book.repository.BookRepository;
 import com.ttukttak.chat.entity.ChatMember;
 import com.ttukttak.chat.entity.ChatRoom;
 import com.ttukttak.chat.repository.ChatRoomRepository;
+import com.ttukttak.common.exception.DuplicatedException;
 import com.ttukttak.oauth.dto.UserDto;
 import com.ttukttak.oauth.entity.User;
 import com.ttukttak.oauth.repository.UserRepository;
@@ -50,8 +52,8 @@ public class RentServiceTest {
 	private RentServiceImpl rentService;
 
 	@Nested
-	@DisplayName("대여 생성")
-	class CreateRent {
+	@DisplayName("대여 생성하기")
+	class AddRent {
 		private Rent rent;
 		private User owner;
 		private User lender;
@@ -62,7 +64,13 @@ public class RentServiceTest {
 
 		@BeforeEach
 		void setup() {
-			owner = User.builder().id(1L).age("20").email("test1@naver.com").gender("MALE").nickname("tester1").build();
+			owner = User.builder()
+				.id(1L)
+				.age("20")
+				.email("test1@naver.com")
+				.gender("MALE")
+				.nickname("tester1")
+				.build();
 			lender = User.builder()
 				.id(2L)
 				.age("21")
@@ -80,7 +88,7 @@ public class RentServiceTest {
 		}
 
 		@Nested
-		@DisplayName("정상 케이스")
+		@DisplayName("성공 케이스")
 		class SuccessCase {
 			@Test
 			@DisplayName("대여 생성")
@@ -114,6 +122,30 @@ public class RentServiceTest {
 			}
 		}
 
+		@Nested
+		@DisplayName("실패 케이스")
+		class FailCase {
+			@Test
+			@DisplayName("동일한 도서에 반납하지 않은 대여내역이 있는 경우")
+			void createRentFail1() {
+				//given
+				when(bookRepository.findById(book.getId())).thenReturn(Optional.ofNullable(book));
+				when(userRepository.findById(lender.getId())).thenReturn(Optional.ofNullable(lender));
+				when(userRepository.findById(owner.getId())).thenReturn(Optional.ofNullable(owner));
+				when(chatRoomRepository.findById(room.getId())).thenReturn(Optional.ofNullable(room));
+
+				CreateRentRequest request = new CreateRentRequest();
+				request.setBookId(book.getId());
+				request.setLenderId(lender.getId());
+				request.setRoomId(room.getId());
+
+				when(rentRepository.findByBookIdAndLenderIdAndReturnDateIsNull(request.getBookId(),
+					request.getLenderId())).thenReturn(Optional.ofNullable(rent));
+
+				// when, then
+				assertThrows(DuplicatedException.class, () -> rentService.addRent(request, owner.getId()));
+			}
+		}
 	}
 
 }
