@@ -24,6 +24,7 @@ import com.ttukttak.chat.entity.ChatMember;
 import com.ttukttak.chat.entity.ChatRoom;
 import com.ttukttak.chat.repository.ChatRoomRepository;
 import com.ttukttak.common.exception.DuplicatedException;
+import com.ttukttak.common.exception.UnauthChangeException;
 import com.ttukttak.oauth.dto.UserDto;
 import com.ttukttak.oauth.entity.User;
 import com.ttukttak.oauth.repository.UserRepository;
@@ -144,6 +145,32 @@ public class RentServiceTest {
 
 				// when, then
 				assertThrows(DuplicatedException.class, () -> rentService.addRent(request, owner.getId()));
+			}
+
+			@Test
+			@DisplayName("대여 생성 호출자가 도서 owner가 아닌 경우")
+			void createRentFail2() {
+				//given
+				final Long UNDEFINED_USER_ID = 3L;
+
+				User other = User.builder().id(UNDEFINED_USER_ID).age("21")
+					.email("test3@naver.com")
+					.gender("FEMALE")
+					.nickname("tester3")
+					.build();
+
+				when(bookRepository.findById(book.getId())).thenReturn(Optional.ofNullable(book));
+				when(userRepository.findById(lender.getId())).thenReturn(Optional.ofNullable(lender));
+				when(chatRoomRepository.findById(room.getId())).thenReturn(Optional.ofNullable(room));
+				when(userRepository.findById(UNDEFINED_USER_ID)).thenReturn(Optional.ofNullable(other));
+
+				CreateRentRequest request = new CreateRentRequest();
+				request.setBookId(book.getId());
+				request.setLenderId(lender.getId());
+				request.setRoomId(room.getId());
+
+				// when, then
+				assertThrows(UnauthChangeException.class, () -> rentService.addRent(request, UNDEFINED_USER_ID));
 			}
 		}
 	}
