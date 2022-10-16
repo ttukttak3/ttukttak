@@ -362,6 +362,16 @@ public class RentServiceTest {
 				assertThrows(IllegalArgumentException.class, () -> rentService.addExtend(rent.getId(), owner.getId()));
 			}
 
+			@Test
+			@DisplayName("대여 ID가 없는 경우")
+			void addExtendFail2() {
+				// given
+				when(rentRepository.findById(rent.getId())).thenReturn(Optional.ofNullable(null));
+
+				// when, then
+				assertThrows(IllegalArgumentException.class, () -> rentService.addExtend(rent.getId(), owner.getId()));
+			}
+
 		}
 
 	}
