@@ -372,6 +372,18 @@ public class RentServiceTest {
 				assertThrows(IllegalArgumentException.class, () -> rentService.addExtend(rent.getId(), owner.getId()));
 			}
 
+			@Test
+			@DisplayName("연장하는 대상이 도서 owner가 아닌 경우")
+			void addExtendFail3() {
+				// given
+				when(rentRepository.findById(rent.getId())).thenReturn(Optional.ofNullable(rent));
+				when(userRepository.findById(unknown.getId())).thenReturn(Optional.ofNullable(unknown));
+
+
+				// when, then
+				assertThrows(UnauthChangeException.class, () -> rentService.addExtend(rent.getId(), unknown.getId()));
+			}
+
 		}
 
 	}
