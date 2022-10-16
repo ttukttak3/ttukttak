@@ -1,4 +1,4 @@
-package com.ttukttak.rent;
+package com.ttukttak.rent.service;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.Assert.*;
