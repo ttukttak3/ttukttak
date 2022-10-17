@@ -155,6 +155,19 @@ public class RentControllerTest {
 				.andExpect(status().is(401));
 		}
 
+		@Test
+		@DisplayName("대여자와 차입자가 동일한 경우")
+		public void createRentfail3() throws Exception {
+			createRentRequest.setLenderId(owner.getId());
+			UserPrincipal currentUser = UserPrincipal.create(owner);
+
+			mockMvc.perform(post("/api/v1/rent")
+					.with(user(currentUser))
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(objectMapper.writeValueAsString(createRentRequest)))
+				.andExpect(status().is(400));
+		}
+
 	}
 
 }
