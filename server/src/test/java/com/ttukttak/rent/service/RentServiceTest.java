@@ -313,8 +313,6 @@ public class RentServiceTest {
 
 				// when
 				ExtendResponse extendResponse = rentService.addExtend(rent.getId(), owner.getId());
-				Extend extend = Extend.builder().rent(rent).extendDays(EXTEND_DAYS).build();
-				rent.getExtendList().add(extend);
 
 				// then
 				assertThat(extendResponse.getExtendDate()).isEqualTo(beforExtend);
@@ -326,17 +324,14 @@ public class RentServiceTest {
 			void addExtendSuccess2() {
 				// given
 				LocalDate beforExtend = rent.getEndDate();
-				Extend extend1 = Extend.builder().rent(rent).extendDays(EXTEND_DAYS).build();
-				rent.getExtendList().add(extend1);
 
 				when(rentRepository.findByIdAndReturnDateIsNull(rent.getId())).thenReturn(Optional.ofNullable(rent));
 				when(userRepository.findById(owner.getId())).thenReturn(Optional.ofNullable(owner));
 				when(extendRepository.save(any(Extend.class))).thenReturn(any(Extend.class));
 
 				// when
+				rentService.addExtend(rent.getId(), owner.getId());
 				ExtendResponse extendResponse = rentService.addExtend(rent.getId(), owner.getId());
-				Extend extend2 = Extend.builder().rent(rent).extendDays(EXTEND_DAYS).build();
-				rent.getExtendList().add(extend2);
 
 				// then
 				assertThat(extendResponse.getExtendDate()).isEqualTo(beforExtend.plusDays(EXTEND_DAYS));
@@ -353,8 +348,6 @@ public class RentServiceTest {
 				// given
 				Extend extend1 = Extend.builder().rent(rent).extendDays(EXTEND_DAYS).build();
 				Extend extend2 = Extend.builder().rent(rent).extendDays(EXTEND_DAYS).build();
-				rent.getExtendList().add(extend1);
-				rent.getExtendList().add(extend2);
 
 				when(rentRepository.findByIdAndReturnDateIsNull(rent.getId())).thenReturn(Optional.ofNullable(rent));
 
