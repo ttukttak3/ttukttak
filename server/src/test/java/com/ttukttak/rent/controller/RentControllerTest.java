@@ -27,6 +27,7 @@ import com.ttukttak.oauth.entity.User;
 import com.ttukttak.oauth.entity.UserPrincipal;
 import com.ttukttak.oauth.repository.UserRepository;
 import com.ttukttak.rent.dto.CreateRentRequest;
+import com.ttukttak.rent.entity.Rent;
 import com.ttukttak.rent.repository.RentRepository;
 
 @Transactional
@@ -141,6 +142,18 @@ public class RentControllerTest {
 				.andExpect(status().is(400));
 		}
 
+		@Test
+		@DisplayName("요청하는 유저가 도서 owner가 아닌 경우")
+		public void createRentfail2() throws Exception {
+
+			UserPrincipal currentUser = UserPrincipal.create(unknown);
+
+			mockMvc.perform(post("/api/v1/rent")
+					.with(user(currentUser))
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(objectMapper.writeValueAsString(createRentRequest)))
+				.andExpect(status().is(401));
+		}
 
 	}
 
