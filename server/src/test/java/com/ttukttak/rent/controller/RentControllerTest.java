@@ -31,7 +31,9 @@ import com.ttukttak.oauth.entity.User;
 import com.ttukttak.oauth.entity.UserPrincipal;
 import com.ttukttak.oauth.repository.UserRepository;
 import com.ttukttak.rent.dto.CreateRentRequest;
+import com.ttukttak.rent.dto.ExtendResponse;
 import com.ttukttak.rent.dto.RentResponse;
+import com.ttukttak.rent.entity.Rent;
 import com.ttukttak.rent.repository.RentRepository;
 
 @Transactional
@@ -218,6 +220,103 @@ public class RentControllerTest {
 					.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().is(400));
 		}
+	}
+
+	@Nested
+	@DisplayName("POST /rent/{rentId}/extend")
+	class PostExtendTest {
+		private CreateRentRequest createRentRequest;
+
+		@BeforeEach
+		void setup() {
+			createRentRequest = new CreateRentRequest();
+			createRentRequest.setBookId(book.getId());
+			createRentRequest.setLenderId(lender.getId());
+			createRentRequest.setRoomId(room.getId());
+		}
+
+		@Test
+		@DisplayName("1회 연장하기 성공")
+		public void addExtendSuccess() throws Exception {
+			final int DEFAULT_EXTEND_DAYS = 7;
+			UserPrincipal currentUser = UserPrincipal.create(owner);
+
+			MvcResult result = mockMvc.perform(post("/api/v1/rent")
+					.with(user(currentUser))
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(objectMapper.writeValueAsString(createRentRequest)))
+				.andReturn();
+
+			RentResponse rentResponse = parseResponse(result, RentResponse.class);
+
+			mockMvc.perform(post("/api/v1/rent/{rentId}/extend", rentResponse.getId())
+					.with(user(currentUser))
+					.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().is(200))
+				.andExpect(jsonPath("$.extendDays").value(DEFAULT_EXTEND_DAYS))
+				.andExpect(jsonPath("$.extendDate").value(rentResponse.getEndDate().toString()));
+		}
+
+		@Test
+		@DisplayName("2회 연장하기 성공")
+		public void addExtendSuccess2() throws Exception {
+			final int DEFAULT_EXTEND_DAYS = 7;
+			UserPrincipal currentUser = UserPrincipal.create(owner);
+
+			MvcResult result = mockMvc.perform(post("/api/v1/rent")
+					.with(user(currentUser))
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(objectMapper.writeValueAsString(createRentRequest)))
+				.andReturn();
+
+			RentResponse rentResponse = parseResponse(result, RentResponse.class);
+
+			mockMvc.perform(post("/api/v1/rent/{rentId}/extend", rentResponse.getId())
+					.with(user(currentUser))
+					.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().is(200))
+				.andExpect(jsonPath("$.extendDays").value(DEFAULT_EXTEND_DAYS))
+				.andExpect(jsonPath("$.extendDate").value(rentResponse.getEndDate().toString()));
+
+
+			mockMvc.perform(post("/api/v1/rent/{rentId}/extend", rentResponse.getId())
+					.with(user(currentUser))
+					.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().is(200))
+				.andExpect(jsonPath("$.extendDays").value(DEFAULT_EXTEND_DAYS))
+				.andExpect(
+					jsonPath("$.extendDate").value(rentResponse.getEndDate().plusDays(DEFAULT_EXTEND_DAYS).toString()));
+		}
+
+		@Test
+		@DisplayName("3회 초과 연장")
+		public void addExtendFail() throws Exception {
+			UserPrincipal currentUser = UserPrincipal.create(owner);
+
+			MvcResult result = mockMvc.perform(post("/api/v1/rent")
+					.with(user(currentUser))
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(objectMapper.writeValueAsString(createRentRequest)))
+				.andReturn();
+
+			RentResponse rentResponse = parseResponse(result, RentResponse.class);
+
+			mockMvc.perform(post("/api/v1/rent/{rentId}/extend", rentResponse.getId())
+					.with(user(currentUser))
+					.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().is(200));
+
+			mockMvc.perform(post("/api/v1/rent/{rentId}/extend", rentResponse.getId())
+					.with(user(currentUser))
+					.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().is(200));
+
+			mockMvc.perform(post("/api/v1/rent/{rentId}/extend", rentResponse.getId())
+					.with(user(currentUser))
+					.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().is(400));
+		}
+
 	}
 
 }
