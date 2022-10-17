@@ -95,9 +95,12 @@ public class Rent extends BaseTimeEntity implements Serializable {
 		this.beginDate = beginDate;
 	}
 
+	public void addExtend(Extend extend) {
+		this.extendList.add(extend);
+	}
+
 	public LocalDate getEndDate() {
 		int extendDays = extendList.stream().map(Extend::getExtendDays).reduce(0, Integer::sum);
-
 		return beginDate.plusDays(DEFAULT_RENT_DAYS + extendDays);
 	}
 
