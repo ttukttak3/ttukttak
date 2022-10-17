@@ -10,8 +10,10 @@ import com.ttukttak.rent.entity.Rent;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class RentResponse {
 	private Long id;
 	private Long roomId;

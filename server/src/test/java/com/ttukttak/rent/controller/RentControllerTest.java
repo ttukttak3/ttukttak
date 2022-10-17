@@ -4,6 +4,8 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.io.IOException;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -13,6 +15,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,7 +30,7 @@ import com.ttukttak.oauth.entity.User;
 import com.ttukttak.oauth.entity.UserPrincipal;
 import com.ttukttak.oauth.repository.UserRepository;
 import com.ttukttak.rent.dto.CreateRentRequest;
-import com.ttukttak.rent.entity.Rent;
+import com.ttukttak.rent.dto.RentResponse;
 import com.ttukttak.rent.repository.RentRepository;
 
 @Transactional
@@ -56,6 +59,15 @@ public class RentControllerTest {
 	private User unknown;
 	private Book book;
 	private ChatRoom room;
+
+	public <T> T parseResponse(MvcResult result, Class<T> responseClass) {
+		try {
+			String contentAsString = result.getResponse().getContentAsString();
+			return objectMapper.readValue(contentAsString, responseClass);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
 	@BeforeEach
 	void setup() {
@@ -98,10 +110,9 @@ public class RentControllerTest {
 	}
 
 	@Nested
-	@DisplayName("/api/v1/rent")
+	@DisplayName("POST /rent")
 	class PostRentTest {
 		private CreateRentRequest createRentRequest;
-
 
 		@BeforeEach
 		void setup() {
@@ -168,6 +179,36 @@ public class RentControllerTest {
 				.andExpect(status().is(400));
 		}
 
+	}
+
+	@Nested
+	@DisplayName("GET /rent/{rentId}")
+	class GetRent {
+		@Test
+		@DisplayName("대여하기 후 조회")
+		public void findRentSuccess() throws Exception {
+			UserPrincipal currentUser = UserPrincipal.create(owner);
+
+			CreateRentRequest createRentRequest = new CreateRentRequest();
+			createRentRequest.setBookId(book.getId());
+			createRentRequest.setLenderId(lender.getId());
+			createRentRequest.setRoomId(room.getId());
+
+			MvcResult result = mockMvc.perform(post("/api/v1/rent")
+					.with(user(currentUser))
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(objectMapper.writeValueAsString(createRentRequest)))
+				.andReturn();
+
+			RentResponse rentResponse = parseResponse(result, RentResponse.class);
+
+			mockMvc.perform(get("/api/v1/rent/{rentId}", rentResponse.getId())
+					.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().is(200))
+				.andExpect(jsonPath("$.id").value(rentResponse.getId()))
+				.andExpect(jsonPath("$.owner.id").value(rentResponse.getOwner().getId()))
+				.andReturn();
+		}
 	}
 
 }
