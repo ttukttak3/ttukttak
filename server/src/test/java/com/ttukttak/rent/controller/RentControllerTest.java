@@ -1,5 +1,6 @@
 package com.ttukttak.rent.controller;
 
+import static org.mockito.ArgumentMatchers.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -206,8 +207,16 @@ public class RentControllerTest {
 					.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().is(200))
 				.andExpect(jsonPath("$.id").value(rentResponse.getId()))
-				.andExpect(jsonPath("$.owner.id").value(rentResponse.getOwner().getId()))
-				.andReturn();
+				.andExpect(jsonPath("$.owner.id").value(rentResponse.getOwner().getId()));
+		}
+
+		@Test
+		@DisplayName("없는 rentId로 조회")
+		public void findRentFail() throws Exception {
+
+			mockMvc.perform(get("/api/v1/rent/{rentId}", anyLong())
+					.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().is(400));
 		}
 	}
 
