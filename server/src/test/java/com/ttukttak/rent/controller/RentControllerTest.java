@@ -97,18 +97,22 @@ public class RentControllerTest {
 	}
 
 	@Nested
-	@DisplayName("/api/v1/rent 테스트")
+	@DisplayName("/api/v1/rent")
 	class PostRentTest {
-		@Test
-		@DisplayName("성공 케이스")
-		public void createRentSuccess() throws Exception {
-			// given
-			CreateRentRequest createRentRequest = new CreateRentRequest();
+		private CreateRentRequest createRentRequest;
+
+
+		@BeforeEach
+		void setup() {
+			createRentRequest = new CreateRentRequest();
 			createRentRequest.setBookId(book.getId());
 			createRentRequest.setLenderId(lender.getId());
 			createRentRequest.setRoomId(room.getId());
+		}
 
-			// when
+		@Test
+		@DisplayName("성공 케이스")
+		public void createRentSuccess() throws Exception {
 			UserPrincipal currentUser = UserPrincipal.create(owner);
 
 			mockMvc.perform(post("/api/v1/rent")
@@ -117,6 +121,27 @@ public class RentControllerTest {
 					.content(objectMapper.writeValueAsString(createRentRequest)))
 				.andExpect(status().is(201));
 		}
+
+		@Test
+		@DisplayName("현재 대여중인 도서를 대여하는 경우")
+		public void createRentfail1() throws Exception {
+
+			UserPrincipal currentUser = UserPrincipal.create(owner);
+
+			mockMvc.perform(post("/api/v1/rent")
+					.with(user(currentUser))
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(objectMapper.writeValueAsString(createRentRequest)))
+				.andExpect(status().is(201));
+
+			mockMvc.perform(post("/api/v1/rent")
+					.with(user(currentUser))
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(objectMapper.writeValueAsString(createRentRequest)))
+				.andExpect(status().is(400));
+		}
+
+
 	}
 
 }
