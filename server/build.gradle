@@ -66,6 +66,9 @@ dependencies {
     implementation 'org.webjars.bower:axios:0.17.1'
     implementation 'org.webjars:sockjs-client:1.1.2'
     implementation 'org.webjars:stomp-websocket:2.3.3-1'
+
+    // Mac M1
+    implementation group: 'io.netty', name: 'netty-resolver-dns-native-macos', version: '4.1.82.Final', classifier: 'osx-aarch_64'
 }
 
 def generated = 'src/main/generated'

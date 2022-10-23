@@ -24,6 +24,8 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Extend extends BaseTimeEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
+	private static final int DEFAULT_EXTEND_DAYS = 7;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -36,14 +38,15 @@ public class Extend extends BaseTimeEntity implements Serializable {
 
 	@NotNull
 	@ColumnDefault("7")
-	private int extendDays;
+	private Integer extendDays;
 
 	@Builder
-	public Extend(Long id, Rent rent, int extendDays) {
+	public Extend(Long id, Rent rent, Integer extendDays) {
 		this.id = id;
+		this.extendDays = extendDays == null ? DEFAULT_EXTEND_DAYS : extendDays;
 		this.rent = rent;
 		this.extendDate = rent.getEndDate();
-		this.extendDays = extendDays;
+		rent.addExtend(this);
 	}
 }
 
