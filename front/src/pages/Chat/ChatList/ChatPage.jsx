@@ -14,17 +14,24 @@ const ChatPage = () => {
   const { getChatList } = messageApi;
   const { Wrapper, NoItem } = style;
 
-  const ChatListShow = chatList.map((item, idx) => (
-    <ChatListItem
-      key={idx}
-      id={item.roomId}
-      imgUrl={item?.another?.imageUrl}
-      userName={item.another.nickname}
-      time={item?.lastMessage?.sendedAt}
-      lastChat={item?.lastMessage?.message}
-      unread={item.unread}
-    />
-  ));
+  const ChatListShow = chatList
+    .filter(chat => chat.lastMessage !== null)
+    .sort((a, b) => {
+      const firstTime = new Date(a?.lastMessage?.sendedAt);
+      const secondTime = new Date(b?.lastMessage?.sendedAt);
+      return secondTime - firstTime;
+    })
+    .map((item, idx) => (
+      <ChatListItem
+        key={idx}
+        id={item.roomId}
+        imgUrl={item?.another?.imageUrl}
+        userName={item.another.nickname}
+        time={item?.lastMessage?.sendedAt}
+        lastChat={item?.lastMessage?.message}
+        unread={item.unread}
+      />
+    ));
 
   useEffect(() => {
     //로그인 back history
